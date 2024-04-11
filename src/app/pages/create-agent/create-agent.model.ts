@@ -230,7 +230,6 @@ export class CreateAgentModel {
 
   //instruction form submit
   onInstructionSubmit() {
-    debugger
     console.log(this.instructionForm.value);
   }
 

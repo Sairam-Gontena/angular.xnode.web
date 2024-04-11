@@ -89,10 +89,9 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
-    public auth: AuthApiService,
+    public authApiService: AuthApiService,
     private notifyApi: NotifyApiService,
     private themeService: ThemeService,
-    private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService,
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
@@ -100,9 +99,12 @@ export class AppComponent implements OnInit {
     private conversationHubService: ConversationHubService,
     private auditService: AuditutilsService
   ) {
-    let winUrl = window.location.href;
+    let winUrl = this.authApiService.getDeeplinkURL() ? this.authApiService.getDeeplinkURL() : window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
+    if (!this.authApiService.isUserLoggedIn()) {
+      this.authApiService.setDeeplinkURL(winUrl);
+    }
     if (winUrl.includes('template_id') || winUrl.includes('template_type') ||
       winUrl.includes('crId') || winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id')) {
       this.deepLink = true;
@@ -198,61 +200,7 @@ export class AppComponent implements OnInit {
     let hash = urlObj.hash;
     let [path, queryString] = hash.substr(1).split('?');
     let params = new URLSearchParams(queryString);
-    this.navigateByDeepLink(path, params);
-  }
-
-  async navigateByDeepLink(path: string, params: any) {
-    let templateId = params.get('template_id');
-    let templateType = params.get('template_type');
-    let productId = params.get('product_id');
-    let versionId = params.get('version_id');
-    let crId = params.get('crId');
-    let entity = params.get('entity');
-    if ((templateId && templateType) || (crId && entity) || (productId && versionId)) {
-      let deepLinkInfo;
-      if (templateId && templateType) {
-        deepLinkInfo = {
-          product_id: productId,
-          template_id: templateId,
-          template_type: templateType,
-          version_id: versionId,
-        };
-      } else if (productId && versionId) {
-        deepLinkInfo = {
-          product_id: productId,
-          version_id: versionId,
-        };
-      }
-      if (crId && entity) {
-        versionId = params.get('versionId');
-        productId = params.get('productId');
-        deepLinkInfo = {
-          product_id: productId,
-          entity: entity,
-          cr_id: crId,
-          version_id: versionId,
-        };
-        this.specUtils._openCommentsPanel(true);
-        this.specUtils._loadActiveTab({
-          activeIndex: 1,
-          productId: deepLinkInfo.product_id,
-          versionId: deepLinkInfo.version_id,
-        });
-      }
-      await this.setDeepLinkInStorage(deepLinkInfo);
-      this.router.navigateByUrl(path);
-    }
-  }
-
-  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    this.utilsService.navigateByDeepLink(urlObj);
   }
 
   async changeTheme(event: any) {
@@ -282,7 +230,7 @@ export class AppComponent implements OnInit {
     this.utilsService.showLimitReachedPopup(false);
     setTimeout(() => {
       localStorage.clear();
-      this.auth.setUser(false);
+      this.authApiService.setUser(false);
       this.router.navigate(['/']);
     }, 1000);
   }
@@ -798,7 +746,7 @@ export class AppComponent implements OnInit {
       let params = {
         account_id: accountId
       }
-      this.auth.getUsersByAccountId(params).then((response: any) => {
+      this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         this.usersList = response.data;
       })

@@ -90,4 +90,5 @@ export class ShareLinkComponent {
     }
     this.sharedLinkEvent.emit(eventTypeData);
   }
+  
 }

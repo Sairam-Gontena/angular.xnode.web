@@ -15,8 +15,8 @@
             </ng-template>
         </p-autoComplete>
 
-        <p-dropdown styleClass="customDropdown" formControlName="selectedInvite" [options]="invities" optionLabel="name"
-            [appendTo]="'body'" (onChange)="onSelectInviteChange($event)">
+        <p-dropdown formControlName="selectedInvite" [options]="invities" optionLabel="name" [appendTo]="'body'"
+            (onChange)="onSelectInviteChange($event)">
             <!-- [(ngModel)]="selectedInvite"-->
             <ng-template pTemplate="selectedItem">
                 <ng-container *ngIf="addShareForm.get('selectedInvite')?.value">

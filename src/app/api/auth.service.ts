@@ -12,6 +12,7 @@ export class AuthApiService extends BaseApiService {
   userLoggedIn = false;
   otpVerifyInprogress = false;
   restInprogress = false;
+  deepLinkURL: string = '';
 
   constructor() {
     super();
@@ -42,6 +43,7 @@ export class AuthApiService extends BaseApiService {
   verifyOtp(body?: any) {
     return this.post('mfa/verifyOTP', body);
   }
+  
   resendOtp(body?: any) {
     return this.post('mfa/resendverfication', body);
   }
@@ -77,4 +79,13 @@ export class AuthApiService extends BaseApiService {
   getUserDetails(email?: string) {
     return this.get('user/' + email);
   }
+
+  setDeeplinkURL(url: string) {
+    return this.deepLinkURL = url;
+  }
+
+  getDeeplinkURL() {
+    return this.deepLinkURL;
+  }
+
 }
