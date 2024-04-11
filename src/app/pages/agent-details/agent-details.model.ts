@@ -394,6 +394,8 @@ export class AgentDetailsModel {
   
       if(activeTab == agentName.prompt) {
         const id = formData?.id
+
+        delete formData?.id
         urlParam.url = `agent/update_prompt/${id}/${formData.version}`
         urlParam.data = formData
       }

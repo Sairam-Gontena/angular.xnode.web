@@ -49,7 +49,7 @@ export class AgentOverviewComponent {
     this.instructionForm = this.formBuilder.group({
       instruction: [''],
       guideline: [''],
-      responsibilities: [''],
+      responsibility: [''],
       context: [''],
       example: [''],
       keyValue: this.formBuilder.array([])
@@ -70,7 +70,7 @@ export class AgentOverviewComponent {
       this.instructionForm.patchValue({
         instruction: this.overviewInstructionDetailObj.overviewInstructionData.instruction,
         guideline: this.overviewInstructionDetailObj.overviewInstructionData.guideline,
-        responsibilities: this.overviewInstructionDetailObj.overviewInstructionData.responsibility,
+        responsibility: this.overviewInstructionDetailObj.overviewInstructionData.responsibility,
         context: this.overviewInstructionDetailObj.overviewInstructionData.context,
         example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
       });
@@ -144,6 +144,14 @@ export class AgentOverviewComponent {
 
 
   onEditSaveHandler() {
-    this.onEditSave.emit(this.overviewInstructionDetailObj?.overviewInstructionData)
+    // this.onEditSave.emit(this.overviewInstructionDetailObj?.overviewInstructionData)
+
+    const formData = this.instructionForm?.value
+    
+    formData.id = this.overviewInstructionDetail?.overviewInstructionData?.id
+
+    formData.version = this.overviewInstructionDetail?.overviewInstructionData?.version
+
+    this.onEditSave.emit(this.instructionForm?.value)
   }
 }
