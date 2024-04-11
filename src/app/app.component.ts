@@ -181,18 +181,16 @@ export class AppComponent implements OnInit {
   navigateToHome(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.showDockedNavi = false;
+    this.showDockedNavi = true;
     this.isNaviExpanded = false;
-    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
-    localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
+    this.storageService.removeItem(StorageKeys.Product);
     this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
-    this.router.navigate(['/my-products'])
+    this.router.navigate(['/my-products']);
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -289,19 +287,23 @@ export class AppComponent implements OnInit {
     }, 1000);
   }
 
+  closeNavi(): void {
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    this.product = undefined;
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.showDockedNavi = false;
+    localStorage.removeItem('has_insights')
+    localStorage.removeItem('IS_NAVI_OPENED')
+    localStorage.removeItem('app_name')
+    this.isNaviExpanded = false;
+    this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+    this.makeTrustedUrl()
+  }
+
   receiveMessage(event: MessageEvent) {
     if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
     if (event?.data?.message === 'close-event') {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-      this.product = undefined;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-      this.showDockedNavi = false;
-      localStorage.removeItem('has_insights')
-      localStorage.removeItem('IS_NAVI_OPENED')
-      localStorage.removeItem('app_name')
-      this.isNaviExpanded = false;
-      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-      this.makeTrustedUrl()
+      this.closeNavi();
     }
     if (event.data.message === 'triggerCustomEvent') {
       this.showDockedNavi = false;
