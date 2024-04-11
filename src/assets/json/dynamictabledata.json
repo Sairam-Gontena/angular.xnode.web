@@ -350,7 +350,7 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -403,7 +403,7 @@
         "columns": [
           {
             "idx": 1,
-            "field": "idx",
+            "field": "id",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -427,9 +427,9 @@
           },
           {
             "idx": 3,
-            "field": "model_name",
+            "field": "agent_name",
             "filter": false,
-            "header": "Model Linked",
+            "header": "Agent Linked",
             "sortable": true,
             "width": "10rem"
           },
