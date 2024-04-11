@@ -150,7 +150,8 @@ export class DiffViewerComponent implements OnInit {
   ngOnInit(): void {
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {
-      this.utils.saveProductId(getDeepLinkInfoObj.product_id)
+      this.utils.saveProductId(getDeepLinkInfoObj.product_id);
+      this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
     }
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);

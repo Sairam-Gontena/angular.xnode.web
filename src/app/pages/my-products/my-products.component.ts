@@ -250,10 +250,7 @@ export class MyProductsComponent implements OnInit {
           this.currentUser.email,
           ''
         );
-        this.storageService.saveItem(
-          StorageKeys.MetaData,
-          response.data
-        );
+        this.storageService.saveItem(StorageKeys.MetaData, response.data);
         this.templateCard = response.data.map((dataItem: any) => {
           dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
           if (this.currentUser.user_id === dataItem?.user_id)
@@ -262,17 +259,16 @@ export class MyProductsComponent implements OnInit {
           return dataItem;
         });
 
-        this.filteredProducts = sortBy(this.templateCard, [
-          'created_on',
-        ]).reverse();
-
+        this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
         this.filteredProductsLength = this.filteredProducts.length
-          ? this.filteredProducts.length + 1
-          : 0;
+          ? this.filteredProducts.length + 1 : 0;
         this.filteredProductsByEmail = this.templateCard;
         this.activeIndex = 2;
         this.onClickcreatedByYou();
-
+        if (this.authApiService.getDeeplinkURL()) {
+          let urlObj = new URL(this.authApiService.getDeeplinkURL());
+          this.utils.navigateByDeepLink(urlObj);
+        }
       } else if (response?.status !== 200) {
         let user_audit_body = {
           method: 'GET',

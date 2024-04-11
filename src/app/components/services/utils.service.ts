@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { User } from 'src/models/user';
+import { SpecUtilsService } from './spec-utils.service';
+import { Router } from '@angular/router';
+import { AuthApiService } from 'src/app/api/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -147,7 +150,9 @@ export class UtilsService {
   public getMeSummaryObject: Observable<Object> =
     this.summaryObject.asObservable();
 
-  constructor() { }
+  constructor(private specUtilsService: SpecUtilsService,
+    private authApiService: AuthApiService,
+    private router: Router) { }
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
@@ -312,5 +317,65 @@ export class UtilsService {
       userDp = '';
     }
     return userDp;
+  }
+
+  //navigate the deeplink
+  async navigateByDeepLink(urlObj: any) {
+    let hash = urlObj.hash;
+    let [path, queryString] = hash.substr(1).split('?');
+    let params = new URLSearchParams(queryString);
+    let templateId = params.get('template_id');
+    let templateType = params.get('template_type');
+    let productId = params.get('product_id');
+    let versionId = params.get('version_id');
+    let crId = params.get('crId');
+    let entity = params.get('entity');
+    if ((templateId && templateType) || (crId && entity) || (productId && versionId)) {
+      let deepLinkInfo;
+      if (templateId && templateType) {
+        deepLinkInfo = {
+          product_id: productId,
+          template_id: templateId,
+          template_type: templateType,
+          version_id: versionId,
+        };
+      } else if (productId && versionId) {
+        deepLinkInfo = {
+          product_id: productId,
+          version_id: versionId,
+        };
+      }
+      if (crId && entity) {
+        versionId = params.get('versionId');
+        productId = params.get('productId');
+        deepLinkInfo = {
+          product_id: productId,
+          entity: entity,
+          cr_id: crId,
+          version_id: versionId,
+        };
+        this.specUtilsService._openCommentsPanel(true);
+        this.specUtilsService._loadActiveTab({
+          activeIndex: 1,
+          productId: deepLinkInfo.product_id,
+          versionId: deepLinkInfo.version_id,
+        });
+      }
+      await this.setDeepLinkInStorage(deepLinkInfo);
+      this.authApiService.setDeeplinkURL("");
+      this.router.navigateByUrl(path);
+    }
+  }
+
+  //set deep link in storage
+  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 }

@@ -101,27 +101,17 @@ export class VerifyOtpComponent implements OnInit {
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     if (this.otp?.length == 6) {
-      this.authApiService
-        .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
-        .then((response: any) => {
+      this.authApiService.verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp }).then(
+        (response: any) => {
           if (response?.status === 200 && !response?.data?.detail) {
             this.handleResponse(response.data);
           } else {
-            this.utilsService.loadToaster({
-              severity: 'error',
-              summary: 'ERROR',
-              detail: response.data.detail,
-            });
+            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
             this.utilsService.loadSpinner(false);
           }
-        })
-        .catch((error: any) => {
+        }).catch((error: any) => {
           this.utilsService.loadSpinner(false);
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: error?.response?.data?.detail,
-          });
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
           this.auditUtil.postAudit(
             'VERIFY_OTP_' + error?.response?.data?.detail,
             1,
@@ -138,7 +128,7 @@ export class VerifyOtpComponent implements OnInit {
     }
   }
 
-  handleResponse(data: any) {
+  async handleResponse(data: any) {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(data?.accessToken);
     this.storageService.saveItem(StorageKeys.CurrentUser, decodedToken);
@@ -155,21 +145,16 @@ export class VerifyOtpComponent implements OnInit {
         'user-audit'
       );
     } else {
-      this.getAllProducts();
+      await this.getAllProducts();
       this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
     }
-    this.utilsService.loadToaster({
-      severity: 'success',
-      summary: 'SUCCESS',
-      detail: 'OTP verified successfully',
-    });
+    this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'OTP verified successfully' });
   }
+
   //get calls
   getAllProducts(): void {
-    const currentUser: any = this.storageService.getItem(
-      StorageKeys.CurrentUser
-    );
-    this.conversationService.getMetaData({ accountId: currentUser.account_id }).then((response: any) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getMetaData({ accountId: currentUser?.account_id }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
         this.messagingService.sendMessage({
@@ -179,15 +164,10 @@ export class VerifyOtpComponent implements OnInit {
         this.router.navigate(['/my-products']);
         this.utilsService.loadSpinner(false);
       }
-    })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
-        this.utilsService.loadSpinner(false);
-      });
+    }).catch((error: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+      this.utilsService.loadSpinner(false);
+    });
     // this.naviAPiService
     //   .getMetaData(currentUser?.email)
     //   .then((response: any) => {

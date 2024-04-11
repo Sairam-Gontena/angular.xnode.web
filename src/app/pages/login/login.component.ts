@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.authApiService.isResetPasswordInproggress(true);
     this.router.navigate(['/forgot-password', this.loginForm.value.email]);
   }
+
   onClickLogin() {
     this.submitted = true;
     if (this.loginForm.invalid) {
@@ -54,36 +55,21 @@ export class LoginComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     let body = { ...this.loginForm.value };
     this.loginBtn = true;
-    this.authApiService
-      .login(body)
-      .then((response: any) => {
-        if (response?.status === 200 && !response?.data?.detail) {
-          this.utilsService.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: response.data?.Message,
-          });
-          this.utilsService.loadSpinner(false);
-          this.authApiService.isOtpVerifiedInprogress(true);
-          this.loginBtn = false;
-          this.router.navigate(['/verify-otp', body.email]);
-        } else {
-          this.loginBtn = false;
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data?.detail,
-          });
-          this.utilsService.loadSpinner(false);
-        }
-      })
-      .catch((error: any) => {
+    this.authApiService.login(body).then((response: any) => {
+      if (response?.status === 200 && !response?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-      });
+        this.authApiService.isOtpVerifiedInprogress(true);
+        this.loginBtn = false;
+        this.router.navigate(['/verify-otp', body.email]);
+      } else {
+        this.loginBtn = false;
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    }).catch((error: any) => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    });
   }
 }
