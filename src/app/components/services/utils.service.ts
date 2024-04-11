@@ -362,7 +362,6 @@ export class UtilsService {
         });
       }
       await this.setDeepLinkInStorage(deepLinkInfo);
-      this.authApiService.setDeeplinkURL("");
       this.router.navigateByUrl(path);
     }
   }
