@@ -40,4 +40,4 @@
 <xnode-view-summary-popup [visible]="showSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary"
     [conversationID]="conversation_id" (closePopUp)="this.showSummaryPopup = false"></xnode-view-summary-popup>
 <xnode-inactive-timeout-popup *ngIf="showInactiveTimeoutPopup" [visible]="showInactiveTimeoutPopup" [countdown]="inactiveTimeoutCounter"
-(closePopup)="this.showInactiveTimeoutPopup = false;"></xnode-inactive-timeout-popup>
+(closePopup)="this.showInactiveTimeoutPopup = false;" (logout)="this.logout"></xnode-inactive-timeout-popup>

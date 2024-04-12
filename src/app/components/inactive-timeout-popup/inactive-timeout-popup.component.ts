@@ -9,6 +9,7 @@ export class InActiveTimeoutPopupComponent {
   @Input() visible: any;
   @Input() countdown?: number;
   @Output() closePopup = new EventEmitter<boolean>();
+  @Output() logout = new EventEmitter<boolean>();
 
   @HostListener('document:click', ['$event'])
   public closeDialogOnClick(event: any): void {
