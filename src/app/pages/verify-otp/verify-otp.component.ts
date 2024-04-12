@@ -140,10 +140,17 @@ export class VerifyOtpComponent implements OnInit {
 
   handleResponse(data: any) {
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(data?.accessToken);
-    this.storageService.saveItem(StorageKeys.CurrentUser, decodedToken);
+    const decodedUser = helper.decodeToken(data?.accessToken);
+    this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
     this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, data.accessToken);
     this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, data.refreshToken);
+
+    decodedUser.accessToken = data.accessToken;
+    decodedUser.refreshToken = data.refreshToken;
+    this.authApiService.userSubject.next(decodedUser);
+    this.authApiService.setIsLoggedIn(true);
+    this.authApiService.startRefreshTokenTimer();
+
     this.authApiService.isOtpVerifiedInprogress(false);
     if (data?.role_name === 'Xnode Admin') {
       this.authApiService.setUser(true);

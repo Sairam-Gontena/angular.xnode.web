@@ -2,7 +2,7 @@ export const environment = {
     name: 'DEMO',
     production: false,
     apiUrl: 'https://demo-navi-api.azurewebsites.net/',
-    authApiUrl: 'https://demo-xnode-auth-api.azurewebsites.net/',
+    authApiUrl: 'http://127.0.0.1:8009/',
     conversationApiUrl: 'https://demo-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://demo-spec-api.azurewebsites.net/',
     notifyApiUrl: 'https://demo-notify-api.azurewebsites.net/',

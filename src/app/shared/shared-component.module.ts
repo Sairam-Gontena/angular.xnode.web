@@ -77,6 +77,7 @@ import { AgentInstructionComponent } from '../components/agent-hub/create-agent/
 import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
 import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
 import { ShareLinkComponent } from './component/share-link/share-link.component';
+import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -152,7 +153,8 @@ import { ShareLinkComponent } from './component/share-link/share-link.component'
     ImportFilePopupComponent,
     DynamicFormModalComponent,
     XnodeCommonModalComponent,
-    ShareLinkComponent
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -230,7 +232,8 @@ import { ShareLinkComponent } from './component/share-link/share-link.component'
     ImportFilePopupComponent,
     DynamicFormModalComponent,
     XnodeCommonModalComponent,
-    ShareLinkComponent
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent
   ],
 })
 export class SharedComponentModule { }
