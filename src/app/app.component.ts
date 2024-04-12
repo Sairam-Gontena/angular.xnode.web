@@ -82,6 +82,7 @@ export class AppComponent implements OnInit {
   conversatonDetails: any;
   conversationId?: string;
   resource_id: any;
+  componentToShow:string;
 
   constructor(private domSanitizer: DomSanitizer,
     private router: Router,

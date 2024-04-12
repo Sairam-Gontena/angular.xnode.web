@@ -271,25 +271,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     } else {
       detail = 'Comment added successfully';
     }
-    if (this.assignAsaTask || this.activeIndex === 1) {
-      this.specService.getMeSpecLevelTaskList({
-        parentId: this.selectedContent.parentId,
-      });
-      this.specificationUtils.openConversationPanel({
-        openConversationPanel: true,
-        parentTabIndex: 0,
-        childTabIndex: 1,
-      });
-    } else {
-      this.specService.getMeSpecLevelCommentsList({
-        parentId: this.selectedContent.parentId,
-      });
-      this.specificationUtils.openConversationPanel({
-        openConversationPanel: true,
-        parentTabIndex: 0,
-        childTabIndex: 0,
-      });
-    }
+    this.utils.showNaviWithDynamicComponent("Comments");
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
