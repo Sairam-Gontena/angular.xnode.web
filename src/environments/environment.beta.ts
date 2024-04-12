@@ -2,7 +2,7 @@ export const environment = {
     name: 'BETA',
     production: false,
     apiUrl: 'https://beta-navi-api.azurewebsites.net/',
-    authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
+    authApiUrl: 'http://127.0.0.1:8009/',
     conversationApiUrl: 'https://beta-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://beta-spec-api.azurewebsites.net/',
     notifyApiUrl: 'https://beta-notify-api.azurewebsites.net/',
