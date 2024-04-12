@@ -61,7 +61,7 @@ export class AuthApiService extends BaseApiService {
 
   logout() {
     this.http
-      .post<any>(`${environment.authApiUrl}mfa/logout`, {}, { withCredentials: true })
+      .get<any>(`${environment.authApiUrl}mfa/logout?email=${this.userValue?.email}`, { headers: { 'Content-Type': 'application/json'}})
       .subscribe();
     this.stopRefreshTokenTimer();
     this.userSubject.next(null);
@@ -122,7 +122,7 @@ export class AuthApiService extends BaseApiService {
   verifyOtp(body?: any) {
     return this.post('mfa/verifyOTP', body);
   }
-  
+
   resendOtp(body?: any) {
     return this.post('mfa/resendverfication', body);
   }

@@ -196,7 +196,7 @@ export class AppComponent implements OnInit {
 
 
 
-    this.auth.user.subscribe(x => this.user = x);
+    this.authApiService.user.subscribe(x => this.user = x);
 
 
     // sets an idle timeout of 5 seconds, for testing purposes.
@@ -216,6 +216,7 @@ export class AppComponent implements OnInit {
       this.idleState = 'Timed out!';
       this.timedOut = true;
       console.log(this.idleState);
+      this.logout();
       this.router.navigate(['/']);
     });
 
@@ -237,7 +238,7 @@ export class AppComponent implements OnInit {
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
-    this.auth.getIsLoggedIn().subscribe(userLoggedIn => {
+    this.authApiService.getIsLoggedIn().subscribe(userLoggedIn => {
       if (userLoggedIn) {
         idle.watch()
         this.timedOut = false;
@@ -298,12 +299,13 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    this.showInactiveTimeoutPopup=false;
     let rawUrl: string = environment.naviAppUrl + '?logout=true';
     this.iframeUrlLoad(rawUrl);
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
-    this.auth.logout();
+    this.authApiService.logout();
     setTimeout(() => {
       localStorage.clear();
       this.authApiService.setUser(false);
