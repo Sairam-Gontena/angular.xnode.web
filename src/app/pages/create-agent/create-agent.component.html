@@ -71,11 +71,13 @@
 
 <!-- dynamic Table -->
 <ng-template #dynamicTable>
-  <xnode-dynamic-table [inputData]="createAgentModel.tableData" [cols]="createAgentModel.columns"
-    [tableInfo]="createAgentModel.tableInfo" [showColumnFilterOption]="createAgentModel.showColumnFilterOption"
-    [tableRowActionOptions]="createAgentModel.tableRowActionOptions" [paginatorInfo]="createAgentModel.paginatorInfo"
-    [searchFilterOptions]="createAgentModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-    (paginatorChangeEvent)="createAgentModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+  <div class="table-height">
+    <xnode-dynamic-table [inputData]="createAgentModel.tableData" [cols]="createAgentModel.columns"
+      [tableInfo]="createAgentModel.tableInfo" [showColumnFilterOption]="createAgentModel.showColumnFilterOption"
+      [tableRowActionOptions]="createAgentModel.tableRowActionOptions" [paginatorInfo]="createAgentModel.paginatorInfo"
+      [searchFilterOptions]="createAgentModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+      (paginatorChangeEvent)="createAgentModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+  </div>
 </ng-template>
 
 <!-- overview html -->

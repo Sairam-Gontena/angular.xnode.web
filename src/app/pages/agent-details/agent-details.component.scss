@@ -139,7 +139,10 @@
   
   
   // Dynamic Table style Starts
-  
+  .table-height {
+    height: calc(100vh - 45vh);
+    overflow: auto;
+  }
   // Column 3 dots action button
   :host ::ng-deep .p-splitbutton-defaultbutton,
   :host ::ng-deep .p-splitbutton-menubutton {
