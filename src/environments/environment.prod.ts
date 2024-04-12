@@ -2,7 +2,7 @@ export const environment = {
     name: 'PROD',
     production: false,
     apiUrl: 'https://prod-navi-api-in.azurewebsites.net/',
-    authApiUrl: 'http://127.0.0.1:8009/',
+    authApiUrl: 'https://prod-xnode-auth-api.azurewebsites.net/',
     conversationApiUrl: 'https://prod-conversation-api-in.azurewebsites.net/',
     commentsApiUrl: 'https://prod-spec-api-in.azurewebsites.net/',
     notifyApiUrl: 'https://prod-notify-api-in.azurewebsites.net/',
