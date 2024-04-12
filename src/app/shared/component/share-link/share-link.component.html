@@ -1,0 +1,74 @@
+<form [formGroup]="addShareForm">
+    <div class="w-full mb-3 flex align-items-center">
+        <p-autoComplete [appendTo]="'body'" placeholder="Add people, groups, or emails"
+            [suggestions]="sharedLinkDetail.suggestionList" formControlName="reviewersLOne"
+            (completeMethod)="suggestionsList($event, 'L1')" field="name" (click)="$event.stopPropagation()"
+            [multiple]="true" (onSelect)="selectEvent($event)" (onUnselect)="unselectEvent($event)" class="w-full"
+            styleClass="w-full customAutocomplete" inputStyleClass="w-full customAutocompleteInput">
+            <ng-template let-reviewer pTemplate="selectedItem">
+                <div class="flex align-items-center">
+                    <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                        {{ reduceToInitials(reviewer.name) }}
+                    </div>
+                    <span class="ml-2">{{ reviewer.name }}</span>
+                </div>
+            </ng-template>
+        </p-autoComplete>
+
+        <p-dropdown formControlName="selectedInvite" [options]="invities" optionLabel="name" [appendTo]="'body'"
+            (onChange)="onSelectInviteChange($event)">
+            <!-- [(ngModel)]="selectedInvite"-->
+            <ng-template pTemplate="selectedItem">
+                <ng-container *ngIf="addShareForm.get('selectedInvite')?.value">
+                    <ng-container [ngSwitch]="addShareForm.get('selectedInvite')?.value">
+                        <div class="flex align-items-center gap-2">
+                            <ng-container *ngSwitchCase="'owner'">
+                                <img src="../../../assets/edit.png" alt="link" class="text-sm" />
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'contributor'">
+                                <img src="../assets/edit-icon.svg" alt="link" class="text-sm" />
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'reader'">
+                                <img src="../assets/publish.svg" alt="link" class="text-sm" />
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-template>
+
+            <ng-template let-invite pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>
+                        <img *ngIf="invite?.code === 'owner'" src="../assets/lock.svg" alt="copy" class="text-sm">
+                        <img *ngIf="invite?.code === 'contributor'" src="../assets/Link.svg" alt="copy" class="text-sm">
+                        <img *ngIf="invite?.code === 'reader'" src="../assets/publish.svg" alt="copy" class="text-sm">
+                    </div>
+                    <div>
+                        <div class="">
+                            {{ invite.name }}
+                            <ng-container
+                                *ngIf="addShareForm.get('selectedInvite')?.value && addShareForm.get('selectedInvite')?.value?.code === invite.code">
+                                <i class="pi pi-check check-mark ml-4"></i>
+                            </ng-container>
+                        </div>
+                        <ng-container *ngIf="invite?.code">
+                            <div class="text-xs font-normal">{{invite.caption}}</div>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+    </div>
+    <div class="w-full"
+        *ngIf="addShareForm.get('selectedValues')?.value && addShareForm.get('selectedValues')?.value.length">
+        <p-chips styleClass="w-full customChips" formControlName="selectedValues" (onRemove)="chipRemove($event)">
+            <ng-template let-item pTemplate="item">{{ item.name}}</ng-template>
+        </p-chips>
+    </div>
+    <ng-container *ngIf="sharedLinkDetail.snackMessage.enable">
+        <div class="w-full mt-2">
+            <p-messages [(value)]="sharedLinkDetail.snackMessage.message" styleClass="w-full h-full customMessages"
+                [hideTransitionOptions]="'500ms'" [closable]="sharedLinkDetail.snackMessage.closable"></p-messages>
+        </div>
+    </ng-container>
+</form>

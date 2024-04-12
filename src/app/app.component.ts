@@ -20,6 +20,7 @@ import { MessagingService } from './components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from './api/conversation-hub.service';
+import { AuditutilsService } from './api/auditutils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -54,6 +55,8 @@ export class AppComponent implements OnInit {
   inXpilotComp: boolean = false;
   product: any;
   newWithNavi: boolean = false;
+  componentToShow?: any;
+  showNaviSpinner: boolean = true;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -75,44 +78,36 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversation_id: any;
-  summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
   conversatonDetails: any;
   conversationId?: string;
   resource_id: any;
   componentToShow:string;
 
-  constructor(
-    private domSanitizer: DomSanitizer,
+  constructor(private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
-    public auth: AuthApiService,
+    public authApiService: AuthApiService,
     private notifyApi: NotifyApiService,
     private themeService: ThemeService,
-    private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService,
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private messagingService: MessagingService,
     private conversationHubService: ConversationHubService,
+    private auditService: AuditutilsService
   ) {
-    this.componentToShow = 'Chat';
-    this.utilsService.invokeNaviWithDynamicComponent.subscribe((componentToShow:any)=>{
-      this.componentToShow = componentToShow;
-      this.openNavi()
-    })
-    let winUrl = window.location.href;
+    let winUrl = this.authApiService.getDeeplinkURL() ? this.authApiService.getDeeplinkURL() : window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (
-      winUrl.includes('template_id') ||
-      winUrl.includes('template_type') ||
-      winUrl.includes('crId') ||
-      winUrl.includes('versionId')
-    ) {
+    if (!this.authApiService.isUserLoggedIn()) {
+      this.authApiService.setDeeplinkURL(winUrl);
+    }
+    if (winUrl.includes('template_id') || winUrl.includes('template_type') ||
+      winUrl.includes('crId') || winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id')) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     } else {
@@ -127,7 +122,6 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-
     this.specificationUtils._openConversationPanel.subscribe((event: any) => {
       if (event) {
         this.showDockedNavi = false;
@@ -152,17 +146,20 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        if (msg.msgData.isNaviExpanded) {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
-          this.resource_id = msg.msgData.resource_id
-          this.openNavi()
-        } else {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
-          this.openNavi()
+        this.componentToShow = msg.msgData?.componentToShow;
+        if (msg.msgData?.componentToShow === 'Resources') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
+          this.resource_id = msg.msgData.resource_id;
         }
+        if (msg.msgData?.componentToShow === 'Chat' && msg.msgData.component !== 'my-products') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
+          this.conversationId = msg.msgData?.conversation_id;
+        }
+        this.isNaviExpanded = msg.msgData?.isNaviExpanded;
+        this.makeTrustedUrl();
       }
-    })
-    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
@@ -170,11 +167,11 @@ export class AppComponent implements OnInit {
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
+        this.resource_id = msg.msgData.resource_id
+        this.conversationId = msg.msgData.conversation_id;
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
-    })
-    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         this.showDockedNavi = false;
@@ -182,40 +179,21 @@ export class AppComponent implements OnInit {
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
     })
-    this.utilsService.getMeSummaryObject.subscribe((data: any) => {
-      this.conversatonDetails = data;
-      if (data?.summary && Object.keys(data?.summary).length > 0) {
-        this.summaryObject = data;
-        let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
-        if (isNaviOpened) {
-          window.frames[0].postMessage({
-            type: 'Navi_SUMMARY',
-            data: data,
-            productId: data.productId,
-          }, this.targetUrl);
-        } else {
-          this.isNaviExpanded = true;
-          this.openNavi()
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-        }
-      }
-    })
   }
 
   navigateToHome(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.showDockedNavi = false;
+    this.showDockedNavi = true;
     this.isNaviExpanded = false;
-    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
-    localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
+    this.storageService.removeItem(StorageKeys.Product);
+    this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
-    this.router.navigate(['/my-products'])
+    this.router.navigate(['/my-products']);
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -223,57 +201,7 @@ export class AppComponent implements OnInit {
     let hash = urlObj.hash;
     let [path, queryString] = hash.substr(1).split('?');
     let params = new URLSearchParams(queryString);
-    this.navigateByDeepLink(params);
-  }
-
-  async navigateByDeepLink(params: any) {
-    let templateId = params.get('template_id');
-    let templateType = params.get('template_type');
-    let productId = params.get('product_id');
-    let versionId = params.get('version_id');
-
-    let crId = params.get('crId');
-    let entity = params.get('entity');
-    if ((templateId && templateType) || (crId && entity)) {
-      let deepLinkInfo;
-      if (templateId && templateType) {
-        deepLinkInfo = {
-          product_id: productId,
-          template_id: templateId,
-          template_type: templateType,
-          version_id: versionId,
-        };
-      }
-      if (crId && entity) {
-        versionId = params.get('versionId');
-        productId = params.get('productId');
-        deepLinkInfo = {
-          product_id: productId,
-          entity: entity,
-          cr_id: crId,
-          version_id: versionId,
-        };
-        this.specUtils._openCommentsPanel(true);
-        this.specUtils._loadActiveTab({
-          activeIndex: 1,
-          productId: deepLinkInfo.product_id,
-          versionId: deepLinkInfo.version_id,
-        });
-      }
-      await this.setDeepLinkInStorage(deepLinkInfo);
-      this.router.navigateByUrl('specification');
-    }
-  }
-
-  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    this.utilsService.navigateByDeepLink(urlObj);
   }
 
   async changeTheme(event: any) {
@@ -293,19 +221,38 @@ export class AppComponent implements OnInit {
     this.handleTheme();
     this.makeTrustedUrl();
   }
+
+  logout(): void {
+    let rawUrl: string =
+      environment.naviAppUrl + '?logout=true';
+    this.iframeUrlLoad(rawUrl);
+    this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+    this.utilsService.showProductStatusPopup(false);
+    this.utilsService.showLimitReachedPopup(false);
+    setTimeout(() => {
+      localStorage.clear();
+      this.authApiService.setUser(false);
+      this.router.navigate(['/']);
+    }, 1000);
+  }
+
+  closeNavi(): void {
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    this.product = undefined;
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.showDockedNavi = false;
+    localStorage.removeItem('has_insights')
+    localStorage.removeItem('IS_NAVI_OPENED')
+    localStorage.removeItem('app_name')
+    this.isNaviExpanded = false;
+    this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+    this.makeTrustedUrl()
+  }
+
   receiveMessage(event: MessageEvent) {
     if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
     if (event?.data?.message === 'close-event') {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-      this.product = undefined;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-      this.showDockedNavi = false;
-      localStorage.removeItem('has_insights')
-      localStorage.removeItem('IS_NAVI_OPENED')
-      localStorage.removeItem('app_name')
-      this.isNaviExpanded = false;
-      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-      this.makeTrustedUrl()
+      this.closeNavi();
     }
     if (event.data.message === 'triggerCustomEvent') {
       this.showDockedNavi = false;
@@ -430,6 +377,7 @@ export class AppComponent implements OnInit {
       this.preparingData();
       this.handleBotIcon();
       this.openNavi();
+      this.getAllUsers();
     } else {
       if (!window.location.hash.includes('#/reset-password?email')) {
         this.router.navigate(['/']);
@@ -450,7 +398,6 @@ export class AppComponent implements OnInit {
         this.showSummaryPopup = true;
       }
     });
-    this.getAllUsers();
   }
 
   getAllProductsInfo(key: string) {
@@ -463,7 +410,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
   redirectToPreviousUrl(): void {
     this.router.events.subscribe((event: any) => {
@@ -674,6 +620,7 @@ export class AppComponent implements OnInit {
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
     }
     if (this.newWithNavi) {
+      this.componentToShow = 'Chat';
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
     if (this.conversatonDetails) {
@@ -698,21 +645,7 @@ export class AppComponent implements OnInit {
         '&product=' +
         JSON.stringify(this.product) +
         '&new_with_navi=' +
-        false + '&componentToShow='+this.componentToShow;
-    } else if (this.newWithNavi && !this.summaryObject) {
-      rawUrl = rawUrl + '&componentToShow=Chat';
-    } else {
-      let addUrl = '';
-      if (this.isFileImported) {
-        addUrl = '&componentToShow=Conversations';
-      } else {
-        if (!this.summaryObject)
-          addUrl = '&componentToShow=Tasks';
-      }
-      rawUrl = rawUrl + addUrl;
-    }
-    if (this.summaryObject?.conversationId) {
-      rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
+        false + '&componentToShow=Chat';
     }
     if (this.resource_id) {
       rawUrl = rawUrl + '&resource_id=' + this.resource_id;
@@ -723,11 +656,25 @@ export class AppComponent implements OnInit {
       }
       this.resource_id = undefined
     }
-
-
+    if (this.conversationId) {
+      if (rawUrl.includes("conversationId")) {
+        rawUrl = rawUrl.replace(/conversationId=[^&]*/, "conversationId=" + this.conversationId);
+      } else {
+        rawUrl += "&conversationId=" + this.conversationId;
+      }
+      this.conversationId = undefined
+    }
+    if (this.componentToShow) {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
+        this.componentToShow = undefined;
+      } else {
+        rawUrl += "&componentToShow=" + this.componentToShow;
+        this.componentToShow = undefined;
+      }
+    }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
-    this.summaryObject = '';
   }
 
   iframeUrlLoad(rawUrl: any) {
@@ -777,6 +724,18 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
+    this.showNaviSpinner = true;
+    setTimeout(() => {
+      this.showNaviSpinner = false;
+      this.prepareDataOnOpeningNavi()
+    }, 1000);
+  }
+
+  prepareDataOnOpeningNavi(): void {
+    this.componentToShow = 'Tasks';
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    if (product)
+      this.componentToShow = 'Chat';
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
@@ -788,7 +747,7 @@ export class AppComponent implements OnInit {
       let params = {
         account_id: accountId
       }
-      this.auth.getUsersByAccountId(params).then((response: any) => {
+      this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         this.usersList = response.data;
       })
@@ -869,8 +828,8 @@ export class AppComponent implements OnInit {
   }
   getConversation(): void {
     this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
-      if (res && res.status === 200) {
-        this.convSummary = res.data[0].content.conversation_summary;
+      if (res?.data && res.status === 200) {
+        this.convSummary = res.data?.data[0].content.conversation_summary;
         this.showSummaryPopup = true;
       } else {
         this.utilsService.loadToaster({
@@ -880,7 +839,7 @@ export class AppComponent implements OnInit {
         });
       }
       this.utilsService.loadSpinner(false);
-    }).catch((err => {
+    }).catch(((err: any) => {
       this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({
         severity: 'error',
@@ -890,5 +849,4 @@ export class AppComponent implements OnInit {
     }))
     this.utilsService.loadSpinner(false);
   }
-
 }

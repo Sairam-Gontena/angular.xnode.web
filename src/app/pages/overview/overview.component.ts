@@ -36,7 +36,7 @@ export class OverViewComponent {
   }
 
   populateOverview() {
-    if (this.product.overview.length) {
+    if (this.product?.overview?.length) {
       this.product.overview.forEach((element: any) => {
         if (element.title == 'Title') {
           this.overview.title = element;

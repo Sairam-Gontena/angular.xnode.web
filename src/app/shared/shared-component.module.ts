@@ -70,6 +70,13 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
+import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
+import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
+import { AgentOverviewComponent } from '../components/agent-hub/create-agent/agent-overview/agent-overview.component';
+import { AgentInstructionComponent } from '../components/agent-hub/create-agent/agent-instruction/agent-instruction.component';
+import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
+import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
+import { ShareLinkComponent } from './component/share-link/share-link.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -137,7 +144,15 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     SpecConversationComponent,
     ConversationActionsComponent,
     SpecChildConversationComponent,
-    ImportFilePopupComponent
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -207,7 +222,15 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     CreateNewCrVersionComponent,
     SpecConversationComponent,
     SpecChildConversationComponent,
-    ImportFilePopupComponent
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent
   ],
 })
 export class SharedComponentModule { }

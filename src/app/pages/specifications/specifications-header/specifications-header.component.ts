@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -14,6 +7,10 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { HttpParams } from '@angular/common/http';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -36,8 +33,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() isSideMenuOpened?: any;
   @Input() conversationPanelInfo: any;
   isDockedNaviEnabled?: boolean = false;
-
-
   currentUser: any;
   metaDeta: any;
   product: any;
@@ -54,56 +49,67 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Exit', value: null },
   ];
   specData: any;
-  invities = [
-    { name: 'Invite only', code: 'Invite' },
-    { name: 'Anyone with link at App’s Spec', code: 'Anyone' },
-    { name: 'Everyone at FinBuddy workspace', code: 'Everyone' }
-  ];
-  selectedInvite: any;
   value: any;
-  filteredReveiwers: any = [];
   references: any;
-  userList: any;
+  userList: Array<{}> = new Array();
   suggestions: any;
   selectedItem: any;
   addShareForm: FormGroup;
   // reviewersList: string | null;
+  checkDeepLinkCopied: boolean = false;
+  enableCommonModal: boolean = false;
+  commonModalDetail: any = {
+    visible: false,
+    modal: true,
+    modalClass: "",
+    responsive: true,
+    style: { width: "40vw", "max-height": "70vh" }
+  }
+  sharedLinkDetail: any = {
+    getUserList: new Array(),
+    selectedUserList: new Array(),
+    showSelectedUserChip: new Array(),
+    removeUserChip: "",
+    removeUserAccess: false,
+    iniviteType: "",
+    currentSpecData: "",
+    inviteList: [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
+    { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
+    { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }],
+    snackMessage: {
+      enable: false,
+      closable: false,
+      message: new Array()
+    }
+  }
 
-  constructor(
-    private utils: UtilsService,
+  constructor(private utilsService: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private specService: SpecificationsService,
     private SpecificationUtils: SpecificationUtilsService,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-  ) {
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private specApiService: SpecApiService) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
         this.product = this.storageService.getItem(StorageKeys.Product);
-        this.selectedVersion = this.storageService.getItem(
-          StorageKeys.SpecVersion
-        );
+        this.selectedVersion = this.storageService.getItem(StorageKeys.SpecVersion);
       }
     });
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data){
+    this.utilsService.getMeProductId.subscribe((data) => {
+      if (data) {
         this.product = this.storageService.getItem(StorageKeys.Product);
       }
     })
     this.addShareForm = this.fb.group({
-      reviewersLOne: [[], [Validators.required]],
       files: [[]],
     });
     this.references = [];
-
-    this.addShareForm.value.reviewersLOne.forEach((item: any) => {
-      this.references.push({
-        entity_type: 'User',
-        entity_id: item.user_id,
-      });
-    });
   }
 
   ngOnInit(): void {
@@ -112,11 +118,8 @@ export class SpecificationsHeaderComponent implements OnInit {
       if (this.onDiffValue.onDiff) this.diffView = true;
       if (this.onDiffValue.viewType) this.viewType = this.onDiffValue.viewType;
     }
-    this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
-    this.userList.forEach((element: any) => {
-      element.name = element.first_name + ' ' + element.last_name;
-    });
-    this.utils.openDockedNavi.subscribe((res:boolean) => {
+    this.getUserListExceptCurrent(); //get userlist except current user
+    this.utilsService.openDockedNavi.subscribe((res: boolean) => {
       this.isDockedNaviEnabled = res;
     })
   }
@@ -130,6 +133,20 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
     if (changes['selectedVersion']?.currentValue) {
       this.selectedVersion = changes['selectedVersion'].currentValue;
+    }
+  }
+
+  //get userlist except current user
+  getUserListExceptCurrent() {
+    let userList: any = this.localStorageService.getItem(StorageKeys.USERLIST);
+    if (userList && userList.length) {
+      userList.forEach((element: any) => {
+        if (element.user_id !== this.currentUser.user_id) {
+          element.active = false;
+          element.name = element.first_name + ' ' + element.last_name;
+          this.userList.push(element);
+        }
+      });
     }
   }
 
@@ -152,65 +169,45 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   getDeepLinkDetails(val: any) {
-    this.getAllProductsInfo('meta_data')
-      .then((result: any) => {
-        if (result) {
-          let products = JSON.parse(result);
-          let product = products.find(
-            (x: any) => x.id === val.product_id || x.id === val.productId
-          );
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.product = product;
-          let deeplinkInfo = localStorage.getItem('deep_link_info');
-          let version_id;
-          if (deeplinkInfo) {
-            let deeplinkdata = JSON.parse(deeplinkInfo);
-            version_id = deeplinkdata.version_id;
-          }
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-          this.specUtils._updatedSelectedProduct(true);
-          localStorage.removeItem('deep_link_info');
-        } else {
-          console.log('not able to fetch product details');
+    this.getAllProductsInfo('meta_data').then((result: any) => {
+      if (result) {
+        let products = JSON.parse(result);
+        let product = products.find(
+          (x: any) => x.id === val.product_id || x.id === val.productId
+        );
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('product', JSON.stringify(product));
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        this.product = product;
+        let deeplinkInfo = localStorage.getItem('deep_link_info');
+        let version_id;
+        if (deeplinkInfo) {
+          let deeplinkdata = JSON.parse(deeplinkInfo);
+          version_id = deeplinkdata.version_id;
         }
-      })
-      .catch((error) => {
-        console.error('Error fetching data from localStorage:', error);
-      });
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._tabToActive(val.template_type);
+        this.specUtils._updatedSelectedProduct(true);
+        localStorage.removeItem('deep_link_info');
+      } else {
+        console.log('not able to fetch product details');
+      }
+    }).catch((error) => {
+      console.error('Error fetching data from localStorage:', error);
+    });
   }
 
   toggleSideMenu() {
     this.isMeneOpened.emit(true);
   }
-  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
-    let filtered: any[] = [];
-    let query = event.query;
-    const selectedReviewers = this.addShareForm.value.reviewersLOne.map(
-      (reviewer: any) => reviewer.name.toLowerCase()
-    );
-    filtered = this.userList.filter(
-      (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
-        !selectedReviewers.includes(reviewer.name.toLowerCase())
-    );
-    this.filteredReveiwers = filtered;
-  }
+
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(
       (item) => event.query + '-' + item
     );
   }
 
-  reduceToInitials(fullName: string): string {
-    const nameParts = fullName.split(' ');
-    const initials = nameParts.map((part) => part.charAt(0));
-    const reducedName = initials.join('').toUpperCase();
-    return reducedName;
-  }
   askConfirmationOnClickGenerate() {
     if (this.product?.id) {
       this.generateSpec.emit();
@@ -227,7 +224,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.disableDockedNavi();
+    this.utilsService.disableDockedNavi();
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
@@ -246,7 +243,7 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeProduct(obj: any): void {
     this.showSpecGenaretePopup = false;
-    this.utils.loadSpinner(true);
+    this.utilsService.loadSpinner(true);
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
     this.specService.getMeCrList({ productId: product?.id });
     if (product) {
@@ -283,7 +280,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   onChangeVersion(event: any): void {
-    this.utils.loadSpinner(true);
+    this.utilsService.loadSpinner(true);
     this.versions.forEach((element: any) => {
       if (element.id === event.value.value) {
         this.storageService.saveItem(StorageKeys.SpecVersion, element);
@@ -340,4 +337,168 @@ export class SpecificationsHeaderComponent implements OnInit {
       viewType: this.viewType,
     });
   }
+
+  //get deep link
+  getDeeplinkURL() {
+    let url: string = window.location.href + "?";
+    let params: any = {
+      product_id: this.selectedVersion?.productId,
+      version_id: this.selectedVersion?.id
+    };
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    return url = url + httpParams;
+  }
+
+  //copy the link
+  copyLink() {
+    this.checkDeepLinkCopied = true;
+    let inputText = document.createElement('input');
+    inputText.style.position = 'fixed';
+    inputText.style.left = '0';
+    inputText.style.top = '0';
+    inputText.style.opacity = '0';
+    inputText.value = this.getDeeplinkURL();
+    document.body.appendChild(inputText);
+    inputText.focus();
+    inputText.select();
+    document.execCommand('copy');
+    document.body.removeChild(inputText);
+  }
+
+  //make shared link detail
+  makeSharedLinkDetail() {
+    this.sharedLinkDetail.selectedUserList = new Array();
+    this.sharedLinkDetail.showSelectedUserChip = new Array();
+    if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
+      this.sharedLinkDetail.getUserList = this.userList;
+      this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
+        if (element.userId !== this.currentUser?.user_id) {
+          let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
+          if (element.active === undefined || element.active === true) {
+            getUser.active = true;
+            this.sharedLinkDetail.selectedUserList.push(getUser);
+            this.sharedLinkDetail.showSelectedUserChip.push(getUser);
+            this.sharedLinkDetail.getUserList = this.sharedLinkDetail.getUserList?.filter((item: any) => item.user_id !== element.userId);
+          } else {
+            this.sharedLinkDetail.showSelectedUserChip = this.sharedLinkDetail.showSelectedUserChip?.filter((item: any) => item.user_id !== element.userId);
+          }
+        }
+      });
+    }
+    if (this.sharedLinkDetail.snackMessage.enable && !this.sharedLinkDetail.removeUserAccess) {
+      this.sharedLinkDetail.snackMessage.closable = true;
+      this.sharedLinkDetail.snackMessage.message.push({ severity: 'success', summary: '', detail: "Invited Successfully." });
+      setTimeout(() => {
+        this.sharedLinkDetail.snackMessage.closable = false;
+        this.sharedLinkDetail.snackMessage.message = new Array();
+        this.sharedLinkDetail.snackMessage.enable = false;
+      }, 2000);
+    }
+    this.sharedLinkDetail = Object.assign({}, this.sharedLinkDetail);
+  }
+
+  //make users list in payload
+  makePayloadUsers(userArr: any, deepLink: string) {
+    if (!this.sharedLinkDetail.removeUserAccess && this.sharedLinkDetail.selectedUserList && this.sharedLinkDetail.selectedUserList.length) {
+      this.sharedLinkDetail.selectedUserList.forEach((element: any) => {
+        userArr.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: deepLink });
+      });
+    }
+    if (this.sharedLinkDetail.removeUserAccess) {
+      this.sharedLinkDetail.showSelectedUserChip.forEach((element: any) => {
+        if (element.user_id !== this.sharedLinkDetail.removeUserChip.user_id) {
+          userArr.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: deepLink });
+        }
+      });
+      this.sharedLinkDetail.showSelectedUserChip = this.sharedLinkDetail.showSelectedUserChip.filter((item: any) => item.user_id !== this.sharedLinkDetail.removeUserChip.user_id);
+    }
+    return userArr;
+  }
+
+  //invite the user
+  inviteRemoveUser() {
+    let paramPayload: any = {
+      param: { id: this.sharedLinkDetail.currentSpecData.id },
+      payload: { users: new Array() }
+    },
+      getDeepLink = this.getDeeplinkURL();
+    paramPayload.payload.users.push({ userId: this.currentUser?.user_id, role: "owner" });
+    paramPayload.payload.users = this.makePayloadUsers(paramPayload.payload.users, getDeepLink);
+    this.utilsService.loadSpinner(true);
+    this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
+      if (response && response.status === 200) {
+        this.sharedLinkDetail.currentSpecData = response.data;
+        this.sharedLinkDetail.snackMessage.enable = true;
+        this.makeSharedLinkDetail();
+        if (this.sharedLinkDetail.removeUserAccess) {
+          this.sharedLinkDetail.removeUserAccess = false;
+        }
+      }
+      if (response.data?.common?.message) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.common?.message });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch((error) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+      this.utilsService.loadSpinner(false);
+    });
+  }
+
+  //share the event
+  shareEvent() {
+    this.enableCommonModal = true;
+    this.commonModalDetail.visible = true;
+    if (!this.sharedLinkDetail.currentSpecData && this.specData && this.specData.length) {
+      this.sharedLinkDetail.currentSpecData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
+    }
+    this.makeSharedLinkDetail();
+  }
+
+  //filtered suggestion list
+  filteredReveiwer(eventData: any) {
+    let filtered: any[] = [];
+    let query = eventData.query;
+    const selectedReviewers = eventData?.data.map((reviewer: any) => reviewer.name.toLowerCase());
+    filtered = this.sharedLinkDetail.getUserList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase()));
+    this.sharedLinkDetail.suggestionList = filtered && filtered.length ? filtered : '';
+  }
+
+  //shared link event
+  sharedLinkEvent(event: any) {
+    if (event && event.eventType) {
+      switch (event.eventType) {
+        case "select":
+          let checkUserExist = this.sharedLinkDetail.selectedUserList.find((item: any) => item.user_id === event.data.user_id);
+          if (!checkUserExist) {
+            this.sharedLinkDetail.selectedUserList.push(event.data);
+          }
+          break;
+        case "unselect":
+          this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
+          break;
+        case "inviteType":
+          this.sharedLinkDetail.iniviteType = event.data;
+          break;
+        case "chipremove":
+          this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
+          this.sharedLinkDetail.removeUserChip = event.data;
+          this.sharedLinkDetail.removeUserAccess = true;
+          this.inviteRemoveUser();
+          break;
+        case "autocomplete":
+          let data: any = { query: event.query, data: event.data };
+          this.filteredReveiwer(data);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
 }

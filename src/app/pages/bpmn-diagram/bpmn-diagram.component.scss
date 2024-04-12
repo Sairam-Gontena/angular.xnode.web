@@ -123,17 +123,21 @@ img.highlighted {
 }
 
 :host ::ng-deep .p-panel.p-panel-toggleable .p-panel-header{
-     background-color: transparent;
      border: 0px;
 }
+
+:host ::ng-deep .p-panel.p-panel-toggleable {
+     margin-bottom: 10px;
+}
+
+:host ::ng-deep.bpmn-panel {
+     width: 32rem !important;
+}
 :host ::ng-deep .p-panel .p-panel-content{
-     background-color: transparent;
      border: 0px;
 }
 :host ::ng-deep .p-tabview .p-tabview-panels{
-     background-color: transparent;
      border: 0px;
-     // height: 100%;
 }
 :host ::ng-deep .p-sidebar .p-sidebar-footer{
      background-color: transparent;
@@ -149,4 +153,6 @@ img.highlighted {
 :host ::ng-deep .djs-context-pad .entry{
      background-color: var(--breadcrumbs-item-color);
 }
-
+.title-banner {
+  background: #343541;
+}

@@ -178,7 +178,7 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
     if (currentUser) {
       body['isConversation'] = true;
-      body['conversation_id'] = this.conversation_id;
+      body['conversationId'] = this.conversation_id;
       body['owners'] = [currentUser.user_id];
       body['contributors'] = [currentUser.user_id];
       body['fileStoreId'] = body.storageId;

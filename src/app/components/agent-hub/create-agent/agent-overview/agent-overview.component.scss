@@ -1,0 +1,28 @@
+/* Set the width and color of the scrollbar */
+::-webkit-scrollbar {
+    width: 10px; /* Set the width of the scrollbar */
+  }
+  
+  /* Set the background color of the scrollbar track */
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  /* Customize the appearance of the scrollbar thumb */
+  ::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+    height: 10px; 
+  }
+
+
+.user-input-common {
+    background-color: var(--charcoal-grey);
+    border: 0;
+}
+
+
+.user-input {
+    height: 4em;
+    min-height: 3em;
+}
