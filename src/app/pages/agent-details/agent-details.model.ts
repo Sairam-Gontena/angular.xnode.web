@@ -268,7 +268,7 @@ export class AgentDetailsModel {
     newItem.splice(indexToDelete);
     this.breadCrumbsAction.isBreadCrumbActive = false;
 
-    if(event?.item?.path) {
+    if (event?.item?.path) {
       this.router.navigate([event.item.path]);
     }
 
@@ -358,11 +358,21 @@ export class AgentDetailsModel {
 
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
-    let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
-    let urlParam = this.makeTableParamObj(paginatorInfo);
-    this.changeURL(event.index, urlParam);
-    this.getAgentDetailByCategory(urlParam);
-    this.updateHeaderOption();
+    if (this.activeIndex > 1) {
+      /**
+       * Fetch result when activeIndex is > 1
+       */
+      let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
+      let urlParam = this.makeTableParamObj(paginatorInfo);
+      this.changeURL(event.index, urlParam);
+      this.getAgentDetailByCategory(urlParam);
+      this.updateHeaderOption();
+
+    } else {
+      /**
+       * Show agent overview/instruction
+       */
+    }
   }
 
   updateHeaderOption() {
@@ -386,21 +396,21 @@ export class AgentDetailsModel {
   onEditSaveHandler(formData: any) {
     const activeTab = this.tabItems[this.activeIndex].identifier
 
-    if(this.isFormEditable) {
+    if (this.isFormEditable) {
       let urlParam = {
         url: '',
         data: {}
       }
-  
-      if(activeTab == agentName.prompt) {
+
+      if (activeTab == agentName.prompt) {
         const id = formData?.id
 
         delete formData?.id
         urlParam.url = `agent/update_prompt/${id}/${formData.version}`
         urlParam.data = formData
       }
-  
-  
+
+
       this.agentHubService.updateData(urlParam).subscribe({
         next: (response: any) => {
           console.log("responseData", response)
