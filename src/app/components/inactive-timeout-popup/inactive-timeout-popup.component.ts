@@ -11,12 +11,12 @@ export class InActiveTimeoutPopupComponent {
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() logout = new EventEmitter<boolean>();
 
-  @HostListener('document:click', ['$event'])
-  public closeDialogOnClick(event: any): void {
-    if (this.visible) {
-      if (!event.target.closest('p-dialog')) {
-        this.closePopup.emit(true);
-      }
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // public closeDialogOnClick(event: any): void {
+  //   if (this.visible) {
+  //     if (!event.target.closest('p-dialog')) {
+  //       this.closePopup.emit(true);
+  //     }
+  //   }
+  // }
 }

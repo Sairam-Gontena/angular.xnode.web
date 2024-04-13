@@ -247,6 +247,15 @@ export class AppComponent implements OnInit {
       }
     })
 
+    if(this.currentUser) {
+      this.currentUser.accessToken=this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      this.currentUser.refreshToken=this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
+      this.authApiService.userSubject.next(this.currentUser)
+      this.authApiService.setIsLoggedIn(true)
+      this.authApiService.startRefreshTokenTimer();
+    }
+
+
   }
 
   reset() {

@@ -209,8 +209,7 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.authApiService
-      .get('/user/get_create_app_limit/' + currentUser?.email)
+    this.authApiService.get('user/get_create_app_limit/' + currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.restriction_max_value = response.data[0].restriction_max_value;

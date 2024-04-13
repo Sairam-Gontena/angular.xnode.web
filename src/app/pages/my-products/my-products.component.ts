@@ -367,8 +367,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeCreateAppLimit(): void {
-    this.authApiService
-      .get('/user/get_create_app_limit/' + this.currentUser.email)
+    this.authApiService.get('user/get_create_app_limit/' + this.currentUser.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(

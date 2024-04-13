@@ -21,6 +21,7 @@ import { AuthApiService } from './api/auth.service';
 import { appInitializer } from './utils/app.initializer';
 import { JwtInterceptor } from './utils/jwt.interceptor';
 import { ErrorInterceptor } from './utils/error.interceptor';
+import { LocalStorageService } from './components/services/local-storage.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,7 +53,7 @@ import { ErrorInterceptor } from './utils/error.interceptor';
     }),
   ],
   providers: [RefreshListService, DatePipe,
-    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthApiService] },
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [LocalStorageService, AuthApiService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent],

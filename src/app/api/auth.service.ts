@@ -102,9 +102,11 @@ export class AuthApiService extends BaseApiService {
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
-    this.refreshTokenTimeout = setTimeout(() => {
-      console.log('called timeout')
-      this.refreshToken().subscribe()},timeout);
+    if(this.userValue?.email) {
+      this.refreshTokenTimeout = setTimeout(() => {
+        console.log('called timeout')
+        this.refreshToken().subscribe()},timeout);
+      }
   }
 
   private stopRefreshTokenTimer() {
