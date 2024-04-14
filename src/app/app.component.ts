@@ -175,6 +175,7 @@ export class AppComponent implements OnInit {
         }
         this.isNaviExpanded = msg.msgData?.isNaviExpanded;
         this.makeTrustedUrl();
+        this.showNaviSpinner = false;
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true

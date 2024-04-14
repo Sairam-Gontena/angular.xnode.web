@@ -6,7 +6,6 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
@@ -31,7 +30,6 @@ export class VerifyOtpComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private authApiService: AuthApiService,
     private storageService: LocalStorageService,
-    private naviAPiService: NaviApiService,
     private messagingService: MessagingService,
     private conversationService: ConversationHubService
   ) { }
@@ -175,28 +173,6 @@ export class VerifyOtpComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       this.utilsService.loadSpinner(false);
     });
-    // this.naviAPiService
-    //   .getMetaData(currentUser?.email)
-    //   .then((response: any) => {
-    //     if (response?.status === 200) {
-    //       this.authApiService.setUser(true);
-    //       if (response?.data?.data.length > 0) {
-    //         this.router.navigate(['/my-products']);
-    //       } else {
-    //         this.router.navigate(['/x-pilot']);
-    //         this.getMeCreateAppLimit();
-    //       }
-    //       this.utilsService.loadSpinner(false);
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     this.utilsService.loadToaster({
-    //       severity: 'error',
-    //       summary: '',
-    //       detail: error,
-    //     });
-    //     this.utilsService.loadSpinner(false);
-    //   });
   }
 
   onClickLogout(): void {
