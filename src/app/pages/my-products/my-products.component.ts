@@ -263,7 +263,7 @@ export class MyProductsComponent implements OnInit {
         this.filteredProductsLength = this.filteredProducts.length
           ? this.filteredProducts.length + 1 : 0;
         this.filteredProductsByEmail = this.templateCard;
-        this.activeIndex = 2;
+        this.activeIndex = 1;
         this.onClickcreatedByYou();
         if (this.authApiService.getDeeplinkURL()) {
           let urlObj = new URL(this.authApiService.getDeeplinkURL());

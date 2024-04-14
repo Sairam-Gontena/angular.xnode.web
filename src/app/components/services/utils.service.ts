@@ -318,7 +318,13 @@ export class UtilsService {
     }
     return userDp;
   }
-
+  getDateFormat() {
+    const IndiaFromat = 'dd/MM/yyyy';
+    const INlocale = 'en-IN';
+    const USFormat = 'MM/dd/yyyy';
+    const userLang = navigator.language;
+    return userLang === INlocale ? IndiaFromat : USFormat;
+  }
   //navigate the deeplink
   async navigateByDeepLink(urlObj: any) {
     let hash = urlObj.hash;
