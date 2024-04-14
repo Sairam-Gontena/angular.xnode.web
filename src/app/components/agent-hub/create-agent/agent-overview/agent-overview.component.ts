@@ -31,6 +31,9 @@ interface FormControlConfig {
 })
 export class AgentOverviewComponent implements OnInit {
   @Input() formType = 'overview';
+  @Input() agentInfo!: any;
+
+  agentInfoDtlObj: any;
   overviewForm!: FormGroup;
   instructionForm!: FormGroup;
   userInfo: any;
@@ -102,6 +105,23 @@ export class AgentOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.getAgentCount();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    debugger
+    if (changes?.agentInfo?.currentValue) {
+      // this.agentInfoDtlObj = changes.agentInfo.currentValue;
+      // this.overviewForm.patchValue({
+      //   name: this.agentInfoDtlObj.name,
+      //   description: this.agentInfoDtlObj.description
+      // });
+      // this.instructionForm.patchValue({
+      //   instruction: this.overviewInstructionDetailObj.overviewInstructionData.instruction,
+      //   guideline: this.overviewInstructionDetailObj.overviewInstructionData.guideline,
+      //   responsibility: this.overviewInstructionDetailObj.overviewInstructionData.responsibility,
+      //   context: this.overviewInstructionDetailObj.overviewInstructionData.context,
+      //   example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
+      // });
+    }
   }
 
   // ngOnChanges(changes: SimpleChanges) {
