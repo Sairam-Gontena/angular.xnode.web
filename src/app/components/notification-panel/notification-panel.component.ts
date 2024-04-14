@@ -536,14 +536,21 @@ export class NotificationPanelComponent {
         const product = response.data?.filter((item: any) => {
           return item.id === val.productId;
         })[0];
-        this.storageService.saveItem(StorageKeys.Product, product);
-        localStorage.setItem('record_id', product.id);
-        localStorage.setItem('app_name', product.title);
-        localStorage.setItem('has_insights', product.has_insights);
-        this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
-        this.goToConversation(val);
+        if(product){
+          this.storageService.saveItem(StorageKeys.Product, product);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
+          this.goToConversation(val);
+        }else{
+          this.utils.loadSpinner(false);
+        }
       }
-    });
+    }).catch((error: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+      this.utils.loadSpinner(true);
+    });;
     // this.naviApiService
     //   .getMetaData(this.currentUser?.email)
     //   .then((response) => {
