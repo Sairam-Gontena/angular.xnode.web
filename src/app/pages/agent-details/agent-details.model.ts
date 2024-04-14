@@ -8,6 +8,7 @@ import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { OnInit } from '@angular/core';
 
 const InitialPaginatorInfo = {
   page: 0,
@@ -16,6 +17,7 @@ const InitialPaginatorInfo = {
   totalRecords: 0,
 };
 export class AgentDetailsModel {
+  agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
     { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
@@ -243,6 +245,9 @@ export class AgentDetailsModel {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+
+
+    this.getAgentDetailsById()
   }
 
   viewHandler(item: any) {
@@ -315,7 +320,7 @@ export class AgentDetailsModel {
       urlParam: any = {
         url: url.replace("{agent_id}", getID),
         params: {
-          agent_id: getID,
+          // agent_id: getID,
           account_id: this.userInfo.account_id,
           page: paginationObj.page + 1,
           limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
@@ -350,6 +355,26 @@ export class AgentDetailsModel {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         this.getAgentDetailByCategorySuccess(response);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+      }
+    });
+  }
+
+  //  get the agent details by Id
+  getAgentDetailsById() {
+    let url: string = "agent/agent_by_id/",
+      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+      urlParam: any = {
+        url: url + getID,
+        params: {}
+      }
+
+    this.agentHubService.getAgentDetail(urlParam).subscribe({
+      next: (response: any) => {
+        // this.getAgentDetailByCategorySuccess(response);
+        this.agentInfo = response
+        console.log(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }
