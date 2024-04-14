@@ -439,10 +439,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.PRODUCT_CONTEXT,
-      msgData: false,
-    });
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.navigateToHome.emit();
   }

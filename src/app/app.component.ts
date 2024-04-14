@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
   product: any;
   newWithNavi: boolean = false;
   componentToShow?: any;
+  mainComponent: string = '';
   showNaviSpinner: boolean = true;
   routes: any = [
     '#/dashboard',
@@ -86,15 +87,15 @@ export class AppComponent implements OnInit {
   conversationId?: string;
   resource_id: any;
 
-  showInactiveTimeoutPopup?:boolean;
-  inactiveTimeoutCounter?:number;
+  showInactiveTimeoutPopup?: boolean;
+  inactiveTimeoutCounter?: number;
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = undefined;
 
   user?: User | null;
 
-  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10*60; //10 minutes in seconds
+  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10 * 60; //10 minutes in seconds
   private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
 
   constructor(private domSanitizer: DomSanitizer,
@@ -196,7 +197,7 @@ export class AppComponent implements OnInit {
     })
 
 
-    window.addEventListener('message', (event)=>this.onNaviEvent(event, this), false);
+    window.addEventListener('message', (event) => this.onNaviEvent(event, this), false);
 
     this.authApiService.user.subscribe(x => this.user = x);
 
@@ -223,10 +224,10 @@ export class AppComponent implements OnInit {
     });
 
     idle.onIdleStart.subscribe(() => {
-        this.idleState = 'You\'ve gone idle!'
-        console.log(this.idleState);
-        this.showInactiveTimeoutPopup=true;
-        // this.childModal.show();
+      this.idleState = 'You\'ve gone idle!'
+      console.log(this.idleState);
+      this.showInactiveTimeoutPopup = true;
+      // this.childModal.show();
     });
 
     idle.onTimeoutWarning.subscribe((countdown) => {
@@ -249,9 +250,9 @@ export class AppComponent implements OnInit {
       }
     })
 
-    if(this.currentUser) {
-      this.currentUser.accessToken=this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
-      this.currentUser.refreshToken=this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
+    if (this.currentUser) {
+      this.currentUser.accessToken = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      this.currentUser.refreshToken = this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
       this.authApiService.userSubject.next(this.currentUser)
       this.authApiService.setIsLoggedIn(true)
       this.authApiService.startRefreshTokenTimer();
@@ -260,14 +261,14 @@ export class AppComponent implements OnInit {
 
   }
 
-    onNaviEvent(event: any, parent:any) {
-      if (!environment.naviAppUrl.includes(event.origin)) { return; }
-      switch(event.data) {
-           case "NAVI_USET_ACTIVE_EVENT":
-              parent.reset()
-              break;
-      }
+  onNaviEvent(event: any, parent: any) {
+    if (!environment.naviAppUrl.includes(event.origin)) { return; }
+    switch (event.data) {
+      case "NAVI_USET_ACTIVE_EVENT":
+        parent.reset()
+        break;
     }
+  }
 
   reset() {
     this.idle.watch();
@@ -278,6 +279,10 @@ export class AppComponent implements OnInit {
 
 
   navigateToHome(): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: false,
+    });
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
     this.showDockedNavi = true;
@@ -289,7 +294,14 @@ export class AppComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.Product);
     this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
+    this.mainComponent = 'my-products';
     this.router.navigate(['/my-products']);
+  }
+
+  enableDockedNavi(): void {
+    this.isNaviExpanded = false;
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.makeTrustedUrl();
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -319,7 +331,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    this.showInactiveTimeoutPopup=false;
+    this.showInactiveTimeoutPopup = false;
     let rawUrl: string = environment.naviAppUrl + '?logout=true';
     this.iframeUrlLoad(rawUrl);
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
@@ -699,7 +711,7 @@ export class AppComponent implements OnInit {
       '&targetUrl=' +
       environment.xnodeAppUrl +
       '&component=' +
-      this.getMeComponent() +
+      (this.mainComponent !== '' ? this.mainComponent : this.getMeComponent()) +
       '&device_width=' +
       this.screenWidth +
       '&accountId=' +
@@ -761,6 +773,8 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
+    console.log(' this.componentToShow', this.componentToShow);
+
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
@@ -769,8 +783,17 @@ export class AppComponent implements OnInit {
         rawUrl += "&componentToShow=" + this.componentToShow;
         this.componentToShow = undefined;
       }
+    } else {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+        this.componentToShow = undefined;
+      } else {
+        rawUrl += "&componentToShow=Tasks";
+        this.componentToShow = undefined;
+      }
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+    this.mainComponent = '';
     this.iframeUrlLoad(rawUrl);
   }
 
