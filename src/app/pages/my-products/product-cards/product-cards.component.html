@@ -36,7 +36,7 @@
                         {{data?.created_on |
                         date:'medium'}}</p>
                     <div class="mt-4">
-                        Modified on - NA
+                        Modified on - {{data?.createdOn | date:localDateFormat}}
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
 </div>
 <!-- ============================================== -->
 <div class="grid">
-    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 new-product-card" >
+    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 new-product-card">
         <div class="flex align-items-center justify-content-center product-card font-bold border-round w-full h-full new-card-add pointer"
             (click)="onClickNew()">
             <div class="flex flex-wrap justify-content-center align-items-center card-color card-title">
@@ -60,36 +60,38 @@
     </div>
     <ng-container *ngIf="filteredProducts.length > 0; else noProducts">
         <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 pointer"
-        *ngFor="let data of filteredProducts | slice:0:end ; let i = index" (click)="onClickProductCard.emit(data)">
-        <div class="card-color">
-            <img alt="Card" src="./assets/d-card.svg" class="w-full" />
-            <div class=" flex justify-content-between align-items-center card-color card-title">
-                <div class="title-container" [title]="data?.title">
-                    {{ data?.title }}
+            *ngFor="let data of filteredProducts | slice:0:end ; let i = index" (click)="onClickProductCard.emit(data)">
+            <div class="card-color">
+                <img alt="Card" src="./assets/d-card.svg" class="w-full" />
+                <div class=" flex justify-content-between align-items-center card-color card-title">
+                    <div class="title-container" [title]="data?.title">
+                        {{ data?.title }}
+                    </div>
+                    <i class="pi pi-external-link " [title]="data.product_url"
+                        (click)="openExternalLink.emit(data.product_url)"
+                        *ngIf="data.product_url && data.product_url !== ''"></i>
                 </div>
-                <i class="pi pi-external-link " [title]="data.product_url"
-                    (click)="openExternalLink.emit(data.product_url)"
-                    *ngIf="data.product_url && data.product_url !== ''"></i>
-            </div>
-            <div class="flex align-items-start body-card">
-                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
-                    shape="circle" *ngIf="!currentUser" [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                <div class="ml-1 card-subheading-txt">
-                    <p class="m-0 card-subheading ">Created by {{data.createdBy.displayName|titlecase}} on:
-                        {{data?.createdOn |
-                        date:'medium'}}</p>
-                    <div class="mt-4">
-                        Modified on - NA
+                <div class="flex align-items-start body-card">
+                    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                        styleClass="mr-2" shape="circle" *ngIf="!currentUser"
+                        [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                    <div class="ml-1 card-subheading-txt">
+                        <p class="m-0 card-subheading ">Created by {{data.createdBy.displayName|titlecase}} on:
+                            {{data?.createdOn |
+                            date:'medium'}}</p>
+                        <div class="mt-4">
+                            Modified on - {{data?.modifiedOn | date:localDateFormat}}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-      </ng-container>
-      <ng-template #noProducts>
-        <div class="col-12 md:col-6 lg:col-9 flex justify-content-center align-items-center text-disabled text-lg font-semibold ">
-          No products found.
+    </ng-container>
+    <ng-template #noProducts>
+        <div
+            class="col-12 md:col-6 lg:col-9 flex justify-content-center align-items-center text-disabled text-lg font-semibold ">
+            No products found.
         </div>
-      </ng-template>
+    </ng-template>
 
 </div>
