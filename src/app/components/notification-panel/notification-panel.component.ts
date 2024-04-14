@@ -476,12 +476,12 @@ export class NotificationPanelComponent {
 
 
   onClickLaunchProduct(url: any): void {
-    this.utils.loadSpinner(true);
     const product: any = this.storageService.getItem(StorageKeys.Product)
     const body = {
       "id": product?.id,
       "url": product?.product_url + '/login?product_id=' + product?.product_id,
     }
+    this.utils.loadSpinner(true);
     this.conversationApi.updateProductUrl(body).then((res: any) => {
       if (res) {
         url += '&openExternal=true';
