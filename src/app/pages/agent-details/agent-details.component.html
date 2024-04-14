@@ -111,7 +111,7 @@
     [formEditable]="agentDetailsModel.isFormEditable"
     (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview>
 
-  <xnode-dynamic-form-modal *ngIf="agentDetailsModel.promptModalShow"
-    [(display)]="agentDetailsModel.promptModalShow"></xnode-dynamic-form-modal>
+  <xnode-create-prompt-modal *ngIf="agentDetailsModel.promptModalShow"
+    [(display)]="agentDetailsModel.promptModalShow"></xnode-create-prompt-modal>
 
 </div>
