@@ -11,7 +11,6 @@ import { debounce } from 'rxjs/operators';
 import { interval } from 'rxjs';
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json';
-import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -94,6 +93,9 @@ export class AppComponent implements OnInit {
   lastPing?: Date = undefined;
 
   user?: User | null;
+
+  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10*60; //10 minutes in seconds
+  private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
 
   constructor(private domSanitizer: DomSanitizer,
     private router: Router,
@@ -194,15 +196,15 @@ export class AppComponent implements OnInit {
     })
 
 
-
+    window.addEventListener('message', (event)=>this.onNaviEvent(event, this), false);
 
     this.authApiService.user.subscribe(x => this.user = x);
 
 
     // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(200);
+    idle.setIdle(this.XNODE_IDLE_TIMEOUT_PERIOD);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(240);
+    idle.setTimeout(this.XNODE_TIMEOUT_PERIOD);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -233,7 +235,7 @@ export class AppComponent implements OnInit {
       console.log(this.idleState);
     });
 
-    // sets the ping interval to 15 seconds
+    // sets the ping interval to 50 seconds
     keepalive.interval(50);
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
@@ -257,6 +259,15 @@ export class AppComponent implements OnInit {
 
 
   }
+
+    onNaviEvent(event: any, parent:any) {
+      if (!environment.naviAppUrl.includes(event.origin)) { return; }
+      switch(event.data) {
+           case "NAVI_USET_ACTIVE_EVENT":
+              parent.reset()
+              break;
+      }
+    }
 
   reset() {
     this.idle.watch();
