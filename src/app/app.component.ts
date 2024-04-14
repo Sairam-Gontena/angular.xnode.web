@@ -146,6 +146,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.createdBy?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
+        this.componentToShow = 'Chat';
         this.makeTrustedUrl(data.email);
       }
     });
@@ -848,7 +849,7 @@ export class AppComponent implements OnInit {
     this.showNaviSpinner = true;
     setTimeout(() => {
       this.showNaviSpinner = false;
-      this.prepareDataOnOpeningNavi()
+      this.prepareDataOnOpeningNavi();
     }, 1000);
   }
 
