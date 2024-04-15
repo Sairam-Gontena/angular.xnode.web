@@ -17,7 +17,7 @@
                     <div class="flex justify-content-center align-items-center h-full" *ngIf="showNaviSpinner">
                         <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
                     </div>
-                    <iframe id="myIframe" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
+                    <iframe id="naviFrame" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
                     </iframe>
                 </div>
