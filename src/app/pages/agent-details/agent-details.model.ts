@@ -153,7 +153,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Topic',
           icon: '',
-          command: () => { },
+          command: () => { this.topicModalShow = true },
         },
       ],
     },
@@ -237,6 +237,7 @@ export class AgentDetailsModel {
   };
   promptModalShow = false;
   capabilityModalShow = false;
+  topicModalShow = false;
 
   isFormEditable = false;
 
