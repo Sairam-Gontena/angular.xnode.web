@@ -83,6 +83,13 @@ export class AuthApiService extends BaseApiService {
           this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
           this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, resp.accessToken);
           this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, resp.refreshToken);
+
+          const naviFrame = document.getElementById('naviFrame')
+          if(naviFrame) {
+            const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
+            iWindow?.postMessage({accessToken: resp.accessToken, refreshToken : resp.refreshToken}, environment.naviAppUrl);
+          }
+
           this.userSubject.next(decodedUser);
           this.startRefreshTokenTimer();
           return decodedUser;
