@@ -13,6 +13,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -63,8 +64,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private authService: AuthApiService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
-    private naviApiService: NaviApiService
-  ) {
+    private naviApiService: NaviApiService,
+    private conversationService: ConversationHubService) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
       this.activeConversationTab = event;
@@ -87,30 +88,38 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         template_id: templateId,
         template_type: templateType,
       };
-      if (
-        templateType &&
-        (templateType == 'COMMENT' || templateType == 'TASK')
-      ) {
+      if (templateType && (templateType == 'COMMENT' || templateType == 'TASK')) {
         this.getMetaData(deepLinkInfo);
       }
     });
   }
 
   getMetaData(val: any) {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email, val.product_id)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let product = response.data.data[0];
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-        }
-      })
-      .catch((error) => { });
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        let product = response.data[0];
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('product', JSON.stringify(product));
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._tabToActive(val.template_type);
+      }
+    }).catch((error) => { });
+    // this.naviApiService
+    //   .getMetaData(this.currentUser?.email, val.product_id)
+    //   .then((response) => {
+    //     if (response?.status === 200 && response.data.data?.length) {
+    //       let product = response.data.data[0];
+    //       localStorage.setItem('record_id', product.id);
+    //       localStorage.setItem('product', JSON.stringify(product));
+    //       localStorage.setItem('app_name', product.title);
+    //       localStorage.setItem('has_insights', product.has_insights);
+    //       this.specUtils._openCommentsPanel(true);
+    //       this.specUtils._tabToActive(val.template_type);
+    //     }
+    //   })
+    //   .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -242,36 +251,26 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   getMeSpecList(body?: any): void {
     this.utils.loadSpinner(true);
     let product = this.metaData.find((x: any) => x.id === body.productId);
-    if (product.has_insights) {
-      this.getMeSpecInfo(body);
-    } else {
-      this.showGenerateSpecPopup(product);
-    }
+    this.getMeSpecInfo(body);
+    // if (product.specStatus=="Completed") { // product.has_insights
+    //   this.getMeSpecInfo(body);
+    // } else {
+    //   this.showGenerateSpecPopup(product);
+    // }
   }
 
   getMeSpecInfo(body?: any) {
     this.utils.loadSpinner(true);
-    this.specService
-      .getSpec(body)
-      .then((response) => {
-        if (
-          response.status === 200 &&
-          response.data &&
-          response.data.length > 0
-        ) {
-          this.handleSpecData(response.data, body.productId);
-        }
-        this.loading = false;
-      })
-      .catch((error) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: error,
-        });
-        this.loading = false;
-      });
+    this.specService.getSpec(body).then((response) => {
+      if (response.status === 200 && response.data && response.data.length) {
+        this.handleSpecData(response.data, body.productId);
+      }
+      this.loading = false;
+    }).catch((error) => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+      this.loading = false;
+    });
   }
 
   getUsersByAccountId() {

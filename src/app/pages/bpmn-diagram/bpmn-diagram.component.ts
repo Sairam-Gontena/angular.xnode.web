@@ -33,6 +33,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -40,8 +42,7 @@ import { WorkflowApiService } from 'src/app/api/workflow-api.service';
   styleUrls: ['./bpmn-diagram.component.scss'],
 })
 export class BpmnDiagramComponent
-  implements AfterContentInit, OnDestroy, OnInit
-{
+  implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
@@ -90,8 +91,10 @@ export class BpmnDiagramComponent
     private storageService: LocalStorageService,
     private router: Router,
     private naviApiService: NaviApiService,
-    private workflowApiService: WorkflowApiService
-  ) {}
+    private workflowApiService: WorkflowApiService,
+    private conversationService: ConversationHubService,
+    private specApiService: SpecApiService
+  ) { }
 
   ngOnInit(): void {
     this.getMeStorageData();
@@ -100,16 +103,12 @@ export class BpmnDiagramComponent
   getMeStorageData(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (this.product && !this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
-    this.getUseCases(this.product);
+    this.getUseCases();
   }
 
-  getUseCases(data: any) {
-    this.naviApiService
-      .getUsecases(data.id)
+  getUseCases() {
+    this.specApiService
+      .getUsecases(this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
           this.useCases = response.data;
@@ -182,7 +181,7 @@ export class BpmnDiagramComponent
     this.graph();
   }
   switchWindow() {
-    this.sideBar =false;
+    this.sideBar = false;
     var bpmnWindow = document.getElementById('diagramRef');
     if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
@@ -254,9 +253,9 @@ export class BpmnDiagramComponent
   }
 
   getFlow(flow: String) {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.specApiService
+      .getXflows(this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -442,49 +441,47 @@ export class BpmnDiagramComponent
     if (layout) this.dashboard = this.layoutColumns[layout];
   }
 
-  ngAfterContentInit(): void {}
+  ngAfterContentInit(): void { }
 
   getOverview() {
-    this.naviApiService
-      .getOverview(this.product?.email, this.product?.id)
-      .then((response) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-          this.overview = response.data;
-          this.sideBar = true;
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data?.detail,
-          });
-        }
-      })
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+      if (response?.status === 200) {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.currentUser?.email,
+          this.product?.id
+        );
+        this.overview = response.data;
+        this.sideBar = true;
+      } else {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser?.email,
+          this.product?.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: response.data?.detail,
+        });
+      }
+    })
       .catch((error: any) => {
         let user_audit_body = {
           method: 'GET',
@@ -505,6 +502,66 @@ export class BpmnDiagramComponent
           detail: error,
         });
       });
+    // this.naviApiService
+    //   .getOverview(this.product?.email, this.product?.id)
+    //   .then((response) => {
+    //     if (response?.status === 200) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_RETRIEVE_OVERVIEW_BPMN',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser?.email,
+    //         this.product?.id
+    //       );
+    //       this.overview = response.data;
+    //       this.sideBar = true;
+    //     } else {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_RETRIEVE_OVERVIEW_BPMN',
+    //         1,
+    //         'FAILED',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser?.email,
+    //         this.product?.id
+    //       );
+    //       this.utilsService.loadToaster({
+    //         severity: 'error',
+    //         summary: 'ERROR',
+    //         detail: response.data?.detail,
+    //       });
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_RETRIEVE_OVERVIEW_BPMN',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.currentUser?.email,
+    //       this.product?.id
+    //     );
+    //     this.utilsService.loadToaster({
+    //       severity: 'error',
+    //       summary: 'ERROR',
+    //       detail: error,
+    //     });
+    //   });
   }
 
   getElement() {

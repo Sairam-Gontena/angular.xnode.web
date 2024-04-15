@@ -87,7 +87,7 @@
         <div class="text-sm font-medium title-fonts" *ngIf="notification?.component == 'Product Specifications'">
           {{ notification?.component?.toUpperCase() }}
         </div>
-        <div (click)="navigateToConversation(notification)" class="text-500 mt-2 text-sm font-normal title-fonts">
+        <div class="text-500 mt-2 text-sm font-normal title-fonts">
           {{ notification?.description }}
         </div>
         <div class="flex mt-2" *ngIf="notification?.type === 'request'">
@@ -106,7 +106,7 @@
             Publish
             <i class="title-fonts pi pi-arrow-right text-xs ml-3"></i>
           </div>
-          <div (click)="navigateToProduct(notification)"
+          <div 
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             {{ getMeLabel(notification) }}
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
@@ -126,7 +126,27 @@
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
-        <div class="flex mt-2" *ngIf="notification?.entity === 'CONVERSATION_SUMMARY' && notification.status === 'Completed'">
+        <div class="flex mt-2" *ngIf="notification?.entity === 'IMPORT_FILE' && notification?.status === 'Completed'">
+          <div (click)="goToResources(notification)"
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            View in Resources
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
+          </div>
+          <div (click)="viewInChat(notification)"
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
+            *ngIf="notification?.conversation_id && notification?.conversation_id">
+            View In Chat
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
+          </div>
+          <div (click)="startNewChat(notification)"
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
+            *ngIf="notification?.resource_id && !notification?.conversation_id">
+            Start New Chat
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
+          </div>
+        </div>
+        <div class="flex mt-2"
+          *ngIf="notification?.entity === 'CONVERSATION_SUMMARY' && notification.status === 'Completed'">
           <div (click)="viewSummary(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Summary

@@ -23,10 +23,9 @@
     // transform: rotate(90deg);
 }
 
-// .p-inputtext {
-//     background-color: #ffffff;
-//     color:black;
-// }
+:host ::ng-deep.bpmn-panel {
+    width: 32rem !important;
+}
 
 .graphViewBpmnCommon{
     height: 80vh;

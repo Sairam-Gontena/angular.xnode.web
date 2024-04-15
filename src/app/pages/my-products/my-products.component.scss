@@ -293,8 +293,8 @@
 }
 
 .my-products-scroll {
-    padding: 4rem;
-    margin-top: -4rem;
+    padding: 0 4rem 4rem 4rem ;
+    height: calc(100vh - 250px);
 }
 
 :host ::ng-deep .my-products-scroll::-webkit-scrollbar-thumb {
@@ -414,7 +414,6 @@
         display: block;
         position: relative;
         top: 75px;
-        z-index: 1;
     }
 
     p-dropdown {

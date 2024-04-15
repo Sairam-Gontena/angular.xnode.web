@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter,AfterViewInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterViewInit, SimpleChanges } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -16,21 +16,21 @@ declare const SwaggerUIBundle: any;
 export class ExpandSpecificationComponent {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
-  @Input() diffdataToExpand:any;
-  @Input() diffViewEnabled:any;
-  @Input() selectedVersionOne:any;
-  @Input() selectedVersionTwo:any;
-  @Input() selectedVersion:any;
-  @Input() format:any;
+  @Input() diffdataToExpand: any;
+  @Input() diffViewEnabled: any;
+  @Input() selectedVersionOne: any;
+  @Input() selectedVersionTwo: any;
+  @Input() selectedVersion: any;
+  @Input() format: any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
-  currentUser:any;
+  currentUser: any;
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl | undefined;
   targetUrl: string = environment.naviAppUrl;
   product: any;
-  firstIteration:boolean = true;
-  constructor(private domSanitizer: DomSanitizer,private storageService:LocalStorageService,private specService: SpecificationsService, private utils:UtilsService) {
+  firstIteration: boolean = true;
+  constructor(private domSanitizer: DomSanitizer, private storageService: LocalStorageService, private specService: SpecificationsService, private utils: UtilsService) {
   }
 
   ngOnInit() {
@@ -40,63 +40,84 @@ export class ExpandSpecificationComponent {
     this.makeTrustedUrl();
   }
 
-  ngAfterViewInit(){
-    if(this.dataToExpand.title=== 'OpenAPI Spec' || this.dataToExpand.title==='Open API Spec'){
+  ngAfterViewInit() {
+    if (this.dataToExpand.title === 'OpenAPI Spec' || this.dataToExpand.title === 'Open API Spec') {
       this.fetchSwagger();
     }
   }
 
-  enableSpinner(){
+  enableSpinner() {
     this.utils.loadSpinner(true)
   }
 
-  fetchSwagger(){
-    if(this.diffViewEnabled){
-      this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
-      this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
-    }else{
-      this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersion.id);
+  fetchSwagger() {
+    if (this.diffViewEnabled) {
+      this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
+    } else {
+      this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersion.id);
     }
   }
 
-  ngOnDestroy(){
-    if(this.dataToExpand.title === 'OpenAPI Spec'){
+  ngOnDestroy() {
+    if (this.dataToExpand.title === 'OpenAPI Spec') {
       this.childLoaded.emit(true);
     }
   }
 
-  async fetchOpenAPISpec(id:any,versionId:string) {
-    const record_id = localStorage.getItem('record_id');
-    let userData: any
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
-    const ui = SwaggerUIBundle({
-      domNode: document.getElementById(id),
-      layout: 'BaseLayout',
-      presets: [
-        SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.SwaggerUIStandalonePreset
-      ],
-      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id + '/'+versionId,
-      docExpansion: 'none',
-      operationsSorter: 'alpha'
-    });
+  async fetchOpenAPISpec(id: string, versionId: string) {
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    let swaggerUrl =
+      environment.commentsApiUrl +
+      'product-spec/openapi-spec/' +
+      product.title +
+      '/' +
+      product?.id +
+      '/' +
+      versionId;
+    const headers = {
+      'Authorization': `Bearer ${this.storageService.getItem(StorageKeys.ACCESS_TOKEN)}`,
+      'Content-Type': 'application/json'
+    };
+    try {
+      const response = await fetch(swaggerUrl, { headers });
+      const spec = await response.json();
+
+      // Do something with the spec, e.g., render it with SwaggerUIBundle
+      const ui = SwaggerUIBundle({
+        domNode: document.getElementById(id),
+        layout: 'BaseLayout',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        spec,
+        docExpansion: 'none',
+        operationsSorter: 'alpha',
+      });
+
+      this.utils.loadSpinner(false);
+    } catch (error) {
+      this.utils.loadSpinner(false);
+      console.error('Error fetching OpenAPI spec:', error);
+      // Handle error
+    }
   }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
-  makeTrustedUrlForDiffView(versionId: any):any {
-    if(this.firstIteration){
+  makeTrustedUrlForDiffView(versionId: any): any {
+    if (this.firstIteration) {
       let Url = environment.designStudioAppUrl +
-      '?email=' + encodeURIComponent(this.product?.email || '') +
-      '&id=' + encodeURIComponent(this.product?.id || '') +
-      '&version_id=' + encodeURIComponent(versionId) +
-      '&targetUrl=' + encodeURIComponent(environment.xnodeAppUrl) +
-      '&has_insights=' + true +
-      '&isVerified=true' +
-      '&userId=' + encodeURIComponent(this.currentUser.id || '');
+        '?email=' + encodeURIComponent(this.product?.email || '') +
+        '&id=' + encodeURIComponent(this.product?.id || '') +
+        '&version_id=' + encodeURIComponent(versionId) +
+        '&targetUrl=' + encodeURIComponent(environment.xnodeAppUrl) +
+        '&has_insights=' + true +
+        '&isVerified=true' +
+        '&userId=' + encodeURIComponent(this.currentUser.id || '');
       this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(Url);
       this.firstIteration = false;
       return this.iframeSrc1;

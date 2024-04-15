@@ -97,3 +97,7 @@
 .overlay-close{
   width: 26px;
 }
+
+::placeholder {
+    color: #999; /* Change placeholder color to gray */
+  }
