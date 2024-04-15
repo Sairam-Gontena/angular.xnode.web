@@ -79,6 +79,8 @@ import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-
 import { ShareLinkComponent } from './component/share-link/share-link.component';
 import { PromptOverviewComponent } from '../components/agent-hub/create-agent/prompt-overview/prompt-overview.component';
 import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
+import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
+import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -154,6 +156,8 @@ import { CreatePromptModalComponent } from '../components/agent-hub/create-promp
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
     CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent
@@ -234,6 +238,8 @@ import { CreatePromptModalComponent } from '../components/agent-hub/create-promp
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
     CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent

@@ -143,7 +143,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Capability',
           icon: '',
-          command: () => { },
+          command: () => { this.capabilityModalShow = true },
         },
       ],
     },
@@ -236,6 +236,7 @@ export class AgentDetailsModel {
     overviewInstructionData: ""
   };
   promptModalShow = false;
+  capabilityModalShow = false;
 
   isFormEditable = false;
 

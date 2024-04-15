@@ -107,7 +107,6 @@ export class AgentOverviewComponent implements OnInit {
     this.getAgentCount();
   }
   ngOnChanges(changes: SimpleChanges) {
-    debugger
     if (changes?.agentInfo?.currentValue) {
       // this.agentInfoDtlObj = changes.agentInfo.currentValue;
       // this.overviewForm.patchValue({
