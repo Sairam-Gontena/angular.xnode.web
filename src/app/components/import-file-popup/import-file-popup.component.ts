@@ -42,11 +42,8 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes', changes);
-
     if (changes['conversation_id']?.currentValue)
       console.log('>>', changes['conversation_id']?.currentValue);
-
   }
 
   private async readFileContent(file: File) {
