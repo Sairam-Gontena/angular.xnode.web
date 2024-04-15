@@ -21,7 +21,7 @@ export class ConversationHubService extends BaseApiService {
     }
     constructor(private httpClient: HttpClient, private authApiService: AuthApiService, private storageService: LocalStorageService) {
         super();
-        this.getAllUsers();
+        // this.getAllUsers();
     }
     rootUrl = environment.conversationApiUrl;
     private isNaviExpandedSubject = new BehaviorSubject<any>(false);
@@ -44,7 +44,7 @@ export class ConversationHubService extends BaseApiService {
           });
           let url = 'conversation';
           url += '?' + queryParams.toString();
-      
+
         return this.get(url);
      }
 
