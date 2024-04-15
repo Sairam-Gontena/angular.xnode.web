@@ -774,8 +774,6 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
-    console.log(' this.componentToShow', this.componentToShow);
-
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);

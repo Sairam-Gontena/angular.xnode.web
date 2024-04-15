@@ -47,6 +47,8 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   prepareMenuBasedOnRoute(): void {
+    let entityName:any = this.storageService.getItem(StorageKeys.USERLIST);
+    entityName = entityName[0].entity_name;
     if (!this.isInProductContext) {
       this.sideMenuItems = [
         {
@@ -54,17 +56,24 @@ export class AppSideMenuComponent implements OnInit {
           icon: './assets/home.svg',
           path: 'my-products',
         },
-        {
-          label: 'Agents',
-          icon: './assets/agent-hub/agent-sidebar.svg',
-          path: 'agent-playground/',
-        },
+        // {
+        //   label: 'Agents',
+        //   icon: './assets/agent-hub/agent-sidebar.svg',
+        //   path: 'agent-playground/',
+        // },
         // {
         //   label: 'Knowledge',
         //   icon: './assets/accounts.svg',
         //   path: 'admin/user-approval',
         // },
       ];
+      if(entityName !== 'xnode-tech'){
+        this.sideMenuItems.push({
+          label: 'Agents',
+          icon: './assets/agent-hub/agent-sidebar.svg',
+          path: 'agent-playground/',
+        })
+      }
       this.activateMenuItem();
     } else {
       const environmentName = environment.name as keyof typeof AppSideMenuItems;

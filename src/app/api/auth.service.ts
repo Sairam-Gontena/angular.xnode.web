@@ -102,7 +102,6 @@ export class AuthApiService extends BaseApiService {
 
   public startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
-    console.log('userval',this.userValue)
     const jwtBase64 = this.userValue!.accessToken!.split('.')[1];
     const jwtToken = JSON.parse(atob(jwtBase64));
 
