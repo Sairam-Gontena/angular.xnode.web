@@ -1,0 +1,170 @@
+.id-link {
+  color: #02ADEE;
+  overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  // max-width: 7ch;
+}
+
+// .content-grid{
+//   height:calc(100vh - 260px)
+// }
+:host ::ng-deep.grid-checkbox .p-checkbox .p-checkbox-box {
+  background: transparent;
+}
+
+:host ::ng-deep.grid-checkbox .p-checkbox .p-checkbox-box.p-highlight {
+  border: none;
+  background: #ffffff;
+}
+
+:host ::ng-deep.grid-checkbox .p-checkbox .p-checkbox-box .p-icon {
+  height: 10px;
+  width: 10px;
+}
+
+.menu {
+  border: 1px solid grey;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+:host ::ng-deep.grid-checkbox .p-checkbox .p-checkbox-box .p-checkbox-icon {
+  color: #000000;
+}
+
+:host ::ng-deep.conversation-table .p-datatable .p-datatable-header {
+  background: transparent;
+}
+
+:host ::ng-deep.conversation-table .p-datatable .p-datatable-thead > tr > th:first-child {
+  padding-left: 10px;
+}
+
+:host::ng-deep.content-grid-column-filter .p-dropdown {
+  background: #2E2D36
+}
+
+:host::ng-deep.content-grid-column-filter .p-dropdown .p-dropdown-label.p-placeholder {
+  font-size: 14px;
+}
+
+:host ::ng-deep.conversation-table .p-datatable>.p-datatable-wrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+:host ::ng-deep.conversation-table .p-datatable>.p-datatable-wrapper::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(78, 78, 78, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+:host ::ng-deep.conversation-table .p-datatable>.p-datatable-wrapper::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  // background: rgba(255, 255, 255, 0.3);
+  -webkit-box-shadow: inset 0 0 6px white; // rgba(63, 63, 63, 0.5);
+}
+
+:host ::ng-deep .p-paginator {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  border-width: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #EFF6FF;
+  border-color: #EFF6FF;
+  color: #1D4ED8;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  border: 0 none;
+  min-width: 2rem;
+  height: 2rem;
+  margin: 0.143rem;
+  transition: box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-first,
+:host ::ng-deep .p-paginator .p-paginator-prev,
+:host ::ng-deep .p-paginator .p-paginator-next,
+:host ::ng-deep .p-paginator .p-paginator-last {
+  border: 0 none;
+  min-width: 2rem;
+  height: 2rem;
+  margin: 0.143rem;
+  transition: box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+@media (min-width: 260px) {
+
+  :host ::ng-deep .p-paginator {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+    border-width: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
+
+  :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #EFF6FF;
+    border-color: #EFF6FF;
+    color: #1D4ED8;
+  }
+
+  :host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+    border: 0 none;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.143rem;
+    transition: box-shadow 0.2s;
+    border-radius: 50%;
+  }
+
+  :host ::ng-deep .p-paginator .p-paginator-first,
+  :host ::ng-deep .p-paginator .p-paginator-prev,
+  :host ::ng-deep .p-paginator .p-paginator-next,
+  :host ::ng-deep .p-paginator .p-paginator-last {
+    border: 0 none;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.143rem;
+    transition: box-shadow 0.2s;
+    border-radius: 50%;
+  }
+
+  :host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    background: transparent;
+    color: #6c757d;
+    width: 1rem;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}
+
+.title-container {
+  // width: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: normal;
+}
+
+:host ::ng-deep .checked {
+  background: #23222b !important;
+}
+
+.ellipsis {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

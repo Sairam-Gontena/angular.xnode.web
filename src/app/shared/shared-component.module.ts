@@ -78,6 +78,10 @@ import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dyna
 import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
 import { ShareLinkComponent } from './component/share-link/share-link.component';
 import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
+import { ResourcesComponent } from '../components/resources/resources.component';
+import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
+import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
+import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -154,7 +158,11 @@ import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-po
     DynamicFormModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
-    InActiveTimeoutPopupComponent
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -233,7 +241,11 @@ import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-po
     DynamicFormModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
-    InActiveTimeoutPopupComponent
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent
   ],
 })
 export class SharedComponentModule { }
