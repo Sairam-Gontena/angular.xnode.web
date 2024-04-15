@@ -67,7 +67,7 @@ export class AppSideMenuComponent implements OnInit {
         //   path: 'admin/user-approval',
         // },
       ];
-      if(entityName !== 'xnode-tech'){
+      if(entityName.toLowerCase().includes('xnode')){
         this.sideMenuItems.push({
           label: 'Agents',
           icon: './assets/agent-hub/agent-sidebar.svg',
