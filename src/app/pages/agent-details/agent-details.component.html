@@ -106,10 +106,17 @@
     </div>
   </ng-template>
 
-  <xnode-prompt-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
+
+  <div class="table-height" *ngIf="agentDetailsModel.overviewTabItem.showTab">
+    <xnode-prompt-overview [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
+      [formEditable]="agentDetailsModel.isFormEditable"
+      (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview>
+  </div>
+
+  <!-- <xnode-prompt-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
     [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
     [formEditable]="agentDetailsModel.isFormEditable"
-    (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview>
+    (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview> -->
 
   <xnode-create-prompt-modal *ngIf="agentDetailsModel.promptModalShow"
     [(display)]="agentDetailsModel.promptModalShow"></xnode-create-prompt-modal>
