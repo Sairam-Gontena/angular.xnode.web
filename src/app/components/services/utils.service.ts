@@ -326,17 +326,15 @@ export class UtilsService {
     return userLang === INlocale ? IndiaFromat : USFormat;
   }
   //navigate the deeplink
-  async navigateByDeepLink(urlObj: any) {
-    let hash = urlObj.hash;
-    let [path, queryString] = hash.substr(1).split('?');
-    let params = new URLSearchParams(queryString);
-    let templateId = params.get('template_id');
-    let templateType = params.get('template_type');
-    let productId = params.get('product_id');
-    let versionId = params.get('version_id');
-    let crId = params.get('crId');
-    let entity = params.get('entity');
-    if ((templateId && templateType) || (crId && entity) || (productId && versionId)) {
+  async navigateByDeepLink(urlObj: any, path: any, params: any) {
+    let templateId = params.get('template_id'),
+      templateType = params.get('template_type'),
+      productId = params.get('product_id'),
+      versionId = params.get('version_id'),
+      crId = params.get('crId'),
+      entity = params.get('entity'),
+      targetURL = params.get('targetUrl');
+    if ((templateId && templateType) || (crId && entity) || (productId && versionId) || targetURL) {
       let deepLinkInfo;
       if (templateId && templateType) {
         deepLinkInfo = {
@@ -366,6 +364,15 @@ export class UtilsService {
           productId: deepLinkInfo.product_id,
           versionId: deepLinkInfo.version_id,
         });
+      }
+      if (targetURL) {
+        deepLinkInfo = {
+          naviURL: true,
+          componentToShow: params.get('componentToShow'),
+          targetUrl: params.get('targetUrl'),
+          restriction_max_value: params.get('restriction_max_value'),
+          isNaviExpanded: params.get('isNaviExpanded'),
+        }
       }
       await this.setDeepLinkInStorage(deepLinkInfo);
       this.router.navigateByUrl(path);
