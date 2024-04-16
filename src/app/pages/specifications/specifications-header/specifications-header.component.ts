@@ -72,7 +72,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     removeUserChip: "",
     removeUserAccess: false,
     iniviteType: "",
-    currentSpecData: "",
+    currentShareDetailData: "",
     inviteList: [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
     { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
     { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }],
@@ -372,9 +372,9 @@ export class SpecificationsHeaderComponent implements OnInit {
   makeSharedLinkDetail() {
     this.sharedLinkDetail.selectedUserList = new Array();
     this.sharedLinkDetail.showSelectedUserChip = new Array();
-    if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
-      this.sharedLinkDetail.getUserList = this.userList;
-      this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
+    this.sharedLinkDetail.getUserList = this.userList;
+    if (this.sharedLinkDetail.currentShareDetailData?.users?.length) {
+      this.sharedLinkDetail.currentShareDetailData.users.forEach((element: any) => {
         if (element.userId !== this.currentUser?.user_id) {
           let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
           if (element.active === undefined || element.active === true) {
@@ -421,7 +421,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   //invite the user
   inviteRemoveUser() {
     let paramPayload: any = {
-      param: { id: this.sharedLinkDetail.currentSpecData.id },
+      param: { id: this.sharedLinkDetail.currentShareDetailData.id },
       payload: { users: new Array() }
     },
       getDeepLink = this.getDeeplinkURL();
@@ -430,7 +430,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
       if (response && response.status === 200) {
-        this.sharedLinkDetail.currentSpecData = response.data;
+        this.sharedLinkDetail.currentShareDetailData = response.data;
         this.sharedLinkDetail.snackMessage.enable = true;
         this.makeSharedLinkDetail();
         if (this.sharedLinkDetail.removeUserAccess) {
@@ -451,8 +451,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   shareEvent() {
     this.enableCommonModal = true;
     this.commonModalDetail.visible = true;
-    if (!this.sharedLinkDetail.currentSpecData && this.specData && this.specData.length) {
-      this.sharedLinkDetail.currentSpecData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
+    if (!this.sharedLinkDetail.currentShareDetailData && this.specData && this.specData.length) {
+      this.sharedLinkDetail.currentShareDetailData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
     }
     this.makeSharedLinkDetail();
   }
