@@ -29,6 +29,8 @@ export class MyProductsComponent implements OnInit {
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
+  activities: any;
+  columnDef: any;
   searchText: any;
   filteredProducts: any[] = [];
   email: any;
@@ -106,6 +108,8 @@ export class MyProductsComponent implements OnInit {
     this.removeParamFromRoute();
     this.filterProductsByUserEmail();
     this.utils.prepareIframeUrl(true);
+    this.getRecentActivities();
+    this.getColumnDef();
   }
 
   removeProductDetailsFromStorage(): void {
@@ -234,6 +238,85 @@ export class MyProductsComponent implements OnInit {
   closeEventEmitter() {
     this.showImportFilePopup = false;
   }
+
+  getRecentActivities() {
+    // this.utils.loadSpinner(true)
+    const userId = this.currentUser.user_id;
+    if(userId){
+       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
+        let activities = [];
+        for(let activity of res.data.data){
+          activities.push({
+            objectType: activity.objectType,
+            userAction: activity.userAction,
+            userName: activity.userName,
+            modifiedOn: (new Date(activity.modifiedOn).toLocaleString()),
+            description: activity.description,
+            title: activity.actionDetail.title || "NA"
+          })
+        }
+       this.activities =  activities; // Handle the response here
+      });
+    }
+   }
+  
+   getColumnDef(){
+    this.columnDef = [
+      {
+        field: "objectType",
+        header: "Entity",
+        width: 100,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+      {
+        field: "title",
+        header: "Title",
+        // width: 250,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+      // {
+      //   field: "userAction",
+      //   header: "Action",
+      //   width: 100,
+      //   visible: true,
+      //   default: true
+      // },
+      // {
+      //   field: "userName",
+      //   header: "User",
+      //   filter: true,
+      //   sortable: true,
+      //   // width: '35',
+      //   visible: true,
+      //   default: true
+      // },
+      {
+        field: "description",
+        header: "Description",
+        filter: true,
+        sortable: true,
+        // width: '35',
+        visible: true,
+        default: true
+      },
+      {
+        field: "modifiedOn",
+        header: "Modified On",
+        // width: 200,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+    ]
+   }
+
   getMetaData() {
     //, fieldsRequired: ['id', 'productId', 'title', 'conversationType', 'content','userId','accountId','status','users']
     this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
