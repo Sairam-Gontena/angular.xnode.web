@@ -47,8 +47,7 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   prepareMenuBasedOnRoute(): void {
-    let entityName:any = this.storageService.getItem(StorageKeys.USERLIST);
-    entityName = entityName[0].entity_name;
+    let entityName:any = this.storageService.getItem(StorageKeys.CurrentUser);
     if (!this.isInProductContext) {
       this.sideMenuItems = [
         {
@@ -67,7 +66,7 @@ export class AppSideMenuComponent implements OnInit {
         //   path: 'admin/user-approval',
         // },
       ];
-      if(entityName.toLowerCase().includes('xnode')){
+      if(entityName.entity_name.toLowerCase().includes('xnode')){
         this.sideMenuItems.push({
           label: 'Agents',
           icon: './assets/agent-hub/agent-sidebar.svg',
