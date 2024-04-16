@@ -70,7 +70,7 @@ export class MyProductsComponent implements OnInit {
     private naviApiService: NaviApiService,
     private conversationApiService: ConversationApiService,
     private messagingService: MessagingService,
-    private conversationService: ConversationHubService
+    private conversationService: ConversationHubService,
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
@@ -242,16 +242,35 @@ export class MyProductsComponent implements OnInit {
     const userId = this.currentUser.user_id;
     if(userId){
        this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities = [];
+        let activities:any = [];
+        let shortIdMap:any = {
+          'COMMENT':"cmId",
+          'CHANGE_REQUEST':"crId",
+          'PRODUCT_SPEC': "psId",
+          'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
+          'TASK':'tId',
+          'CONVERSATION':'cId',
+          'RESOURCE':'rsId',
+          'PRODUCT_VERSION':'pvId'
+        };
+        
         for(let activity of res.data.data){
-          activities.push({
+          let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
+          let row: any = {
             objectType: activity.objectType,
             userAction: activity.userAction,
-            userName: activity.userName,
-            modifiedOn: (new Date(activity.modifiedOn).toLocaleString()),
+            modifiedBy: [activity.modifiedBy],
+            modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
+              year: 'numeric', month: 'short', day: 'numeric',
+              hour: 'numeric', minute: 'numeric', second: 'numeric',
+              hour12: true,
+            })),
+            users: [activity.modifiedBy],
             description: activity.description,
-            title: activity.actionDetail.title || "NA"
-          })
+            title: activity.actionDetail.title || "",
+            shortId:shortId
+          }
+          activities.push(row)
         }
        this.activities =  activities; // Handle the response here
       });
@@ -260,37 +279,37 @@ export class MyProductsComponent implements OnInit {
   
    getColumnDef(){
     this.columnDef = [
+      // {
+      //   field: "objectType",
+      //   header: "Entity",
+      //   width: 100,
+      //   filter: true,
+      //   sortable: true,
+      //   visible: true,
+      //   default: true
+      // },
       {
-        field: "objectType",
-        header: "Entity",
+        field: "shortId",
+        header: "Id",
         width: 100,
         filter: true,
         sortable: true,
         visible: true,
         default: true
       },
-      {
-        field: "title",
-        header: "Title",
-        // width: 250,
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
       // {
-      //   field: "userAction",
-      //   header: "Action",
-      //   width: 100,
+      //   field: "title",
+      //   header: "Title",
+      //   // width: 250,
+      //   filter: true,
+      //   sortable: true,
       //   visible: true,
       //   default: true
       // },
       // {
-      //   field: "userName",
-      //   header: "User",
-      //   filter: true,
-      //   sortable: true,
-      //   // width: '35',
+      //   field: "userAction",
+      //   header: "Action",
+      //   width: 100,
       //   visible: true,
       //   default: true
       // },
@@ -299,14 +318,24 @@ export class MyProductsComponent implements OnInit {
         header: "Description",
         filter: true,
         sortable: true,
-        // width: '35',
+        visible: true,
+        default: true
+      },
+      {
+        field: "modifiedBy",
+        header: "Modified By",
+        // filter: true,
+        sortable: true,
+        type: 'avatar',
+        width: 150,
         visible: true,
         default: true
       },
       {
         field: "modifiedOn",
         header: "Modified On",
-        // width: 200,
+        width: 200,
+        // type: "d/m/y",
         filter: true,
         sortable: true,
         visible: true,
