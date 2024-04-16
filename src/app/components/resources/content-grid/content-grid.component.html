@@ -1,0 +1,125 @@
+<div class="content-grid pt-3">
+    <p-table #dt1 [columns]="headers" [value]="dataContent" [(selection)]="selectedConversations"
+        (selectionChange)="changeCheckbox($event)" [tableStyle]="{'table-layout':'fixed', 'width': '100%'}" [scrollable]="true"
+        scrollHeight="500px"
+        [ngClass]="{'import-conversation-table': entity === 'Resources', 'conversation-table': entity !== 'Resources-import'}"
+        (onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 20, 30,40, 50]" [paginator]="dataContent?.length > 0" [rows]="10"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="globalFilterFields" (onRowSelect)="onRowSelect($event)"
+        (onRowUnselect)="onRowUnselect($event)">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <!-- commenting for it is not working as expected -->
+                <!-- <span class="p-input-icon-left" *ngIf="showFilterColumns">
+                    <p-dropdown class="content-grid-column-filter" placeholder="Columns: All"></p-dropdown>
+                </span> -->
+                <span class="p-input-icon-left ml-auto" *ngIf="showSearch">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Search keyword" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <ng-container *ngFor="let col of columns">
+                    <th *ngIf="col.visible" class="font-medium" [style.width.px]="col.width">
+                        <p-tableHeaderCheckbox class="grid-checkbox"
+                            *ngIf="col.type==='checkbox' && isCheckbox"></p-tableHeaderCheckbox>
+                        {{col.header|titlecase}}
+                    </th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data let-columns="columns" let-i="rowIndex">
+            <tr class="text-white ">
+                <ng-container  *ngFor="let col of columns" >
+                    <td *ngIf="col.visible" [ngClass]="{'checked':data?.highlight}">
+                        <p-tableCheckbox [ngClass]="{'pointer-events-none':data?.highlight}"
+                            *ngIf="col.type==='checkbox'&& isCheckbox" class="grid-checkbox"
+                            [value]="data"></p-tableCheckbox>
+                        <a *ngIf="col.route" pTooltip="{{data[col.field]}}" tooltipPosition="top"
+                            (click)="detailsView(data)" (keyup)="detailsView(data)"
+                            class="id-link text-sm  font-medium cursor-pointer block"><span
+                                *ngIf="data[col.field]"></span>{{ data[col.field] | uppercase }}</a>
+
+                        <!-- <span *ngIf="col.type==='dropdown'">
+                            <app-status-dropdown [value]="data[col.field]"
+                                [labelName]="data[col.field]"></app-status-dropdown>
+                        </span> -->
+
+                        <!-- <p-overlayPanel #options>
+                            <div class="flex p-2">
+                                <span class="pointer" (click)="summarize.emit(data)">Summarize</span>
+                            </div>
+                        </p-overlayPanel> -->
+
+                        <app-avatars-display *ngIf="col.type==='avatar'" [userIdsList]="data['users']" [data]="data">
+                        </app-avatars-display>
+
+                        <!-- <app-button-component *ngIf="col.type ==='button'" [buttonType]="col.buttonType"
+                            (isFollowed)="followOrUnfollow($event)" [currentUser]="currentUser"
+                            [data]="data"></app-button-component>
+
+                        <app-priority *ngIf="col.type ==='priority'" [priority]="data[col.field]|titlecase"> </app-priority> -->
+
+                        <span *ngIf="col.type === 'd/m/y'" class="text-sm font-medium">
+                            {{ data[col.field] | date:localDateFormat }}
+                        </span>
+
+                        <span *ngIf="col.type === 'File'" class="text-sm font-medium">
+                            {{ data[col.field] | titlecase }}
+                        </span>
+
+                        <span class="flex gap-2" *ngIf="col.field==='crLinkedCount'">
+                            <img src="../../../assets/images/request.svg" alt="cr-linked" />{{ data[col.field] }}
+                        </span>
+                        
+                        <ng-container
+                            *ngIf="col.default && col.type !== 'File' && col.type !== 'd/m/y';">
+                        
+                            <div class="relative text-sm font-medium title-container"
+                                [pTooltip]="data[col.field]?.length>50 ? data[col.field] : ''">
+                                {{data[col.field]}}
+                            </div>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="col.type === 'fileSize'">
+                        
+                            <div class="relative text-sm font-medium title-container"
+                                [pTooltip]="data[col.field]?.length>50 ? data[col.field] : ''">
+                                {{formatBytes(data[col.field])}}
+                            </div>
+                        </ng-container>
+                        <!--  else resourceField should be present for resources -->
+                        <!-- Commenting resource field because it is not displaying any data -->
+                        <!-- <ng-template #resourceField>
+                            <span class="relative text-sm font-medium cursor-pointer" [ngStyle]="{bottom:'5px'}"
+                                *ngIf="col.default && col.type ==='File'" (click)="detailsView(data)"
+                                (keyup)="detailsView(data)">{{ data[col.field] }} </span>
+
+                        </ng-template> -->
+                        <span *ngIf="col.field === 'fileName' ">
+                            <img [src]="getFileIcon(getFileExtension(data?.fileName))" alt="file"
+                                class="cursor-pointer header-icons mr-2" /> </span>
+                        <img *ngIf="col.type === 'menu'" alt="menu" src="../../../assets/images/kebab_menu.svg" tabindex="0"
+                            class="cursor-pointer header-icons menu" width="30px"
+                             />
+                             <!-- (click)="data?.disabled?options.toggle($event):''" -->
+
+                        <span *ngIf="col.type==='status'" class="text-sm font-medium"
+                            [ngStyle]="{'color':getTextColor(data[col.field])}">{{data[col.field]|titlecase}}</span>
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td class="text-center" [attr.colspan]="headers?.length">No records</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

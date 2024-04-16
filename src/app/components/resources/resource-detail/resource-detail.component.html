@@ -1,0 +1,60 @@
+<div class="flex justify-content-center" >
+  <div class="detail-container" >
+    <div class="flex justify-content-between">
+      <!-- <app-breadcrumb [items]="breadcrumbItems" (back)="routeToTableView.emit(true)"
+        [entity]="'Conversations'"></app-breadcrumb> -->
+    </div>
+    <div class="detail-section px-6 py-0">
+   
+
+      <div class="detail-sub-section overflow-y-auto">
+        <div  class="flex justify-content-between detail-sub-section-view p-3 border-round-md">
+          <!-- <app-details-view-header [detailData]="resourceDetail"
+          [activeInteractionHeader]="'Resources'"></app-details-view-header> -->
+        </div>
+        <div class="flex gap-2 align-items-center mt-3 detail-sub-section-view p-3 border-round-md">
+          <p class="text-sm font-medium heading-color my-1">File</p>
+          <img [src]="getFileIcon(getFileExtension(resourceDetail?.fileName))" alt="file"
+          class="cursor-pointer header-icons" />
+          <a href="{{resourceDetail?.filePath}}" target="_blank"
+            class="secondary-color font-normal text-xs my-1 cursor-pointer no-underline">{{resourceDetail?.fileName|titlecase}}</a>
+        </div>
+        <div class="detail-sub-section-view p-3 border-round-md mt-2">
+          <p class="text-base font-medium heading-color my-1 pb-2">Summary</p>
+          <p class="inactive-color font-normal text-sm my-1">{{resourceDetail?.content?.summary|titlecase}}</p>
+        </div>
+        <div class="flex justify-content-between detail-sub-section-view p-3 border-round-md mt-2" *ngIf="resourceDetail?.content?.actions">
+          <div class="my-2" >
+            <p class="heading-color text-basefont-normal my-1 pb-2">Actions:</p>
+            <ol>
+              <li *ngFor="let item of resourceDetail?.content?.actions">
+                <p class="inactive-color text-sm font-normal my-1 pl-1">{{ item }}</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="flex justify-content-between detail-sub-section-view p-3 border-round-md mt-2" *ngIf="resourceDetail?.content?.keypoints">
+          <div class="my-2" >
+            <p class="heading-color text-base font-normal my-1 pb-2">Key Points:</p>
+            <ol>
+              <li *ngFor="let item of resourceDetail?.content?.keypoints">
+                <p class="inactive-color text-sm font-normal my-1 pl-1">{{ item }}</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="flex justify-content-between detail-sub-section-view p-3 border-round-md mt-2 mb-2" *ngIf="resourceDetail?.content?.participants">
+          <div class="my-2" >
+            <p class="heading-color text-base font-normal my-1 pb-2">Participants:</p>
+            <ul>
+              <li *ngFor="let item of resourceDetail?.content?.participants">
+                <p class="inactive-color text-sm font-normal my-1 pl-1">{{ item }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <app-detail-view-footer [record]="resourceDetail"></app-detail-view-footer> -->
+  </div>
+</div>

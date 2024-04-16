@@ -332,9 +332,17 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    const naviFrame = document.getElementById('naviFrame')
+    if (naviFrame) {
+      const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
+      iWindow?.postMessage({ message: 'logout' }, environment.naviAppUrl);
+    } else {
+      this.logoutFromTheApp()
+    }
+  }
+
+  logoutFromTheApp(): void {
     this.showInactiveTimeoutPopup = false;
-    let rawUrl: string = environment.naviAppUrl + '?logout=true';
-    this.iframeUrlLoad(rawUrl);
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
@@ -387,6 +395,10 @@ export class AppComponent implements OnInit {
     if (event.data.message === 'expand-navi') {
       this.isNaviExpanded = true;
       this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+    }
+
+    if (event.data.message === 'logout') {
+      this.logoutFromTheApp()
     }
     if (event.data.message === 'contract-navi') {
       this.isNaviExpanded = false;
@@ -704,6 +716,9 @@ export class AppComponent implements OnInit {
   makeTrustedUrl(productEmail?: string): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    console.log('this.currentUser', this.currentUser);
+
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -774,8 +789,6 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
-    console.log(' this.componentToShow', this.componentToShow);
-
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
