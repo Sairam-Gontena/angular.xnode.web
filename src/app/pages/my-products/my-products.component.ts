@@ -267,7 +267,10 @@ export class MyProductsComponent implements OnInit {
         this.onClickcreatedByYou();
         if (this.authApiService.getDeeplinkURL()) {
           let urlObj = new URL(this.authApiService.getDeeplinkURL());
-          this.utils.navigateByDeepLink(urlObj);
+          let hash = urlObj.hash;
+          let [path, queryString] = hash.substr(1).split('?');
+          let params = new URLSearchParams(queryString);
+          this.utils.navigateByDeepLink(urlObj, path, params);
         }
       } else if (response?.status !== 200) {
         let user_audit_body = {

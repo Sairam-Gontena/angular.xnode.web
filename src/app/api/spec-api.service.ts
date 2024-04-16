@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +10,7 @@ export class SpecApiService extends BaseApiService {
     return environment.commentsApiUrl;
   }
 
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     super();
   }
 
