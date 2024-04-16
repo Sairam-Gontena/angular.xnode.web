@@ -52,8 +52,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   notifInfo: any;
   reveiwerList: any;
 
-  constructor(
-    private utils: UtilsService,
+  constructor(    private utils: UtilsService,
     private specService: SpecApiService,
     private specUtils: SpecUtilsService,
     private router: Router,
