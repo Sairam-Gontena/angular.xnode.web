@@ -544,7 +544,10 @@ export class AppComponent implements OnInit {
     if (previousUrl) {
       localStorage.removeItem('previousUrl');
       if (this.deepLink) {
-        this.router.navigateByUrl('specification');
+        let urlObj = new URL(window.location.href);
+        let hash = urlObj.hash;
+        let [path, queryString] = hash.substr(1).split('?')
+        this.router.navigateByUrl(path);
       } else {
         this.router.navigateByUrl(previousUrl);
       }
@@ -740,9 +743,6 @@ export class AppComponent implements OnInit {
       this.currentUser?.user_id +
       '&account_id=' +
       this.currentUser?.account_id;
-    if (deep_link_info?.componentToShow) {
-      rawUrl = rawUrl + '&componentToShow=' + deep_link_info?.componentToShow
-    }
     if (restriction_max_value) {
       rawUrl =
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
@@ -792,22 +792,26 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
+
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow));
         this.componentToShow = undefined;
       } else {
-        rawUrl += "&componentToShow=" + this.componentToShow;
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow);
         this.componentToShow = undefined;
       }
     } else {
       if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks"));
         this.componentToShow = undefined;
       } else {
-        rawUrl += "&componentToShow=Tasks";
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks");
         this.componentToShow = undefined;
       }
+    }
+    if (deep_link_info?.conversationDetail) {
+      rawUrl += "&conversationDetailID=" + deep_link_info?.conversationDetail;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.mainComponent = '';
