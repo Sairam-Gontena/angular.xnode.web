@@ -723,19 +723,19 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   graph() {
-    this.useCases.forEach((d: any) => {
-      let temp_title;
-      d.children = [];
-      for (let i = 0; i < d.xflows?.length; i++) {
-        temp_title = d.xflows[i].name;
-        d.children.push({
-          id: i,
-          title: temp_title,
-        });
-      }
-    });
+    if (this.useCases?.length)
+      this.useCases.forEach((d: any) => {
+        let temp_title;
+        d.children = [];
+        for (let i = 0; i < d.xflows?.length; i++) {
+          temp_title = d.xflows[i].name;
+          d.children.push({
+            id: i,
+            title: temp_title,
+          });
+        }
+      });
     let mod_data = this.useCases;
-
     this.showUsecaseGraph = true;
 
     //TBD

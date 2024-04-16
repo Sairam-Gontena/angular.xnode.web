@@ -59,8 +59,7 @@ export class MyProductsComponent implements OnInit {
   loading: boolean = false;
   showImportFilePopup: boolean = false;
 
-  constructor(
-    private RefreshListService: RefreshListService,
+  constructor(private RefreshListService: RefreshListService,
     public router: Router,
     private route: ActivatedRoute,
     private utils: UtilsService,
@@ -70,8 +69,8 @@ export class MyProductsComponent implements OnInit {
     private naviApiService: NaviApiService,
     private conversationApiService: ConversationApiService,
     private messagingService: MessagingService,
-    private conversationService: ConversationHubService,
-  ) {
+    private conversationService: ConversationHubService) {
+
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
       this.userImage =
@@ -101,8 +100,7 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadToaster({
           severity: 'success',
           summary: 'SUCCESS',
-          detail:
-            'Started generating application, please look out for notifications in the top nav bar',
+          detail: 'Started generating application, please look out for notifications in the top nav bar',
           life: 10000,
         });
       }
@@ -129,6 +127,11 @@ export class MyProductsComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.SpecVersion);
     this.storageService.removeItem(StorageKeys.SelectedSpec);
     this.storageService.removeItem(StorageKeys.CONVERSATION)
+    let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
+    if (getDeepLinkInfoObj) {
+      this.authApiService.setDeeplinkURL("");
+      this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
+    }
     this.getMetaData();
   }
 
@@ -379,7 +382,10 @@ export class MyProductsComponent implements OnInit {
         this.onClickcreatedByYou();
         if (this.authApiService.getDeeplinkURL()) {
           let urlObj = new URL(this.authApiService.getDeeplinkURL());
-          this.utils.navigateByDeepLink(urlObj);
+          let hash = urlObj.hash;
+          let [path, queryString] = hash.substr(1).split('?');
+          let params = new URLSearchParams(queryString);
+          this.utils.navigateByDeepLink(urlObj, path, params);
         }
       } else if (response?.status !== 200) {
         let user_audit_body = {
