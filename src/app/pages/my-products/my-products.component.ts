@@ -282,15 +282,15 @@ export class MyProductsComponent implements OnInit {
   
    getColumnDef(){
     this.columnDef = [
-      // {
-      //   field: "objectType",
-      //   header: "Entity",
-      //   width: 100,
-      //   filter: true,
-      //   sortable: true,
-      //   visible: true,
-      //   default: true
-      // },
+      {
+        field: "objectType",
+        header: "Entity",
+        width: 100,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
       {
         field: "shortId",
         header: "Id",
@@ -300,30 +300,30 @@ export class MyProductsComponent implements OnInit {
         visible: true,
         default: true
       },
-      // {
-      //   field: "title",
-      //   header: "Title",
-      //   // width: 250,
-      //   filter: true,
-      //   sortable: true,
-      //   visible: true,
-      //   default: true
-      // },
-      // {
-      //   field: "userAction",
-      //   header: "Action",
-      //   width: 100,
-      //   visible: true,
-      //   default: true
-      // },
       {
-        field: "description",
-        header: "Description",
+        field: "title",
+        header: "Title",
+        width: 250,
         filter: true,
         sortable: true,
         visible: true,
         default: true
       },
+      {
+        field: "userAction",
+        header: "Action",
+        width: 100,
+        visible: true,
+        default: true
+      },
+      // {
+      //   field: "description",
+      //   header: "Description",
+      //   filter: true,
+      //   sortable: true,
+      //   visible: true,
+      //   default: true
+      // },
       {
         field: "modifiedBy",
         header: "Modified By",
