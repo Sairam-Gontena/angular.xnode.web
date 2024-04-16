@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 // import { XnodeConversation } from '../models/interfaces/xnode-conversation';
-import { BehaviorSubject, Observable, Subject, catchError, map, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, from, map, throwError } from 'rxjs';
 import axios from 'axios';
 import { BaseApiService } from './base-api.service';
 import { AuthApiService } from './auth.service';
@@ -87,5 +87,9 @@ export class ConversationHubService extends BaseApiService {
           httpParams = httpParams.append(key, params[key]);
         });
         return this.httpClient.get(`${this.rootUrl}resource`, { params: httpParams });
+    }
+
+    getRecentActivities(userId: any) {
+      return from(this.get(`user-activity?`, { userId }));
     }
 }
