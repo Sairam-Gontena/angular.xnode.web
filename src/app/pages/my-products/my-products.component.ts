@@ -249,6 +249,7 @@ export class MyProductsComponent implements OnInit {
             userAction: activity.userAction,
             userName: activity.userName,
             modifiedOn: (new Date(activity.modifiedOn).toLocaleString()),
+            description: activity.description,
             title: activity.actionDetail.title || "NA"
           })
         }
@@ -262,7 +263,7 @@ export class MyProductsComponent implements OnInit {
       {
         field: "objectType",
         header: "Entity",
-        // width: 100,
+        width: 100,
         filter: true,
         sortable: true,
         visible: true,
@@ -277,16 +278,25 @@ export class MyProductsComponent implements OnInit {
         visible: true,
         default: true
       },
+      // {
+      //   field: "userAction",
+      //   header: "Action",
+      //   width: 100,
+      //   visible: true,
+      //   default: true
+      // },
+      // {
+      //   field: "userName",
+      //   header: "User",
+      //   filter: true,
+      //   sortable: true,
+      //   // width: '35',
+      //   visible: true,
+      //   default: true
+      // },
       {
-        field: "userAction",
-        header: "Action",
-        // width: 100,
-        visible: true,
-        default: true
-      },
-      {
-        field: "userName",
-        header: "User",
+        field: "description",
+        header: "Description",
         filter: true,
         sortable: true,
         // width: '35',
