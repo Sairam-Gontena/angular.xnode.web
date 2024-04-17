@@ -18,7 +18,7 @@ import { SpecApiService } from 'src/app/api/spec-api.service';
 export class UseCasesComponent implements OnInit {
   product?: Product;
   currentUser?: User;
-  useCases: any;
+  useCases = new Array();
 
   constructor(
     private utils: UtilsService,
@@ -47,7 +47,16 @@ export class UseCasesComponent implements OnInit {
       .getUsecases(this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
-          this.useCases = response.data;
+          if (typeof response.data === 'string') {
+            try {
+              JSON.parse(response.data);
+              this.useCases = JSON.parse(response.data)
+            } catch (error) {
+              this.useCases = []
+            }
+          } else {
+            this.useCases = response.data
+          }
           this.auditUtil.postAudit(
             'RETRIEVE_USECASES',
             1,

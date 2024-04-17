@@ -150,7 +150,7 @@ export class DiffViewerComponent implements OnInit {
   ngOnInit(): void {
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {
-      this.utils.saveProductId(getDeepLinkInfoObj.product_id);      
+      this.utils.saveProductId(getDeepLinkInfoObj.product_id);
       this.authApiService.setDeeplinkURL("");
       this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
     }
@@ -268,56 +268,60 @@ export class DiffViewerComponent implements OnInit {
     }
     if (this.product && this.product.id) {
       this.specService.getVersions(this.product.id, (data) => {
-        let version = data.filter((obj: any) => {
-          return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id;
-        })[0];
+        if (data?.length) {
+          let version = data.filter((obj: any) => {
+            return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id;
+          })[0];
 
-        const uniqueStatuses = [
-          ...new Set(data.map((obj: any) => obj.specStatus)),
-        ];
-        const priorityOrder = uniqueStatuses.sort((a, b) => {
-          if (a === 'LIVE') return -1;
-          if (b === 'LIVE') return 1;
-          return 0;
-        });
-        const firstObjectWithPriority = data.find(
-          (obj: any) => obj.specStatus === priorityOrder[0]
-        );
-        this.specService.getMeSpecInfo({
-          productId: this.product?.id,
-          versionId: version ? version.id : firstObjectWithPriority.id,
-        },
-          (specData) => {
-            if (specData) {
-              if (
-                this.conversationPanelInfo?.openConversationPanel &&
-                this.conversationPanelInfo?.parentTabIndex === 0 &&
-                this.conversationPanelInfo?.childTabIndex === 0
-              ) {
-                this.specService.getMeAllComments({
-                  productId: this.product?.id,
-                  versionId: firstObjectWithPriority.id,
-                });
-              } else if (
-                this.conversationPanelInfo?.openConversationPanel &&
-                this.conversationPanelInfo?.parentTabIndex === 0 &&
-                this.conversationPanelInfo?.childTabIndex === 1
-              ) {
-                this.specService.getMeAllTasks({
-                  productId: this.product?.id,
-                  versionId: firstObjectWithPriority.id,
-                });
-              } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 1) {
-                this.specService.getMeCrList({ productId: this.product?.id });
-              }
-            }
+          const uniqueStatuses = [
+            ...new Set(data.map((obj: any) => obj.specStatus)),
+          ];
+          const priorityOrder = uniqueStatuses.sort((a, b) => {
+            if (a === 'LIVE') return -1;
+            if (b === 'LIVE') return 1;
+            return 0;
           });
-        this.versions = data;
-        this.selectedVersion = version ? version : firstObjectWithPriority;
-        this.storageService.saveItem(
-          StorageKeys.SpecVersion,
-          version ? version : firstObjectWithPriority
-        );
+          const firstObjectWithPriority = data.find(
+            (obj: any) => obj.specStatus === priorityOrder[0]
+          );
+          this.specService.getMeSpecInfo({
+            productId: this.product?.id,
+            versionId: version ? version.id : firstObjectWithPriority.id,
+          },
+            (specData) => {
+              if (specData) {
+                if (
+                  this.conversationPanelInfo?.openConversationPanel &&
+                  this.conversationPanelInfo?.parentTabIndex === 0 &&
+                  this.conversationPanelInfo?.childTabIndex === 0
+                ) {
+                  this.specService.getMeAllComments({
+                    productId: this.product?.id,
+                    versionId: firstObjectWithPriority.id,
+                  });
+                } else if (
+                  this.conversationPanelInfo?.openConversationPanel &&
+                  this.conversationPanelInfo?.parentTabIndex === 0 &&
+                  this.conversationPanelInfo?.childTabIndex === 1
+                ) {
+                  this.specService.getMeAllTasks({
+                    productId: this.product?.id,
+                    versionId: firstObjectWithPriority.id,
+                  });
+                } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 1) {
+                  this.specService.getMeCrList({ productId: this.product?.id });
+                }
+              }
+            });
+          this.versions = data;
+          this.selectedVersion = version ? version : firstObjectWithPriority;
+          this.storageService.saveItem(
+            StorageKeys.SpecVersion,
+            version ? version : firstObjectWithPriority
+          );
+        } else {
+          this.utils.loadSpinner(false);
+        }
       });
     }
   }
