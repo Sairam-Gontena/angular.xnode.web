@@ -95,9 +95,6 @@ export class AppComponent implements OnInit {
 
   user?: User | null;
 
-  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 30 * 60; //10 minutes in seconds
-  private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
-
   constructor(private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
@@ -203,10 +200,10 @@ export class AppComponent implements OnInit {
     this.authApiService.user.subscribe(x => this.user = x);
 
 
-    // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(this.XNODE_IDLE_TIMEOUT_PERIOD);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(this.XNODE_TIMEOUT_PERIOD);
+    // sets an idle timeout of seconds, for testing purposes.
+    idle.setIdle(eval(environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS));
+    // sets a timeout period of environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS seconds. after environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(environment.XNODE_TIMEOUT_PERIOD_SECONDS);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 

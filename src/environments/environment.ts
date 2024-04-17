@@ -19,5 +19,7 @@ export const environment = {
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
     projectName: 'xnode-dev',
-    homeUrl: 'https://dev.xnode.ai/'
+    homeUrl: 'https://dev.xnode.ai/',
+    XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60 * 60',
+    XNODE_TIMEOUT_PERIOD_SECONDS:30
 }
