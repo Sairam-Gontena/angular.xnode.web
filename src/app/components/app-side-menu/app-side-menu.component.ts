@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 import { Router } from '@angular/router';
 import { NavigationEnd } from '@angular/router';
 import { UserUtil } from '../../utils/user-util';
-import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { MessageService } from 'primeng/api';
 import { MessagingService } from '../services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 
@@ -18,6 +15,8 @@ import { MessageTypes } from 'src/models/message-types.enum';
   styleUrls: ['./app-side-menu.component.scss'],
 })
 export class AppSideMenuComponent implements OnInit {
+  @Output() navigateToHome = new EventEmitter<object>();
+  @Output() enableDockedNavi = new EventEmitter<Object>();
   sideMenuItems: any;
   selectedMenuIndex: any;
   currentUser?: any;
@@ -48,6 +47,7 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   prepareMenuBasedOnRoute(): void {
+    let entityName:any = this.storageService.getItem(StorageKeys.CurrentUser);
     if (!this.isInProductContext) {
       this.sideMenuItems = [
         {
@@ -55,17 +55,24 @@ export class AppSideMenuComponent implements OnInit {
           icon: './assets/home.svg',
           path: 'my-products',
         },
-        {
-          label: 'Agents',
-          icon: './assets/agent-hub/agent-sidebar.svg',
-          path: 'agent-playground/',
-        },
+        // {
+        //   label: 'Agents',
+        //   icon: './assets/agent-hub/agent-sidebar.svg',
+        //   path: 'agent-playground/',
+        // },
         // {
         //   label: 'Knowledge',
         //   icon: './assets/accounts.svg',
         //   path: 'admin/user-approval',
         // },
       ];
+      if(entityName.hasOwnProperty('entity_name') && entityName.entity_name.toLowerCase().includes('xnode')){
+        this.sideMenuItems.push({
+          label: 'Agents',
+          icon: './assets/agent-hub/agent-sidebar.svg',
+          path: 'agent-playground/',
+        })
+      }
       this.activateMenuItem();
     } else {
       const environmentName = environment.name as keyof typeof AppSideMenuItems;
@@ -77,6 +84,7 @@ export class AppSideMenuComponent implements OnInit {
       }
     }
   }
+
   activateMenuItem() {
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
@@ -89,13 +97,18 @@ export class AppSideMenuComponent implements OnInit {
       }
     });
   }
+
   onClickMenuItem(item: any, i: any): void {
-    if (this.currentUser?.role_name === 'Xnode Admin' && item.label == 'Home') {
-      this.selectedMenuIndex = i;
-      this.router.navigate(['/' + item.path]);
-    } else if (this.currentUser?.role_name === 'Xnode Entity User') {
-      this.selectedMenuIndex = i;
-      this.router.navigate(['/' + item.path]);
+    const isNaviExpanded = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED)
+    if (isNaviExpanded && (item.label === 'Home' || item.label === 'Agents')) {
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+      this.navigateToHome.emit();
+    } else {
+      const product = this.storageService.getItem(StorageKeys.Product)
+      if (!product || isNaviExpanded)
+        this.enableDockedNavi.emit();
     }
+    this.selectedMenuIndex = i;
+    this.router.navigate(['/' + item.path]);
   }
 }

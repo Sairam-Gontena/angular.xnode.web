@@ -81,6 +81,11 @@ import { PromptOverviewComponent } from '../components/agent-hub/create-agent/pr
 import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
 import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
 import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
+import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
+import { ResourcesComponent } from '../components/resources/resources.component';
+import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
+import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
+import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -160,7 +165,12 @@ import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-
     CreateTopicModalComponent,
     CreatePromptModalComponent,
     XnodeCommonModalComponent,
-    ShareLinkComponent
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -242,7 +252,12 @@ import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-
     CreateTopicModalComponent,
     CreatePromptModalComponent,
     XnodeCommonModalComponent,
-    ShareLinkComponent
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent
   ],
 })
 export class SharedComponentModule { }

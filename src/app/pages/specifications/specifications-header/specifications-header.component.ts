@@ -10,7 +10,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { Clipboard } from '@angular/cdk/clipboard'
 import { SpecApiService } from 'src/app/api/spec-api.service';
 
 interface AutoCompleteCompleteEvent {
@@ -64,14 +63,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     modal: true,
     modalClass: "",
     responsive: true,
-    style: { width: '40vw', height: '65vh' }
+    style: { width: "40vw", "max-height": "70vh" }
   }
   sharedLinkDetail: any = {
     getUserList: new Array(),
     selectedUserList: new Array(),
+    showSelectedUserChip: new Array(),
+    removeUserChip: "",
     removeUserAccess: false,
     iniviteType: "",
-    currentSpecData: "",
+    currentShareDetailData: "",
     inviteList: [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
     { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
     { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }],
@@ -92,7 +93,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    private clipboard: Clipboard,
     private specApiService: SpecApiService) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
@@ -355,21 +355,35 @@ export class SpecificationsHeaderComponent implements OnInit {
   //copy the link
   copyLink() {
     this.checkDeepLinkCopied = true;
-    this.clipboard.copy(this.getDeeplinkURL());
+    let inputText = document.createElement('input');
+    inputText.style.position = 'fixed';
+    inputText.style.left = '0';
+    inputText.style.top = '0';
+    inputText.style.opacity = '0';
+    inputText.value = this.getDeeplinkURL();
+    document.body.appendChild(inputText);
+    inputText.focus();
+    inputText.select();
+    document.execCommand('copy');
+    document.body.removeChild(inputText);
   }
 
   //make shared link detail
   makeSharedLinkDetail() {
     this.sharedLinkDetail.selectedUserList = new Array();
-    if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
-      this.sharedLinkDetail.getUserList = this.userList;
-      this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
+    this.sharedLinkDetail.showSelectedUserChip = new Array();
+    this.sharedLinkDetail.getUserList = this.userList;
+    if (this.sharedLinkDetail.currentShareDetailData?.users?.length) {
+      this.sharedLinkDetail.currentShareDetailData.users.forEach((element: any) => {
         if (element.userId !== this.currentUser?.user_id) {
           let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
           if (element.active === undefined || element.active === true) {
             getUser.active = true;
             this.sharedLinkDetail.selectedUserList.push(getUser);
+            this.sharedLinkDetail.showSelectedUserChip.push(getUser);
             this.sharedLinkDetail.getUserList = this.sharedLinkDetail.getUserList?.filter((item: any) => item.user_id !== element.userId);
+          } else {
+            this.sharedLinkDetail.showSelectedUserChip = this.sharedLinkDetail.showSelectedUserChip?.filter((item: any) => item.user_id !== element.userId);
           }
         }
       });
@@ -377,7 +391,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     if (this.sharedLinkDetail.snackMessage.enable && !this.sharedLinkDetail.removeUserAccess) {
       this.sharedLinkDetail.snackMessage.closable = true;
       this.sharedLinkDetail.snackMessage.message.push({ severity: 'success', summary: '', detail: "Invited Successfully." });
-      this.sharedLinkDetail.removeUserAccess = false;
       setTimeout(() => {
         this.sharedLinkDetail.snackMessage.closable = false;
         this.sharedLinkDetail.snackMessage.message = new Array();
@@ -387,25 +400,42 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.sharedLinkDetail = Object.assign({}, this.sharedLinkDetail);
   }
 
+  //make users list in payload
+  makePayloadUsers(userArr: any, deepLink: string) {
+    if (!this.sharedLinkDetail.removeUserAccess && this.sharedLinkDetail.selectedUserList && this.sharedLinkDetail.selectedUserList.length) {
+      this.sharedLinkDetail.selectedUserList.forEach((element: any) => {
+        userArr.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: deepLink });
+      });
+    }
+    if (this.sharedLinkDetail.removeUserAccess) {
+      this.sharedLinkDetail.showSelectedUserChip.forEach((element: any) => {
+        if (element.user_id !== this.sharedLinkDetail.removeUserChip.user_id) {
+          userArr.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: deepLink });
+        }
+      });
+      this.sharedLinkDetail.showSelectedUserChip = this.sharedLinkDetail.showSelectedUserChip.filter((item: any) => item.user_id !== this.sharedLinkDetail.removeUserChip.user_id);
+    }
+    return userArr;
+  }
+
   //invite the user
   inviteRemoveUser() {
     let paramPayload: any = {
-      param: { id: this.sharedLinkDetail.currentSpecData.id },
+      param: { id: this.sharedLinkDetail.currentShareDetailData.id },
       payload: { users: new Array() }
     },
       getDeepLink = this.getDeeplinkURL();
     paramPayload.payload.users.push({ userId: this.currentUser?.user_id, role: "owner" });
-    if (this.sharedLinkDetail.selectedUserList && this.sharedLinkDetail.selectedUserList.length) {
-      this.sharedLinkDetail.selectedUserList.forEach((element: any) => {
-        paramPayload.payload.users.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: getDeepLink });
-      });
-    }
+    paramPayload.payload.users = this.makePayloadUsers(paramPayload.payload.users, getDeepLink);
     this.utilsService.loadSpinner(true);
     this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
       if (response && response.status === 200) {
-        this.sharedLinkDetail.currentSpecData = response.data;
+        this.sharedLinkDetail.currentShareDetailData = response.data;
         this.sharedLinkDetail.snackMessage.enable = true;
         this.makeSharedLinkDetail();
+        if (this.sharedLinkDetail.removeUserAccess) {
+          this.sharedLinkDetail.removeUserAccess = false;
+        }
       }
       if (response.data?.common?.message) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.common?.message });
@@ -421,8 +451,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   shareEvent() {
     this.enableCommonModal = true;
     this.commonModalDetail.visible = true;
-    if (this.specData && this.specData.length) {
-      this.sharedLinkDetail.currentSpecData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
+    if (!this.sharedLinkDetail.currentShareDetailData && this.specData && this.specData.length) {
+      this.sharedLinkDetail.currentShareDetailData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
     }
     this.makeSharedLinkDetail();
   }
@@ -457,6 +487,7 @@ export class SpecificationsHeaderComponent implements OnInit {
           break;
         case "chipremove":
           this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
+          this.sharedLinkDetail.removeUserChip = event.data;
           this.sharedLinkDetail.removeUserAccess = true;
           this.inviteRemoveUser();
           break;

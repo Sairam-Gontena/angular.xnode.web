@@ -87,7 +87,7 @@
         <div class="text-sm font-medium title-fonts" *ngIf="notification?.component == 'Product Specifications'">
           {{ notification?.component?.toUpperCase() }}
         </div>
-        <div (click)="navigateToConversation(notification)" class="text-500 mt-2 text-sm font-normal title-fonts">
+        <div class="text-500 mt-2 text-sm font-normal title-fonts">
           {{ notification?.description }}
         </div>
         <div class="flex mt-2" *ngIf="notification?.type === 'request'">

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,11 +15,19 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
 import { JwtModule } from '@auth0/angular-jwt';
-import { HttpClientModule } from '@angular/common/http';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthApiService } from './api/auth.service';
+import { appInitializer } from './utils/app.initializer';
+import { JwtInterceptor } from './utils/jwt.interceptor';
+import { ErrorInterceptor } from './utils/error.interceptor';
+import { LocalStorageService } from './components/services/local-storage.service';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    NgIdleKeepaliveModule.forRoot(),
+    HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -44,7 +52,11 @@ import { HttpClientModule } from '@angular/common/http';
       },
     }),
   ],
-  providers: [RefreshListService, DatePipe],
+  providers: [RefreshListService, DatePipe,
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [LocalStorageService, AuthApiService] },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

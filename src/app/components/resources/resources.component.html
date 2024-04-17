@@ -1,0 +1,22 @@
+<div class="p-0" [ngClass]="isNaviExpanded ? 'm-3' : 'm-0'">
+  <div *ngIf="tableView else detailView">
+    <div class="mt-2">
+    </div>
+    <div class="col-12 flex justify-content-between mt-2">
+      <div class="flex justify-content-start">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="searchFilter($event)" placeholder="Search keyword" />
+        </span>
+      </div>
+    </div>
+    <app-content-grid [isCheckbox]="selectedConversationID?true:false" [showSearch]="false" (emitCheckedRecords)="checkedResources($event)"
+      [entity]="entity" [headers]="columnDef" [clearAllTheSelectedConversations]="clearAllTheSelectedResources" [dataContent]="resources" (onRowSelected)="onRowSelect($event)"
+      (idClicked)="onIdClick($event)" (onRowUnselected)="onRowUnselect($event)" (emitTrue)="visibleEmitter($event)"
+      [tableFilterEvent]="tableFilterEvent" [selectedTab]="selectedTab"></app-content-grid>
+  </div>
+  <ng-template #detailView>
+    <app-resource-detail (routeToTableView)="tableView=!tableView" [resourceDetail]="resourceDetail" [users]="users"
+      [parentParams]="parentParams" [currentUser]="currentUser"></app-resource-detail>
+  </ng-template>
+</div>

@@ -11,7 +11,6 @@ import { debounce } from 'rxjs/operators';
 import { interval } from 'rxjs';
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json';
-import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -21,6 +20,10 @@ import { MessageTypes } from 'src/models/message-types.enum';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from './api/conversation-hub.service';
 import { AuditutilsService } from './api/auditutils.service';
+import { User } from './utils/user-util';
+import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
+import { Keepalive } from '@ng-idle/keepalive';
+
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -56,6 +59,7 @@ export class AppComponent implements OnInit {
   product: any;
   newWithNavi: boolean = false;
   componentToShow?: any;
+  mainComponent: string = '';
   showNaviSpinner: boolean = true;
   routes: any = [
     '#/dashboard',
@@ -83,28 +87,41 @@ export class AppComponent implements OnInit {
   conversationId?: string;
   resource_id: any;
 
+  showInactiveTimeoutPopup?: boolean;
+  inactiveTimeoutCounter?: number;
+  idleState = 'Not started.';
+  timedOut = false;
+  lastPing?: Date = undefined;
+
+  user?: User | null;
+
+  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10 * 60; //10 minutes in seconds
+  private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
+
   constructor(private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
-    public auth: AuthApiService,
+    public authApiService: AuthApiService,
     private notifyApi: NotifyApiService,
     private themeService: ThemeService,
-    private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService,
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private messagingService: MessagingService,
     private conversationHubService: ConversationHubService,
-    private auditService: AuditutilsService
-  ) {
-    let winUrl = window.location.href;
+    private auditService: AuditutilsService,
+    private idle: Idle,
+    private keepalive: Keepalive) {
+    let winUrl = this.authApiService.getDeeplinkURL() ? this.authApiService.getDeeplinkURL() : window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (winUrl.includes('template_id') || winUrl.includes('template_type') ||
-      winUrl.includes('crId') || winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id')) {
+    if (!this.authApiService.isUserLoggedIn()) {
+      this.authApiService.setDeeplinkURL(winUrl);
+    }
+    if (winUrl.includes('template_id') || winUrl.includes('template_type') || winUrl.includes('crId') ||
+      winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id') || winUrl.includes('naviURL')) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     } else {
@@ -142,6 +159,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      this.newWithNavi = false;
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
         if (msg.msgData?.componentToShow === 'Resources') {
@@ -156,6 +174,7 @@ export class AppComponent implements OnInit {
         }
         this.isNaviExpanded = msg.msgData?.isNaviExpanded;
         this.makeTrustedUrl();
+        this.showNaviSpinner = false;
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
@@ -176,85 +195,124 @@ export class AppComponent implements OnInit {
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
     })
+
+
+    window.addEventListener('message', (event) => this.onNaviEvent(event, this), false);
+
+    this.authApiService.user.subscribe(x => this.user = x);
+
+
+    // sets an idle timeout of 5 seconds, for testing purposes.
+    idle.setIdle(this.XNODE_IDLE_TIMEOUT_PERIOD);
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(this.XNODE_TIMEOUT_PERIOD);
+    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+
+    idle.onIdleEnd.subscribe(() => {
+      this.idleState = 'No longer idle.'
+      console.log(this.idleState);
+      this.reset();
+    });
+
+    idle.onTimeout.subscribe(() => {
+      this.idleState = 'Timed out!';
+      this.timedOut = true;
+      console.log(this.idleState);
+      this.logout();
+      this.router.navigate(['/']);
+    });
+
+    idle.onIdleStart.subscribe(() => {
+      this.idleState = 'You\'ve gone idle!'
+      console.log(this.idleState);
+      this.showInactiveTimeoutPopup = true;
+      // this.childModal.show();
+    });
+
+    idle.onTimeoutWarning.subscribe((countdown) => {
+      this.idleState = 'You will time out in ' + countdown + ' seconds!'
+      this.inactiveTimeoutCounter = countdown;
+      console.log(this.idleState);
+    });
+
+    // sets the ping interval to 50 seconds
+    keepalive.interval(50);
+
+    keepalive.onPing.subscribe(() => this.lastPing = new Date());
+
+    this.authApiService.getIsLoggedIn().subscribe(userLoggedIn => {
+      if (userLoggedIn) {
+        idle.watch()
+        this.timedOut = false;
+      } else {
+        idle.stop();
+      }
+    })
+
+    if (this.currentUser) {
+      this.currentUser.accessToken = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      this.currentUser.refreshToken = this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
+      this.authApiService.userSubject.next(this.currentUser)
+      this.authApiService.setIsLoggedIn(true)
+      this.authApiService.startRefreshTokenTimer();
+    }
+
+
   }
 
+  onNaviEvent(event: any, parent: any) {
+    if (!environment.naviAppUrl.includes(event.origin)) { return; }
+    switch (event.data) {
+      case "NAVI_USET_ACTIVE_EVENT":
+        parent.reset()
+        break;
+    }
+  }
+
+  reset() {
+    this.idle.watch();
+    this.idleState = 'Started.';
+    this.timedOut = false;
+  }
+
+
+
   navigateToHome(): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: false,
+    });
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.showDockedNavi = false;
+    this.showDockedNavi = true;
     this.isNaviExpanded = false;
-    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
-    localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
+    this.storageService.removeItem(StorageKeys.Product);
     this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
-    this.router.navigate(['/my-products'])
+    this.mainComponent = 'my-products';
+    this.router.navigate(['/my-products']);
+  }
+
+  enableDockedNavi(): void {
+    this.isNaviExpanded = false;
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.makeTrustedUrl();
   }
 
   async setDeepLinkInfo(winUrl: any) {
     let urlObj = new URL(winUrl);
     let hash = urlObj.hash;
-    let [path, queryString] = hash.substr(1).split('?');
-    let params = new URLSearchParams(queryString);
-    this.navigateByDeepLink(path, params);
-  }
-
-  async navigateByDeepLink(path: string, params: any) {
-    let templateId = params.get('template_id');
-    let templateType = params.get('template_type');
-    let productId = params.get('product_id');
-    let versionId = params.get('version_id');
-    let crId = params.get('crId');
-    let entity = params.get('entity');
-    if ((templateId && templateType) || (crId && entity) || (productId && versionId)) {
-      let deepLinkInfo;
-      if (templateId && templateType) {
-        deepLinkInfo = {
-          product_id: productId,
-          template_id: templateId,
-          template_type: templateType,
-          version_id: versionId,
-        };
-      } else if (productId && versionId) {
-        deepLinkInfo = {
-          product_id: productId,
-          version_id: versionId,
-        };
-      }
-      if (crId && entity) {
-        versionId = params.get('versionId');
-        productId = params.get('productId');
-        deepLinkInfo = {
-          product_id: productId,
-          entity: entity,
-          cr_id: crId,
-          version_id: versionId,
-        };
-        this.specUtils._openCommentsPanel(true);
-        this.specUtils._loadActiveTab({
-          activeIndex: 1,
-          productId: deepLinkInfo.product_id,
-          versionId: deepLinkInfo.version_id,
-        });
-      }
-      await this.setDeepLinkInStorage(deepLinkInfo);
-      this.router.navigateByUrl(path);
+    let [path, queryString] = hash.substr(1).split('?')
+    if (winUrl.includes('naviURL')) {
+      queryString = hash.split('?')[2];
     }
-  }
-
-  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+    let params = new URLSearchParams(queryString);
+    this.utilsService.navigateByDeepLink(urlObj, path, params);
   }
 
   async changeTheme(event: any) {
@@ -276,32 +334,45 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
-    let rawUrl: string =
-      environment.naviAppUrl + '?logout=true';
-    this.iframeUrlLoad(rawUrl);
+    const naviFrame = document.getElementById('naviFrame')
+    if (naviFrame) {
+      const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
+      iWindow?.postMessage({ message: 'logout' }, environment.naviAppUrl);
+    } else {
+      this.logoutFromTheApp()
+    }
+  }
+
+  logoutFromTheApp(): void {
+    this.showInactiveTimeoutPopup = false;
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
+    this.authApiService.logout();
     setTimeout(() => {
       localStorage.clear();
-      this.auth.setUser(false);
+      this.authApiService.setUser(false);
       this.router.navigate(['/']);
     }, 1000);
+  }
+
+  closeNavi(): void {
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    this.product = undefined;
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.showDockedNavi = false;
+    localStorage.removeItem('has_insights')
+    localStorage.removeItem('IS_NAVI_OPENED')
+    localStorage.removeItem('app_name')
+    this.isNaviExpanded = false;
+    this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+    this.makeTrustedUrl()
   }
 
   receiveMessage(event: MessageEvent) {
     if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
     if (event?.data?.message === 'close-event') {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-      this.product = undefined;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-      this.showDockedNavi = false;
-      localStorage.removeItem('has_insights')
-      localStorage.removeItem('IS_NAVI_OPENED')
-      localStorage.removeItem('app_name')
-      this.isNaviExpanded = false;
-      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-      this.makeTrustedUrl()
+      this.closeNavi();
     }
     if (event.data.message === 'triggerCustomEvent') {
       this.showDockedNavi = false;
@@ -326,6 +397,10 @@ export class AppComponent implements OnInit {
     if (event.data.message === 'expand-navi') {
       this.isNaviExpanded = true;
       this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+    }
+
+    if (event.data.message === 'logout') {
+      this.logoutFromTheApp()
     }
     if (event.data.message === 'contract-navi') {
       this.isNaviExpanded = false;
@@ -470,7 +545,10 @@ export class AppComponent implements OnInit {
     if (previousUrl) {
       localStorage.removeItem('previousUrl');
       if (this.deepLink) {
-        this.router.navigateByUrl('specification');
+        let urlObj = new URL(window.location.href);
+        let hash = urlObj.hash;
+        let [path, queryString] = hash.substr(1).split('?')
+        this.router.navigateByUrl(path);
       } else {
         this.router.navigateByUrl(previousUrl);
       }
@@ -642,7 +720,9 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(productEmail?: string): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION)
+    const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION);
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    const deep_link_info: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -651,7 +731,7 @@ export class AppComponent implements OnInit {
       '&targetUrl=' +
       environment.xnodeAppUrl +
       '&component=' +
-      this.getMeComponent() +
+      (this.mainComponent !== '' ? this.mainComponent : this.getMeComponent()) +
       '&device_width=' +
       this.screenWidth +
       '&accountId=' +
@@ -676,7 +756,7 @@ export class AppComponent implements OnInit {
       rawUrl = rawUrl + '&conversatonDetails=' + JSON.stringify(this.conversatonDetails);
     }
     if (this.product) {
-      this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
+      this.utilsService.disablePageToolsLayoutSubMenu();
       rawUrl =
         rawUrl +
         '&product_user_email=' +
@@ -713,16 +793,29 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
+
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow));
         this.componentToShow = undefined;
       } else {
-        rawUrl += "&componentToShow=" + this.componentToShow;
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow);
+        this.componentToShow = undefined;
+      }
+    } else {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks"));
+        this.componentToShow = undefined;
+      } else {
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks");
         this.componentToShow = undefined;
       }
     }
+    if (deep_link_info?.conversationDetail) {
+      rawUrl += "&conversationDetailID=" + deep_link_info?.conversationDetail;
+    }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+    this.mainComponent = '';
     this.iframeUrlLoad(rawUrl);
   }
 
@@ -796,7 +889,7 @@ export class AppComponent implements OnInit {
       let params = {
         account_id: accountId
       }
-      this.auth.getUsersByAccountId(params).then((response: any) => {
+      this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         this.usersList = response.data;
       })

@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
@@ -22,12 +23,15 @@ export class ProductCardsComponent implements OnInit, OnChanges {
   @Input() filteredProducts: any[] = [];
   @Input() end: any;
   currentUser: any;
+  localDateFormat: string = "MM/dd/yyyy";
 
-  constructor(private storageService: LocalStorageService) {
+  constructor(private storageService: LocalStorageService, private utils: UtilsService) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.localDateFormat = this.utils.getDateFormat();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['end']?.currentValue) {

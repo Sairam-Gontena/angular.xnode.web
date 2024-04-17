@@ -52,8 +52,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   notifInfo: any;
   reveiwerList: any;
 
-  constructor(
-    private utils: UtilsService,
+  constructor(    private utils: UtilsService,
     private specService: SpecApiService,
     private specUtils: SpecUtilsService,
     private router: Router,
@@ -65,8 +64,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private naviApiService: NaviApiService,
-    private conversationService: ConversationHubService
-  ) {
+    private conversationService: ConversationHubService) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
       this.activeConversationTab = event;

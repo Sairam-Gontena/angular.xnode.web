@@ -26,19 +26,19 @@
                     <img src="./assets/all-products.svg" class="text-2xl" pTooltip="All Products"
                         [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
                 </p-button>
-                <p-button
+                <!-- <p-button
                     class="mb-2 md:mr-2 align-items-center justify-content-center text-base font-semibold tabView-label"
                     [text]="true" [ngClass]="{'nonActive': activeIndex != 1}" label=" Recently Viewed" [link]="true"
                     (click)="activeIndex = 1;filteredProducts =[]">
                     <img src="./assets/recent.svg" class="text-2xl" pTooltip="Recently Viewed"
                         [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
-                </p-button>
+                </p-button> -->
                 <p-button
                     class="mb-2 md:mr-2 align-items-center justify-content-center text-base font-semibold tabView-label"
-                    [text]="true" [ngClass]="{'nonActive': activeIndex != 2}" label=" My Products" [link]="true"
-                    (click)="activeIndex = 2;onClickcreatedByYou()">
+                    [text]="true" [ngClass]="{'nonActive': activeIndex != 1}" label=" My Products" [link]="true"
+                    (click)="activeIndex = 1;onClickcreatedByYou()">
                     <img src="./assets/user.svg" class="text-2xl" pTooltip="My Products"
-                        [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
+                        [src]="tabCreated || activeIndex === 1 ? './assets/user-hover.svg' : './assets/user.svg'" />
                 </p-button>
             </div>
         </div>
@@ -63,45 +63,8 @@
             <div class="col-12">
                 <h3 class="text-2xl font-semibold">Recent Activity</h3>
                 <div class="recentActivity p-0 ">
-                    <div class="filterDropdown">
-                        <i class="pi pi-search search-icon" (click)="toggleSearch()"></i>
-                        <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
-                            [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
-                        <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
-                            optionLabel="name"></p-dropdown>
-                    </div>
-                    <p-tabView [(activeIndex)]="activeIndexRecentActivity" class="col-12">
-                        <p-tabPanel header="All Conversations" class="home-conversations-card"
-                            *ngIf="selectedConversation.value == 'All'">
-                            <p-card header={{conversation?.title}} class="conversations-card "
-                                *ngFor="let conversation of filteredConversation">
-                                <div class="flex col-12">
-                                    <p class="m-0 col-7 text-sm font-normal">
-                                        #{{conversation?.cId}} in {{conversation?.productName}}
-                                    </p>
-                                    <p class="m-0 col-5 text-sm font-normal">
-                                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                            </p-card>
-
-                        </p-tabPanel>
-                        <p-tabPanel header="My Conversations" class="home-conversations-card"
-                            *ngIf="selectedConversation.value == 'Mine'">
-                            <p-card header={{conversation?.title}} class="conversations-card"
-                                *ngFor="let conversation of mineConversations">
-                                <div class="flex col-12">
-                                    <p class="m-0 col-8 text-sm font-normal">
-                                        #{{conversation?.cId}} in {{conversation?.productName}}
-                                    </p>
-                                    <p class="m-0 col-4 text-sm font-normal">
-                                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                            </p-card>
-
-                        </p-tabPanel>
-                    </p-tabView>
+                    <app-content-grid [showSearch]="true"  [headers]="columnDef" [dataContent]="activities" 
+                    ></app-content-grid>
                 </div>
             </div>
         </div>

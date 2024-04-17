@@ -1,10 +1,10 @@
 <form [formGroup]="addShareForm">
     <div class="w-full mb-3 flex align-items-center">
-        <p-autoComplete placeholder="Add people, groups, or emails" [suggestions]="sharedLinkDetail.suggestionList"
-            formControlName="reviewersLOne" (completeMethod)="suggestionsList($event, 'L1')" field="name"
-            (click)="$event.stopPropagation()" [multiple]="true" (onSelect)="selectEvent($event)"
-            (onUnselect)="unselectEvent($event)" class="w-full" styleClass="w-full customAutocomplete"
-            inputStyleClass="w-full customAutocompleteInput">
+        <p-autoComplete [appendTo]="'body'" placeholder="Add people, groups, or emails"
+            [suggestions]="sharedLinkDetail.suggestionList" formControlName="reviewersLOne"
+            (completeMethod)="suggestionsList($event, 'L1')" field="name" (click)="$event.stopPropagation()"
+            [multiple]="true" (onSelect)="selectEvent($event)" (onUnselect)="unselectEvent($event)" class="w-full"
+            styleClass="w-full customAutocomplete" inputStyleClass="w-full customAutocompleteInput">
             <ng-template let-reviewer pTemplate="selectedItem">
                 <div class="flex align-items-center">
                     <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
@@ -15,8 +15,8 @@
             </ng-template>
         </p-autoComplete>
 
-        <p-dropdown styleClass="customDropdown" formControlName="selectedInvite" [options]="invities" optionLabel="name"
-            [appendTo]="'body'" (onChange)="onSelectInviteChange($event)">
+        <p-dropdown formControlName="selectedInvite" [options]="invities" optionLabel="name" [appendTo]="'body'"
+            (onChange)="onSelectInviteChange($event)">
             <!-- [(ngModel)]="selectedInvite"-->
             <ng-template pTemplate="selectedItem">
                 <ng-container *ngIf="addShareForm.get('selectedInvite')?.value">
@@ -59,7 +59,8 @@
             </ng-template>
         </p-dropdown>
     </div>
-    <div class="w-full">
+    <div class="w-full"
+        *ngIf="addShareForm.get('selectedValues')?.value && addShareForm.get('selectedValues')?.value.length">
         <p-chips styleClass="w-full customChips" formControlName="selectedValues" (onRemove)="chipRemove($event)">
             <ng-template let-item pTemplate="item">{{ item.name}}</ng-template>
         </p-chips>
