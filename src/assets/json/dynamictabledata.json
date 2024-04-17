@@ -345,8 +345,8 @@
         }
       ]
     },
-    "AgentHub": [
-      {
+    "AgentHub": {
+      "agent": {
         "columns": [
           {
             "idx": 1,
@@ -399,7 +399,7 @@
           }
         ]
       },
-      {
+      "capability": {
         "columns": [
           {
             "idx": 1,
@@ -460,7 +460,7 @@
           }
         ]
       },
-      {
+      "topic": {
         "columns": [
           {
             "idx": 1,
@@ -521,7 +521,7 @@
           }
         ]
       },
-      {
+      "prompt": {
         "columns": [
           {
             "idx": 1,
@@ -582,7 +582,7 @@
           }
         ]
       },
-      {
+      "knowledge": {
         "columns": [
           {
             "idx": 1,
@@ -651,7 +651,7 @@
           }
         ]
       },
-      {
+      "model": {
         "columns": [
           {
             "idx": 1,
@@ -704,7 +704,7 @@
           }
         ]
       },
-      {
+      "tool": {
         "columns": [
           {
             "idx": 1,
@@ -757,6 +757,6 @@
           }
         ]
       }
-    ]
+  }
   }
 }

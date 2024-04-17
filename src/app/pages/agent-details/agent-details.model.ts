@@ -311,10 +311,17 @@ export class AgentDetailsModel {
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
-        (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter(
+          (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
+      //   (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -331,7 +338,12 @@ export class AgentDetailsModel {
       this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.detail });
     } else if (response.data) {
       this.tableData = response.data as CapabilitiesTableData[];
-      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
+      // this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+
       this.paginatorInfo.page = response.page;
       this.paginatorInfo.perPage = response.per_page;
       this.paginatorInfo.totalRecords = response.total_items;

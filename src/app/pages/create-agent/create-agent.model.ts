@@ -201,10 +201,19 @@ export class CreateAgentModel {
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter((item) =>
-        event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter((item) =>
+          event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter((item) =>
+      //   event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -281,7 +290,10 @@ export class CreateAgentModel {
 
   //get agent list by account ID
   getAllAgentList({ endpoint = '' } = {}) {
-    this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+    // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    this.columns =
+      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
     let urlParam = this.makeTableParamObj(paginatorInfo);
     try {
