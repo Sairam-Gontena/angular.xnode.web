@@ -159,13 +159,9 @@ export class VerifyOtpComponent implements OnInit {
   //get calls
   getAllProducts(): void {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getMetaData({ accountId: currentUser?.account_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.MAKE_TRUST_URL,
-          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: 'Tasks' },
-        });
         this.router.navigate(['/my-products']);
         this.utilsService.loadSpinner(false);
       }

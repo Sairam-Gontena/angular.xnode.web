@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service';
 import { Subscription } from 'rxjs';
@@ -16,6 +15,7 @@ import { ConversationApiService } from 'src/app/api/conversation-api.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-my-products',
@@ -66,11 +66,8 @@ export class MyProductsComponent implements OnInit {
     private authApiService: AuthApiService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
-    private naviApiService: NaviApiService,
-    private conversationApiService: ConversationApiService,
     private messagingService: MessagingService,
     private conversationService: ConversationHubService) {
-
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
       this.userImage =
@@ -105,6 +102,7 @@ export class MyProductsComponent implements OnInit {
         });
       }
     });
+    this.getUsersData()
     this.removeProductDetailsFromStorage();
     this.removeParamFromRoute();
     this.filterProductsByUserEmail();
@@ -204,7 +202,6 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickNew() {
-    console.log('onClickNew');
     this.utils.expandNavi$();
   }
 
@@ -215,11 +212,11 @@ export class MyProductsComponent implements OnInit {
   importNavi(): void {
     this.messagingService.sendMessage({
       msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
-      msgData: { 
+      msgData: {
         naviContainerState: 'EXPAND',
         componentToShow: "Resources",
-        importFilePopupToShow : true 
-       },
+        importFilePopupToShow: true
+      },
     });
   }
   closeEventEmitter() {
@@ -229,23 +226,23 @@ export class MyProductsComponent implements OnInit {
   getRecentActivities() {
     // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
-    if(userId){
-       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities:any = [];
-        let shortIdMap:any = {
-          'COMMENT':"cmId",
-          'CHANGE_REQUEST':"crId",
+    if (userId) {
+      this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
+        let activities: any = [];
+        let shortIdMap: any = {
+          'COMMENT': "cmId",
+          'CHANGE_REQUEST': "crId",
           'PRODUCT_SPEC': "psId",
           'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-          'TASK':'tId',
-          'THREAD':'thId',
-          'CONVERSATION':'cId',
-          'RESOURCE':'rsId',
-          'PRODUCT_VERSION':'pvId'
+          'TASK': 'tId',
+          'THREAD': 'thId',
+          'CONVERSATION': 'cId',
+          'RESOURCE': 'rsId',
+          'PRODUCT_VERSION': 'pvId'
         };
 
-        for(let activity of res.data.data){
-          let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
+        for (let activity of res.data.data) {
+          let shortId = activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
             objectType: activity.objectType,
             userAction: activity.userAction,
@@ -258,16 +255,16 @@ export class MyProductsComponent implements OnInit {
             users: [activity.modifiedBy],
             description: activity.description,
             title: activity.actionDetail.title || "",
-            shortId:shortId
+            shortId: shortId
           }
           activities.push(row)
         }
-       this.activities =  activities; // Handle the response here
+        this.activities = activities; // Handle the response here
       });
     }
-   }
-  
-   getColumnDef(){
+  }
+
+  getColumnDef() {
     this.columnDef = [
       {
         field: "objectType",
@@ -332,13 +329,37 @@ export class MyProductsComponent implements OnInit {
         default: true
       },
     ]
-   }
+  }
+  getUsersData() {
+    this.utils.loadSpinner(true);
+    this.authApiService
+      .getAllUsers(this.currentUser?.account_id)
+      .then((resp: any) => {
+        if (resp?.status === 200) {
+          this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: resp.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        console.error(error);
+      });
+  }
 
   getMetaData() {
-    //, fieldsRequired: ['id', 'productId', 'title', 'conversationType', 'content','userId','accountId','status','users']
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id }).then((response: any) => {
       this.utils.loadSpinner(false);
-      if (response?.status === 200 && response.data?.length) {
+      if (response?.status === 200 && response.data) {
         let user_audit_body = {
           method: 'GET',
           url: response?.request?.responseURL,
@@ -360,7 +381,6 @@ export class MyProductsComponent implements OnInit {
           else dataItem.created_by = 'Created by ' + dataItem?.username;
           return dataItem;
         });
-
         this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
         this.filteredProductsLength = this.filteredProducts.length
           ? this.filteredProducts.length + 1 : 0;
@@ -370,7 +390,15 @@ export class MyProductsComponent implements OnInit {
         if (this.authApiService.getDeeplinkURL()) {
           this.utils.setDeepLinkInfo(this.authApiService.getDeeplinkURL());
         }
-      } else if (response?.status !== 200) {
+
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.MAKE_TRUST_URL,
+          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: response?.data?.length ? 'Tasks' : 'Chat' },
+        });
+        this.utils.loadSpinner(false);
+      }
+      else {
         let user_audit_body = {
           method: 'GET',
           url: response?.request?.responseURL,
@@ -391,7 +419,10 @@ export class MyProductsComponent implements OnInit {
         });
         this.utils.loadSpinner(false);
       }
+
+
     }).catch((error: any) => {
+      this.utils.loadSpinner(false);
     });
   }
 
