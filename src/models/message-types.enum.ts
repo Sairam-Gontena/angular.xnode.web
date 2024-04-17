@@ -7,4 +7,5 @@ export enum MessageTypes {
     MAKE_TRUST_URL = "MAKE_TRUST_URL",
     ConversationId = 'conversation_id',
     ReloadTabList = 'reload_tab_list',
+    NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE = "NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE"
 }

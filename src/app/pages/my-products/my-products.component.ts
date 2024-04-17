@@ -212,31 +212,15 @@ export class MyProductsComponent implements OnInit {
     productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
-  importNavi() {
-    const restrictionMaxValue = localStorage.getItem('restriction_max_value');
-    let totalApps = localStorage.getItem('meta_data');
-    if (totalApps) {
-      let data = JSON.parse(totalApps);
-      let filteredApps = data.filter(
-        (product: any) => product.email == this.currentUser.email
-      );
-      if (
-        restrictionMaxValue &&
-        filteredApps.length >= parseInt(restrictionMaxValue)
-      ) {
-        this.utils.showLimitReachedPopup(true);
-        localStorage.setItem('show-upload-panel', 'false');
-      } else {
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.NAVI_CONTAINER_STATE,
-          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
-        });
-        this.showImportFilePopup = true;
-        // this.router.navigate(['/x-pilot']);
-        // localStorage.setItem('show-upload-panel', 'true');
-        // this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
-      }
-    }
+  importNavi(): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
+      msgData: { 
+        naviContainerState: 'EXPAND',
+        componentToShow: "Resources",
+        importFilePopupToShow : true 
+       },
+    });
   }
   closeEventEmitter() {
     this.showImportFilePopup = false;
