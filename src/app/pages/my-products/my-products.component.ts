@@ -244,7 +244,7 @@ export class MyProductsComponent implements OnInit {
     // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
     if(userId){
-       this.conversationService.getRecentActivities('68452a4d-f35b-4dd6-9d03-02e6f1eb69a2').subscribe((res: any) => {
+       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
         let activities:any = [];
         let shortIdMap:any = {
           'COMMENT':"cmId",
