@@ -815,18 +815,20 @@ export class AppComponent implements OnInit {
         this.componentToShow = undefined;
       }
     }
-    const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
-    if (meta_data && meta_data.length) {
-      if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+    if (this.getMeComponent() === 'my-products' && !this.product) {
+      const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
+      if (meta_data && meta_data.length) {
+        if (rawUrl.includes("componentToShow")) {
+          rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+        } else {
+          rawUrl += "&componentToShow=Tasks";
+        }
       } else {
-        rawUrl += "&componentToShow=Tasks";
-      }
-    } else {
-      if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Chat");
-      } else {
-        rawUrl += "&componentToShow=Chat";
+        if (rawUrl.includes("componentToShow")) {
+          rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Chat");
+        } else {
+          rawUrl += "&componentToShow=Chat";
+        }
       }
     }
     if (deep_link_info?.componentID) {
