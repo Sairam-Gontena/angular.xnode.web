@@ -244,7 +244,7 @@ export class MyProductsComponent implements OnInit {
     // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
     if(userId){
-       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
+       this.conversationService.getRecentActivities('68452a4d-f35b-4dd6-9d03-02e6f1eb69a2').subscribe((res: any) => {
         let activities:any = [];
         let shortIdMap:any = {
           'COMMENT':"cmId",
@@ -252,11 +252,12 @@ export class MyProductsComponent implements OnInit {
           'PRODUCT_SPEC': "psId",
           'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
           'TASK':'tId',
+          'THREAD':'thId',
           'CONVERSATION':'cId',
           'RESOURCE':'rsId',
           'PRODUCT_VERSION':'pvId'
         };
-        
+
         for(let activity of res.data.data){
           let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
