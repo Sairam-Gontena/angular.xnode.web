@@ -816,7 +816,7 @@ export class AppComponent implements OnInit {
       }
     }
     const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
-    if (meta_data && meta_data.length) {
+    if (meta_data && meta_data.length && !this.product) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
       } else {
