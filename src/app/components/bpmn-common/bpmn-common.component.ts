@@ -334,7 +334,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getOverview() {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',

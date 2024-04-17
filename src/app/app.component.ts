@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
   componentToShow?: any;
   mainComponent: string = '';
   showNaviSpinner: boolean = true;
-  importFilePopupToShow:boolean = false;
+  importFilePopupToShow: boolean = false;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -325,7 +325,7 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     window.addEventListener('message', this.receiveMessage.bind(this), false);
     this.handleTheme();
-    this.makeTrustedUrl();
+    // this.makeTrustedUrl();
   }
 
   logout(): void {
@@ -490,7 +490,6 @@ export class AppComponent implements OnInit {
 
   handleUser(): void {
     if (this.currentUser) {
-      this.getMeTotalOnboardedApps();
       if (this.currentUser.role_name === 'Xnode Admin') {
         this.router.navigate(['/admin/user-invitation']);
       } else {
@@ -814,6 +813,20 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks");
         this.componentToShow = undefined;
+      }
+    }
+    const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
+    if (meta_data && meta_data.length) {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+      } else {
+        rawUrl += "&componentToShow=Tasks";
+      }
+    } else {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Chat");
+      } else {
+        rawUrl += "&componentToShow=Chat";
       }
     }
     if (deep_link_info?.componentID) {
