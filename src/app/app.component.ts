@@ -816,8 +816,8 @@ export class AppComponent implements OnInit {
         this.componentToShow = undefined;
       }
     }
-    if (deep_link_info?.conversationID) {
-      rawUrl += "&conversationID=" + deep_link_info?.conversationID;
+    if (deep_link_info?.componentID) {
+      rawUrl += "&componentID=" + deep_link_info?.componentID;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.mainComponent = '';
