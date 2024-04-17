@@ -792,8 +792,11 @@ export class AppComponent implements OnInit {
       this.conversationId = undefined
     }
     if (this.importFilePopupToShow) {
+      if (rawUrl.includes("importFilePopupToShow")) {
+        rawUrl = rawUrl.replace(/importFilePopupToShow=[^&]*/, "importFilePopupToShow=" + this.importFilePopupToShow);
+      } else {
         rawUrl += "&importFilePopupToShow=" + this.importFilePopupToShow;
-      this.conversationId = undefined
+      }
     }
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
@@ -825,6 +828,9 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&componentToShow=Chat";
       }
+    }
+    if(this.importFilePopupToShow){
+      rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
     }
     if (deep_link_info?.componentID) {
       rawUrl += "&componentID=" + deep_link_info?.componentID;
