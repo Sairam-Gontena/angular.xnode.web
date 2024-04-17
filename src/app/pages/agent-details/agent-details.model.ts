@@ -238,8 +238,12 @@ export class AgentDetailsModel {
   promptModalShow = false;
   capabilityModalShow = false;
   topicModalShow = false;
-
   isFormEditable = false;
+
+  rowViewData = {
+    showDetail: false,
+    requestedId: ''
+  }
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -253,19 +257,37 @@ export class AgentDetailsModel {
   }
 
   viewHandler(item: any) {
-    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
-    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-    if (overViewTabIdentifier === "overview") {
-      this.overviewInstructionForm.enableOverview = true;
-      this.overviewInstructionForm.enableInstruction = false;
-    } else if (overViewTabIdentifier === "instruction") {
-      this.overviewInstructionForm.enableInstruction = true;
-      this.overviewInstructionForm.enableOverview = false;
+    if (this.activeIndex == 2) {
+      // Handle Capability case
+
+      debugger
+
+      this.rowViewData.showDetail = true
+      this.rowViewData.requestedId = item.id
+    } else if (this.activeIndex == 3) {
+      // Handle  Topic Case
+    } else if (this.activeIndex == 4) {
+      // Handle Prompt Case
+
+      const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
+      if (overViewTabIdentifier === "overview") {
+        this.overviewInstructionForm.enableOverview = true;
+        this.overviewInstructionForm.enableInstruction = false;
+      } else if (overViewTabIdentifier === "instruction") {
+        this.overviewInstructionForm.enableInstruction = true;
+        this.overviewInstructionForm.enableOverview = false;
+      }
+      this.overviewInstructionForm.overviewInstructionData = item;
+      // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
+      this.currentActiveRowData = item;
+      this.overviewTabItem.showTab = true;
+    } else if (this.activeIndex == 5) {
+      // Handle Knowledge case
+    } else if (this.activeIndex == 6) {
+      // Handle Model Case
+    } else if (this.activeIndex == 7) {
+      // Handle Tool Case
     }
-    this.overviewInstructionForm.overviewInstructionData = item;
-    // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-    this.currentActiveRowData = item;
-    this.overviewTabItem.showTab = true;
   }
 
   goBackBreadCrumbsHandler(event: any) {

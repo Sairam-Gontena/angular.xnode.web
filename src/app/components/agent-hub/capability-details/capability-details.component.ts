@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { agentName } from 'src/app/pages/agent-hub/agent-hub.constant';
 import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './ICapability-details';
-import { LocalStorageService } from '../services/local-storage.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UtilsService } from '../services/utils.service';
+import { UtilsService } from '../../services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
+import dynamicTableColumnData from '../../../../assets/json/dynamictabledata.json';
 import { TabViewChangeEvent } from 'primeng/tabview';
+
 
 const InitialPaginatorInfo = {
   page: 0,
@@ -15,35 +16,22 @@ const InitialPaginatorInfo = {
   totalPages: 0,
   totalRecords: 0,
 };
+
 @Component({
-  selector: 'xnode-cabability-details',
-  templateUrl: './cabability-details.component.html',
-  styleUrls: ['./cabability-details.component.scss']
+  selector: 'xnode-capability-details',
+  templateUrl: './capability-details.component.html',
+  styleUrls: ['./capability-details.component.scss']
 })
-export class CababilityDetailsComponent {
+export class CapabilityDetailsComponent {
   agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
-    { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
-
-    {
-      idx: 2,
-      title: 'Capabilities',
-      value: 'capabilities_linked_agents',
-      identifier: agentName.capability
-    },
     { idx: 3, title: 'Topics', value: 'topic', identifier: agentName.topic },
     {
       idx: 4,
       title: 'Prompts',
       value: 'prompt_linked_topic',
       identifier: agentName.prompt
-    },
-    {
-      idx: 5,
-      title: 'Knowledge',
-      value: 'knowledge',
-      identifier: agentName.knowledge,
     },
     { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
     { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
