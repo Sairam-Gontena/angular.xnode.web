@@ -246,10 +246,18 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'agent-playground/:agentName/:id',
+    path: 'agent-playground/agent/:id',
     loadChildren: () =>
       import('./pages/agent-details/agent-details.module').then(
         (m) => m.AgentDetailsModule
+      ),
+  },
+
+  {
+    path: 'agent-playground/capability/:id',
+    loadChildren: () =>
+      import('./pages/capability-view/capability-view.module').then(
+        (m) => m.CapabilityViewModule
       ),
   },
   {
@@ -271,4 +279,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

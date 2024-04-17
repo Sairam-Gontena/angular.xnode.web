@@ -86,6 +86,7 @@ import { ResourcesComponent } from '../components/resources/resources.component'
 import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
 import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
 import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
+import { CababilityDetailsComponent } from '../components/cabability-details/cabability-details.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -170,7 +171,8 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
     ResourcesComponent,
     ResourceDetailComponent,
     ContentGridComponent,
-    AvatarsDisplayComponent
+    AvatarsDisplayComponent,
+    CababilityDetailsComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -257,7 +259,8 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
     ResourcesComponent,
     ResourceDetailComponent,
     ContentGridComponent,
-    AvatarsDisplayComponent
+    AvatarsDisplayComponent,
+    CababilityDetailsComponent
   ],
 })
 export class SharedComponentModule { }
