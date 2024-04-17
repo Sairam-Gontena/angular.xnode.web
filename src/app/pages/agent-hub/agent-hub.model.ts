@@ -293,8 +293,6 @@ export class AgentHubModel {
     private router: Router
   ) {
     this.activeIndex = 0;
-    this.columns =
-      dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
 
     /**
      * Get the column name for filter option
@@ -303,6 +301,10 @@ export class AgentHubModel {
     this.tabItems = this.allAvailableTabItems;
 
     this.tabFilterOptions.options = this.tabItems;
+
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    this.columns =
+      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
 
     this.showColumnFilterOption.options = this.columns?.map((item: any) => {
       return {
@@ -331,18 +333,29 @@ export class AgentHubModel {
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
+      // this.columns =
+      //   dynamicTableColumnData?.dynamicTable?.AgentHub[
+      //     this.activeIndex
+      //   ]?.columns;
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
       this.columns =
-        dynamicTableColumnData?.dynamicTable?.AgentHub[
-          this.activeIndex
-        ]?.columns;
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[
-        this.activeIndex
-      ].columns?.filter((item) =>
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter((item) =>
         event?.value?.some(
           (valItem: { idx: number }) => valItem.idx === item.idx
         )
       );
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[
+      //   this.activeIndex
+      // ].columns?.filter((item) =>
+      //   event?.value?.some(
+      //     (valItem: { idx: number }) => valItem.idx === item.idx
+      //   )
+      // );
     }
   }
 
@@ -422,8 +435,12 @@ export class AgentHubModel {
    */
 
   async getAllAgentList({ endpoint = '' } = {}) {
+    // this.columns =
+    //   dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
     this.columns =
-      dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
     this.tableData = [];
     this.paginatorInfo = { ...InitialPaginatorInfo };
