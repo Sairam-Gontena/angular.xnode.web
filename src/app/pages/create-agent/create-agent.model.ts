@@ -156,17 +156,17 @@ export class CreateAgentModel {
 
   activeIndex: number = 0;
   userInfo: any;
-  overviewForm!: FormGroup;
-  instructionForm!: FormGroup;
-  instructionOption = [{ name: "General Instructions", value: "general_instruction" },
-  { name: "Capability Specific Instructions", value: "capability_specific_instruction" }];
-  enableGeneralInstruction: boolean = true;
-  categoryNameCountArr: Array<any> = [{ categoryIcon: "", categoryName: "Capabilities", count: "2" },
-  { categoryIcon: "", categoryName: "Topics", count: "4" },
-  { categoryIcon: "", categoryName: "Prompts", count: "8" },
-  { categoryIcon: "", categoryName: "Knowledge", count: "2" },
-  { categoryIcon: "", categoryName: "Models", count: "1" },
-  { categoryIcon: "", categoryName: "Tools", count: "2" }]
+  // overviewForm!: FormGroup;
+  // instructionForm!: FormGroup;
+  // instructionOption = [{ name: "General Instructions", value: "general_instruction" },
+  // { name: "Capability Specific Instructions", value: "capability_specific_instruction" }];
+  // enableGeneralInstruction: boolean = true;
+  // categoryNameCountArr: Array<any> = [{ categoryIcon: "", categoryName: "Capabilities", count: "2" },
+  // { categoryIcon: "", categoryName: "Topics", count: "4" },
+  // { categoryIcon: "", categoryName: "Prompts", count: "8" },
+  // { categoryIcon: "", categoryName: "Knowledge", count: "2" },
+  // { categoryIcon: "", categoryName: "Models", count: "1" },
+  // { categoryIcon: "", categoryName: "Tools", count: "2" }]
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -175,24 +175,24 @@ export class CreateAgentModel {
     private formBuilder: FormBuilder) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
     //overview form
-    this.overviewForm = this.formBuilder.group({
-      description: [''],
-      tags: ['']
-    })
-    //instruction form
-    this.instructionForm = this.formBuilder.group({
-      name: [''],
-      role: [''],
-      description: [''],
-      instruction: [''],
-      general_task: [''],
-      specific_instruction: [''],
-      missing_information: [''],
-      answer_format: ['']
-    });
-    this.instructionForm.patchValue({
-      instruction: this.instructionOption[0]
-    });
+    // this.overviewForm = this.formBuilder.group({
+    //   description: [''],
+    //   tags: ['']
+    // })
+    // //instruction form
+    // this.instructionForm = this.formBuilder.group({
+    //   name: [''],
+    //   role: [''],
+    //   description: [''],
+    //   instruction: [''],
+    //   general_task: [''],
+    //   specific_instruction: [''],
+    //   missing_information: [''],
+    //   answer_format: ['']
+    // });
+    // this.instructionForm.patchValue({
+    //   instruction: this.instructionOption[0]
+    // });
   }
 
   goBackHandler(): void {
@@ -201,10 +201,19 @@ export class CreateAgentModel {
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter((item) =>
-        event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter((item) =>
+          event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter((item) =>
+      //   event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -214,24 +223,25 @@ export class CreateAgentModel {
     }
   }
 
-  //on change instruction dropdown event
-  onChangeInstruction(event: DropdownChangeEvent) {
-    if (event.value && event.value.value === "general_instruction") {
-      this.enableGeneralInstruction = true;
-    } else if (event.value && event.value.value === "capability_specific_instruction") {
-      this.enableGeneralInstruction = false;
-    }
-  }
+  // //on change instruction dropdown event
+  // onChangeInstruction(event: DropdownChangeEvent) {
+  //   if (event.value && event.value.value === "general_instruction") {
+  //     this.enableGeneralInstruction = true;
+  //   } else if (event.value && event.value.value === "capability_specific_instruction") {
+  //     this.enableGeneralInstruction = false;
+  //   }
+  // }
 
-  //overview form submit
-  onOverviewSubmit() {
-    console.log(this.overviewForm.value);
-  }
+  // //overview form submit
+  // onOverviewSubmit() {
+  //   console.log(this.overviewForm.value);
+  // }
 
-  //instruction form submit
-  onInstructionSubmit() {
-    console.log(this.instructionForm.value);
-  }
+  // //instruction form submit
+  // onInstructionSubmit() {
+  //   debugger
+  //   console.log(this.instructionForm.value);
+  // }
 
   //pagination event for table
   paginatorViewHandler(item: any) {
@@ -280,7 +290,10 @@ export class CreateAgentModel {
 
   //get agent list by account ID
   getAllAgentList({ endpoint = '' } = {}) {
-    this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+    // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    this.columns =
+      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
     let urlParam = this.makeTableParamObj(paginatorInfo);
     try {

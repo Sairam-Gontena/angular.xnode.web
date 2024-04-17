@@ -1,14 +1,14 @@
-import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
-import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
+import { Component, Input, OnInit } from '@angular/core';
+import { agentName } from 'src/app/pages/agent-hub/agent-hub.constant';
+import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './ICapability-details';
+import { LocalStorageService } from '../../services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
-import { StorageKeys } from 'src/models/storage-keys.enum';
-import { agentName } from '../agent-hub/agent-hub.constant';
-import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
-import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UtilsService } from 'src/app/components/services/utils.service';
-import { OnInit } from '@angular/core';
+import { UtilsService } from '../../services/utils.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import dynamicTableColumnData from '../../../../assets/json/dynamictabledata.json';
+import { TabViewChangeEvent } from 'primeng/tabview';
+
 
 const InitialPaginatorInfo = {
   page: 0,
@@ -16,33 +16,31 @@ const InitialPaginatorInfo = {
   totalPages: 0,
   totalRecords: 0,
 };
-export class AgentDetailsModel {
+
+@Component({
+  selector: 'xnode-capability-details',
+  templateUrl: './capability-details.component.html',
+  styleUrls: ['./capability-details.component.scss']
+})
+export class CapabilityDetailsComponent implements OnInit {
+  @Input() rowViewData = {
+    showDetail: false,
+    showHeader: true,
+    showTab: true,
+    requestedId: ''
+  }
   agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
-    { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
-
+    { idx: 1, title: 'Topics', value: 'topic', identifier: agentName.topic },
     {
       idx: 2,
-      title: 'Capabilities',
-      value: 'capabilities_linked_agents',
-      identifier: agentName.capability
-    },
-    { idx: 3, title: 'Topics', value: 'topic', identifier: agentName.topic },
-    {
-      idx: 4,
       title: 'Prompts',
       value: 'prompt_linked_topic',
       identifier: agentName.prompt
     },
-    {
-      idx: 5,
-      title: 'Knowledge',
-      value: 'knowledge',
-      identifier: agentName.knowledge,
-    },
-    { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
-    { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
+    { idx: 3, title: 'Models', value: 'model', identifier: agentName.model },
+    { idx: 4, title: 'Tools', value: 'tool', identifier: agentName.tool },
   ];
   tableData!: ITableDataEntry[] | CapabilitiesTableData[];
   columns: any; // Define the type of columns based on the actual data structure
@@ -115,6 +113,7 @@ export class AgentDetailsModel {
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
   activeIndex: number = 0;
   userInfo: any;
+
   headerActionBtnOption = {
     overview: {
       buttonText: 'Action',
@@ -227,6 +226,7 @@ export class AgentDetailsModel {
       this.viewHandler(this.currentActiveRowData)
     }
   }
+
   currentActiveRowData: any;
   queryparamInfo!: IQueryParams; // Active query params property
   dynamicFormBindingKeys: any // Define form field.
@@ -235,19 +235,12 @@ export class AgentDetailsModel {
     enableInstruction: false,
     overviewInstructionData: ""
   };
+
   promptModalShow = false;
   capabilityModalShow = false;
   topicModalShow = false;
+
   isFormEditable = false;
-  showAgentDetailsContent = true
-  rowViewData = {
-    capability: {
-      showDetail: false,
-      showHeader: false,
-      showTab: true,
-      requestedId: ''
-    }
-  }
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -255,41 +248,26 @@ export class AgentDetailsModel {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
 
-
-    this.getAgentDetailsById()
+  ngOnInit() {
+    this.getCapalityDetailsById()
   }
 
   viewHandler(item: any) {
-    if (this.activeIndex == 2) {
-      // Handle Capability case
-      this.rowViewData.capability.showDetail = true
-      this.rowViewData.capability.requestedId = item.id
-      this.showAgentDetailsContent = false
-    } else if (this.activeIndex == 3) {
-      // Handle  Topic Case
-    } else if (this.activeIndex == 4) {
-      // Handle Prompt Case
-
-      const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-      if (overViewTabIdentifier === "overview") {
-        this.overviewInstructionForm.enableOverview = true;
-        this.overviewInstructionForm.enableInstruction = false;
-      } else if (overViewTabIdentifier === "instruction") {
-        this.overviewInstructionForm.enableInstruction = true;
-        this.overviewInstructionForm.enableOverview = false;
-      }
-      this.overviewInstructionForm.overviewInstructionData = item;
-      // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-      this.currentActiveRowData = item;
-      this.overviewTabItem.showTab = true;
-    } else if (this.activeIndex == 5) {
-      // Handle Knowledge case
-    } else if (this.activeIndex == 6) {
-      // Handle Model Case
-    } else if (this.activeIndex == 7) {
-      // Handle Tool Case
+    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
+    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
+    if (overViewTabIdentifier === "overview") {
+      this.overviewInstructionForm.enableOverview = true;
+      this.overviewInstructionForm.enableInstruction = false;
+    } else if (overViewTabIdentifier === "instruction") {
+      this.overviewInstructionForm.enableInstruction = true;
+      this.overviewInstructionForm.enableOverview = false;
     }
+    this.overviewInstructionForm.overviewInstructionData = item;
+    // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
+    this.currentActiveRowData = item;
+    this.overviewTabItem.showTab = true;
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -312,6 +290,7 @@ export class AgentDetailsModel {
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
       // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+
       const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
       this.columns =
         dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
@@ -320,6 +299,7 @@ export class AgentDetailsModel {
       this.columns =
         dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter(
           (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+
       // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
       //   (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
@@ -353,10 +333,10 @@ export class AgentDetailsModel {
 
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
-    let url: string = "agent/agents/{agent_id}/",
-      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+    let url: string = "agent/",
+      // getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
       urlParam: any = {
-        url: url.replace("{agent_id}", getID),
+        url: url,
         params: {
           // agent_id: getID,
           account_id: this.userInfo.account_id,
@@ -370,20 +350,21 @@ export class AgentDetailsModel {
   //making url for the category
   changeURL(tabIndex: number, urlParam: any) {
     switch (tabIndex) {
+      // case 2:
+      //   urlParam.url = urlParam.url + "capabilities/";
+      //   break;
+
+      case 1:
+        urlParam.url = urlParam.url + "capabilities_topics/" + this.rowViewData.requestedId + "/";
+        break;
       case 2:
-        urlParam.url = urlParam.url + "capabilities/";
+        urlParam.url = urlParam.url + "capabilities_prompts/" + this.rowViewData.requestedId + "/";
         break;
       case 3:
-        urlParam.url = urlParam.url + "topics/";
+        urlParam.url = urlParam.url + "capabilities_model/" + this.rowViewData.requestedId + "/";
         break;
       case 4:
-        urlParam.url = urlParam.url + "prompts/";
-        break;
-      case 5:
-
-        break;
-      case 6:
-        urlParam.url = urlParam.url + "models/";
+        urlParam.url = urlParam.url + "capabilities_tools/" + this.rowViewData.requestedId + "/";
         break;
     }
   }
@@ -400,9 +381,9 @@ export class AgentDetailsModel {
   }
 
   //  get the agent details by Id
-  getAgentDetailsById() {
-    let url: string = "agent/agent_by_id/",
-      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+  getCapalityDetailsById() {
+    let url: string = "agent/capbility_by_id/",
+      getID: any = this.rowViewData.requestedId,
       urlParam: any = {
         url: url + getID,
         params: {}
@@ -421,7 +402,7 @@ export class AgentDetailsModel {
 
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
-    if (this.activeIndex > 1) {
+    if (this.activeIndex > 0) {
       /**
        * Fetch result when activeIndex is > 1
        */
@@ -491,6 +472,4 @@ export class AgentDetailsModel {
     this.isFormEditable = !this.isFormEditable
 
   }
-
-
 }

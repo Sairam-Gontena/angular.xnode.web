@@ -77,11 +77,16 @@ import { AgentInstructionComponent } from '../components/agent-hub/create-agent/
 import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
 import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
 import { ShareLinkComponent } from './component/share-link/share-link.component';
+import { PromptOverviewComponent } from '../components/agent-hub/create-agent/prompt-overview/prompt-overview.component';
+import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
+import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
+import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
 import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
 import { ResourcesComponent } from '../components/resources/resources.component';
 import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
 import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
 import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
+import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -153,16 +158,21 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
     BreadcrumbsComponent,
     ImportFilePopupComponent,
     AgentOverviewComponent,
+    PromptOverviewComponent,
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
     InActiveTimeoutPopupComponent,
     ResourcesComponent,
     ResourceDetailComponent,
     ContentGridComponent,
-    AvatarsDisplayComponent
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -236,16 +246,21 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
     BreadcrumbsComponent,
     ImportFilePopupComponent,
     AgentOverviewComponent,
+    PromptOverviewComponent,
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
     InActiveTimeoutPopupComponent,
     ResourcesComponent,
     ResourceDetailComponent,
     ContentGridComponent,
-    AvatarsDisplayComponent
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent
   ],
 })
 export class SharedComponentModule { }
