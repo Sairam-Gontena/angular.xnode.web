@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
 
   user?: User | null;
 
-  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10 * 60; //10 minutes in seconds
+  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 30 * 60; //10 minutes in seconds
   private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
 
   constructor(private domSanitizer: DomSanitizer,
