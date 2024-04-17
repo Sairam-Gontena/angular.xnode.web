@@ -111,7 +111,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
-    this.useCases = list[2].content[0].content;
+    if (list[2]?.content?.length)
+      this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow: HTMLElement;
@@ -701,8 +702,16 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .getUsecases(this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
-          this.useCases = response.data;
-          this.graph();
+          if (typeof response.data === 'string') {
+            try {
+              JSON.parse(response.data);
+              this.useCases = JSON.parse(response.data)
+            } catch (error) {
+              this.useCases = []
+            }
+          } else {
+            this.useCases = response.data
+          } this.graph();
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -723,7 +732,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   graph() {
-    if (this.useCases?.length)
+    if (typeof this.useCases !== 'string' && this.useCases && this.useCases?.length)
       this.useCases.forEach((d: any) => {
         let temp_title;
         d.children = [];
@@ -740,7 +749,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
     //TBD
     //group by usecase role and create different spider web where centre of web is role
-    let firstRole = mod_data ? mod_data[0].role : '';
+    let firstRole = mod_data?.length ? mod_data[0].role : '';
     var treeData = {
       description: '',
       id: '',
@@ -988,7 +997,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-weight', 600)
       .style('fill', '#000000')
       .text((d: any) => {
-        return d.data.role;
+        return d.data?.role;
       })
       .clone(true)
       .lower()
@@ -1022,7 +1031,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .attr('stroke', '#959595')
       .attr('cursor', 'pointer')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }
@@ -1052,7 +1061,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-size', '12px')
       .style('opacity', 0)
       .text((d: any) => {
-        let title = d.data.title.split('-');
+        let title = d.data.title?.split('-');
         if (title[0]) {
           title = title[0];
         }
@@ -1087,7 +1096,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('opacity', 0)
       .attr('cursor', 'pointer')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }
@@ -1155,7 +1164,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-size', '12px')
       .style('opacity', 0)
       .text((d: any) => {
-        let title = d.data.title.split('-');
+        let title = d.data.title?.split('-');
         if (title[0]) {
           title = title[0];
         }
@@ -1191,7 +1200,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('opacity', 0)
       .style('font-size', '12px')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }

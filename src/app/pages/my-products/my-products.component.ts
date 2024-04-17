@@ -129,8 +129,10 @@ export class MyProductsComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.CONVERSATION)
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj) {
-      this.authApiService.setDeeplinkURL("");
-      this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
+      if (!getDeepLinkInfoObj.naviURL) {
+        this.authApiService.setDeeplinkURL("");
+        this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
+      }
     }
     this.getMetaData();
   }
@@ -210,31 +212,15 @@ export class MyProductsComponent implements OnInit {
     productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
-  importNavi() {
-    const restrictionMaxValue = localStorage.getItem('restriction_max_value');
-    let totalApps = localStorage.getItem('meta_data');
-    if (totalApps) {
-      let data = JSON.parse(totalApps);
-      let filteredApps = data.filter(
-        (product: any) => product.email == this.currentUser.email
-      );
-      if (
-        restrictionMaxValue &&
-        filteredApps.length >= parseInt(restrictionMaxValue)
-      ) {
-        this.utils.showLimitReachedPopup(true);
-        localStorage.setItem('show-upload-panel', 'false');
-      } else {
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.NAVI_CONTAINER_STATE,
-          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
-        });
-        this.showImportFilePopup = true;
-        // this.router.navigate(['/x-pilot']);
-        // localStorage.setItem('show-upload-panel', 'true');
-        // this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
-      }
-    }
+  importNavi(): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
+      msgData: { 
+        naviContainerState: 'EXPAND',
+        componentToShow: "Resources",
+        importFilePopupToShow : true 
+       },
+    });
   }
   closeEventEmitter() {
     this.showImportFilePopup = false;
@@ -252,11 +238,12 @@ export class MyProductsComponent implements OnInit {
           'PRODUCT_SPEC': "psId",
           'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
           'TASK':'tId',
+          'THREAD':'thId',
           'CONVERSATION':'cId',
           'RESOURCE':'rsId',
           'PRODUCT_VERSION':'pvId'
         };
-        
+
         for(let activity of res.data.data){
           let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
@@ -381,11 +368,7 @@ export class MyProductsComponent implements OnInit {
         this.activeIndex = 1;
         this.onClickcreatedByYou();
         if (this.authApiService.getDeeplinkURL()) {
-          let urlObj = new URL(this.authApiService.getDeeplinkURL());
-          let hash = urlObj.hash;
-          let [path, queryString] = hash.substr(1).split('?');
-          let params = new URLSearchParams(queryString);
-          this.utils.navigateByDeepLink(urlObj, path, params);
+          this.utils.setDeepLinkInfo(this.authApiService.getDeeplinkURL());
         }
       } else if (response?.status !== 200) {
         let user_audit_body = {
