@@ -261,7 +261,7 @@ export class MyProductsComponent implements OnInit {
         for(let activity of res.data.data){
           let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
-            objectType: activity.objectType,
+            objectType: activity.objectType.charAt(0).toUpperCase() + activity.objectType.slice(1).toLowerCase(),
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
             modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
@@ -304,7 +304,7 @@ export class MyProductsComponent implements OnInit {
       {
         field: "title",
         header: "Title",
-        width: 250,
+        // width: 250,
         filter: true,
         sortable: true,
         visible: true,
@@ -331,7 +331,7 @@ export class MyProductsComponent implements OnInit {
         // filter: true,
         sortable: true,
         type: 'avatar',
-        width: 150,
+        width: 120,
         visible: true,
         default: true
       },
