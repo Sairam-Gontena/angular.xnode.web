@@ -238,11 +238,12 @@ export class MyProductsComponent implements OnInit {
           'PRODUCT_SPEC': "psId",
           'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
           'TASK':'tId',
+          'THREAD':'thId',
           'CONVERSATION':'cId',
           'RESOURCE':'rsId',
           'PRODUCT_VERSION':'pvId'
         };
-        
+
         for(let activity of res.data.data){
           let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
