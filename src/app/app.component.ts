@@ -192,6 +192,7 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
         this.componentToShow = msg.msgData.componentToShow;
         this.importFilePopupToShow = msg.msgData.importFilePopupToShow;
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
@@ -796,7 +797,6 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&importFilePopupToShow=" + this.importFilePopupToShow;
       }
-      this.conversationId = undefined
     }
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
@@ -828,6 +828,9 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&componentToShow=Chat";
       }
+    }
+    if(this.importFilePopupToShow){
+      rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
     }
     if (deep_link_info?.componentID) {
       rawUrl += "&componentID=" + deep_link_info?.componentID;
