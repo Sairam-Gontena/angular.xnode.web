@@ -5,6 +5,8 @@ import { User } from 'src/models/user';
 import { SpecUtilsService } from './spec-utils.service';
 import { Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { LocalStorageService } from './local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -152,6 +154,7 @@ export class UtilsService {
 
   constructor(private specUtilsService: SpecUtilsService,
     private authApiService: AuthApiService,
+    private localStorageService: LocalStorageService,
     private router: Router) { }
 
   disablePageToolsLayoutSubMenu() {
@@ -325,8 +328,9 @@ export class UtilsService {
     const userLang = navigator.language;
     return userLang === INlocale ? IndiaFromat : USFormat;
   }
+
   //navigate the deeplink
-  async navigateByDeepLink(urlObj: any, path: any, params: any) {
+  navigateByDeepLink(urlObj: any, path: any, params: any) {
     let templateId = params.get('template_id'),
       templateType = params.get('template_type'),
       productId = params.get('product_id'),
@@ -372,22 +376,29 @@ export class UtilsService {
           targetUrl: params.get('targetUrl'),
           restriction_max_value: params.get('restriction_max_value'),
           isNaviExpanded: params.get('isNaviExpanded'),
+          conversationID: params.get('conversationID')
         }
       }
-      await this.setDeepLinkInStorage(deepLinkInfo);
+      this.setDeepLinkInStorage(deepLinkInfo);
       this.router.navigateByUrl(path);
     }
   }
 
   //set deep link in storage
-  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+  setDeepLinkInStorage(deepLinkInfo: any): void {
+    return this.localStorageService.saveItem(StorageKeys.DEEP_LINK_INFO, deepLinkInfo);
   }
+
+  //set deep link info
+  setDeepLinkInfo(winUrl: any) {
+    let urlObj = new URL(winUrl);
+    let hash = urlObj.hash;
+    let [path, queryString] = hash.substr(1).split('?');
+    if (winUrl.includes('naviURL')) {
+      queryString = hash.split('?')[2];
+    }
+    let params = new URLSearchParams(queryString);
+    this.navigateByDeepLink(urlObj, path, params);
+  }
+
 }

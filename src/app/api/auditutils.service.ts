@@ -32,6 +32,9 @@ export class AuditutilsService extends BaseApiService {
     productid?: any
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    if(!this.currentUser || !this.currentUser?.user_id) {
+      return
+    }
     const body = {
       userId: this.currentUser?.user_id,
       activityTypeId: activity,

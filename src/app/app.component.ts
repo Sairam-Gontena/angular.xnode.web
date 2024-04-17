@@ -95,9 +95,6 @@ export class AppComponent implements OnInit {
 
   user?: User | null;
 
-  private readonly XNODE_IDLE_TIMEOUT_PERIOD = 10 * 60; //10 minutes in seconds
-  private readonly XNODE_TIMEOUT_PERIOD = 30; //SECONDS
-
   constructor(private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
@@ -123,7 +120,7 @@ export class AppComponent implements OnInit {
     if (winUrl.includes('template_id') || winUrl.includes('template_type') || winUrl.includes('crId') ||
       winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id') || winUrl.includes('naviURL')) {
       this.deepLink = true;
-      this.setDeepLinkInfo(winUrl);
+      this.utilsService.setDeepLinkInfo(winUrl);
     } else {
       this.deepLink = false;
     }
@@ -159,6 +156,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      this.newWithNavi = false;
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
         if (msg.msgData?.componentToShow === 'Resources') {
@@ -201,10 +199,10 @@ export class AppComponent implements OnInit {
     this.authApiService.user.subscribe(x => this.user = x);
 
 
-    // sets an idle timeout of 5 seconds, for testing purposes.
-    idle.setIdle(this.XNODE_IDLE_TIMEOUT_PERIOD);
-    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(this.XNODE_TIMEOUT_PERIOD);
+    // sets an idle timeout of seconds, for testing purposes.
+    idle.setIdle(eval(environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS));
+    // sets a timeout period of environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS seconds. after environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(environment.XNODE_TIMEOUT_PERIOD_SECONDS);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
@@ -301,17 +299,6 @@ export class AppComponent implements OnInit {
     this.isNaviExpanded = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.makeTrustedUrl();
-  }
-
-  async setDeepLinkInfo(winUrl: any) {
-    let urlObj = new URL(winUrl);
-    let hash = urlObj.hash;
-    let [path, queryString] = hash.substr(1).split('?')
-    if (winUrl.includes('naviURL')) {
-      queryString = hash.split('?')[2];
-    }
-    let params = new URLSearchParams(queryString);
-    this.utilsService.navigateByDeepLink(urlObj, path, params);
   }
 
   async changeTheme(event: any) {
@@ -480,6 +467,9 @@ export class AppComponent implements OnInit {
       this.conversation_id = event.data?.conversation_id;
       this.showImportFilePopup = true;
       localStorage.setItem('conversationId', event.data.id)
+    }
+    if (event?.data?.message === 'clear_deep_link_storage') {
+      this.storageService.removeItem(event?.data?.clearStorage);
     }
   }
 
@@ -810,8 +800,8 @@ export class AppComponent implements OnInit {
         this.componentToShow = undefined;
       }
     }
-    if (deep_link_info?.conversationDetail) {
-      rawUrl += "&conversationDetailID=" + deep_link_info?.conversationDetail;
+    if (deep_link_info?.conversationID) {
+      rawUrl += "&conversationID=" + deep_link_info?.conversationID;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.mainComponent = '';

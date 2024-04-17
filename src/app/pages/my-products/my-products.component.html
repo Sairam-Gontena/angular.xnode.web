@@ -63,45 +63,8 @@
             <div class="col-12">
                 <h3 class="text-2xl font-semibold">Recent Activity</h3>
                 <div class="recentActivity p-0 ">
-                    <div class="filterDropdown">
-                        <i class="pi pi-search search-icon" (click)="toggleSearch()"></i>
-                        <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
-                            [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
-                        <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
-                            optionLabel="name"></p-dropdown>
-                    </div>
-                    <p-tabView [(activeIndex)]="activeIndexRecentActivity" class="col-12">
-                        <p-tabPanel header="All Conversations" class="home-conversations-card"
-                            *ngIf="selectedConversation.value == 'All'">
-                            <p-card header={{conversation?.title}} class="conversations-card "
-                                *ngFor="let conversation of filteredConversation">
-                                <div class="flex col-12">
-                                    <p class="m-0 col-7 text-sm font-normal">
-                                        #{{conversation?.cId}} in {{conversation?.productName}}
-                                    </p>
-                                    <p class="m-0 col-5 text-sm font-normal">
-                                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                            </p-card>
-
-                        </p-tabPanel>
-                        <p-tabPanel header="My Conversations" class="home-conversations-card"
-                            *ngIf="selectedConversation.value == 'Mine'">
-                            <p-card header={{conversation?.title}} class="conversations-card"
-                                *ngFor="let conversation of mineConversations">
-                                <div class="flex col-12">
-                                    <p class="m-0 col-8 text-sm font-normal">
-                                        #{{conversation?.cId}} in {{conversation?.productName}}
-                                    </p>
-                                    <p class="m-0 col-4 text-sm font-normal">
-                                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                                    </p>
-                                </div>
-                            </p-card>
-
-                        </p-tabPanel>
-                    </p-tabView>
+                    <app-content-grid [showSearch]="true"  [headers]="columnDef" [dataContent]="activities" 
+                    ></app-content-grid>
                 </div>
             </div>
         </div>
