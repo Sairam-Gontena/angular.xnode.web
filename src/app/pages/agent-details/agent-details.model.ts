@@ -239,10 +239,14 @@ export class AgentDetailsModel {
   capabilityModalShow = false;
   topicModalShow = false;
   isFormEditable = false;
-
+  showAgentDetailsContent = true
   rowViewData = {
-    showDetail: false,
-    requestedId: ''
+    capability: {
+      showDetail: false,
+      showHeader: false,
+      showTab: true,
+      requestedId: ''
+    }
   }
 
   constructor(private storageService: LocalStorageService,
@@ -259,11 +263,9 @@ export class AgentDetailsModel {
   viewHandler(item: any) {
     if (this.activeIndex == 2) {
       // Handle Capability case
-
-      debugger
-
-      this.rowViewData.showDetail = true
-      this.rowViewData.requestedId = item.id
+      this.rowViewData.capability.showDetail = true
+      this.rowViewData.capability.requestedId = item.id
+      this.showAgentDetailsContent = false
     } else if (this.activeIndex == 3) {
       // Handle  Topic Case
     } else if (this.activeIndex == 4) {

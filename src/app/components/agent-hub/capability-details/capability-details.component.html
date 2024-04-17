@@ -1,5 +1,5 @@
 <div class="pr-4 pl-5">
-    <div class="flex justify-content-between py-6">
+    <div *ngIf="rowViewData.showHeader" class="flex justify-content-between py-6">
         <div class="flex gap-2 align-items-center">
             <xnode-breadcrumbs [items]="breadCrumbsAction.breadcrumb" (changeEvent)="goBackBreadCrumbsHandler($event)"
                 [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
@@ -32,42 +32,44 @@
       </p-tabPanel>
     </p-tabView> -->
 
-    <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex"
-        *ngIf="!overviewTabItem.showTab; else overviewBlock">
-        <ng-container *ngFor="let tabItem of tabItems">
-            <p-tabPanel>
-                <ng-template pTemplate="header">
-                    <span>{{tabItem.title}}</span>
-                </ng-template>
-                <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
-                    <ng-container *ngSwitchCase="'Overview'">
-                        <ng-container [ngTemplateOutlet]="overview"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Agent Instructions'">
-                        <ng-container [ngTemplateOutlet]="instruction"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Capabilities'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Topics'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Prompts'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Knowledge'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Models'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'Tools'">
-                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
-                    </ng-container>
-                </ng-template>
-            </p-tabPanel>
-        </ng-container>
-    </p-tabView>
+    <div *ngIf="rowViewData.showTab">
+        <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex"
+            *ngIf="!overviewTabItem.showTab; else overviewBlock">
+            <ng-container *ngFor="let tabItem of tabItems">
+                <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <span>{{tabItem.title}}</span>
+                    </ng-template>
+                    <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+                        <ng-container *ngSwitchCase="'Overview'">
+                            <ng-container [ngTemplateOutlet]="overview"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Agent Instructions'">
+                            <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+                        </ng-container> -->
+                        <!-- <ng-container *ngSwitchCase="'Capabilities'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                        <ng-container *ngSwitchCase="'Topics'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Prompts'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Knowledge'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                        <ng-container *ngSwitchCase="'Models'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Tools'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                    </ng-template>
+                </p-tabPanel>
+            </ng-container>
+        </p-tabView>
+    </div>
 
     <ng-template #overviewBlock>
         <p-tabView styleClass="pt-3 px-6" [(activeIndex)]="overviewTabItem.activeIndex"
@@ -78,7 +80,7 @@
     </ng-template>
 
     <ng-template #dynamicTable>
-        <div class="w-full table-height" *ngIf="activeIndex > 1 && !overviewTabItem.showTab">
+        <div class="w-full table-height" *ngIf="activeIndex > 0 && !overviewTabItem.showTab">
             <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                 [showColumnFilterOption]="showColumnFilterOption" [tableRowActionOptions]="tableRowActionOptions"
                 [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem"
@@ -96,11 +98,11 @@
     </ng-template>
 
     <!-- instruction html -->
-    <ng-template #instruction>
+    <!-- <ng-template #instruction>
         <div class="table-height">
             <xnode-agent-overview formType="instruction" [agentInfo]="agentInfo"></xnode-agent-overview>
         </div>
-    </ng-template>
+    </ng-template> -->
 
 
     <div class="table-height" *ngIf="overviewTabItem.showTab">

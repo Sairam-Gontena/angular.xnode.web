@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { agentName } from 'src/app/pages/agent-hub/agent-hub.constant';
 import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './ICapability-details';
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -22,19 +22,25 @@ const InitialPaginatorInfo = {
   templateUrl: './capability-details.component.html',
   styleUrls: ['./capability-details.component.scss']
 })
-export class CapabilityDetailsComponent {
+export class CapabilityDetailsComponent implements OnInit {
+  @Input() rowViewData = {
+    showDetail: false,
+    showHeader: true,
+    showTab: true,
+    requestedId: ''
+  }
   agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
-    { idx: 3, title: 'Topics', value: 'topic', identifier: agentName.topic },
+    { idx: 1, title: 'Topics', value: 'topic', identifier: agentName.topic },
     {
-      idx: 4,
+      idx: 2,
       title: 'Prompts',
       value: 'prompt_linked_topic',
       identifier: agentName.prompt
     },
-    { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
-    { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
+    { idx: 3, title: 'Models', value: 'model', identifier: agentName.model },
+    { idx: 4, title: 'Tools', value: 'tool', identifier: agentName.tool },
   ];
   tableData!: ITableDataEntry[] | CapabilitiesTableData[];
   columns: any; // Define the type of columns based on the actual data structure
@@ -107,6 +113,7 @@ export class CapabilityDetailsComponent {
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
   activeIndex: number = 0;
   userInfo: any;
+
   headerActionBtnOption = {
     overview: {
       buttonText: 'Action',
@@ -219,6 +226,7 @@ export class CapabilityDetailsComponent {
       this.viewHandler(this.currentActiveRowData)
     }
   }
+
   currentActiveRowData: any;
   queryparamInfo!: IQueryParams; // Active query params property
   dynamicFormBindingKeys: any // Define form field.
@@ -227,6 +235,7 @@ export class CapabilityDetailsComponent {
     enableInstruction: false,
     overviewInstructionData: ""
   };
+
   promptModalShow = false;
   capabilityModalShow = false;
   topicModalShow = false;
@@ -239,9 +248,10 @@ export class CapabilityDetailsComponent {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
 
-
-    this.getAgentDetailsById()
+  ngOnInit() {
+    this.getCapalityDetailsById()
   }
 
   viewHandler(item: any) {
@@ -309,10 +319,10 @@ export class CapabilityDetailsComponent {
 
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
-    let url: string = "agent/agents/{agent_id}/",
-      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+    let url: string = "agent/",
+      // getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
       urlParam: any = {
-        url: url.replace("{agent_id}", getID),
+        url: url,
         params: {
           // agent_id: getID,
           account_id: this.userInfo.account_id,
@@ -326,20 +336,21 @@ export class CapabilityDetailsComponent {
   //making url for the category
   changeURL(tabIndex: number, urlParam: any) {
     switch (tabIndex) {
+      // case 2:
+      //   urlParam.url = urlParam.url + "capabilities/";
+      //   break;
+
+      case 1:
+        urlParam.url = urlParam.url + "capabilities_topics/" + this.rowViewData.requestedId + "/";
+        break;
       case 2:
-        urlParam.url = urlParam.url + "capabilities/";
+        urlParam.url = urlParam.url + "capabilities_prompts/" + this.rowViewData.requestedId + "/";
         break;
       case 3:
-        urlParam.url = urlParam.url + "topics/";
+        urlParam.url = urlParam.url + "capabilities_model/" + this.rowViewData.requestedId + "/";
         break;
       case 4:
-        urlParam.url = urlParam.url + "prompts/";
-        break;
-      case 5:
-
-        break;
-      case 6:
-        urlParam.url = urlParam.url + "models/";
+        urlParam.url = urlParam.url + "capabilities_tools/" + this.rowViewData.requestedId + "/";
         break;
     }
   }
@@ -356,9 +367,9 @@ export class CapabilityDetailsComponent {
   }
 
   //  get the agent details by Id
-  getAgentDetailsById() {
-    let url: string = "agent/agent_by_id/",
-      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+  getCapalityDetailsById() {
+    let url: string = "agent/capbility_by_id/",
+      getID: any = this.rowViewData.requestedId,
       urlParam: any = {
         url: url + getID,
         params: {}
@@ -377,7 +388,7 @@ export class CapabilityDetailsComponent {
 
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
-    if (this.activeIndex > 1) {
+    if (this.activeIndex > 0) {
       /**
        * Fetch result when activeIndex is > 1
        */
