@@ -120,7 +120,7 @@ export class AppComponent implements OnInit {
     if (winUrl.includes('template_id') || winUrl.includes('template_type') || winUrl.includes('crId') ||
       winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id') || winUrl.includes('naviURL')) {
       this.deepLink = true;
-      this.setDeepLinkInfo(winUrl);
+      this.utilsService.setDeepLinkInfo(winUrl);
     } else {
       this.deepLink = false;
     }
@@ -301,17 +301,6 @@ export class AppComponent implements OnInit {
     this.makeTrustedUrl();
   }
 
-  async setDeepLinkInfo(winUrl: any) {
-    let urlObj = new URL(winUrl);
-    let hash = urlObj.hash;
-    let [path, queryString] = hash.substr(1).split('?')
-    if (winUrl.includes('naviURL')) {
-      queryString = hash.split('?')[2];
-    }
-    let params = new URLSearchParams(queryString);
-    this.utilsService.navigateByDeepLink(urlObj, path, params);
-  }
-
   async changeTheme(event: any) {
     this.themeService.changeColorTheme(event);
   }
@@ -478,6 +467,9 @@ export class AppComponent implements OnInit {
       this.conversation_id = event.data?.conversation_id;
       this.showImportFilePopup = true;
       localStorage.setItem('conversationId', event.data.id)
+    }
+    if (event?.data?.message === 'clear_deep_link_storage') {
+      this.storageService.removeItem(event?.data?.clearStorage);
     }
   }
 
@@ -808,8 +800,8 @@ export class AppComponent implements OnInit {
         this.componentToShow = undefined;
       }
     }
-    if (deep_link_info?.conversationDetail) {
-      rawUrl += "&conversationDetailID=" + deep_link_info?.conversationDetail;
+    if (deep_link_info?.conversationID) {
+      rawUrl += "&conversationID=" + deep_link_info?.conversationID;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.mainComponent = '';

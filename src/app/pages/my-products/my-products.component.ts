@@ -129,8 +129,10 @@ export class MyProductsComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.CONVERSATION)
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj) {
-      this.authApiService.setDeeplinkURL("");
-      this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
+      if (!getDeepLinkInfoObj.naviURL) {
+        this.authApiService.setDeeplinkURL("");
+        this.storageService.removeItem(StorageKeys.DEEP_LINK_INFO);
+      }
     }
     this.getMetaData();
   }
@@ -381,11 +383,7 @@ export class MyProductsComponent implements OnInit {
         this.activeIndex = 1;
         this.onClickcreatedByYou();
         if (this.authApiService.getDeeplinkURL()) {
-          let urlObj = new URL(this.authApiService.getDeeplinkURL());
-          let hash = urlObj.hash;
-          let [path, queryString] = hash.substr(1).split('?');
-          let params = new URLSearchParams(queryString);
-          this.utils.navigateByDeepLink(urlObj, path, params);
+          this.utils.setDeepLinkInfo(this.authApiService.getDeeplinkURL());
         }
       } else if (response?.status !== 200) {
         let user_audit_body = {
