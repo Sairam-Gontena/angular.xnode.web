@@ -264,6 +264,10 @@
 :host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
     background: #3A3942;
   }
+
+  :host ::ng-deep.p-datatable .p-datatable-thead{
+    z-index: 0;
+  }
   
 
 :host ::ng-deep .p-card .p-card-body {

@@ -56,34 +56,51 @@ jobs:
                 # Check if the request was successful
                 if [ $? -eq 0 ]; then
                   echo "Work Item Details: $work_item_details"
-                  workItemType=$(jq -r '.fields."System.WorkItemType"' <<< "$work_item_details")
-                  iterationPath=$(jq -r '.fields."System.IterationPath"' <<< "$work_item_details")
-                  state=$(jq -r '.fields."System.State"' <<< "$work_item_details")
+                  workItemType=$(jq -r '.fields."System.WorkItemType"' <<< "$work_item_details" | xargs)
+                  iterationPath=$(jq -r '.fields."System.IterationPath"' <<< "$work_item_details" | xargs)
+                  areaPath=$(jq -r '.fields."System.AreaPath"' <<< "$work_item_details" | xargs)
+                  state=$(jq -r '.fields."System.State"' <<< "$work_item_details" | xargs)
                   echo "Work Item details : "
                   echo "------------------ "                  
                   echo "Work Item Type: $workItemType"
-                  echo "Iteration Path: $iterationPath"
-                  # Get the current year, month, and week number of month
-                  year=$(date +%Y)
-                  month=$(date +%b)
-                  week=$((($(date +%-d)-1)/7+1))                  
-                  echo "Iteration Name Derived : xnode-dev\\$year-$month-Week$week"                  
-                  echo "State: $state"
-                  if [[ $work_item_type == "User Story" || $work_item_type == "Bug" ]] && \
-                     [[ $iteration_path == "xnode-dev\\$year-$month-Week$week" ]] && \
-                     [[ $state == "Active" ]]; then
-                    echo "Work Item ID: $work_item_id - Validation Passed"
+                  echo "Work Item Iteration Path: $iterationPath"
+                  echo "Work Item Area Path: $areaPath"    
+                  echo "Work Item Status: $state"
+                  # get current iteration of the project
+                  iteration_url="$(ORG_URL)/$PROJECT/_apis/work/teamsettings/iterations?\$timeframe=current&api-version=5.1"
+                  echo "Get Iteration URL: $iteration_url"
+                  work_iteration_details=$(curl -s -u ":$(PAT)" $iteration_url)
+                  echo "Get Iteration Response: $work_iteration_details"
+                  # Extract current iteration name from the response
+                  current_iteration_path="$areaPath$(echo $work_iteration_details | jq -r '.value[0].name' | xargs)"
+                  echo "Project Current Iteration : $current_iteration_path"
+                  pr_comment=""
+                  abandon_pr="false"
+                  #validate work-item details
+                  if [[ "${state^^}" != "READY FOR DEPLOYMENT" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The work item linked must be in Ready for Deployment state"
+                      abandon_pr="true"
+                  elif [[ "${workItemType^^}" != "USER STORY" && ${workItemType^^} != "BUG" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The work-item linked must be either a User story or a Bug"
+                      abandon_pr="true"
+                  elif [[ "${iterationPath^^}" != "${current_iteration_path^^}" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The current iteration of the project and iteration attached to work item do not match"
+                      abandon_pr="true"
+                  fi
+                  if [[ $abandon_pr == "false" ]]; then
+                      echo "Work Item ID: $work_item_id - Validation Passed"
                   else
-                    echo "Work Item ID: $work_item_id - Validation Failed. Auto Rejecting PR!!"                    
-                    pr_review_url="$ORG_URL/$PROJECT/_apis/git/repositories/$(repositoryName)/pullRequests/$PR_ID/reviewers/$(reviewer)?api-version=5.1"
-                    #echo "Reject PR URL : $pr_review_url"
-                    rejectPRResponse=$(curl -X PUT \
-                       -H "Authorization: Basic $(echo -n ":$(PAT)" | base64)" \
-                       -H "Content-Type: application/json" \
-                       -d '{"hasDeclined": false,"id": "$(reviewer)","isReapprove": false,"vote": -10}' \
-                       "$pr_review_url")
-                    echo "Reject PR Response : $rejectPRResponse"
-                    exit
+                      echo "Work Item ID: $work_item_id - Validation Failed. Abandoning the PR!! - $pr_comment"     
+                      pr_url="$ORG_URL/$PROJECT/_apis/git/repositories/$(repositoryName)/pullrequests/$PR_ID?api-version=5.1"
+                      comment_url="$ORG_URL/$PROJECT/_apis/git/repositories/$(repositoryName)/pullrequests/$PR_ID/threads?api-version=6.0"
+                      commentData="{\"comments\":[{\"content\":\"$pr_comment\"}]}"
+                      commentResponse=$(curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Basic $(echo -n :$(PAT) | base64)" -d "$commentData" $comment_url)
+                      echo "commentResponse:$commentResponse"
+                      updateData="{\"status\":\"abandoned\"}"
+                      # Send PATCH request to update pull request status to abandoned
+                      updateResponse=$(curl -s -X PATCH -H "Content-Type: application/json" -H "Authorization: Basic $(echo -n :$(PAT) | base64)" -d "$updateData" $pr_url)
+                      echo "updateResponse:$updateResponse"
+                      exit
                   fi
                 else
                   # Print error message

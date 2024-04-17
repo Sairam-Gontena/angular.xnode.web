@@ -376,7 +376,7 @@ export class UtilsService {
           targetUrl: params.get('targetUrl'),
           restriction_max_value: params.get('restriction_max_value'),
           isNaviExpanded: params.get('isNaviExpanded'),
-          conversationID: params.get('conversationID')
+          componentID: params.get('componentID')
         }
       }
       this.setDeepLinkInStorage(deepLinkInfo);

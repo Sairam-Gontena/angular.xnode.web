@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
   componentToShow?: any;
   mainComponent: string = '';
   showNaviSpinner: boolean = true;
+  importFilePopupToShow: boolean = false;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -183,6 +184,14 @@ export class AppComponent implements OnInit {
         this.resource_id = msg.msgData.resource_id
         this.conversationId = msg.msgData.conversation_id;
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+        this.makeTrustedUrl();
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
+        this.componentToShow = msg.msgData.componentToShow;
+        this.importFilePopupToShow = msg.msgData.importFilePopupToShow;
         this.makeTrustedUrl();
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
@@ -316,7 +325,7 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     window.addEventListener('message', this.receiveMessage.bind(this), false);
     this.handleTheme();
-    this.makeTrustedUrl();
+    // this.makeTrustedUrl();
   }
 
   logout(): void {
@@ -481,7 +490,6 @@ export class AppComponent implements OnInit {
 
   handleUser(): void {
     if (this.currentUser) {
-      this.getMeTotalOnboardedApps();
       if (this.currentUser.role_name === 'Xnode Admin') {
         this.router.navigate(['/admin/user-invitation']);
       } else {
@@ -782,7 +790,14 @@ export class AppComponent implements OnInit {
       }
       this.conversationId = undefined
     }
-
+    if (this.importFilePopupToShow) {
+      if (rawUrl.includes("importFilePopupToShow")) {
+        rawUrl = rawUrl.replace(/importFilePopupToShow=[^&]*/, "importFilePopupToShow=" + this.importFilePopupToShow);
+      } else {
+        rawUrl += "&importFilePopupToShow=" + this.importFilePopupToShow;
+      }
+      this.conversationId = undefined
+    }
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow));
@@ -800,8 +815,22 @@ export class AppComponent implements OnInit {
         this.componentToShow = undefined;
       }
     }
-    if (deep_link_info?.conversationID) {
-      rawUrl += "&conversationID=" + deep_link_info?.conversationID;
+    const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
+    if (meta_data && meta_data.length) {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
+      } else {
+        rawUrl += "&componentToShow=Tasks";
+      }
+    } else {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Chat");
+      } else {
+        rawUrl += "&componentToShow=Chat";
+      }
+    }
+    if (deep_link_info?.componentID) {
+      rawUrl += "&componentID=" + deep_link_info?.componentID;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.mainComponent = '';

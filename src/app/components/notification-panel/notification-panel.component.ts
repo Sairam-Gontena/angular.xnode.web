@@ -92,7 +92,8 @@ export class NotificationPanelComponent {
   }
 
   navigateToProduct(obj: any): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === obj.product_id;
@@ -122,14 +123,16 @@ export class NotificationPanelComponent {
   }
 
   getMeListOfProducts(): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
       }
     });
   }
   getMeMetaData() {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
         this.router.navigate(['/dashboard']);
@@ -181,7 +184,8 @@ export class NotificationPanelComponent {
     obj.productId = obj.productId ? obj.productId : obj.product_id;
     obj.versionId = obj.versionId ? obj.versionId : obj.version_id;
     this.utils.loadSpinner(true);
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const metaData: any = response.data;
         this.storageService.saveItem(
@@ -507,7 +511,8 @@ export class NotificationPanelComponent {
   }
 
   getMeMetaDataAndStoreTheProduct(product_id: any) {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === product_id;
@@ -515,23 +520,14 @@ export class NotificationPanelComponent {
         localStorage.setItem('product', JSON.stringify(product));
       }
     });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       const product = response.data.data?.filter((item: any) => {
-    //         return item.id === product_id;
-    //       })[0];
-    //       localStorage.setItem('product', JSON.stringify(product));
-    //     }
-    //   });
   }
 
   navigateToConversation(val: any) {
     val.productId = val.productId ? val.productId : val.product_id;
     val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === val.productId;
@@ -544,21 +540,6 @@ export class NotificationPanelComponent {
         this.goToConversation(val);
       }
     });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       const product = response.data.data?.filter((item: any) => {
-    //         return item.id === val.productId;
-    //       })[0];
-    //       this.storageService.saveItem(StorageKeys.Product, product);
-    //       localStorage.setItem('record_id', product.id);
-    //       localStorage.setItem('app_name', product.title);
-    //       localStorage.setItem('has_insights', product.has_insights);
-    //       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
-    //       this.goToConversation(val);
-    //     }
-    //   });
   }
 
   goToConversation(val: any) {
