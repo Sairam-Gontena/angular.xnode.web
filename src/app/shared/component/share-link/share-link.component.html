@@ -17,18 +17,17 @@
 
         <p-dropdown formControlName="selectedInvite" [options]="invities" optionLabel="name" [appendTo]="'body'"
             (onChange)="onSelectInviteChange($event)">
-            <!-- [(ngModel)]="selectedInvite"-->
             <ng-template pTemplate="selectedItem">
                 <ng-container *ngIf="addShareForm.get('selectedInvite')?.value">
                     <ng-container [ngSwitch]="addShareForm.get('selectedInvite')?.value">
                         <div class="flex align-items-center gap-2">
-                            <ng-container *ngSwitchCase="'owner'">
+                            <ng-container *ngSwitchCase="'Owner'">
                                 <img src="../../../assets/edit.png" alt="link" class="text-sm" />
                             </ng-container>
-                            <ng-container *ngSwitchCase="'contributor'">
+                            <ng-container *ngSwitchCase="'Contributor'">
                                 <img src="../assets/edit-icon.svg" alt="link" class="text-sm" />
                             </ng-container>
-                            <ng-container *ngSwitchCase="'reader'">
+                            <ng-container *ngSwitchCase="'Reader'">
                                 <img src="../assets/publish.svg" alt="link" class="text-sm" />
                             </ng-container>
                         </div>
@@ -39,9 +38,9 @@
             <ng-template let-invite pTemplate="item">
                 <div class="flex align-items-center gap-2">
                     <div>
-                        <img *ngIf="invite?.code === 'owner'" src="../assets/lock.svg" alt="copy" class="text-sm">
-                        <img *ngIf="invite?.code === 'contributor'" src="../assets/Link.svg" alt="copy" class="text-sm">
-                        <img *ngIf="invite?.code === 'reader'" src="../assets/publish.svg" alt="copy" class="text-sm">
+                        <img *ngIf="invite?.code === 'Owner'" src="../assets/lock.svg" alt="copy" class="text-sm">
+                        <img *ngIf="invite?.code === 'Contributor'" src="../assets/Link.svg" alt="copy" class="text-sm">
+                        <img *ngIf="invite?.code === 'Reader'" src="../assets/publish.svg" alt="copy" class="text-sm">
                     </div>
                     <div>
                         <div class="">
