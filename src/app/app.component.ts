@@ -224,7 +224,9 @@ export class AppComponent implements OnInit {
     idle.onIdleStart.subscribe(() => {
       this.idleState = 'You\'ve gone idle!'
       console.log(this.idleState);
-      this.showInactiveTimeoutPopup = true;
+      if (this.storageService.getItem(StorageKeys.CurrentUser)) {
+        this.showInactiveTimeoutPopup = true;
+      }
       // this.childModal.show();
     });
 
@@ -340,6 +342,8 @@ export class AppComponent implements OnInit {
 
   logoutFromTheApp(): void {
     this.showInactiveTimeoutPopup = false;
+    this.timedOut=false;
+    this.idle.stop();
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
