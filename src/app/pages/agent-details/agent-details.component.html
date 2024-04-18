@@ -26,36 +26,113 @@
       </div>
     </div>
   </div>
-  <p-tabView styleClass="pt-3 px-6" (onChange)="agentDetailsModel.onTabSwitchHandler($event)"
+  <!-- <p-tabView styleClass="pt-3 px-6" (onChange)="agentDetailsModel.onTabSwitchHandler($event)"
     [(activeIndex)]="agentDetailsModel.activeIndex"
     *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock">
     <p-tabPanel *ngFor="let tab of agentDetailsModel.tabItems; let i = index" [header]="tab.title">
     </p-tabPanel>
-  </p-tabView>
+  </p-tabView> -->
 
-  <ng-template #overviewBlock>
-    <p-tabView styleClass="pt-3 px-6" [(activeIndex)]="agentDetailsModel.overviewTabItem.activeIndex"
-      (onChange)="agentDetailsModel.overviewTabItem.tabSwitchHandler()">
-      <p-tabPanel *ngFor="let tab of agentDetailsModel.overviewTabItem.tabItems; let i = index" [header]="tab.title">
-      </p-tabPanel>
+  <div *ngIf="agentDetailsModel.showAgentDetailsContent">
+    <p-tabView (onChange)="agentDetailsModel.onTabSwitchHandler($event)" [(activeIndex)]="agentDetailsModel.activeIndex"
+      *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock">
+      <ng-container *ngFor="let tabItem of agentDetailsModel.tabItems">
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <span>{{tabItem.title}}</span>
+          </ng-template>
+          <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+            <ng-container *ngSwitchCase="'Overview'">
+              <ng-container [ngTemplateOutlet]="overview"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Agent Instructions'">
+              <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Capabilities'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Topics'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Prompts'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Knowledge'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Models'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Tools'">
+              <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+            </ng-container>
+          </ng-template>
+        </p-tabPanel>
+      </ng-container>
     </p-tabView>
+
+    <ng-template #overviewBlock>
+      <p-tabView styleClass="pt-3 px-6" [(activeIndex)]="agentDetailsModel.overviewTabItem.activeIndex"
+        (onChange)="agentDetailsModel.overviewTabItem.tabSwitchHandler()">
+        <p-tabPanel *ngFor="let tab of agentDetailsModel.overviewTabItem.tabItems; let i = index" [header]="tab.title">
+        </p-tabPanel>
+      </p-tabView>
+    </ng-template>
+
+    <ng-template #dynamicTable>
+      <div class="w-full table-height"
+        *ngIf="agentDetailsModel.activeIndex > 1 && !agentDetailsModel.overviewTabItem.showTab">
+        <xnode-dynamic-table [inputData]="agentDetailsModel.tableData" [cols]="agentDetailsModel.columns"
+          [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
+          [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
+          [paginatorInfo]="agentDetailsModel.paginatorInfo"
+          [searchFilterOptions]="agentDetailsModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+          [showViewRowData]="true" (changeEvent)="agentDetailsModel.viewHandler($event)"
+          (paginatorChangeEvent)="agentDetailsModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+      </div>
+
+    </ng-template>
+  </div>
+
+  <!-- overview html -->
+  <ng-template #overview>
+    <div class="table-height">
+      <xnode-agent-overview formType="overview" [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-overview>
+    </div>
   </ng-template>
 
-  <div class="w-full table-height px-6"
-    *ngIf="agentDetailsModel.activeIndex > 1 && !agentDetailsModel.overviewTabItem.showTab">
-    <xnode-dynamic-table [inputData]="agentDetailsModel.tableData" [cols]="agentDetailsModel.columns"
-      [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
-      [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
-      [paginatorInfo]="agentDetailsModel.paginatorInfo" [searchFilterOptions]="agentDetailsModel.searchFilterOptions"
-      columnWidth="13.8rem" altBgColorRow="#2E2D36" [showViewRowData]="true"
-      (changeEvent)="agentDetailsModel.viewHandler($event)" (paginatorChangeEvent)="agentDetailsModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+  <!-- instruction html -->
+  <ng-template #instruction>
+    <div class="table-height">
+      <xnode-agent-overview formType="instruction" [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-overview>
+    </div>
+  </ng-template>
+
+
+  <div class="table-height" *ngIf="agentDetailsModel.overviewTabItem.showTab">
+    <xnode-prompt-overview [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
+      [formEditable]="agentDetailsModel.isFormEditable"
+      (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview>
   </div>
 
 
-  <xnode-agent-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
-    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm" [formEditable]="agentDetailsModel.isFormEditable" (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-agent-overview>
+  <div>
+    <xnode-capability-details *ngIf="agentDetailsModel.rowViewData.capability.showDetail"
+      [rowViewData]="agentDetailsModel.rowViewData.capability"></xnode-capability-details>
+  </div>
 
-  <xnode-dynamic-form-modal *ngIf="agentDetailsModel.promptModalShow"
-    [(display)]="agentDetailsModel.promptModalShow"></xnode-dynamic-form-modal>
+  <!-- <xnode-prompt-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
+    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
+    [formEditable]="agentDetailsModel.isFormEditable"
+    (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview> -->
+
+  <xnode-create-prompt-modal *ngIf="agentDetailsModel.promptModalShow"
+    [(display)]="agentDetailsModel.promptModalShow"></xnode-create-prompt-modal>
+
+  <xnode-create-capability-modal *ngIf="agentDetailsModel.capabilityModalShow"
+    [(display)]="agentDetailsModel.capabilityModalShow"></xnode-create-capability-modal>
+
+  <xnode-create-topic-modal *ngIf="agentDetailsModel.topicModalShow"
+    [(display)]="agentDetailsModel.topicModalShow"></xnode-create-topic-modal>
 
 </div>

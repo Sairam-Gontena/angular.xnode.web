@@ -192,6 +192,7 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
         this.componentToShow = msg.msgData.componentToShow;
         this.importFilePopupToShow = msg.msgData.importFilePopupToShow;
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
@@ -232,7 +233,9 @@ export class AppComponent implements OnInit {
     idle.onIdleStart.subscribe(() => {
       this.idleState = 'You\'ve gone idle!'
       console.log(this.idleState);
-      this.showInactiveTimeoutPopup = true;
+      if (this.storageService.getItem(StorageKeys.CurrentUser)) {
+        this.showInactiveTimeoutPopup = true;
+      }
       // this.childModal.show();
     });
 
@@ -340,6 +343,8 @@ export class AppComponent implements OnInit {
 
   logoutFromTheApp(): void {
     this.showInactiveTimeoutPopup = false;
+    this.timedOut=false;
+    this.idle.stop();
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
@@ -796,7 +801,6 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&importFilePopupToShow=" + this.importFilePopupToShow;
       }
-      this.conversationId = undefined
     }
     if (this.componentToShow) {
       if (rawUrl.includes("componentToShow")) {
@@ -816,7 +820,7 @@ export class AppComponent implements OnInit {
       }
     }
     const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
-    if (meta_data && meta_data.length) {
+    if (meta_data && meta_data.length && !this.product) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Tasks");
       } else {
@@ -828,6 +832,9 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&componentToShow=Chat";
       }
+    }
+    if(this.importFilePopupToShow){
+      rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
     }
     if (deep_link_info?.componentID) {
       rawUrl += "&componentID=" + deep_link_info?.componentID;

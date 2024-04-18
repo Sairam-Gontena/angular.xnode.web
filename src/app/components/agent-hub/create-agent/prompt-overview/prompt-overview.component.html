@@ -1,0 +1,97 @@
+<div class="w-6 mx-auto">
+    <ng-container *ngIf="overviewInstructionDetailObj?.enableOverview">
+      <form [formGroup]="overviewForm">
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="name">Name</label>
+          <div class="w-7">
+            <input pInputText type="text" id="name" class="w-full form-control" formControlName="name" />
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="description">Description</label>
+          <div class="w-7">
+            <textarea rows="3" pInputTextarea id="description" class="w-full form-control"
+              formControlName="description"></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="parentTopic">Parent Topic</label>
+          <div class="w-7">
+            <input pInputText type="text" class="w-full form-control" id="parentTopic" formControlName="parentTopic" />
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  
+    <ng-container *ngIf="overviewInstructionDetailObj?.enableInstruction">
+      <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
+        <div class="flex align-items-center justify-content-end mb-3">
+          <p-button type="button" [label]="formEditable ? 'Save' : 'Edit'" [icon]="formEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right" [outlined]="formEditable ? false : true" (onClick)="onEditSaveHandler()" class="btn btn-cancel"></p-button>
+          <!-- <button type="submit" class="btn-primary">Add</button> -->
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="instruction">Instruction</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="3" id="instruction" class="w-full form-control" formControlName="instruction"
+              placeholder="Please provide guidelines for initiating meaningful conversations, fostering connections, and cultivating engagement across diverse communities. Highlight the importance of these efforts in building understanding, empathy, and collaboration in today's interconnected world."></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="guideline">Guideline</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="3" id="guideline" class="w-full form-control" formControlName="guideline"
+              placeholder="Enter Guideline"></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="responsibility">Responsibilities</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="3" id="responsibility" class="w-full form-control"
+              formControlName="responsibility" placeholder="Enter Responsibilities"></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="context">Context</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="3" id="context" class="w-full form-control" formControlName="context"
+              placeholder="Enter Context"></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="example">Example</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="5" id="example" class="w-full form-control" formControlName="example"
+              placeholder="Enter Example"></textarea>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+  
+  <!-- <div style="max-width: 50rem; height: 60vh;" class="mx-auto overflow-y-auto px-8">
+    <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" class="flex flex-column justify-content-center w-full gap-4">
+      <div *ngFor="let control of bindingKeys?.controls" class="m-auto w-full">
+        <div class="flex flex-column gap-3 w-full">
+          <label *ngIf="control.label !== ''" Class="text-xl font-medium">{{ control.label }}</label>
+          <input *ngIf="
+          [
+            'text',
+            'number',
+            'checkbox'
+          ].includes(control.type)
+        " [type]="control.type" [formControlName]="control.name" [value]="control.value"
+            class="w-full user-input user-input-common">
+          <textarea *ngIf="control.type === 'textarea'" [formControlName]="control.name" [value]="control.value"
+            class="w-full user-input-common" rows="6"></textarea>
+        </div>
+  
+  
+        <div *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">
+          <div *ngIf="dynamicForm.get(control.name)?.errors?.required">{{control.name}} is required.</div>
+          <div *ngIf="dynamicForm.get(control.name)?.errors?.minlength">Minimum length should be {{
+            dynamicForm.get(control.name)?.errors?.minlength.requiredLength }}.</div>
+        </div>
+      </div>
+      <button class="w-fit m-auto p-2 " type="submit">Submit</button>
+    </form>
+  </div> -->
