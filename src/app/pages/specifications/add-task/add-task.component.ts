@@ -152,7 +152,7 @@ export class AddTaskComponent {
       users: [
         {
           userId: this.currentUser.user_id,
-          role: 'owner'
+          role: 'Owner'
         }
       ],
       assignee: this.currentUser.user_id,

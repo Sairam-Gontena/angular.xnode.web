@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 // import { XnodeConversation } from '../models/interfaces/xnode-conversation';
@@ -69,6 +69,7 @@ export class ConversationHubService extends BaseApiService {
   updateProductUrl(body: any) {
     return this.patch('product/update-url', body);
   }
+
   getAllUsers() {
     let currentUSer: any = localStorage.getItem('currentUser');
     currentUSer = JSON.parse(currentUSer);
@@ -96,6 +97,16 @@ export class ConversationHubService extends BaseApiService {
       httpParams = httpParams.append(key, params[key]);
     });
     return this.httpClient.get(`${this.rootUrl}resource`, { params: httpParams });
+  }
+
+  patchProduct(product_id: string, params: any) {
+    const url = `${this.rootUrl}product?id=${product_id}`;
+    const authToken = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}` // Include the token in the 'Authorization' header
+    });
+    return this.httpClient.patch(url, params, { headers });
   }
 
   getRecentActivities(userId: any) {
