@@ -8,6 +8,7 @@ import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { OnInit } from '@angular/core';
 
 const InitialPaginatorInfo = {
   page: 0,
@@ -16,6 +17,7 @@ const InitialPaginatorInfo = {
   totalRecords: 0,
 };
 export class AgentDetailsModel {
+  agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
     { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
@@ -141,7 +143,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Capability',
           icon: '',
-          command: () => { },
+          command: () => { this.capabilityModalShow = true },
         },
       ],
     },
@@ -151,7 +153,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Topic',
           icon: '',
-          command: () => { },
+          command: () => { this.topicModalShow = true },
         },
       ],
     },
@@ -234,8 +236,18 @@ export class AgentDetailsModel {
     overviewInstructionData: ""
   };
   promptModalShow = false;
-
+  capabilityModalShow = false;
+  topicModalShow = false;
   isFormEditable = false;
+  showAgentDetailsContent = true
+  rowViewData = {
+    capability: {
+      showDetail: false,
+      showHeader: false,
+      showTab: true,
+      requestedId: ''
+    }
+  }
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -243,22 +255,41 @@ export class AgentDetailsModel {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+
+
+    this.getAgentDetailsById()
   }
 
   viewHandler(item: any) {
-    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
-    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-    if (overViewTabIdentifier === "overview") {
-      this.overviewInstructionForm.enableOverview = true;
-      this.overviewInstructionForm.enableInstruction = false;
-    } else if (overViewTabIdentifier === "instruction") {
-      this.overviewInstructionForm.enableInstruction = true;
-      this.overviewInstructionForm.enableOverview = false;
+    if (this.activeIndex == 2) {
+      // Handle Capability case
+      this.rowViewData.capability.showDetail = true
+      this.rowViewData.capability.requestedId = item.id
+      this.showAgentDetailsContent = false
+    } else if (this.activeIndex == 3) {
+      // Handle  Topic Case
+    } else if (this.activeIndex == 4) {
+      // Handle Prompt Case
+
+      const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
+      if (overViewTabIdentifier === "overview") {
+        this.overviewInstructionForm.enableOverview = true;
+        this.overviewInstructionForm.enableInstruction = false;
+      } else if (overViewTabIdentifier === "instruction") {
+        this.overviewInstructionForm.enableInstruction = true;
+        this.overviewInstructionForm.enableOverview = false;
+      }
+      this.overviewInstructionForm.overviewInstructionData = item;
+      // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
+      this.currentActiveRowData = item;
+      this.overviewTabItem.showTab = true;
+    } else if (this.activeIndex == 5) {
+      // Handle Knowledge case
+    } else if (this.activeIndex == 6) {
+      // Handle Model Case
+    } else if (this.activeIndex == 7) {
+      // Handle Tool Case
     }
-    this.overviewInstructionForm.overviewInstructionData = item;
-    // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-    this.currentActiveRowData = item;
-    this.overviewTabItem.showTab = true;
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -268,7 +299,7 @@ export class AgentDetailsModel {
     newItem.splice(indexToDelete);
     this.breadCrumbsAction.isBreadCrumbActive = false;
 
-    if(event?.item?.path) {
+    if (event?.item?.path) {
       this.router.navigate([event.item.path]);
     }
 
@@ -280,10 +311,17 @@ export class AgentDetailsModel {
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
-        (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter(
+          (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
+      //   (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -300,7 +338,12 @@ export class AgentDetailsModel {
       this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.detail });
     } else if (response.data) {
       this.tableData = response.data as CapabilitiesTableData[];
-      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
+      // this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns =
+        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+
       this.paginatorInfo.page = response.page;
       this.paginatorInfo.perPage = response.per_page;
       this.paginatorInfo.totalRecords = response.total_items;
@@ -315,7 +358,7 @@ export class AgentDetailsModel {
       urlParam: any = {
         url: url.replace("{agent_id}", getID),
         params: {
-          agent_id: getID,
+          // agent_id: getID,
           account_id: this.userInfo.account_id,
           page: paginationObj.page + 1,
           limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
@@ -356,13 +399,43 @@ export class AgentDetailsModel {
     });
   }
 
+  //  get the agent details by Id
+  getAgentDetailsById() {
+    let url: string = "agent/agent_by_id/",
+      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+      urlParam: any = {
+        url: url + getID,
+        params: {}
+      }
+
+    this.agentHubService.getAgentDetail(urlParam).subscribe({
+      next: (response: any) => {
+        // this.getAgentDetailByCategorySuccess(response);
+        this.agentInfo = response
+        console.log(response, "response")
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+      }
+    });
+  }
+
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
-    let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
-    let urlParam = this.makeTableParamObj(paginatorInfo);
-    this.changeURL(event.index, urlParam);
-    this.getAgentDetailByCategory(urlParam);
-    this.updateHeaderOption();
+    if (this.activeIndex > 1) {
+      /**
+       * Fetch result when activeIndex is > 1
+       */
+      let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
+      let urlParam = this.makeTableParamObj(paginatorInfo);
+      this.changeURL(event.index, urlParam);
+      this.getAgentDetailByCategory(urlParam);
+      this.updateHeaderOption();
+
+    } else {
+      /**
+       * Show agent overview/instruction
+       */
+    }
   }
 
   updateHeaderOption() {
@@ -386,19 +459,21 @@ export class AgentDetailsModel {
   onEditSaveHandler(formData: any) {
     const activeTab = this.tabItems[this.activeIndex].identifier
 
-    if(this.isFormEditable) {
+    if (this.isFormEditable) {
       let urlParam = {
         url: '',
         data: {}
       }
-  
-      if(activeTab == agentName.prompt) {
+
+      if (activeTab == agentName.prompt) {
         const id = formData?.id
+
+        delete formData?.id
         urlParam.url = `agent/update_prompt/${id}/${formData.version}`
         urlParam.data = formData
       }
-  
-  
+
+
       this.agentHubService.updateData(urlParam).subscribe({
         next: (response: any) => {
           console.log("responseData", response)

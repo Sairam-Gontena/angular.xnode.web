@@ -111,8 +111,16 @@ export class BpmnDiagramComponent
       .getUsecases(this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
-          this.useCases = response.data;
-          this.auditUtil.postAudit(
+          if (typeof response.data === 'string') {
+            try {
+              JSON.parse(response.data);
+              this.useCases = JSON.parse(response.data)
+            } catch (error) {
+              this.useCases = []
+            }
+          } else {
+            this.useCases = response.data
+          } this.auditUtil.postAudit(
             'RETRIEVE_USECASES',
             1,
             'SUCCESS',
@@ -444,7 +452,8 @@ export class BpmnDiagramComponent
   ngAfterContentInit(): void { }
 
   getOverview() {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -866,7 +875,7 @@ export class BpmnDiagramComponent
   // graph functions and variables
   /*************************************************************************************************** */
   modifyGraphData(data: any) {
-    if (data) {
+    if (data?.length) {
       data.forEach((d: any) => {
         let temp_title;
         d.children = [];
@@ -889,7 +898,7 @@ export class BpmnDiagramComponent
 
     //TBD
     //group by usecase role and create different spider web where centre of web is role
-    let firstRole = mod_data ? mod_data[0].role : '';
+    let firstRole = mod_data?.length ? mod_data[0].role : '';
     var treeData = {
       description: '',
       id: '',
@@ -1101,7 +1110,7 @@ export class BpmnDiagramComponent
       .style('font-weight', 600)
       .style('fill', '#000000')
       .text((d: any) => {
-        return d.data.role;
+        return d.data?.role;
       })
       .clone(true)
       .lower()

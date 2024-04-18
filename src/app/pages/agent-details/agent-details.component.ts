@@ -28,12 +28,11 @@ export class AgentDetailsComponent {
       this.router
     );
 
-    this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params as IQueryParams
-
-    const { agentName, Id } = this.activeRoute.snapshot.params
+    // this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params as IQueryParams
+    // const { agentName, Id } = this.activeRoute.snapshot.params
 
     this.agentDetailsModel.breadCrumbsAction.breadcrumb.push({
-      label: agentName,
+      label: 'Agents',
       index: 1
     })
 
