@@ -290,6 +290,22 @@ export class AgentDetailsModel {
     } else if (this.activeIndex == 7) {
       // Handle Tool Case
     }
+
+
+    // Update breadcrumbs
+
+    let breadcrumbItem = this.tabItems[this.activeIndex];
+    const newPayload = [{
+      label: breadcrumbItem.title,
+      index: this.breadCrumbsAction.breadcrumb.length,
+    }, {
+      label: item?.name,
+      index: this.breadCrumbsAction.breadcrumb.length + 1
+    }];
+    this.breadCrumbsAction.breadcrumb = [
+      ...this.breadCrumbsAction.breadcrumb,
+      ...newPayload,
+    ];
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -412,6 +428,14 @@ export class AgentDetailsModel {
       next: (response: any) => {
         // this.getAgentDetailByCategorySuccess(response);
         this.agentInfo = response
+
+        this.breadCrumbsAction.breadcrumb = [
+          ...this.breadCrumbsAction.breadcrumb,
+          {
+            label: response?.name,
+            index: this.breadCrumbsAction.breadcrumb.length
+          }
+        ]
         console.log(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
