@@ -226,25 +226,25 @@ export class MyProductsComponent implements OnInit {
   getRecentActivities() {
     // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
-    if (userId) {
-      this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities: any = [];
-        let shortIdMap: any = {
-          'COMMENT': "cmId",
-          'CHANGE_REQUEST': "crId",
-          'PRODUCT_SPEC': "psId",
-          'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-          'TASK': 'tId',
-          'THREAD': 'thId',
-          'CONVERSATION': 'cId',
-          'RESOURCE': 'rsId',
-          'PRODUCT_VERSION': 'pvId'
-        };
+    if(userId){
+       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
+        let activities:any = [];
+        // let shortIdMap:any = {
+        //   'COMMENT':"cmId",
+        //   'CHANGE_REQUEST':"crId",
+        //   'PRODUCT_SPEC': "psId",
+        //   'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
+        //   'TASK':'tId',
+        //   'THREAD':'thId',
+        //   'CONVERSATION':'cId',
+        //   'RESOURCE':'rsId',
+        //   'PRODUCT_VERSION':'pvId'
+        // };
 
-        for (let activity of res.data.data) {
-          let shortId = activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
+        for(let activity of res.data.data){
+          // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
-            objectType: activity.objectType.charAt(0).toUpperCase() + activity.objectType.slice(1).toLowerCase(),
+            objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
             modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
@@ -255,7 +255,7 @@ export class MyProductsComponent implements OnInit {
             users: [activity.modifiedBy],
             description: activity.description,
             title: activity.actionDetail.title || "",
-            shortId: shortId
+            shortId:activity.objectShortId || ""
           }
           activities.push(row)
         }
