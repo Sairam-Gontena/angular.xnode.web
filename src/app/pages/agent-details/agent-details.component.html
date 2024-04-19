@@ -33,7 +33,7 @@
     </p-tabPanel>
   </p-tabView> -->
 
-  <xnode-agent-information *ngIf="!agentDetailsModel.rowViewData.capability.showDetail"
+  <xnode-agent-information *ngIf="(agentDetailsModel?.breadCrumbsAction?.breadcrumb?.length ?? 0) < 4"
     [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-information>
 
   <div *ngIf="agentDetailsModel.showAgentDetailsContent">
