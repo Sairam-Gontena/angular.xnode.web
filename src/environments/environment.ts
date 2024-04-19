@@ -20,6 +20,6 @@ export const environment = {
     branchName: 'dev',
     projectName: 'xnode-dev',
     homeUrl: 'https://dev.xnode.ai/',
-    XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60 * 60',
+    XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
     XNODE_TIMEOUT_PERIOD_SECONDS:30
 }
