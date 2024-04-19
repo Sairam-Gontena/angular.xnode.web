@@ -15,6 +15,7 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NaviAppModule } from 'navi-web';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     FormBuilderModule,
     NgxSpinnerModule,
     NgxCaptureModule,
+    NaviAppModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

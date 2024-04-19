@@ -14,9 +14,10 @@
                 </div>
                 <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
                     [class.navi-frame]="!isNaviExpanded && showDockedNavi">
-                    <iframe id="myIframe" *ngIf="iframeUrl" [src]="iframeUrl" allow="microphone"
+                    <!-- <iframe id="myIframe" *ngIf="iframeUrl" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
-                    </iframe>
+                    </iframe> -->
+                    <navi-root [routeParams]="tempObjStr" (customEvent)="childCall($event)"></navi-root>
                 </div>
             </div>
         </div>

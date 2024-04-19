@@ -22,6 +22,7 @@ import { MessagingService } from './components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from './api/conversation-hub.service';
+
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -79,7 +80,54 @@ export class AppComponent implements OnInit {
   conversationID: any;
   summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
-  conversatonDetails: any
+  conversatonDetails: any;
+  tempObj: any = {};
+  tempObjStr: string | undefined = undefined;
+
+  childCall($event: any) {
+    console.log('From Library: ', $event);
+    if ($event.message === 'triggerCustomEvent') {
+      this.showDockedNavi = false;
+      this.isNaviExpanded = false;
+    }
+    if ($event.message === 'close-docked-navi') {
+      this.showDockedNavi = false;
+      this.isNaviExpanded = false;
+    }
+    if ($event.message === 'close-event') {
+      //not there to handle the close option in navi in my-prod so added
+      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+      this.product = undefined;
+      this.isNaviExpanded = false;
+      this.showDockedNavi = false;
+      localStorage.removeItem('product')
+      localStorage.removeItem('has_insights')
+      localStorage.removeItem('IS_NAVI_OPENED')
+      localStorage.removeItem('record_id')
+      localStorage.removeItem('app_name')
+      this.makeTrustedUrl()
+    }
+    if ($event.message === 'expand-navi') {
+      this.isNaviExpanded = true;
+    }
+    if ($event.message === 'contract-navi') {
+      this.isNaviExpanded = false;
+    }
+    if ($event.message === 'triggerProductPopup') {
+      this.content = $event.data;
+      let data = {
+        popup: true,
+        data: this.content,
+      };
+      this.utilsService.toggleProductAlertPopup(data);
+    }
+    if ($event.message === 'change-app') {
+      this.storageService.saveItem(StorageKeys.Product, $event.data);
+      this.utilsService.saveProductId($event.id);
+      this.router.navigate(['/overview']);
+      this.utilsService.productContext(true);
+    }
+  }
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -643,6 +691,7 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION)
     const restriction_max_value = localStorage.getItem('restriction_max_value');
+    this.tempObj = {};
     let rawUrl: string =
       environment.naviAppUrl +
       '?email=' +
@@ -663,15 +712,29 @@ export class AppComponent implements OnInit {
       this.currentUser?.user_id +
       '&account_id=' +
       this.currentUser?.account_id;
+    this.tempObj['email'] = this.currentUser?.email;
+    this.tempObj['targetUrl'] = environment.xnodeAppUrl;
+    this.tempObj['component'] = this.getMeComponent();
+    this.tempObj['device_width'] = this.screenWidth;
+    this.tempObj['accountId'] = this.currentUser?.account_id;
+    this.tempObj['currentUser'] = JSON.stringify(this.currentUser);
+    this.tempObj['token'] = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+    this.tempObj['user_id'] = this.currentUser?.user_id;
+    this.tempObj['account_id'] = this.currentUser?.account_id;
     if (restriction_max_value) {
       rawUrl =
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
+      this.tempObj['restriction_max_value'] = JSON.parse(restriction_max_value);
+
     }
     if (this.newWithNavi) {
       rawUrl = rawUrl + '&new_with_navi=' + true;
+      this.tempObj['new_with_navi'] = true;
     }
     if (this.conversatonDetails) {
       rawUrl = rawUrl + '&conversatonDetails=' + JSON.stringify(this.conversatonDetails);
+      this.tempObj['conversatonDetails'] = JSON.stringify(this.conversatonDetails);
+
     }
     if (this.product) {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
@@ -693,28 +756,46 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false + '&componentToShow=Chat';
+        this.tempObj['product_user_email'] = productEmail;
+        this.tempObj['conversationId'] = conversation?.id;
+        this.tempObj['type'] = conversation?.conversationType;
+        this.tempObj['product_context'] = true;
+        this.tempObj['accountId'] = this.currentUser?.account_id;
+        this.tempObj['product_id'] = this.product.id;
+        this.tempObj['product'] = JSON.stringify(this.product);
+        this.tempObj['new_with_navi'] = false;
+        this.tempObj['componentToShow'] = 'Chat';
     } else if (this.newWithNavi && !this.summaryObject) {
       rawUrl = rawUrl + '&componentToShow=Chat';
+      this.tempObj['componentToShow'] = 'Chat';
     } else {
       let addUrl = '';
       if (this.isFileImported) {
         addUrl = '&componentToShow=Conversations';
+        this.tempObj['componentToShow'] = 'Conversations';
       } else {
         if (!this.summaryObject)
           addUrl = '&componentToShow=Tasks';
+          this.tempObj['componentToShow'] = 'Tasks';
       }
       rawUrl = rawUrl + addUrl;
     }
     if (this.summaryObject?.conversationId) {
       rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
+      this.tempObj['componentToShow'] = this.summaryObject?.conversationId;
+      this.tempObj['conversationId'] = 'chat';
+      this.tempObj['type'] = this.summaryObject?.type;
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+    this.tempObj['isNaviExpanded'] = this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
   }
 
   iframeUrlLoad(rawUrl: any) {
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+    this.tempObjStr = JSON.stringify(this.tempObj);
+    console.log('tempObjStr', this.tempObjStr)
     const showDockedNavi: any = this.storageService.getItem(StorageKeys.IS_NAVI_OPENED);
     this.showDockedNavi = showDockedNavi ? JSON.parse(showDockedNavi) : false;
   }

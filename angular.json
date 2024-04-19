@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/xnode",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -32,6 +33,11 @@
                 "glob": "**/*.min.*",
                 "input": "node_modules/diff2html/dist/",
                 "output": "assets/diff2html/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/navi-web/assets",
+                "output": "assets"
               }
             ],
             "styles": [
