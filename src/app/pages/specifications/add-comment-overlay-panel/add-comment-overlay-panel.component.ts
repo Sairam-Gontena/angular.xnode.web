@@ -199,7 +199,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         users: [
           {
             userId: this.currentUser.user_id,
-            role: 'owner'
+            role: 'Owner'
           }
         ],
         referenceContent:

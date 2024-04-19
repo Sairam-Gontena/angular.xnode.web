@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { SpecApiService } from 'src/app/api/spec-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -73,9 +74,9 @@ export class SpecificationsHeaderComponent implements OnInit {
     removeUserAccess: false,
     iniviteType: "",
     currentShareDetailData: "",
-    inviteList: [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
-    { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
-    { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }],
+    inviteList: [{ name: 'Owner', code: 'Owner', caption: 'Can provide access to others' },
+    { name: 'Contributor', code: 'Contributor', caption: 'Can access in edit mode' },
+    { name: 'Reader', code: 'Reader', caption: 'Can access in read only mode' }],
     snackMessage: {
       enable: false,
       closable: false,
@@ -90,10 +91,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     private SpecificationUtils: SpecificationUtilsService,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-    private route: Router,
-    private activatedRoute: ActivatedRoute,
-    private location: Location,
-    private specApiService: SpecApiService) {
+    private conversationHubService: ConversationHubService,
+  ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
@@ -388,9 +387,9 @@ export class SpecificationsHeaderComponent implements OnInit {
         }
       });
     }
-    if (this.sharedLinkDetail.snackMessage.enable && !this.sharedLinkDetail.removeUserAccess) {
+    if (this.sharedLinkDetail.snackMessage.enable) {
       this.sharedLinkDetail.snackMessage.closable = true;
-      this.sharedLinkDetail.snackMessage.message.push({ severity: 'success', summary: '', detail: "Invited Successfully." });
+      this.sharedLinkDetail.snackMessage.message.push({ severity: 'success', summary: '', detail: this.sharedLinkDetail.removeUserAccess ? "Updated successfully" : "Invited Successfully." });
       setTimeout(() => {
         this.sharedLinkDetail.snackMessage.closable = false;
         this.sharedLinkDetail.snackMessage.message = new Array();
@@ -425,35 +424,38 @@ export class SpecificationsHeaderComponent implements OnInit {
       payload: { users: new Array() }
     },
       getDeepLink = this.getDeeplinkURL();
-    paramPayload.payload.users.push({ userId: this.currentUser?.user_id, role: "owner" });
+    paramPayload.payload.users.push({ userId: this.currentUser?.user_id, role: "Owner" });
     paramPayload.payload.users = this.makePayloadUsers(paramPayload.payload.users, getDeepLink);
     this.utilsService.loadSpinner(true);
-    this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
-      if (response && response.status === 200) {
-        this.sharedLinkDetail.currentShareDetailData = response.data;
+    this.conversationHubService.patchProduct(this.product.id, paramPayload.payload).subscribe((response: any) => {
+      if (response) {
+        this.sharedLinkDetail.currentShareDetailData = response;
         this.sharedLinkDetail.snackMessage.enable = true;
         this.makeSharedLinkDetail();
         if (this.sharedLinkDetail.removeUserAccess) {
           this.sharedLinkDetail.removeUserAccess = false;
+          this.utilsService.loadSpinner(false);
         }
+        const product: any = this.storageService.getItem(StorageKeys.Product);
+        product.users = response.users;
+        this.storageService.saveItem(StorageKeys.Product, product);
+        this.utilsService.loadSpinner(false);
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: response.details });
+        this.utilsService.loadSpinner(false);
       }
-      if (response.data?.common?.message) {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.common?.message });
-      }
-      this.utilsService.loadSpinner(false);
-    }).catch((error) => {
+    }, (error) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       this.utilsService.loadSpinner(false);
-    });
+    })
   }
 
   //share the event
   shareEvent() {
+    const product = this.storageService.getItem(StorageKeys.Product)
     this.enableCommonModal = true;
     this.commonModalDetail.visible = true;
-    if (!this.sharedLinkDetail.currentShareDetailData && this.specData && this.specData.length) {
-      this.sharedLinkDetail.currentShareDetailData = this.specData.find((item: any) => item.productId === this.selectedVersion?.productId);
-    }
+    this.sharedLinkDetail.currentShareDetailData = product;
     this.makeSharedLinkDetail();
   }
 

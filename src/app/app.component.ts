@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
   componentToShow?: any;
   mainComponent: string = '';
   showNaviSpinner: boolean = true;
-  importFilePopupToShow:boolean = false;
+  importFilePopupToShow: boolean = false;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -160,6 +160,7 @@ export class AppComponent implements OnInit {
       this.newWithNavi = false;
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
+        const isNaviExpanded = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
         if (msg.msgData?.componentToShow === 'Resources') {
           this.storageService.removeItem(StorageKeys.Product);
           this.storageService.removeItem(StorageKeys.CONVERSATION);
@@ -170,7 +171,7 @@ export class AppComponent implements OnInit {
           this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.conversationId = msg.msgData?.conversation_id;
         }
-        this.isNaviExpanded = msg.msgData?.isNaviExpanded;
+        this.isNaviExpanded = isNaviExpanded ? isNaviExpanded : msg.msgData?.isNaviExpanded;
         this.makeTrustedUrl();
         this.showNaviSpinner = false;
       }
@@ -192,6 +193,7 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
         this.componentToShow = msg.msgData.componentToShow;
         this.importFilePopupToShow = msg.msgData.importFilePopupToShow;
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
@@ -232,7 +234,9 @@ export class AppComponent implements OnInit {
     idle.onIdleStart.subscribe(() => {
       this.idleState = 'You\'ve gone idle!'
       console.log(this.idleState);
-      this.showInactiveTimeoutPopup = true;
+      if (this.storageService.getItem(StorageKeys.CurrentUser)) {
+        this.showInactiveTimeoutPopup = true;
+      }
       // this.childModal.show();
     });
 
@@ -325,7 +329,7 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     window.addEventListener('message', this.receiveMessage.bind(this), false);
     this.handleTheme();
-    this.makeTrustedUrl();
+    // this.makeTrustedUrl();
   }
 
   logout(): void {
@@ -340,6 +344,8 @@ export class AppComponent implements OnInit {
 
   logoutFromTheApp(): void {
     this.showInactiveTimeoutPopup = false;
+    this.timedOut = false;
+    this.idle.stop();
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
@@ -490,7 +496,6 @@ export class AppComponent implements OnInit {
 
   handleUser(): void {
     if (this.currentUser) {
-      this.getMeTotalOnboardedApps();
       if (this.currentUser.role_name === 'Xnode Admin') {
         this.router.navigate(['/admin/user-invitation']);
       } else {
@@ -797,29 +802,22 @@ export class AppComponent implements OnInit {
       } else {
         rawUrl += "&importFilePopupToShow=" + this.importFilePopupToShow;
       }
-      this.conversationId = undefined
     }
-    if (this.componentToShow) {
+    const meta_data: any = this.storageService.getItem(StorageKeys.MetaData);
+    if (this.componentToShow || (meta_data && meta_data.length && !this.product) || this.importFilePopupToShow) {
       if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow));
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow :
+          (this.componentToShow ? this.componentToShow : (this.importFilePopupToShow ? "Resources" : "Tasks"))));
         this.componentToShow = undefined;
       } else {
-        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : this.componentToShow);
-        this.componentToShow = undefined;
-      }
-    } else {
-      if (rawUrl.includes("componentToShow")) {
-        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks"));
-        this.componentToShow = undefined;
-      } else {
-        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : "Tasks");
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : (this.componentToShow ? this.componentToShow : ((meta_data && !meta_data.length) ? "Chat" : "Tasks")));
         this.componentToShow = undefined;
       }
     }
     if (deep_link_info?.componentID) {
       rawUrl += "&componentID=" + deep_link_info?.componentID;
     }
-    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+    rawUrl = rawUrl + '&isNaviExpanded=' + (deep_link_info?.isNaviExpanded ? deep_link_info?.isNaviExpanded : this.isNaviExpanded);
     this.mainComponent = '';
     this.iframeUrlLoad(rawUrl);
   }
