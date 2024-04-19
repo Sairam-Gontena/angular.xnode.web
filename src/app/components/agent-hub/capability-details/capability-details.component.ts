@@ -29,7 +29,7 @@ export class CapabilityDetailsComponent implements OnInit {
     showTab: true,
     requestedId: ''
   }
-  agentInfo: any
+  agentInfo: any;
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
     { idx: 1, title: 'Topics', value: 'topic', identifier: agentName.topic },
@@ -255,19 +255,42 @@ export class CapabilityDetailsComponent implements OnInit {
   }
 
   viewHandler(item: any) {
-    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
-    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-    if (overViewTabIdentifier === "overview") {
-      this.overviewInstructionForm.enableOverview = true;
-      this.overviewInstructionForm.enableInstruction = false;
-    } else if (overViewTabIdentifier === "instruction") {
-      this.overviewInstructionForm.enableInstruction = true;
-      this.overviewInstructionForm.enableOverview = false;
+    if (this.activeIndex == 2) {
+      // Handle  Topic Case
+    } else if (this.activeIndex == 3) {
+      // Handle Prompt Case
+
+      const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
+      if (overViewTabIdentifier === "overview") {
+        this.overviewInstructionForm.enableOverview = true;
+        this.overviewInstructionForm.enableInstruction = false;
+      } else if (overViewTabIdentifier === "instruction") {
+        this.overviewInstructionForm.enableInstruction = true;
+        this.overviewInstructionForm.enableOverview = false;
+      }
+      this.overviewInstructionForm.overviewInstructionData = item;
+      // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
+      this.currentActiveRowData = item;
+      this.overviewTabItem.showTab = true;
+    } else if (this.activeIndex == 4) {
+      // Handle Knowledge case
     }
-    this.overviewInstructionForm.overviewInstructionData = item;
-    // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-    this.currentActiveRowData = item;
-    this.overviewTabItem.showTab = true;
+
+
+    // Update breadcrumbs
+
+    let breadcrumbItem = this.tabItems[this.activeIndex];
+    const newPayload = [{
+      label: breadcrumbItem.title,
+      index: this.breadCrumbsAction.breadcrumb.length,
+    }, {
+      label: item?.name,
+      index: this.breadCrumbsAction.breadcrumb.length + 1
+    }];
+    this.breadCrumbsAction.breadcrumb = [
+      ...this.breadCrumbsAction.breadcrumb,
+      ...newPayload,
+    ];
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -394,6 +417,22 @@ export class CapabilityDetailsComponent implements OnInit {
         // this.getAgentDetailByCategorySuccess(response);
         this.agentInfo = response
         console.log(response, "response")
+
+
+        const newPayload = [
+          {
+            label: 'Capability',
+            index: 1
+          },
+          {
+            label: response?.name,
+            index: this.breadCrumbsAction.breadcrumb.length + 1
+          }
+        ]
+        this.breadCrumbsAction.breadcrumb = [
+          ...this.breadCrumbsAction.breadcrumb,
+          ...newPayload
+        ]
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }
