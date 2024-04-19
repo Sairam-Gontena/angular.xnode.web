@@ -16,10 +16,20 @@ export class BreadcrumbsComponent {
 
   @Output() changeEvent = new EventEmitter<{ event: any }>();
 
-  onChangeHandler(event: any) {
-    console.log("Hello")
-    this.changeEvent.emit(event);
+  onChangeHandler(event: any, value: any) {
+    console.log("Hello", value)
+    const eventData: any = {
+      item: value
+    }
+    this.changeEvent.emit(eventData);
   }
+
+
+  // crumbs = [
+  //   { label: 'Home', url: '/' },
+  //   { label: 'Products', url: '/products' },
+  //   { label: 'Shoes', url: '/products/shoes' }
+  // ];
   // testfn(event: any) {
   //   console.log("onItemClicked", event)
 

@@ -1,1 +1,17 @@
-<p-breadcrumb class="max-w-full" styleClass="cursor-pointer" [model]="items" (onItemClick)="onChangeHandler($event)"></p-breadcrumb>
+<!-- <p-breadcrumb class="max-w-full" styleClass="cursor-pointer" [model]="items"
+    (onItemClick)="onChangeHandler($event, $event)"></p-breadcrumb> -->
+<nav aria-label="breadcrumb">
+    <ol class="flex align-item-center list-none pl-0">
+        <ng-container *ngFor="let crumb of items; let last = last">
+            <li [ngClass]="{'breadcrumbs-item': !last}">
+                <span *ngIf="!last; else elseBlock" (click)="onChangeHandler($event, crumb)">{{ crumb.label }}</span>
+                <ng-template #elseBlock>
+                    <span>{{ crumb.label }}</span>
+                </ng-template>
+            </li>
+            <li *ngIf="!last">
+                <i class="text-xs pi pi-chevron-right"></i>
+            </li>
+        </ng-container>
+    </ol>
+</nav>

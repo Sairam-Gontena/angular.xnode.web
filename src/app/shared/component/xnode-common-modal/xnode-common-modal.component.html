@@ -1,8 +1,8 @@
 <p-dialog styleClass="customDialog" [(visible)]="commonModalDetail.visible" [modal]="commonModalDetail.modal"
-    [responsive]="commonModalDetail.responsive" [style]="commonModalDetail.style">
+    [responsive]="commonModalDetail.responsive" [style]="commonModalDetail.style"
+    [breakpoints]="commonModalDetail.breakpoints">
     <ng-template pTemplate="header">
         <ng-content select="[modalHeader]"></ng-content>
-        <!-- <ng-container ngProjectAs="[modalHeader]"></ng-container> -->
     </ng-template>
     <ng-template pTemplate="content">
         <ng-content select="[modalContent]"></ng-content>

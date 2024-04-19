@@ -64,7 +64,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     modal: true,
     modalClass: "",
     responsive: true,
-    style: { width: "40vw", "max-height": "70vh" }
+    breakpoints: { '900px': '50vw', '600px': '100vw' },
+    style: { width: "50vw", "max-height": "70vh" }
   }
   sharedLinkDetail: any = {
     getUserList: new Array(),
