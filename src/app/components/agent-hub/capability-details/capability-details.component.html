@@ -32,6 +32,8 @@
       </p-tabPanel>
     </p-tabView> -->
 
+    <xnode-agent-information [agentInfo]="agentInfo"></xnode-agent-information>
+
     <div *ngIf="rowViewData.showTab">
         <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex"
             *ngIf="!overviewTabItem.showTab; else overviewBlock">

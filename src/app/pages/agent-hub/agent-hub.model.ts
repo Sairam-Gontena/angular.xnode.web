@@ -425,9 +425,11 @@ export class AgentHubModel {
 
   viewHandler(item: any) {
     // For now let's make view for agent only,
-    if (this.activeIndex == 0) {
-      this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
-    }
+    // if (this.activeIndex == 0) {
+    //   this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
+    // }
+
+    this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
   }
 
   /**
