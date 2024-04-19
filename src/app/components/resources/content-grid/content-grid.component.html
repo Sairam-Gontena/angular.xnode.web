@@ -43,6 +43,9 @@
                             (click)="detailsView(data)" (keyup)="detailsView(data)"
                             class="id-link text-sm  font-medium cursor-pointer block"><span
                                 *ngIf="data[col.field]"></span>{{ data[col.field] | uppercase }}</a>
+                        <a *ngIf="col.type==='url'"
+                        href={{data[col.url]}} 
+                        class="id-link text-sm  font-medium cursor-pointer block">{{ data[col.field] | uppercase }}</a>
 
                         <!-- <span *ngIf="col.type==='dropdown'">
                             <app-status-dropdown [value]="data[col.field]"

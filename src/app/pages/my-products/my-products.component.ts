@@ -16,6 +16,7 @@ import { MessagingService } from 'src/app/components/services/messaging.service'
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { environment } from 'src/environments/environment';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'xnode-my-products',
@@ -229,24 +230,28 @@ export class MyProductsComponent implements OnInit {
     if(userId){
        this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
         let activities:any = [];
-        // let shortIdMap:any = {
-        //   'COMMENT':"cmId",
-        //   'CHANGE_REQUEST':"crId",
-        //   'PRODUCT_SPEC': "psId",
-        //   'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-        //   'TASK':'tId',
-        //   'THREAD':'thId',
-        //   'CONVERSATION':'cId',
-        //   'RESOURCE':'rsId',
-        //   'PRODUCT_VERSION':'pvId'
-        // };
+        let naviUrl= environment.naviAppUrl;
+        console.log(naviUrl);
+        let xnodeUrl = environment.xnodeAppUrl;
+        let targetURL = `${xnodeUrl}&restriction_max_value=50&isNaviExpanded=true`;
+        let deepLinkMap:any = {
+          'Comment':`${xnodeUrl}#/dashboard?naviURL=${naviUrl}?&componentToShow=Comments&componentID=entityId&targetUrl=${targetURL}`,
+          'Change_Request':``,
+          'Product_Spec': `${xnodeUrl}#/specification?product_id=productId&version_id=versionId`,
+          'Change_Request_Product_Version': '',
+          'Task':`${xnodeUrl}#/dashboard?naviURL=${naviUrl}?&componentToShow=Tasks&componentID=entityId&targetUrl=${targetURL}`,
+          'Thread':`${xnodeUrl}#/dashboard?naviURL=${naviUrl}?&componentToShow=Threads&componentID=entityId&targetUrl=${targetURL}`,
+          'Conversation':`${xnodeUrl}#/dashboard?naviURL=${naviUrl}?&componentToShow=&componentID=entityId&targetUrl=${targetURL}`,
+          'Resource':`${xnodeUrl}#/dashboard?naviURL=${naviUrl}?&componentToShow=Resources&componentID=entityId&targetUrl=${targetURL}`,
+          'Product_Version':''
+        };
 
         for(let activity of res.data.data){
-          // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
             objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
+            url: deepLinkMap[activity.objectType] ? deepLinkMap[activity.objectType].replace("entityId",activity.objectId) : "",
             modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
               year: 'numeric', month: 'short', day: 'numeric',
               hour: 'numeric', minute: 'numeric', second: 'numeric',
@@ -255,7 +260,7 @@ export class MyProductsComponent implements OnInit {
             users: [activity.modifiedBy],
             description: activity.description,
             title: activity.actionDetail.title || "",
-            shortId:activity.objectShortId || ""
+            shortId:activity.objectShortId || "",
           }
           activities.push(row)
         }
@@ -279,11 +284,23 @@ export class MyProductsComponent implements OnInit {
         field: "shortId",
         header: "Id",
         width: 100,
+        url: 'url',
         filter: true,
         sortable: true,
         visible: true,
-        default: true
+        default: true,
+        type: 'url'
+        // route: true
       },
+      // {
+      //   field: "url",
+      //   header: "Link",
+      //   width: 100,
+      //   filter: true,
+      //   sortable: true,
+      //   visible: true,
+      //   default: true
+      // },
       {
         field: "title",
         header: "Title",
