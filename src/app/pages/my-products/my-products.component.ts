@@ -464,6 +464,11 @@ export class MyProductsComponent implements OnInit {
     }
   }
 
+  clearSearch(event: any) {
+    this.searchText = "";
+    this.search(event);
+  }
+
   searchConversation() {
     this.filteredConversation = this.searchTextConversation === '' ? this.AllConversations :
       this.AllConversations.filter((element) => {

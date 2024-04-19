@@ -76,11 +76,13 @@
                         styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                         [style]="{ width:'40px',height:'40px' }"></p-avatar>
                     <div class="card-subheading-txt">
-                        <p class="m-0 card-subheading ">Created by {{data.createdBy.displayName|titlecase}} on:
-                            {{data?.createdOn |
-                            date:'medium'}}</p>
-                        <div class="mt-4">
-                            Modified on - {{data?.modifiedOn | date:localDateFormat}}
+                        <div class="mb-2">
+                            <div class="card-subheading">Author</div>
+                            <div class="">{{data.createdBy.displayName|titlecase}}</div>
+                        </div>
+                        <div class="">
+                            <div class="">Modified on</div>
+                            <div class="text-xs">{{data?.modifiedOn | date:'medium'}}</div>
                         </div>
                     </div>
                 </div>
