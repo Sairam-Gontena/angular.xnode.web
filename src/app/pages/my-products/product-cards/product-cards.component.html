@@ -44,26 +44,26 @@
     </div>
 </div>
 <!-- ============================================== -->
-<div class="grid">
-    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 new-product-card">
+<div class="flex flex-wrap">
+    <div class="col-12 sm:col-6 md:col-6 lg:col-4 xl:col-3 new-product-card">
         <div class="flex align-items-center justify-content-center product-card font-bold border-round w-full h-full new-card-add pointer"
             (click)="onClickNew()">
             <div class="flex flex-wrap justify-content-center align-items-center card-color card-title">
-                <div class="col-12 flex justify-content-center">
+                <div class="w-full mb-2 flex justify-content-center">
                     <i class="pi pi-plus text-4xl"></i>
                 </div>
-                <div class="class-12 title flex justify-content-center">
+                <div class="title flex justify-content-center">
                     New Product
                 </div>
             </div>
         </div>
     </div>
     <ng-container *ngIf="filteredProducts.length > 0; else noProducts">
-        <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 pointer"
+        <div class="col-12 sm:col-6 md:col-6 lg:col-4 xl:col-3 pointer"
             *ngFor="let data of filteredProducts | slice:0:end ; let i = index" (click)="onClickProductCard.emit(data)">
-            <div class="card-color">
+            <div class="w-full h-full card-color">
                 <img alt="Card" src="./assets/d-card.svg" class="w-full" />
-                <div class=" flex justify-content-between align-items-center card-color card-title">
+                <div class="flex justify-content-between align-items-center p-2 card-color card-title">
                     <div class="title-container" [title]="data?.title">
                         {{ data?.title }}
                     </div>
@@ -71,11 +71,11 @@
                         (click)="openExternalLink.emit(data.product_url)"
                         *ngIf="data.product_url && data.product_url !== ''"></i>
                 </div>
-                <div class="flex align-items-start body-card">
+                <div class="flex align-items-start p-2 body-card">
                     <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                         styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                         [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                    <div class="ml-1 card-subheading-txt">
+                    <div class="card-subheading-txt">
                         <p class="m-0 card-subheading ">Created by {{data.createdBy.displayName|titlecase}} on:
                             {{data?.createdOn |
                             date:'medium'}}</p>
