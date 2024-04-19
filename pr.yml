@@ -1,8 +1,7 @@
 pr:
   branches:
     include:
-      - dev
-      - prod
+      - '*'
 
 variables:
   repositoryName: $[replace(variables['Build.Repository.Name'], 'repository', '')]
