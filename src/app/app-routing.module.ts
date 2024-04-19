@@ -260,6 +260,7 @@ const routes: Routes = [
         (m) => m.CapabilityViewModule
       ),
   },
+  { path: 'agent-playground/topic/:id', loadChildren: () => import('./pages/agent-topic/agent-topic.module').then(m => m.AgentTopicModule) },
   {
     path: 'create-agent',
     loadChildren: () =>

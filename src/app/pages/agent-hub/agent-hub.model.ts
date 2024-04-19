@@ -290,29 +290,18 @@ export class AgentHubModel {
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
-    private router: Router
-  ) {
+    private router: Router) {
     this.activeIndex = 0;
-
-    /**
-     * Get the column name for filter option
-     */
-
     this.tabItems = this.allAvailableTabItems;
-
     this.tabFilterOptions.options = this.tabItems;
-
     const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
-    this.columns =
-      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
-
+    this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     this.showColumnFilterOption.options = this.columns?.map((item: any) => {
       return {
         idx: item.idx,
         header: item.header,
       };
     });
-
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
@@ -369,7 +358,6 @@ export class AgentHubModel {
         )
       );
     }
-
     this.getAllAgentList();
   }
 
@@ -402,7 +390,6 @@ export class AgentHubModel {
     // Don't show viewAll button
 
     this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
-
     this.getAllAgentList({ endpoint: item.value });
   }
 
@@ -415,7 +402,6 @@ export class AgentHubModel {
 
     // Show viewALl button
     this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
-
     this.breadCrumbsAction.breadcrumb = [...newItem];
   }
 
@@ -424,10 +410,7 @@ export class AgentHubModel {
   }
 
   viewHandler(item: any) {
-    // For now let's make view for agent only,
-    if (this.activeIndex == 0) {
-      this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
-    }
+    this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
   }
 
   /**
