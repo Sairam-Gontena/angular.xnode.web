@@ -49,16 +49,16 @@ export const AppSideMenuItems =
                 icon: './assets/config.svg',
                 path: 'configuration/data-model/overview'
             },
-            {
-                label: 'Publish',
-                icon: './assets/publish.svg',
-                path: 'publish'
-            },
-            {
-                label: 'Operate',
-                icon: './assets/settings.svg',
-                path: 'operate'
-            },
+            // {
+            //     label: 'Publish',
+            //     icon: './assets/publish.svg',
+            //     path: 'publish'
+            // },
+            // {
+            //     label: 'Operate',
+            //     icon: './assets/settings.svg',
+            //     path: 'operate'
+            // },
 
         ]
     },
@@ -106,16 +106,16 @@ export const AppSideMenuItems =
                 icon: './assets/config.svg',
                 path: 'configuration/data-model/overview'
             },
-            {
-                label: 'Publish',
-                icon: './assets/publish.svg',
-                path: 'publish'
-            },
-            {
-                label: 'Operate',
-                icon: './assets/settings.svg',
-                path: 'operate'
-            },
+            // {
+            //     label: 'Publish',
+            //     icon: './assets/publish.svg',
+            //     path: 'publish'
+            // },
+            // {
+            //     label: 'Operate',
+            //     icon: './assets/settings.svg',
+            //     path: 'operate'
+            // },
 
         ]
     },
@@ -163,16 +163,16 @@ export const AppSideMenuItems =
                 icon: './assets/config.svg',
                 path: 'configuration/data-model/overview'
             },
-            {
-                label: 'Publish',
-                icon: './assets/publish.svg',
-                path: 'publish'
-            },
-            {
-                label: 'Operate',
-                icon: './assets/settings.svg',
-                path: 'operate'
-            },
+            // {
+            //     label: 'Publish',
+            //     icon: './assets/publish.svg',
+            //     path: 'publish'
+            // },
+            // {
+            //     label: 'Operate',
+            //     icon: './assets/settings.svg',
+            //     path: 'operate'
+            // },
 
         ]
     },
@@ -210,11 +210,11 @@ export const AppSideMenuItems =
                 icon: './assets/config.svg',
                 path: 'configuration/data-model/overview'
             },
-            {
-                label: 'Operate',
-                icon: './assets/settings.svg',
-                path: 'operate'
-            },
+            // {
+            //     label: 'Operate',
+            //     icon: './assets/settings.svg',
+            //     path: 'operate'
+            // },
 
         ]
     },
@@ -267,16 +267,16 @@ export const AppSideMenuItems =
                 icon: './assets/config.svg',
                 path: 'configuration/data-model/overview'
             },
-            {
-                label: 'Publish',
-                icon: './assets/publish.svg',
-                path: 'publish'
-            },
-            {
-                label: 'Operate',
-                icon: './assets/settings.svg',
-                path: 'operate'
-            },
+            // {
+            //     label: 'Publish',
+            //     icon: './assets/publish.svg',
+            //     path: 'publish'
+            // },
+            // {
+            //     label: 'Operate',
+            //     icon: './assets/settings.svg',
+            //     path: 'operate'
+            // },
 
         ]
     },
