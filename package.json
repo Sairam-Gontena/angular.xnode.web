@@ -58,7 +58,7 @@
     "install": "^0.13.0",
     "jsplumb": "^2.15.6",
     "lodash": "^4.17.21",
-    "navi-web": "D:/Xnode/navi-web-lib/dist/navi-web/navi-web-0.0.64.tgz",
+    "navi-web": "D:/Workspace/navi-web-lib/dist/navi-web/navi-web-0.0.62.tgz",
     "ng": "^0.0.0",
     "ng-otp-input": "^1.9.2",
     "ng-select": "^1.0.2",
