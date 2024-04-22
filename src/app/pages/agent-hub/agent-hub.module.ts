@@ -4,13 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AgentHubRoutingModule } from './agent-hub-routing.module';
 import { AgentHubComponent } from './agent-hub.component';
 import { SharedModule } from 'primeng/api';
-import { TabMenuModule } from 'primeng/tabmenu';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
-import { TabViewModule } from 'primeng/tabview';
-import { DropdownModule } from 'primeng/dropdown';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { AgentHeaderComponent } from './component/agent-header/agent-header.component';
+import { AgentSharedModule } from './agent-shared.module';
 
 @NgModule({
   declarations: [
@@ -19,13 +14,7 @@ import { AgentHeaderComponent } from './component/agent-header/agent-header.comp
   imports: [
     CommonModule,
     AgentHubRoutingModule,
-    TabMenuModule,
-    TabViewModule,
-    MultiSelectModule,
-    DropdownModule,
-    SplitButtonModule,
-    SharedModule,
-    SharedComponentModule
+    AgentSharedModule
   ]
 })
 export class AgentHubModule { }

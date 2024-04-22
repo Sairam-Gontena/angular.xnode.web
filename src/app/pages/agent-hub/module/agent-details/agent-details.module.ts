@@ -10,6 +10,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { AgentSharedModule } from '../../agent-shared.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     SplitButtonModule,
     ButtonModule,
     SharedModule,
-    SharedComponentModule
+    AgentSharedModule
   ]
 })
 export class AgentDetailsModule { }

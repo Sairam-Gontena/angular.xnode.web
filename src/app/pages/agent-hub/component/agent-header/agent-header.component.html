@@ -5,7 +5,7 @@
     <div class="flex align-items-center justify-content-between">
         <!-- Left-aligned content -->
         <div class="flex align-items-center">
-            <ng-container *ngIf="!headerData.breadCrumbsAction.isBreadCrumbActive; else elseBlock">
+            <ng-container *ngIf="!headerData.breadCrumbsAction?.isBreadCrumbActive; else elseBlock">
                 <p-button label="Create Agent" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
                     styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
                     (onClick)="createAgentHandler()"></p-button>
@@ -13,7 +13,7 @@
 
             <ng-template #elseBlock>
                 <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
-                    [model]="headerData.activeHeaderActionBtnOption"></p-splitButton>
+                    [model]="headerData?.activeHeaderActionBtnOption"></p-splitButton>
             </ng-template>
         </div>
         <div class="separator"></div>
