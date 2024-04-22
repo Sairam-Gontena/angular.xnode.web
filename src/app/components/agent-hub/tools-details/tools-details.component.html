@@ -1,0 +1,90 @@
+<div class="">
+    <div *ngIf="rowViewData.showHeader" class="flex justify-content-between py-6">
+        <div class="flex gap-2 align-items-center">
+            <xnode-breadcrumbs [items]="breadCrumbsAction.breadcrumb" (changeEvent)="goBackBreadCrumbsHandler($event)"
+                [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
+        </div>
+
+        <div class="flex align-items-center justify-content-between">
+            <!-- Left-aligned content -->
+            <div class="flex align-items-center">
+                <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
+                    [model]="activeHeaderActionBtnOption"></p-splitButton>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="flex align-items-center gap-2">
+                <p-button>
+                    <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
+                </p-button>
+
+                <p-button>
+                    <img src="../../../assets/agent-hub/chart-tree.svg" alt="" />
+                </p-button>
+            </div>
+        </div>
+    </div>
+
+    <xnode-agent-information [agentInfo]="agentInfo"></xnode-agent-information>
+
+    <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
+        <ng-container *ngFor="let tabItem of tabItems">
+            <p-tabPanel>
+                <ng-template pTemplate="header">
+                    <span>{{tabItem.title}}</span>
+                </ng-template>
+                <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+                    <ng-container *ngSwitchCase="'Overview'">
+                        <ng-container [ngTemplateOutlet]="overview"></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Actions'">
+                        <ng-container [ngTemplateOutlet]="actions"></ng-container>
+                    </ng-container>
+                </ng-template>
+            </p-tabPanel>
+        </ng-container>
+    </p-tabView>
+
+
+    <!-- overview html -->
+    <ng-template #overview>
+        <div class="table-height w-6 mx-auto">
+            <form [formGroup]="overviewForm" (ngSubmit)="onOverviewSubmit()">
+                <!-- <div class="flex align-items-center justify-content-end mb-3">
+                <button type="button" class="btn btn-cancel">Save</button>
+              </div> -->
+
+                <div class="flex align-items-center justify-content-end mb-3">
+                    <p-button type="button" [label]="isFormEditable ? 'Save' : 'Edit'"
+                        [icon]="isFormEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right"
+                        [outlined]="isFormEditable ? false : true" (onClick)="onEditSaveHandler()"
+                        class="btn btn-cancel"></p-button>
+                    <!-- <button type="submit" class="btn-primary">Add</button> -->
+                </div>
+                <div class="flex align-items-center mb-3">
+                    <label class="w-5" for="name">Name</label>
+                    <div class="w-7">
+                        <input pInputText type="text" class="text-base p-2 border-1 border-round w-full" id="name"
+                            formControlName="name" placeholder="Add name" />
+                    </div>
+                </div>
+                <div class="flex align-items-center mb-3">
+                    <label class="w-5" for="description">Description</label>
+                    <div class="w-7">
+                        <textarea pInputTextarea rows="6" id="description"
+                            class="text-base p-2 border-1 border-round w-full" formControlName="description"
+                            placeholder="Description"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+
+    <!-- instruction html -->
+    <ng-template #actions>
+        <div class="table-height">
+            <p>Hello</p>
+        </div>
+    </ng-template>
+</div>

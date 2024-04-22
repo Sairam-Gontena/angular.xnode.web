@@ -260,6 +260,14 @@ const routes: Routes = [
         (m) => m.CapabilityViewModule
       ),
   },
+
+  {
+    path: 'agent-playground/tool/:id',
+    loadChildren: () =>
+      import('./pages/tool-view/tool-view.module').then(
+        (m) => m.ToolViewModule
+      ),
+  },
   {
     path: 'create-agent',
     loadChildren: () =>
