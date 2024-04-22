@@ -23,6 +23,7 @@ export class ContentGridComponent implements OnChanges {
   @Input() selectedLeftPanelConversation: any;
   @Input() selectedConversationData?: any;
   @Input() selectedTab: any;
+  @Input() enablePagination:boolean = true;
   @Output() idClicked = new EventEmitter();
   @Output() onRowSelected = new EventEmitter();
   @Output() onRowUnselected = new EventEmitter();

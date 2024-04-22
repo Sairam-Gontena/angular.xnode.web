@@ -156,35 +156,35 @@ export class ToolsDetailsComponent implements OnInit {
 
     this.breadCrumbsAction.breadcrumb = [...newItem];
   }
-  onEditSaveHandler(formData: any) {
-    const activeTab = this.tabItems[this.activeIndex].identifier
+  onEditSaveHandler() {
+    // const activeTab = this.tabItems[this.activeIndex].identifier
 
-    if (this.isFormEditable) {
-      let urlParam = {
-        url: '',
-        data: {}
-      }
+    // if (this.isFormEditable) {
+    //   let urlParam = {
+    //     url: '',
+    //     data: {}
+    //   }
 
-      if (activeTab == agentName.prompt) {
-        const id = formData?.id
+    //   if (activeTab == agentName.prompt) {
+    //     const id = formData?.id
 
-        delete formData?.id
-        urlParam.url = `agent/update_prompt/${id}/${formData.version}`
-        urlParam.data = formData
-      }
-
-
-      this.agentHubService.updateData(urlParam).subscribe({
-        next: (response: any) => {
-          console.log("responseData", response)
-        }, error: (error: any) => {
-          console.log("responseData", error)
-        }
-      })
-    }
+    //     delete formData?.id
+    //     urlParam.url = `agent/update_prompt/${id}/${formData.version}`
+    //     urlParam.data = formData
+    //   }
 
 
-    this.isFormEditable = !this.isFormEditable
+    //   this.agentHubService.updateData(urlParam).subscribe({
+    //     next: (response: any) => {
+    //       console.log("responseData", response)
+    //     }, error: (error: any) => {
+    //       console.log("responseData", error)
+    //     }
+    //   })
+    // }
+
+
+    // this.isFormEditable = !this.isFormEditable
 
   }
 }

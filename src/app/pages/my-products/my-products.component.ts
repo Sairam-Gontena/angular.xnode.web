@@ -58,6 +58,7 @@ export class MyProductsComponent implements OnInit {
   searchTextConversation: any;
   loading: boolean = false;
   showImportFilePopup: boolean = false;
+  tableFilterEvent: any;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -167,7 +168,7 @@ export class MyProductsComponent implements OnInit {
   }
   searchKey(data: string) {
     this.searchText = data;
-    this.search();
+    this.search("");
   }
 
   ngOnDestroy() {
@@ -226,9 +227,9 @@ export class MyProductsComponent implements OnInit {
   getRecentActivities() {
     // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
-    if(userId){
-       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities:any = [];
+    if (userId) {
+      this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
+        let activities: any = [];
         // let shortIdMap:any = {
         //   'COMMENT':"cmId",
         //   'CHANGE_REQUEST':"crId",
@@ -241,7 +242,7 @@ export class MyProductsComponent implements OnInit {
         //   'PRODUCT_VERSION':'pvId'
         // };
 
-        for(let activity of res.data.data){
+        for (let activity of res.data.data) {
           // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
             objectType: activity.objectType,
@@ -255,7 +256,7 @@ export class MyProductsComponent implements OnInit {
             users: [activity.modifiedBy],
             description: activity.description,
             title: activity.actionDetail.title || "",
-            shortId:activity.objectShortId || ""
+            shortId: activity.objectShortId || ""
           }
           activities.push(row)
         }
@@ -453,34 +454,30 @@ export class MyProductsComponent implements OnInit {
     this.isViewLess = true;
   }
 
-  search() {
-    this.filteredProducts =
-      this.searchText === ''
-        ? this.templateCard
-        : this.templateCard.filter((element) => {
-          return element.title
-            ?.toLowerCase()
-            .includes(this.searchText.toLowerCase());
-        });
+  search(event: any) {
+    this.filteredProducts = this.searchText === '' ? this.templateCard :
+      this.templateCard.filter((element) => {
+        return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    if (event) {
+      this.tableFilterEvent = event;
+    }
+  }
+
+  clearSearch(event: any) {
+    this.searchText = "";
+    this.search(event);
   }
 
   searchConversation() {
-    this.filteredConversation =
-      this.searchTextConversation === ''
-        ? this.AllConversations
-        : this.AllConversations.filter((element) => {
-          return element.title
-            ?.toLowerCase()
-            .includes(this.searchTextConversation.toLowerCase());
-        });
+    this.filteredConversation = this.searchTextConversation === '' ? this.AllConversations :
+      this.AllConversations.filter((element) => {
+        return element.title?.toLowerCase().includes(this.searchTextConversation.toLowerCase());
+      });
   }
 
   toggleSearch() {
-    if (this.enableSearch) {
-      this.enableSearch = false;
-    } else {
-      this.enableSearch = true;
-    }
+    this.enableSearch = this.enableSearch ? false : true;
   }
 
   filterProductsByUserEmail() {
@@ -499,13 +496,10 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeCreateAppLimit(): void {
-    this.authApiService.get('user/get_create_app_limit/' + this.currentUser.email)
-      .then((response: any) => {
+    this.authApiService.get('user/get_create_app_limit/' + this.currentUser.email).then(
+      (response: any) => {
         if (response?.status === 200) {
-          localStorage.setItem(
-            'restriction_max_value',
-            response.data[0].restriction_max_value
-          );
+          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
           let user_audit_body = {
             method: 'GET',
             url: response?.request?.responseURL,
@@ -531,13 +525,8 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            ''
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: '',
-            detail: response.data?.detail,
-          });
+            '');
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
       })
       .catch((error: any) => {
@@ -554,11 +543,7 @@ export class MyProductsComponent implements OnInit {
           this.currentUser.email,
           ''
         );
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
 

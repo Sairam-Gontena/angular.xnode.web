@@ -1,9 +1,9 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
-import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
+import dynamicTableColumnData from '../../../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { agentName } from '../agent-hub/agent-hub.constant';
+import { agentName } from '../../../agent-hub/agent-hub.constant';
 import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -205,7 +205,7 @@ export class AgentDetailsModel {
   };
   activeHeaderActionBtnOption!: any[];
   breadCrumbsAction: BreadCrumbsAction = {
-    isBreadCrumbActive: false,
+    isBreadCrumbActive: true,
     breadcrumb: [
       {
         label: 'Agent Hub',
@@ -313,7 +313,7 @@ export class AgentDetailsModel {
     const newItem = this.breadCrumbsAction.breadcrumb;
     const indexToDelete = event.item.index + 1;
     newItem.splice(indexToDelete);
-    this.breadCrumbsAction.isBreadCrumbActive = false;
+    this.breadCrumbsAction.isBreadCrumbActive = true;
 
     if (event?.item?.path) {
       this.router.navigate([event.item.path]);
@@ -465,10 +465,7 @@ export class AgentDetailsModel {
   updateHeaderOption() {
     let item = this.tabItems[this.activeIndex];
     if (item.identifier in this.headerActionBtnOption) {
-      this.activeHeaderActionBtnOption =
-        this.headerActionBtnOption[
-          item.identifier as keyof typeof this.headerActionBtnOption
-        ].options;
+      this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
     } else {
       console.error('Invalid identifier:', item.identifier);
       // Handle the error appropriately
@@ -506,14 +503,14 @@ export class AgentDetailsModel {
         }
       })
     }
-
-
-
-
-
-
     this.isFormEditable = !this.isFormEditable
+  }
 
+  //agent header Event
+  agentheaderEvent(event: any) {
+    if (event.eventType === "breadcrum") {
+      this.goBackBreadCrumbsHandler(event.data);
+    }
   }
 
 

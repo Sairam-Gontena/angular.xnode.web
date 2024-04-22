@@ -263,12 +263,12 @@
 
 :host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
     background: #3A3942;
-  }
+}
 
-  :host ::ng-deep.p-datatable .p-datatable-thead{
-    z-index: 0;
-  }
-  
+// :host ::ng-deep.p-datatable .p-datatable-thead {
+//     z-index: 0;
+// }
+
 
 :host ::ng-deep .p-card .p-card-body {
     padding: 0.75rem;
@@ -303,8 +303,7 @@
 }
 
 .my-products-scroll {
-    padding: 0 4rem 4rem 4rem ;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 175px);
 }
 
 :host ::ng-deep .my-products-scroll::-webkit-scrollbar-thumb {
@@ -441,7 +440,7 @@
 }
 
 .recentActivity {
-    margin-top: -4rem;
+    margin-top: -2rem;
 
     .conversations-card {
         height: 130px;

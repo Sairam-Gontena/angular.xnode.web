@@ -167,7 +167,10 @@ export class NotificationPanelComponent {
   viewInChat(notif?: any): void {
     this.messagingService.sendMessage({
       msgType: MessageTypes.MAKE_TRUST_URL,
-      msgData: { isNaviExpanded: true, showDockedNavi: true, conversation_id: notif.conversation_id, componentToShow: 'Chat' },
+      msgData: { isNaviExpanded: true, 
+        showDockedNavi: true, 
+        conversation_id: notif.conversation_id, 
+        componentToShow: 'Chat' },
     });
     this.closeNotificationPanel.emit(true)
   }

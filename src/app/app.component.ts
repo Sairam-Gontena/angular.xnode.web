@@ -226,9 +226,7 @@ export class AppComponent implements OnInit {
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      console.log(this.idleState);
       this.logout();
-      this.router.navigate(['/']);
     });
 
     idle.onIdleStart.subscribe(() => {

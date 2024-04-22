@@ -36,7 +36,11 @@ export class ExpandSpecificationComponent {
   ngOnInit() {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
     this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.user_id;
+    if (token) {
+      this.targetUrl = this.targetUrl + '&token=' + token;
+    }
     this.makeTrustedUrl();
   }
 

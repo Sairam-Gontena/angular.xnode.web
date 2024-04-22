@@ -89,6 +89,7 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
 import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/tools-details.component';
+
 @NgModule({
   declarations: [
     AdditionalInfoComponent,

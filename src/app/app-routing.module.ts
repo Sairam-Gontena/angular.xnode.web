@@ -246,14 +246,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'agent-playground/agent/:id',
-    loadChildren: () =>
-      import('./pages/agent-details/agent-details.module').then(
-        (m) => m.AgentDetailsModule
-      ),
-  },
-
-  {
     path: 'agent-playground/capability/:id',
     loadChildren: () =>
       import('./pages/capability-view/capability-view.module').then(
