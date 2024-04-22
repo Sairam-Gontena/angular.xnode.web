@@ -44,7 +44,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private notifyApi: NotifyApiService,
     private localStorageService: LocalStorageService,
     private naviApiService: NaviApiService,
-    private conversationService:ConversationHubService
+    private conversationService: ConversationHubService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
       if (event) {
@@ -94,8 +94,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       ? this.productId
       : localStorage.getItem('record_id');
     this.checkProductOptions();
-    this.utilsService.getMeProductId.subscribe((data)=>{
-      if(data){
+    this.utilsService.getMeProductId.subscribe((data) => {
+      if (data) {
         this.product = this.localStorageService.getItem(StorageKeys.Product);
       }
     })
@@ -130,7 +130,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string | undefined) {
-    productUrl+='&openExternal=true';
+    productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
 
@@ -150,7 +150,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      const url =
+      const token = this.localStorageService.getItem(StorageKeys.ACCESS_TOKEN);
+      let url =
         environment.designStudioAppUrl +
         '?email=' +
         this.product.email +
@@ -159,6 +160,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         '&isVerified=true' +
         '&has_insights=' +
         true;
+      if (token) {
+        url = url + '&token=' + token;
+      }
       window.open(url, '_blank');
     } else {
       this.getMeTotalAppsPublishedCount();
@@ -407,7 +411,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
   //get calls
   getAllProducts(): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         this.templates = response.data;
         let user_audit_body = {
@@ -425,26 +429,26 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         );
       }
     })
-    .catch((error) => {
-      let user_audit_body = {
-        method: 'GET',
-        url: error?.request?.responseURL,
-      };
-      this.auditUtil.postAudit(
-        'GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER',
-        1,
-        'FAILED',
-        'user-audit',
-        user_audit_body,
-        this.currentUser.email,
-        this.productId
-      );
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: '',
-        detail: error,
+      .catch((error) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: error?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.productId
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
       });
-    });
     // this.naviApiService
     //   .getMetaData(this.currentUser?.email)
     //   .then((response) => {
