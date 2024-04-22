@@ -368,27 +368,15 @@ export class AgentHubModel {
       label: item.title,
       index: this.breadCrumbsAction.breadcrumb.length,
     };
-    this.breadCrumbsAction.breadcrumb = [
-      ...this.breadCrumbsAction.breadcrumb,
-      newPayload,
-    ];
-
-    // if(item.identifier in this.headerActionBtnOption) {
-    //     this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier].options
-    // }
-
+    this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
     if (item.identifier in this.headerActionBtnOption) {
-      this.activeHeaderActionBtnOption =
-        this.headerActionBtnOption[
-          item.identifier as keyof typeof this.headerActionBtnOption
-        ].options;
+      this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
     } else {
       console.error('Invalid identifier:', item.identifier);
       // Handle the error appropriately
     }
 
     // Don't show viewAll button
-
     this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
     this.getAllAgentList({ endpoint: item.value });
   }
@@ -399,7 +387,6 @@ export class AgentHubModel {
     const indexToDelete = event.item.index + 1;
     newItem.splice(indexToDelete);
     this.breadCrumbsAction.isBreadCrumbActive = false;
-
     // Show viewALl button
     this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
     this.breadCrumbsAction.breadcrumb = [...newItem];
@@ -422,8 +409,7 @@ export class AgentHubModel {
     //   dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
 
     const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
-    this.columns =
-      dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+    this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
     endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
     this.tableData = [];
     this.paginatorInfo = { ...InitialPaginatorInfo };
@@ -439,79 +425,6 @@ export class AgentHubModel {
       this.paginatorInfo.perPage = response.data.per_page;
       this.paginatorInfo.totalRecords = response.data.total_items;
       this.paginatorInfo.totalPages = response.data.total_pages;
-
-      // this.tableData = [
-      //     {
-      //       id: 1,
-      //       name: 'Agent 1',
-      //       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      //       status: 'Active',
-      //       created_by: 'John Doe'
-      //     },
-      //     {
-      //       id: 2,
-      //       name: 'Agent 2',
-      //       description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      //       status: 'Inactive',
-      //       created_by: 'Jane Doe'
-      //     },
-      //     {
-      //       id: 3,
-      //       name: 'Agent 3',
-      //       description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      //       status: 'Active',
-      //       created_by: 'John Smith'
-      //     },
-      //     {
-      //       id: 4,
-      //       name: 'Agent 4',
-      //       description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      //       status: 'Active',
-      //       created_by: 'Alice Johnson'
-      //     },
-      //     {
-      //       id: 5,
-      //       name: 'Agent 5',
-      //       description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      //       status: 'Inactive',
-      //       created_by: 'Bob Williams'
-      //     },
-      //     {
-      //       id: 6,
-      //       name: 'Agent 6',
-      //       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      //       status: 'Active',
-      //       created_by: 'Emily Davis'
-      //     },
-      //     {
-      //       id: 7,
-      //       name: 'Agent 7',
-      //       description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      //       status: 'Inactive',
-      //       created_by: 'Frank Wilson'
-      //     },
-      //     {
-      //       id: 8,
-      //       name: 'Agent 8',
-      //       description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      //       status: 'Active',
-      //       created_by: 'Grace Anderson'
-      //     },
-      //     {
-      //       id: 9,
-      //       name: 'Agent 9',
-      //       description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      //       status: 'Inactive',
-      //       created_by: 'Henry Martinez'
-      //     },
-      //     {
-      //       id: 10,
-      //       name: 'Agent 10',
-      //       description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      //       status: 'Active',
-      //       created_by: 'Isabella Garcia'
-      //     }
-      //   ];
     } catch (error) {
       console.error('Error fetching agent list:', error);
     }
@@ -534,4 +447,14 @@ export class AgentHubModel {
       console.error('Error fetching agent list:', error);
     }
   }
+
+  //agent header Event
+  agentheaderEvent(event: any) {
+    if (event.eventType === "createAgent") {
+      this.createAgentHandler();
+    } else if (event.eventType === "breadcrum") {
+      this.goBackBreadCrumbsHandler(event.data);
+    }
+  }
+
 }

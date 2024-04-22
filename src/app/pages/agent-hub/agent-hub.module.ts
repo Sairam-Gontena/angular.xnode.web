@@ -10,6 +10,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { DropdownModule } from 'primeng/dropdown';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { AgentHeaderComponent } from './component/agent-header/agent-header.component';
 
 @NgModule({
   declarations: [

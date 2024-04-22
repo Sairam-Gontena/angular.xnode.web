@@ -27,15 +27,10 @@ export class AgentDetailsComponent {
       this.utilsService,
       this.router
     );
-
     // this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params as IQueryParams
     // const { agentName, Id } = this.activeRoute.snapshot.params
 
-    this.agentDetailsModel.breadCrumbsAction.breadcrumb.push({
-      label: 'Agents',
-      index: 1
-    })
-
-    this.agentDetailsModel.updateHeaderOption()
+    this.agentDetailsModel?.breadCrumbsAction?.breadcrumb.push({ label: 'Agents', index: 1 });
+    this.agentDetailsModel?.updateHeaderOption()
   }
 }

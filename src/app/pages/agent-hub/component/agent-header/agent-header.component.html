@@ -1,0 +1,44 @@
+<div class="flex flex-wrap justify-content-between">
+    <xnode-breadcrumbs [items]="headerData.breadCrumbsAction.breadcrumb" (changeEvent)="breadCrumbsHandler($event)"
+        [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
+
+    <div class="flex align-items-center justify-content-between">
+        <!-- Left-aligned content -->
+        <div class="flex align-items-center">
+            <ng-container *ngIf="!headerData.breadCrumbsAction.isBreadCrumbActive; else elseBlock">
+                <p-button label="Create Agent" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
+                    styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
+                    (onClick)="createAgentHandler()"></p-button>
+            </ng-container>
+
+            <ng-template #elseBlock>
+                <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
+                    [model]="headerData.activeHeaderActionBtnOption"></p-splitButton>
+            </ng-template>
+        </div>
+        <div class="separator"></div>
+        <div class="flex align-items-center">
+            <p-button>
+                <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
+            </p-button>
+            <p-button>
+                <img src="../../../assets/agent-hub/chart-tree.svg" alt="" />
+            </p-button>
+        </div>
+    </div>
+
+    <ng-container *ngIf="!headerData.breadCrumbsAction.isBreadCrumbActive && headerData?.statsItem?.length">
+        <div class="flex justify-content-between m-auto sm:w-10 w-12 my-3">
+            <!-- Agents Card -->
+            <div class="flex" *ngFor="let item of headerData.statsItem">
+                <p-button>
+                    <img class="agent-icons" [src]="item.imgPath" alt="" />
+                </p-button>
+                <div class="flex flex-column">
+                    <div class="font-semibold text-base star-dust">{{ item.label }}</div>
+                    <div class="text-4xl font-bold">{{ item.count }}</div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

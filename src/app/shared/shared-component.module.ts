@@ -88,6 +88,7 @@ import { ContentGridComponent } from '../components/resources/content-grid/conte
 import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
 import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
+import { AgentHeaderComponent } from '../pages/agent-hub/component/agent-header/agent-header.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -174,7 +175,8 @@ import { AgentInformationComponent } from '../components/agent-hub/agent-informa
     ContentGridComponent,
     AvatarsDisplayComponent,
     CapabilityDetailsComponent,
-    AgentInformationComponent
+    AgentInformationComponent,
+    AgentHeaderComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -263,7 +265,8 @@ import { AgentInformationComponent } from '../components/agent-hub/agent-informa
     ContentGridComponent,
     AvatarsDisplayComponent,
     CapabilityDetailsComponent,
-    AgentInformationComponent
+    AgentInformationComponent,
+    AgentHeaderComponent
   ],
 })
 export class SharedComponentModule { }

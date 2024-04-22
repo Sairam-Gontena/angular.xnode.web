@@ -19,7 +19,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CommonModule,
     AgentDetailsRoutingModule,
     TabMenuModule,
-
     TabViewModule,
     MultiSelectModule,
     DropdownModule,
