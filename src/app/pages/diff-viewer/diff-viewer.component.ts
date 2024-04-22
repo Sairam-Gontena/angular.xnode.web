@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecApiService } from 'src/app/api/spec-api.service';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -83,7 +82,6 @@ export class DiffViewerComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private authApiService: AuthApiService,
-    private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
     private conversationService: ConversationHubService,
