@@ -115,7 +115,7 @@ export class AuthApiService extends BaseApiService {
       }
   }
 
-  private stopRefreshTokenTimer() {
+  public stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
 

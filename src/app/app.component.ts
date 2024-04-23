@@ -337,15 +337,15 @@ export class AppComponent implements OnInit {
     if (naviFrame) {
       const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
       iWindow?.postMessage({ message: 'logout' }, environment.naviAppUrl);
-    } else {
-      this.logoutFromTheApp()
     }
+    this.logoutFromTheApp()
   }
 
   logoutFromTheApp(): void {
     this.showInactiveTimeoutPopup = false;
     this.timedOut = false;
     this.idle.stop();
+    this.authApiService.stopRefreshTokenTimer()
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
