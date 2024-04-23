@@ -9,7 +9,7 @@
             <!-- Left-aligned content -->
             <div class="flex align-items-center">
                 <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
-                    [model]="activeHeaderActionBtnOption"></p-splitButton>
+                    [model]="headerActionBtnOption.overview.options"></p-splitButton>
             </div>
 
             <div class="separator"></div>
@@ -28,7 +28,7 @@
 
     <xnode-agent-information [agentInfo]="agentInfo"></xnode-agent-information>
 
-    <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
+    <p-tabView [(activeIndex)]="activeIndex">
         <ng-container *ngFor="let tabItem of tabItems">
             <p-tabPanel>
                 <ng-template pTemplate="header">
@@ -38,9 +38,9 @@
                     <ng-container *ngSwitchCase="'Overview'">
                         <ng-container [ngTemplateOutlet]="overview"></ng-container>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Actions'">
+                    <!-- <ng-container *ngSwitchCase="'Actions'">
                         <ng-container [ngTemplateOutlet]="actions"></ng-container>
-                    </ng-container>
+                    </ng-container> -->
                 </ng-template>
             </p-tabPanel>
         </ng-container>
@@ -50,17 +50,12 @@
     <!-- overview html -->
     <ng-template #overview>
         <div class="table-height w-6 mx-auto">
-            <form [formGroup]="overviewForm" (ngSubmit)="onOverviewSubmit()">
-                <!-- <div class="flex align-items-center justify-content-end mb-3">
-                <button type="button" class="btn btn-cancel">Save</button>
-              </div> -->
-
+            <form [formGroup]="overviewForm">
                 <div class="flex align-items-center justify-content-end mb-3">
-                    <p-button type="button" [label]="isFormEditable ? 'Save' : 'Edit'"
-                        [icon]="isFormEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right"
-                        [outlined]="isFormEditable ? false : true" (onClick)="onEditSaveHandler()"
+                    <p-button type="button" [label]="formEditable ? 'Save' : 'Edit'"
+                        [icon]="formEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right"
+                        [outlined]="formEditable ? false : true" (onClick)="onEditSaveHandler()"
                         class="btn btn-cancel"></p-button>
-                    <!-- <button type="submit" class="btn-primary">Add</button> -->
                 </div>
                 <div class="flex align-items-center mb-3">
                     <label class="w-5" for="name">Name</label>
@@ -77,14 +72,24 @@
                             placeholder="Description"></textarea>
                     </div>
                 </div>
+
+
+                <div class="flex align-items-center mb-3">
+                    <label class="w-5" for="description">Actions</label>
+                    <div class="w-7">
+                        <textarea pInputTextarea rows="6" id="actions"
+                            class="text-base p-2 border-1 border-round w-full" formControlName="actions"
+                            placeholder="actions"></textarea>
+                    </div>
+                </div>
             </form>
         </div>
     </ng-template>
 
     <!-- instruction html -->
-    <ng-template #actions>
+    <!-- <ng-template #actions>
         <div class="table-height">
             <p>Hello</p>
         </div>
-    </ng-template>
+    </ng-template> -->
 </div>

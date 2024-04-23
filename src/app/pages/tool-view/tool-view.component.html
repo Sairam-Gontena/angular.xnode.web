@@ -1,3 +1,4 @@
 <div class="pr-4 pl-5">
-    <xnode-tools-details [rowViewData]="rowViewData.tool"></xnode-tools-details>
+    <xnode-tools-details [rowViewData]="rowViewData.tool" [formEditable]="isFormEditable"
+        (onEditSave)="onEditSaveHandler($event)" [agentInfo]="agentInfo"></xnode-tools-details>
 </div>
