@@ -32,7 +32,7 @@ export class PromptComponent {
   ngOnInit() {
     this.promptObj.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
     this.promptObj.topicId = this.activatedRoute.snapshot.paramMap.get('id');
-    let urlParam = this.makeTableParamObj(this.promptObj.InitialPaginatorInfo);
+    let urlParam = this.makeTableParamObj(this.promptObj.paginatorInfo);
     this.getPromptDataByTopic(urlParam); //get prompt details by topic ID
   }
 
@@ -60,10 +60,10 @@ export class PromptComponent {
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
     let urlParam: any = {
-      url: "/agent/prompts/" + this.promptObj.topicId,
+      url: "agent/prompts/" + this.promptObj.topicId,
       params: {
         account_id: this.promptObj.currentUser.account_id,
-        topic_id: this.promptObj.topicId,
+        has_parent_info: true,
         page: paginationObj.page + 1,
         limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
       }

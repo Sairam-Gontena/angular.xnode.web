@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'agent/:id',
-    loadChildren: () => import('./module/agent-details/agent-details.module').then((m) => m.AgentDetailsModule),
+    component: AgentHubComponent, loadChildren: () => import('./module/agent-details/agent-details.module').then((m) => m.AgentDetailsModule),
   },
   {
     path: 'topic/:id',

@@ -1,11 +1,11 @@
 <div class="flex flex-wrap justify-content-between">
-    <xnode-breadcrumbs [items]="headerData.breadCrumbsAction.breadcrumb" (changeEvent)="breadCrumbsHandler($event)"
+    <xnode-breadcrumbs [items]="headerData?.breadCrumbsAction?.breadcrumb" (changeEvent)="breadCrumbsHandler($event)"
         [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
 
     <div class="flex align-items-center justify-content-between">
         <!-- Left-aligned content -->
         <div class="flex align-items-center">
-            <ng-container *ngIf="!headerData.breadCrumbsAction?.isBreadCrumbActive; else elseBlock">
+            <ng-container *ngIf="!headerData?.showActionButton; else elseBlock">
                 <p-button label="Create Agent" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
                     styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
                     (onClick)="createAgentHandler()"></p-button>
@@ -13,7 +13,7 @@
 
             <ng-template #elseBlock>
                 <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
-                    [model]="headerData?.activeHeaderActionBtnOption"></p-splitButton>
+                    [model]="headerData?.actionButtonOption"></p-splitButton>
             </ng-template>
         </div>
         <div class="separator"></div>
@@ -26,8 +26,10 @@
             </p-button>
         </div>
     </div>
+</div>
 
-    <ng-container *ngIf="!headerData.breadCrumbsAction.isBreadCrumbActive && headerData?.statsItem?.length">
+<ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
+    <div class="w-full">
         <div class="flex justify-content-between m-auto sm:w-10 w-12 my-2">
             <!-- Agents Card -->
             <div class="flex" *ngFor="let item of headerData.statsItem">
@@ -40,5 +42,11 @@
                 </div>
             </div>
         </div>
-    </ng-container>
-</div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="headerData?.agentConnectedFlow">
+    <div class="w-full">
+        <xnode-agent-information [agentInfo]="headerData?.agentInfo"></xnode-agent-information>
+    </div>
+</ng-container>

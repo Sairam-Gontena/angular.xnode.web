@@ -7,6 +7,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { agentHubDetail } from '../../constant/agent-hub';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -280,6 +281,10 @@ export class AgentHubDetailComponent {
       };
     });
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+    if (!this.activeIndex) {
+      this.agentHubService.setAgentHeader(JSON.parse(JSON.stringify(agentHubDetail)));
+      this.agentHubService.saveAgentHeaderObj(JSON.parse(JSON.stringify(agentHubDetail)));
+    }
   }
 
   ngOnInit() {
@@ -364,6 +369,14 @@ export class AgentHubDetailComponent {
   }
 
   viewHandler(item: any) {
+    let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+    if (agentHubDetailObj) {
+      agentHubDetailObj.showActionButton = true;
+      agentHubDetailObj.agentConnectedFlow = true;
+      agentHubDetailObj.agentInfo = item;
+      this.agentHubService.setAgentHeader(agentHubDetailObj);
+      this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+    }
     this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
   }
 

@@ -1,17 +1,5 @@
-<div class="w-full p-3">
-  <xnode-agent-header [headerData]="agentDetailsModel"
-    (headerClickHandler)="agentDetailsModel.agentheaderEvent($event)"></xnode-agent-header>
-  <!-- <p-tabView styleClass="pt-3 px-6" (onChange)="agentDetailsModel.onTabSwitchHandler($event)"
-    [(activeIndex)]="agentDetailsModel.activeIndex"
-    *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock">
-    <p-tabPanel *ngFor="let tab of agentDetailsModel.tabItems; let i = index" [header]="tab.title">
-    </p-tabPanel>
-  </p-tabView> -->
-
-  <xnode-agent-information *ngIf="(agentDetailsModel?.breadCrumbsAction?.breadcrumb?.length ?? 0) < 4"
-    [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-information>
-
-  <div *ngIf="agentDetailsModel.showAgentDetailsContent">
+<div class="w-full">
+  <ng-container *ngIf="agentDetailsModel.showAgentDetailsContent">
     <p-tabView (onChange)="agentDetailsModel.onTabSwitchHandler($event)" [(activeIndex)]="agentDetailsModel.activeIndex"
       *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock">
       <ng-container *ngFor="let tabItem of agentDetailsModel.tabItems">
@@ -70,19 +58,21 @@
       </div>
 
     </ng-template>
-  </div>
+  </ng-container>
 
   <!-- overview html -->
   <ng-template #overview>
     <div class="table-height">
-      <xnode-agent-overview formType="overview" [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-overview>
+      <xnode-agent-overview formType="overview"
+        [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
   </ng-template>
 
   <!-- instruction html -->
   <ng-template #instruction>
     <div class="table-height">
-      <xnode-agent-overview formType="instruction" [agentInfo]="agentDetailsModel.agentInfo"></xnode-agent-overview>
+      <xnode-agent-overview formType="instruction"
+        [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
   </ng-template>
 

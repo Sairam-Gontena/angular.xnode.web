@@ -1,3 +1,4 @@
+import { Constant } from "../agent-hub.constant";
 
 export const InitialPaginatorInfo = {
     page: 0,
@@ -37,4 +38,17 @@ export const promptSearchFilterOptions = {
     filter: false,
     showToggleAll: false,
     showHeader: false
+}
+
+//agent hub detail object
+export const agentHubDetail = {
+    statsItem: Constant.stats,
+    agentInfo: "",
+    agentConnectedFlow: false,
+    showActionButton: false,
+    actionButtonOption: new Array(),
+    breadCrumbsAction: {
+        isBreadCrumbActive: false,
+        breadcrumb: [{ label: 'Agent Hub', index: 0 }]
+    }
 }

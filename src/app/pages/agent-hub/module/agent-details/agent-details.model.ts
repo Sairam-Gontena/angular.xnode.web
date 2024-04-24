@@ -9,10 +9,10 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OnInit } from '@angular/core';
-import { InitialPaginatorInfo } from '../../constant/agent-hub';
+import { InitialPaginatorInfo, agentHubDetail } from '../../constant/agent-hub';
 
 export class AgentDetailsModel {
-  agentInfo: any
+  agentHubDetail: any;
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
     { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
@@ -198,7 +198,6 @@ export class AgentDetailsModel {
       ],
     },
   };
-  activeHeaderActionBtnOption!: any[];
   breadCrumbsAction: BreadCrumbsAction = {
     isBreadCrumbActive: true,
     breadcrumb: [
@@ -250,7 +249,8 @@ export class AgentDetailsModel {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.getAgentDetailsById()
+    this.getAgentDetailsById();
+    this.agentHubDetail = this.agentHubService.getAgentHeader();
   }
 
   viewHandler(item: any) {
@@ -420,15 +420,13 @@ export class AgentDetailsModel {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         // this.getAgentDetailByCategorySuccess(response);
-        this.agentInfo = response
+        this.agentHubDetail.agentConnectedFlow = response ? true : false;
+        this.agentHubDetail.agentInfo = response;
+        this.agentHubDetail.showActionButton = true;
+        this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
 
-        this.breadCrumbsAction.breadcrumb = [
-          ...this.breadCrumbsAction.breadcrumb,
-          {
-            label: response?.name,
-            index: this.breadCrumbsAction.breadcrumb.length
-          }
-        ]
+        this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb,
+        { label: response?.name, index: this.breadCrumbsAction.breadcrumb.length }]
         console.log(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
@@ -458,7 +456,7 @@ export class AgentDetailsModel {
   updateHeaderOption() {
     let item = this.tabItems[this.activeIndex];
     if (item.identifier in this.headerActionBtnOption) {
-      this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
     } else {
       console.error('Invalid identifier:', item.identifier);
       // Handle the error appropriately

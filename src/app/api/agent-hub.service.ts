@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BaseApiService } from './base-api.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -9,6 +9,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 
 export class AgentHubService extends BaseApiService {
+  private agentHeaderObj: Subject<any> = new Subject();
+  private agentHeaderDetail: any;
 
   override get apiUrl(): string {
     return environment.apiUrl;
@@ -19,6 +21,26 @@ export class AgentHubService extends BaseApiService {
 
   get getHttp() {
     return this.injector.get(HttpClient);
+  }
+
+  //set agent header
+  setAgentHeader(headerObj: any) {
+    this.agentHeaderDetail = headerObj;
+  }
+
+  //get agent header
+  getAgentHeader() {
+    return this.agentHeaderDetail;
+  }
+
+  //set agent header
+  saveAgentHeaderObj(headerObj: any) {
+    this.agentHeaderObj.next(headerObj);
+  }
+
+  //get agent header
+  changeAgentHeaderObj(): Observable<any> {
+    return this.agentHeaderObj.asObservable();
   }
 
   getAllAgent({ accountId, endpoint, page, page_size }: { accountId: string, endpoint: string, page: number, page_size: number }) {
@@ -58,12 +80,12 @@ export class AgentHubService extends BaseApiService {
 
   //get prompts by topic id
   getPromptDataByTopic(urlParam: any): Observable<any> {
-    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
+    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.params });
   }
 
   //get topic details by topic id
   getTopicDetailByID(urlParam: any): Observable<any> {
-    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
+    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.params });
   }
 
   //update topic details by topic id
@@ -71,7 +93,6 @@ export class AgentHubService extends BaseApiService {
     return this.getHttp.put(this.apiUrl + urlPayload.url, urlPayload.payload);
   }
 
-  
   //get model details by model id
   getModelDetailByID(urlParam: any): Observable<any> {
     return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
