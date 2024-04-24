@@ -1,0 +1,23 @@
+::ng-deep .customAutocomplete {
+    .p-autocomplete-multiple-container {
+        width: 100%;
+        max-height: 100px;
+        align-items: start;
+        overflow: auto;
+    }
+}
+
+::ng-deep .customChips {
+    .p-chips-multiple-container {
+        width: 100%;
+        max-height: 100px;
+        align-items: start;
+        overflow: auto;
+    }
+}
+
+::ng-deep .customMessages {
+    .p-message-wrapper {
+        padding: 10px;
+    }
+}

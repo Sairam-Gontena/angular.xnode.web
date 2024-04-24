@@ -81,7 +81,9 @@
     "xlsx": "^0.18.5",
     "zone.js": "^0.13.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.35.0",
-    "@ngneat/until-destroy": "^10.0.0"
+    "@ngneat/until-destroy": "^10.0.0",
+    "@ng-idle/core": "^14.0.0",
+    "@ng-idle/keepalive": "^14.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.1.3",

@@ -29,6 +29,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class AppHeaderComponent implements OnInit {
   @Output() navigateToHome = new EventEmitter<object>();
+  @Output() logout = new EventEmitter<any>();
+
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -57,7 +59,6 @@ export class AppHeaderComponent implements OnInit {
   displayReportDialog: boolean = false;
   generalFeedbackDialog: boolean = false;
   currentUser: any;
-  templates: any[] = [];
   closeOverlay: boolean = false;
   eventOverlay: any;
   opOverlay: any;
@@ -106,7 +107,6 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
-
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
       this.selectedPopup = '';
       if (res) {
@@ -129,116 +129,16 @@ export class AppHeaderComponent implements OnInit {
       }
     }
     this.currentUser = UserUtil.getCurrentUser();
-    this.getAllProducts();
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
         label: 'Logout',
         command: () => {
-          this.auditUtil.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
-          this.utilsService.showProductStatusPopup(false);
-          this.utilsService.showLimitReachedPopup(false);
-          setTimeout(() => {
-            localStorage.clear();
-            this.auth.setUser(false);
-            this.router.navigate(['/']);
-          }, 1000);
+          this.logout.emit()
         },
       },
     ];
     this.initializeWebsocket();
-  }
-
-  //get calls
-  getAllProducts(): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
-      if (response?.status === 200 && response.data?.length) {
-        let user_audit_body = {
-          method: 'GET',
-          url: response?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_ALL_PRODUCTS_GET_METADATA',
-          1,
-          'SUCCESS',
-          'user-audit',
-          user_audit_body,
-          this.email,
-          this.productId
-        );
-        const data = response.data.map((obj: any) => ({
-          name: obj.title,
-          value: obj.id,
-          url: obj.product_url !== undefined ? obj.product_url : '',
-        }));
-        this.templates = data;
-      }
-    })
-      .catch((error) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_ALL_PRODUCTS_GET_METADATA',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.email,
-          this.productId
-        );
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
-      });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_ALL_PRODUCTS_GET_METADATA',
-    //         1,
-    //         'SUCCESS',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.email,
-    //         this.productId
-    //       );
-    //       const data = response.data.data.map((obj: any) => ({
-    //         name: obj.title,
-    //         value: obj.id,
-    //         url: obj.product_url !== undefined ? obj.product_url : '',
-    //       }));
-    //       this.templates = data;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     let user_audit_body = {
-    //       method: 'GET',
-    //       url: error?.request?.responseURL,
-    //     };
-    //     this.auditUtil.postAudit(
-    //       'GET_ALL_PRODUCTS_GET_METADATA',
-    //       1,
-    //       'FAILED',
-    //       'user-audit',
-    //       user_audit_body,
-    //       this.email,
-    //       this.productId
-    //     );
-    //     this.utilsService.loadToaster({
-    //       severity: 'error',
-    //       summary: '',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   toggleFeedbackPopup() {
@@ -251,6 +151,10 @@ export class AppHeaderComponent implements OnInit {
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.CLOSE_NAVI,
+      msgData: 'CLOSE',
+    });
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
     this.auditUtil.postAudit('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
@@ -273,6 +177,8 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      console.log('notif', data);
+
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length;
@@ -438,10 +344,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.PRODUCT_CONTEXT,
-      msgData: false,
-    });
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.navigateToHome.emit();
   }
@@ -461,7 +363,7 @@ export class AppHeaderComponent implements OnInit {
     this.conversationService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data[0].content.conversation_summary;
+        this.convSummary = res.data?.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',

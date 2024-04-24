@@ -1,86 +1,161 @@
 <xnode-confirmation-popup [data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
 <p-overlayPanel #op>
-     <div style="">
-          <div class="flex align-items-center pl-3 pr-3 pointer" (click)="dt.exportCSV()">
-               <i class="pi pi-file text-white"></i>
-               <p class="text-white pl-2 text-sm font-semibold font-family-inter">Export CSV</p>
-          </div>
-          <div class="flex align-items-center pl-3 pr-3 pointer" (click)="exportExcelData()">
-               <i class="pi pi-file-excel text-white"></i>
-               <p class="text-white pl-2 text-sm font-semibold font-family-inter">Export XLS</p>
-          </div>
-     </div>
+  <div style="">
+    <div class="flex align-items-center pl-3 pr-3 pointer" (click)="dt.exportCSV()">
+      <i class="pi pi-file text-white"></i>
+      <p class="text-white pl-2 text-sm font-semibold font-family-inter">
+        Export CSV
+      </p>
+    </div>
+    <div class="flex align-items-center pl-3 pr-3 pointer" (click)="exportExcelData()">
+      <i class="pi pi-file-excel text-white"></i>
+      <p class="text-white pl-2 text-sm font-semibold font-family-inter">
+        Export XLS
+      </p>
+    </div>
+  </div>
 </p-overlayPanel>
-<div class="card">
-     <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
-          scrollDirection="horizontal">
-          <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
-               <div class="flex justify-content-between align-items-center">
-                    <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
-                         <i class="pi pi-search"></i>
-                         <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
-                    </span>
-                    <div class="flex-wrap">
-                         <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
-                              <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" >
-                              <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
-                         </p-button>
-                         <p-button styleClass="mr-3" [text]="true" size="small" [rounded]="true" *ngIf="tableInfo?.export_action"
-                              (click)="op.toggle($event)">
-                              <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
-                              <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>
-                              <i class="pi pi-chevron-down ml-2"></i>
-                         </p-button>
-                    </div>
-               </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-               <tr>
-                    <th style="min-width:300px"  *ngFor="let col of columns" [ngClass]="'tableheader'">
-                         {{ col.header }}
-                         <p-columnFilter type="text" [field]="col.field" display="menu"
-                              *ngIf="col.filter"></p-columnFilter>
-                    </th>
-               </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
-               <tr class="text-white text-xs" style="background-color:#3A3942;">
-                    <td *ngFor="let col of columns" style="white-space: normal;border-bottom-width: 0px;"
-                         [style.width.px]="col.width">
-                         <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type !== 'datetime'"
-                              [ngClass]="col.field === 'email' ? 'email-text-color normal-text':'normal-text'">
-                              {{rowData[col.field]}}
-                         </div>
-                         <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type === 'datetime'"
-                              [ngClass]="col.field === 'email' ? 'email-text-color':''">
-                              {{ rowData[col.field] | date: 'MM-dd-yyyy, HH:mm:ss' }}
-                         </div>
-                         <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
-                         ? 'Warning' : rowData[col.field]==='Low' ? 'Danger' : null">
-                              {{rowData[col.field]}}
-                         </div>
-                         <ng-container *ngIf="col.field === 'action'" class="flex">
-                              <div class="flex align-items-center">
-                                   <div class="mr-2"
-                                        [ngClass]="rowData[col.field] === 'Invited' ? 'Success' : rowData[col.field] === 'Hold' ? 'Warning' : rowData[col.field] === 'Reject' ? 'Danger' : null"
-                                        *ngIf="rowData[col.field] !== 'Pending Invite'">
-                                        {{rowData[col.field]}}
-                                   </div>
-                                   <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
-                                        <xnode-action-button
-                                             [Actions]="rowData[col.field] == 'Invited'? DeleteAction : Actions"
-                                             [Data]="rowData" (dataActionEvent)="handleDataAndAction($event)"
-                                             class="flex flex-row flex-wrap"></xnode-action-button>
-                                   </div>
-                              </div>
-                         </ng-container>
-                    </td>
-               </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage">
-               <tr class="empty-row text-white">
-                    <td>No records found.</td>
-               </tr>
-          </ng-template>
-     </p-table>
+<div class="card flex flex-column">
+  <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
+    [scrollHeight]="verticalScrollHeight">
+    <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
+      <div class="flex justify-content-between align-items-center">
+        <div class="flex gap-4 p-3">
+          <xnode-multi-select-checkbox *ngIf="searchFilterOptions?.showFilterOption"
+            [filter]="searchFilterOptions.filter" [showToggleAll]="searchFilterOptions.showToggleAll"
+            [showHeader]="searchFilterOptions.showHeader" [options]="searchFilterOptions.options"
+            [placeholder]="searchFilterOptions.placeholder" [optionLabel]="searchFilterOptions.optionLabel"
+            [styleClass]="searchFilterOptions.styleClass"></xnode-multi-select-checkbox>
+
+          <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
+          </span>
+        </div>
+        <div class="flex-wrap">
+          <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
+            <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" />
+            <span class="text-sm font-semibold font-family-inter ml-2">Delete</span>
+          </p-button>
+          <p-button styleClass="mr-3" [text]="true" size="small" [rounded]="true" *ngIf="tableInfo?.export_action"
+            (click)="op.toggle($event)">
+            <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm" />
+            <span class="text-sm font-semibold font-family-inter ml-2">Export</span>
+            <i class="pi pi-chevron-down ml-2"></i>
+          </p-button>
+        </div>
+
+        <div class="flex gap-2 align-items-center px-2" *ngIf="showColumnFilterOption?.showFilterOption">
+          <span>Columns: </span>
+          <xnode-multi-select-checkbox [filter]="showColumnFilterOption.filter"
+            [showToggleAll]="showColumnFilterOption.showToggleAll" [showHeader]="showColumnFilterOption.showHeader"
+            [options]="showColumnFilterOption.options" [placeholder]="showColumnFilterOption.placeholder"
+            [optionLabel]="showColumnFilterOption.optionLabel" [styleClass]="showColumnFilterOption.styleClass"
+            (changeEvent)="
+              showColumnFilterOption.changeHandler &&
+                showColumnFilterOption.changeHandler($event)
+            "></xnode-multi-select-checkbox>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th [style]="{ 'background-color': tableHeaderColor }" *ngFor="let col of columns" [ngClass]="'tableheader'">
+          <ng-container *ngIf="col.width">
+            <div [style]="{ 'min-width': col.width }">
+              {{ col.header }}
+              <p-columnFilter type="text" [field]="col.field" display="menu" *ngIf="col.filter"></p-columnFilter>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!col.width">
+            <div>{{ col.header }}</div>
+          </ng-container>
+          <!-- <p-columnFilter type="text" [field]="col.field" display="menu"
+                              *ngIf="col.filter"></p-columnFilter> -->
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
+      <tr class="text-white text-xs cursor-pointer" [style]="{
+          'background-color':
+            i % 2 === 0 && altBgColorRow ? altBgColorRow : '#3A3942'
+        }" (click)="onTableRowHandler(rowData)">
+        <td *ngFor="let col of columns" style="white-space: normal; border-bottom-width: 0px"
+          [style.width.px]="col.width">
+          <div *ngIf="
+              col.field !== 'interest_level' &&
+              col.field !== 'action' &&
+              col.type !== 'datetime'
+            " [ngClass]="
+              col.field === 'email'
+                ? 'email-text-color normal-text'
+                : 'normal-text'
+            ">
+            {{ rowData[col.field] }}
+          </div>
+          <div *ngIf="
+              col.field !== 'interest_level' &&
+              col.field !== 'action' &&
+              col.type === 'datetime'
+            " [ngClass]="col.field === 'email' ? 'email-text-color' : ''">
+            {{ rowData[col.field] | date : "MM-dd-yyyy, HH:mm:ss" }}
+          </div>
+          <div *ngIf="col.field === 'interest_level'" [ngClass]="
+              rowData[col.field] === 'High'
+                ? 'Success'
+                : rowData[col.field] === 'Medium'
+                ? 'Warning'
+                : rowData[col.field] === 'Low'
+                ? 'Danger'
+                : null
+            ">
+            {{ rowData[col.field] }}
+          </div>
+          <ng-container *ngIf="col.field === 'action'" class="flex">
+            <div class="flex align-items-center">
+              <div class="mr-2" [ngClass]="
+                  rowData[col.field] === 'Invited'
+                    ? 'Success'
+                    : rowData[col.field] === 'Hold'
+                    ? 'Warning'
+                    : rowData[col.field] === 'Reject'
+                    ? 'Danger'
+                    : null
+                " *ngIf="rowData[col.field] !== 'Pending Invite'">
+                {{ rowData[col.field] }}
+              </div>
+              <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
+                <xnode-action-button [Actions]="
+                    rowData[col.field] == 'Invited' ? DeleteAction : Actions
+                  " [Data]="rowData" (dataActionEvent)="handleDataAndAction($event)"
+                  class="flex flex-row flex-wrap"></xnode-action-button>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="col.icon">
+            <p-splitButton label="" class="p-0" styleClass="p-0" menuStyleClass="menuStyleTable" appendTo="body"
+              [model]="tableRowActionOptions">
+              <ng-template pTemplate="dropdownicon">
+                <p-button [icon]="col.icon"></p-button>
+              </ng-template>
+            </p-splitButton>
+            <!-- <i [class]="col.icon"></i> -->
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr class="empty-row text-white">
+        <td class="text-center" [attr.colspan]="columns?.length">No records found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator *ngIf="paginatorInfo.perPage && paginatorInfo.totalRecords" [showFirstLastIcon]="false"
+    (onPageChange)="onPageChangeHandler($event)" [rows]="paginatorInfo.perPage"
+    [totalRecords]="paginatorInfo.totalRecords" styleClass="background-none"></p-paginator>
+
+  <p-button *ngIf="viewAll.showButton" label="View All" icon="pi pi-arrow-right" iconPos="right"
+    styleClass="view-all-btn" (onClick)="viewAll.clickHandler($event)"></p-button>
 </div>

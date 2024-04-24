@@ -1,0 +1,13 @@
+<p-dialog styleClass="customDialog" [(visible)]="commonModalDetail.visible" [modal]="commonModalDetail.modal"
+    [responsive]="commonModalDetail.responsive" [style]="commonModalDetail.style"
+    [breakpoints]="commonModalDetail.breakpoints">
+    <ng-template pTemplate="header">
+        <ng-content select="[modalHeader]"></ng-content>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <ng-content select="[modalContent]"></ng-content>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <ng-content select="[modalFooter]"></ng-content>
+    </ng-template>
+</p-dialog>

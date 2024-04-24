@@ -101,13 +101,13 @@ export class DiffCompComponent implements OnInit {
         '&isVerified=true' +
         '&userId=' +
         this.currentUser.user_id;
-        const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
-        if (token) {
-          this.targetUrl = this.targetUrl + '&token=' + token;
-        }
+      const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      if (token) {
+        this.targetUrl = this.targetUrl + '&token=' + token;
+      }
       this.makeTrustedUrl();
     }
-    if (this.contentObj?.content_data_type === 'DATA_DICTIONARY') {
+    if (this.contentObj?.content_data_type === 'DATA_DICTIONARY' && this.contentObj?.content) {
       this.stringifyDictionaryObject();
     }
   }

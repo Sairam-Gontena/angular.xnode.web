@@ -1,0 +1,11 @@
+<p-dialog header="Are You Still There?" [(visible)]="visible" [style]="{width: '30vw'}" (onHide)="closePopup.emit()">
+  <p>
+    Your session will expire in {{countdown}} seconds due to inactivity. If you need more time, please click 'Stay Logged In' to continue your session. If you do not take action, you will be logged out automatically to protect your information
+  </p>
+  <ng-template pTemplate="footer">
+      <p-button label="Stay Logged In" [rounded]="true" class="submit-button"
+          (click)="closePopup.emit()"></p-button>
+      <p-button label="Logout" [rounded]="true" class="cancel-button"
+          (click)="logout.emit()"></p-button>
+  </ng-template>
+</p-dialog>

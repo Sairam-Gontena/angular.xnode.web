@@ -1,9 +1,25 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as FileSaver from 'file-saver';
 
 interface Column {
   field: string;
   header: string;
+}
+interface FilterOptions {
+  showFilterOption?: boolean;
+  filter: boolean;
+  showToggleAll: boolean;
+  showHeader: boolean;
+  options: any[];
+  placeholder: string;
+  optionLabel: string;
+  styleClass: string;
+  changeHandler?: (event: any) => void;
+}
+
+interface ViewAll {
+  showButton: boolean;
+  clickHandler: (event: any) => void;
 }
 @Component({
   selector: 'xnode-dynamic-table',
@@ -18,6 +34,49 @@ export class DynamicTableComponent implements OnInit {
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
+  @Input() columnWidth: string = '18rem';
+  @Input() tableHeaderColor: string = '';
+  @Input() altBgColorRow: string = '';
+  @Input() verticalScrollHeight = '25rem';
+  @Input() paginatorInfo: any = {};
+  @Input() showViewRowData = false;
+  @Output() changeEvent = new EventEmitter<{ event: any }>();
+  @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
+
+  @Input() tableRowActionOptions: any[] = [];
+
+  @Input() searchFilterOptions: FilterOptions = {
+    showFilterOption: false,
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: 'All',
+    optionLabel: 'name',
+    styleClass: 'custom-multiselect',
+  };
+
+  @Input() showColumnFilterOption: FilterOptions = {
+    showFilterOption: false,
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: 'All',
+    optionLabel: 'name',
+    styleClass: 'showColumnFilterOption',
+    changeHandler: (event: any): void => {
+      console.log('val');
+    },
+  };
+
+  @Input() viewAll: ViewAll = {
+    showButton: false,
+    clickHandler: (event: any): void => {
+      console.log('val');
+    },
+  };
+
   headers: any;
   editable: boolean = true;
   showDelete: boolean = true;
@@ -46,7 +105,7 @@ export class DynamicTableComponent implements OnInit {
 
   private loadTableData(data: any): void {
     this.dynamicData = data;
-    if (this.dynamicData) {
+    if (this.dynamicData && this.dynamicData.length) {
       this.headers = Object.keys(this.dynamicData[0]);
     }
   }
@@ -59,7 +118,7 @@ export class DynamicTableComponent implements OnInit {
     }
   }
 
-  onCellInputBlur(event: any) {}
+  onCellInputBlur(event: any) { }
 
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
@@ -72,7 +131,7 @@ export class DynamicTableComponent implements OnInit {
     this.showConfirmationPopover = true;
     this.userDetails = data;
   }
-  onClickAction(action: any): void {}
+  onClickAction(action: any): void { }
 
   onInputChange(event: any) {
     const inputValue = event.target.value;
@@ -108,5 +167,19 @@ export class DynamicTableComponent implements OnInit {
       type: EXCEL_TYPE,
     });
     FileSaver.saveAs(data, this.exportFileName);
+  }
+
+  // Function to handle lazy loading (pagination)
+  onPageChangeHandler(event: any) {
+    console.log(event, 'event');
+    this.paginatorChangeEvent.emit(event);
+    // Emit event to parent
+  }
+
+  onTableRowHandler(rowData: any) {
+    console.log(rowData, "rowData")
+    if (this.showViewRowData) {
+      this.changeEvent.emit(rowData)
+    }
   }
 }

@@ -70,6 +70,24 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
+import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
+import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
+import { AgentOverviewComponent } from '../components/agent-hub/create-agent/agent-overview/agent-overview.component';
+import { AgentInstructionComponent } from '../components/agent-hub/create-agent/agent-instruction/agent-instruction.component';
+import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
+import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
+import { ShareLinkComponent } from './component/share-link/share-link.component';
+import { PromptOverviewComponent } from '../components/agent-hub/create-agent/prompt-overview/prompt-overview.component';
+import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
+import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
+import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
+import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
+import { ResourcesComponent } from '../components/resources/resources.component';
+import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
+import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
+import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
+import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
+import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -137,7 +155,26 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     SpecConversationComponent,
     ConversationActionsComponent,
     SpecChildConversationComponent,
-    ImportFilePopupComponent
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    PromptOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent,
+    AgentInformationComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -207,7 +244,26 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     CreateNewCrVersionComponent,
     SpecConversationComponent,
     SpecChildConversationComponent,
-    ImportFilePopupComponent
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    PromptOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent,
+    AgentInformationComponent
   ],
 })
 export class SharedComponentModule { }

@@ -2,6 +2,7 @@ export const environment = {
     name: 'DEV',
     production: false,
     apiUrl: 'https://dev-navi-api.azurewebsites.net/',
+    // apiUrl: 'http://localhost:8000/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
     conversationApiUrl: 'https://dev-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://dev-spec-api.azurewebsites.net/',
@@ -18,5 +19,7 @@ export const environment = {
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
     projectName: 'xnode-dev',
-    homeUrl: 'https://dev.xnode.ai/'
+    homeUrl: 'https://dev.xnode.ai/',
+    XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
+    XNODE_TIMEOUT_PERIOD_SECONDS:30
 }
