@@ -119,7 +119,7 @@ export class AgentHubDetailComponent {
     {
       idx: 3,
       title: 'Prompts',
-      value: 'prompt_linked_topic',
+      value: 'prompt',
       identifier: agentName.prompt,
     },
     {
