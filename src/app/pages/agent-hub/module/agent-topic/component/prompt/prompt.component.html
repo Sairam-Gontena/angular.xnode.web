@@ -1,0 +1,5 @@
+<xnode-dynamic-table [inputData]="promptObj.tableData" [cols]="promptObj.columns"
+    [tableRowActionOptions]="promptObj.promptTableRowActionOptions" [paginatorInfo]="promptObj.paginatorInfo"
+    [searchFilterOptions]="promptObj.promptSearchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+    [showViewRowData]="true" (changeEvent)="viewHandler($event)"
+    (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>

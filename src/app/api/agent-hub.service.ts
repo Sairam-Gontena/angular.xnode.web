@@ -48,16 +48,33 @@ export class AgentHubService extends BaseApiService {
   //   return this.get(url)
   // }
 
-
-
-
   postData(urlParam: any): Observable<any> {
     return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data);
   }
 
-
   updateData(urlParam: any): Observable<any> {
-
     return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data));
   }
+
+  //get prompts by topic id
+  getPromptDataByTopic(urlParam: any): Observable<any> {
+    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
+  }
+
+  //get topic details by topic id
+  getTopicDetailByID(urlParam: any): Observable<any> {
+    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
+  }
+
+  //update topic details by topic id
+  updateTopicDetailByID(urlPayload: any): Observable<any> {
+    return this.getHttp.put(this.apiUrl + urlPayload.url, urlPayload.payload);
+  }
+
+  
+  //get model details by model id
+  getModelDetailByID(urlParam: any): Observable<any> {
+    return this.getHttp.get(this.apiUrl + urlParam.url, { params: urlParam.param });
+  }
+
 }

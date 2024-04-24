@@ -9,13 +9,8 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OnInit } from '@angular/core';
+import { InitialPaginatorInfo } from '../../constant/agent-hub';
 
-const InitialPaginatorInfo = {
-  page: 0,
-  perPage: 10,
-  totalPages: 0,
-  totalRecords: 0,
-};
 export class AgentDetailsModel {
   agentInfo: any
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
@@ -255,8 +250,6 @@ export class AgentDetailsModel {
     private utilsService: UtilsService,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
-
-
     this.getAgentDetailsById()
   }
 
@@ -355,11 +348,8 @@ export class AgentDetailsModel {
     } else if (response.data) {
       this.tableData = response.data as CapabilitiesTableData[];
       // this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
-
       const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
-      this.columns =
-        dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
-
+      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
       this.paginatorInfo.page = response.page;
       this.paginatorInfo.perPage = response.per_page;
       this.paginatorInfo.totalRecords = response.total_items;
@@ -406,10 +396,13 @@ export class AgentDetailsModel {
 
   //get the agent details by catgory
   getAgentDetailByCategory(urlParam: any) {
+    this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         this.getAgentDetailByCategorySuccess(response);
+        this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
+        this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }
     });
