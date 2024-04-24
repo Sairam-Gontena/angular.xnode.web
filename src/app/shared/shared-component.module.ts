@@ -89,6 +89,7 @@ import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-d
 import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/tools-details.component';
+import { CreateToolModalComponent } from '../components/agent-hub/create-tool-modal/create-tool-modal.component';
 
 @NgModule({
   declarations: [
@@ -177,7 +178,8 @@ import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/too
     AvatarsDisplayComponent,
     CapabilityDetailsComponent,
     AgentInformationComponent,
-    ToolsDetailsComponent
+    ToolsDetailsComponent,
+    CreateToolModalComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -267,7 +269,8 @@ import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/too
     AvatarsDisplayComponent,
     CapabilityDetailsComponent,
     AgentInformationComponent,
-    ToolsDetailsComponent
+    ToolsDetailsComponent,
+    CreateToolModalComponent
   ],
 })
 export class SharedComponentModule { }
