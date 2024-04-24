@@ -545,7 +545,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "20rem"
+            "width": "15rem"
           },
           {
             "idx": 4,
@@ -578,7 +578,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "5rem"
           }
         ]
       },

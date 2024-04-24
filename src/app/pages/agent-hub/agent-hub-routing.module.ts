@@ -14,11 +14,15 @@ const routes: Routes = [
   },
   {
     path: 'topic/:id',
-    loadChildren: () => import('./module/agent-topic/agent-topic.module').then(m => m.AgentTopicModule)
+    component: AgentHubComponent, loadChildren: () => import('./module/agent-topic/agent-topic.module').then(m => m.AgentTopicModule)
   },
   {
     path: 'agent-hub-detail',
     component: AgentHubComponent, loadChildren: () => import('./module/agent-hub-detail/agent-hub-detail.module').then(m => m.AgentHubDetailModule)
+  },
+  {
+    path: 'model/:id',
+    component: AgentHubComponent, loadChildren: () => import('./module/agent-model/agent-model.module').then(m => m.AgentModelModule)
   },
 ];
 

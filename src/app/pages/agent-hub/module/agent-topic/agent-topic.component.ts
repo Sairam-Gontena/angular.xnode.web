@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./agent-topic.component.scss']
 })
 export class AgentTopicComponent {
+  public topicTabs = [{ title: 'Overview', component: 'topicOverview' },
+  { title: 'Prompts', component: 'topicPrompt' }];
+
+  constructor() { }
+
+  ngOnInit() { }
 
 }
