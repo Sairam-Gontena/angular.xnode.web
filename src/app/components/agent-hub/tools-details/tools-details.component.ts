@@ -21,6 +21,8 @@ export class ToolsDetailsComponent {
     showTab: true,
     requestedId: ''
   }
+  @Input() showToolModal!: boolean;
+  @Output() showToolModalChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() agentInfo: any;
   overviewForm!: FormGroup;
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
@@ -38,7 +40,7 @@ export class ToolsDetailsComponent {
         {
           label: 'Add a Tool',
           icon: '',
-          command: () => { },
+          command: () => { this.showToolModalChange.emit(true) },
         },
       ],
     },

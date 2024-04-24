@@ -18,6 +18,7 @@ export class ToolViewComponent {
     }
   }
   agentInfo: any;
+  showToolModal = false;
 
   isFormEditable = false;
   constructor(private activatedRoute: ActivatedRoute, private agentHubService: AgentHubService, private utilsService: UtilsService,) { }
