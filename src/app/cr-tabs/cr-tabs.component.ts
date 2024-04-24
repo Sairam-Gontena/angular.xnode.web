@@ -112,7 +112,7 @@ export class CrTabsComponent {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specificationUtils.getMeCrList.subscribe((event: any) => {
       if (event) {
-        this.crData = event;
+        this.crData = event?.data;
         this.crActions = [];
         this.prepareDataToDisplay();
       }
