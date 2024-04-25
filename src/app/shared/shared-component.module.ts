@@ -90,6 +90,7 @@ import { CapabilityDetailsComponent } from '../components/agent-hub/capability-d
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/tools-details.component';
 import { CreateToolModalComponent } from '../components/agent-hub/create-tool-modal/create-tool-modal.component';
+import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-knowledge-modal/create-knowledge-modal.component';
 
 @NgModule({
   declarations: [
@@ -179,7 +180,8 @@ import { CreateToolModalComponent } from '../components/agent-hub/create-tool-mo
     CapabilityDetailsComponent,
     AgentInformationComponent,
     ToolsDetailsComponent,
-    CreateToolModalComponent
+    CreateToolModalComponent,
+    CreateKnowledgeModalComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -270,7 +272,8 @@ import { CreateToolModalComponent } from '../components/agent-hub/create-tool-mo
     CapabilityDetailsComponent,
     AgentInformationComponent,
     ToolsDetailsComponent,
-    CreateToolModalComponent
+    CreateToolModalComponent,
+    CreateKnowledgeModalComponent
   ],
 })
 export class SharedComponentModule { }
