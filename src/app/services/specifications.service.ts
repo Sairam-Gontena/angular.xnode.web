@@ -254,7 +254,7 @@ export class SpecificationsService {
       })
       .then((res: any) => {
         if (res && res.data) {
-          this.specUtils.saveCrList(res.data);
+          this.specUtils.saveCrList(res.data.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',

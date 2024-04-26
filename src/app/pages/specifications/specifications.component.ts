@@ -186,7 +186,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         if (res && res.data) {
           this.specUtils._openCommentsPanel(true);
           this.specUtils._loadActiveTab(1);
-          this.specUtils._getLatestCrList(res.data);
+          this.specUtils._getLatestCrList(res.data.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -409,7 +409,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .getCrList(body)
       .then((res: any) => {
         if (res && res.data) {
-          this.specUtils._getMeUpdatedCrs(res.data);
+          this.specUtils._getMeUpdatedCrs(res.data.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
