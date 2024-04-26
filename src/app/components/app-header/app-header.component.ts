@@ -177,9 +177,10 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('notif', data);
-
-      this.allNotifications.unshift(data);
+      console.log('notification in xnode repo:', data);
+      if (!data?.description.includes('You have received a message') && data.entity !== 'CHAT') {
+        this.allNotifications.unshift(data);
+      }
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length;
       if (data.product_status === 'completed') {
