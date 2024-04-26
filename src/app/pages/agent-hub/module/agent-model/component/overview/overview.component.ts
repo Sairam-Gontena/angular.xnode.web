@@ -9,7 +9,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent {
+export class ModelOverviewComponent {
   public overviewForm!: FormGroup;
   public overViewObj: any = {
     formEditable: false

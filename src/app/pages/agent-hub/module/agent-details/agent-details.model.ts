@@ -9,7 +9,7 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OnInit } from '@angular/core';
-import { InitialPaginatorInfo, agentHubDetail } from '../../constant/agent-hub';
+import { InitialPaginatorInfo, agentHeaderActionOptions, agentHubDetail } from '../../constant/agent-hub';
 
 export class AgentDetailsModel {
   agentHubDetail: any;
@@ -110,94 +110,7 @@ export class AgentDetailsModel {
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
   activeIndex: number = 0;
   userInfo: any;
-  headerActionBtnOption = {
-    overview: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Agent',
-          icon: '',
-          command: () => { },
-        },
-      ],
-    },
-    agent_instructions: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Agent',
-          icon: '',
-          command: () => { },
-        },
-      ],
-    },
-
-    capability: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Capability',
-          icon: '',
-          command: () => { this.capabilityModalShow = true },
-        },
-      ],
-    },
-    topic: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Topic',
-          icon: '',
-          command: () => { this.topicModalShow = true },
-        },
-      ],
-    },
-    prompt: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Prompt',
-          icon: '',
-          command: () => {
-            this.addPrompt()
-          },
-        },
-      ],
-    },
-
-    knowledge: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Knowledge',
-          icon: '',
-          command: () => { },
-        },
-      ],
-    },
-
-    model: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Model',
-          icon: '',
-          command: () => { },
-        }
-      ],
-    },
-
-    tool: {
-      buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Tool',
-          icon: '',
-          command: () => { },
-        }
-      ],
-    },
-  };
+  headerActionBtnOption = agentHeaderActionOptions;
   breadCrumbsAction: BreadCrumbsAction = {
     isBreadCrumbActive: true,
     breadcrumb: [
@@ -457,6 +370,7 @@ export class AgentDetailsModel {
     let item = this.tabItems[this.activeIndex];
     if (item.identifier in this.headerActionBtnOption) {
       this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
     } else {
       console.error('Invalid identifier:', item.identifier);
       // Handle the error appropriately
@@ -503,6 +417,7 @@ export class AgentDetailsModel {
       this.goBackBreadCrumbsHandler(event.data);
     }
   }
+
 
 
 }

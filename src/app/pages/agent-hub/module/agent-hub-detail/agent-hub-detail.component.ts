@@ -151,113 +151,39 @@ export class AgentHubDetailComponent {
   headerActionBtnOption = {
     agent: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Agent',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Agent',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Agent', icon: '', command: () => { } },
+      { label: 'Import Agent', icon: '', command: () => { } }]
     },
-
     capability: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Capability',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Capability',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Capability', icon: '', command: () => { } },
+      { label: 'Import Capability', icon: '', command: () => { } }]
     },
     topic: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Topic',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Topic',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Topic', icon: '', command: () => { } },
+      { label: 'Import Topic', icon: '', command: () => { } }]
     },
     prompt: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Prompt',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Prompt',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Prompt', icon: '', command: () => { } },
+      { label: 'Import Prompt', icon: '', command: () => { } }]
     },
-
     knowledge: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Knowledge',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Knowledge',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Knowledge', icon: '', command: () => { } },
+      { label: 'Import Knowledge', icon: '', command: () => { } }]
     },
-
     model: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Model',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Model',
-          icon: '',
-          command: () => { },
-        },
-      ],
+      options: [{ label: 'Add Model', icon: '', command: () => { } },
+      { label: 'Import Model', icon: '', command: () => { } }]
     },
-
     tool: {
       buttonText: 'Action',
-      options: [
-        {
-          label: 'Add Tool',
-          icon: '',
-          command: () => { },
-        },
-        {
-          label: 'Import Tool',
-          icon: '',
-          command: () => { },
-        },
-      ],
-    },
+      options: [{ label: 'Add Tool', icon: '', command: () => { } },
+      { label: 'Import Tool', icon: '', command: () => { } }]
+    }
   };
   activeHeaderActionBtnOption!: any[];
   viewAll = {
@@ -370,6 +296,8 @@ export class AgentHubDetailComponent {
 
   viewHandler(item: any) {
     let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+    this.tabItems[this.activeIndex]
+    this.headerActionBtnOption
     if (agentHubDetailObj) {
       agentHubDetailObj.showActionButton = true;
       agentHubDetailObj.agentConnectedFlow = true;

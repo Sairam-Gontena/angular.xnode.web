@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
@@ -9,13 +10,20 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent {
+export class TopicOverviewComponent {
   public overviewForm!: FormGroup;
   public overViewObj: any = {
-    formEditable: false
+    formEditable: false,
+    componentDetail: {
+      componentType: "",
+      enableDialog: false,
+      header: ""
+    }
   }
 
   constructor(private formBuilder: FormBuilder,
+    private dynamicDialogRef: DynamicDialogRef,
+    private dynamicDialogConfig: DynamicDialogConfig,
     private activatedRoute: ActivatedRoute,
     private agentHubService: AgentHubService,
     private utilsService: UtilsService) {
@@ -28,6 +36,10 @@ export class OverviewComponent {
   }
 
   ngOnInit() {
+    if (this.dynamicDialogConfig.data) {
+      this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
+      this.overViewObj.componentDetail.enableDialog = true;
+    }
     this.getTopicDetailByID(); //get topic detail by topicID
   }
 
@@ -86,6 +98,18 @@ export class OverviewComponent {
   onEditSaveEvent() {
     this.overViewObj.formEditable = !this.overViewObj.formEditable;
     this.overViewObj.formEditable ? this.overviewForm.enable() : this.overviewForm.disable();
+  }
+
+  //on close event
+  onCloseEvent() {
+    let eventTypeData: any = { eventType: "CLOSE" };
+    this.dynamicDialogRef.close(eventTypeData);
+  }
+
+  //on cancel event
+  onCancelEvent() {
+    let eventTypeData: any = { eventType: "CANCEL" };
+    this.dynamicDialogRef.close(eventTypeData);
   }
 
 }

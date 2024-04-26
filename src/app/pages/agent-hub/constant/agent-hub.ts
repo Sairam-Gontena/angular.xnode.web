@@ -52,3 +52,54 @@ export const agentHubDetail = {
         breadcrumb: [{ label: 'Agent Hub', index: 0 }]
     }
 }
+
+//dialog config detail
+export const dialogConfigDetail = {
+    data: {},
+    showHeader: false,
+    header: '',
+    width: '50vw',
+    styleClass: 'customHeaderDynamicDialog',
+    contentStyle: { overflow: 'auto' },
+    breakpoints: { '960px': '75vw', '640px': '90vw' },
+    templates: {
+        header:'',
+        footer: ''
+    }
+}
+
+//agent header action options
+export const agentHeaderActionOptions = {
+    overview: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Agent', eventType: 'createAgent', icon: '', command: (() => { }) }]
+    },
+    agent_instructions: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Agent', eventType: 'createAgent', icon: '', command: () => { } }]
+    },
+    capability: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Capability', eventType: 'createCapability', icon: '', command: () => { } }]
+    },
+    topic: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Topic', eventType: 'createTopic', icon: '', command: () => { } }]
+    },
+    prompt: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Prompt', eventType: 'createPrompt', icon: '', command: () => { } }]
+    },
+    knowledge: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Knowledge', eventType: 'createKnowledge', icon: '', command: () => { } }]
+    },
+    model: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Model', eventType: 'createModel', icon: '', command: () => { } }]
+    },
+    tool: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Tool', eventType: 'createTool', icon: '', command: () => { } }]
+    },
+}

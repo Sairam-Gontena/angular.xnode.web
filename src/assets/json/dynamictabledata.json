@@ -354,7 +354,7 @@
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -362,7 +362,7 @@
             "filter": false,
             "header": "Agent Name",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -370,7 +370,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "20rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -378,7 +378,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 5,
@@ -386,7 +386,7 @@
             "filter": false,
             "header": "Created By",
             "sortable": true,
-            "width": "12rem"
+            "width": "120px"
           },
           {
             "idx": 6,
@@ -395,7 +395,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "50px"
           }
         ]
       },
@@ -403,7 +403,7 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -468,7 +468,7 @@
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -476,7 +476,7 @@
             "filter": false,
             "header": "Topics",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -484,7 +484,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "20rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -492,7 +492,7 @@
             "filter": false,
             "header": "Parent",
             "sortable": true,
-            "width": "8rem"
+            "width": "150px"
           },
           {
             "idx": 5,
@@ -500,7 +500,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 6,
@@ -508,7 +508,7 @@
             "filter": false,
             "header": "Created By",
             "sortable": true,
-            "width": "12rem"
+            "width": "150px"
           },
           {
             "idx": 7,
@@ -517,7 +517,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "50px"
           }
         ]
       },
@@ -529,7 +529,7 @@
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -537,7 +537,7 @@
             "filter": false,
             "header": "Prompt Name",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -545,7 +545,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "15rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -553,7 +553,7 @@
             "filter": false,
             "header": "Parent",
             "sortable": true,
-            "width": "8rem"
+            "width": "150px"
           },
           {
             "idx": 5,
@@ -561,7 +561,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 6,
@@ -569,7 +569,7 @@
             "filter": false,
             "header": "Created By",
             "sortable": true,
-            "width": "12rem"
+            "width": "150px"
           },
           {
             "idx": 7,
@@ -578,7 +578,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "5rem"
+            "width": "50px"
           }
         ]
       },
@@ -586,11 +586,11 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -598,7 +598,7 @@
             "filter": false,
             "header": "Name",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -606,7 +606,7 @@
             "filter": false,
             "header": "Source",
             "sortable": true,
-            "width": "20rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -614,7 +614,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 5,
@@ -622,7 +622,7 @@
             "filter": false,
             "header": "Shared On",
             "sortable": true,
-            "width": "8rem"
+            "width": "150px"
           },
           {
             "idx": 6,
@@ -630,7 +630,7 @@
             "filter": false,
             "header": "Tags",
             "sortable": true,
-            "width": "8rem"
+            "width": "120px"
           },
           {
             "idx": 7,
@@ -638,7 +638,7 @@
             "filter": false,
             "header": "Shared By",
             "sortable": true,
-            "width": "12rem"
+            "width": "150px"
           },
           {
             "idx": 8,
@@ -647,7 +647,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "50px"
           }
         ]
       },
@@ -655,11 +655,11 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -667,7 +667,7 @@
             "filter": false,
             "header": "Model Name",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -675,7 +675,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "20rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -683,7 +683,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 5,
@@ -691,7 +691,7 @@
             "filter": false,
             "header": "Created By",
             "sortable": true,
-            "width": "12rem"
+            "width": "150px"
           },
           {
             "idx": 6,
@@ -700,7 +700,7 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "50px"
           }
         ]
       },
@@ -708,11 +708,11 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
-            "width": "10rem"
+            "width": "100px"
           },
           {
             "idx": 2,
@@ -720,7 +720,7 @@
             "filter": false,
             "header": "Tool Name",
             "sortable": true,
-            "width": "10rem"
+            "width": "150px"
           },
           {
             "idx": 3,
@@ -728,7 +728,7 @@
             "filter": false,
             "header": "Description",
             "sortable": true,
-            "width": "20rem"
+            "width": "250px"
           },
           {
             "idx": 4,
@@ -736,7 +736,7 @@
             "filter": false,
             "header": "Status",
             "sortable": true,
-            "width": "8rem"
+            "width": "100px"
           },
           {
             "idx": 5,
@@ -744,7 +744,7 @@
             "filter": false,
             "header": "Created By",
             "sortable": true,
-            "width": "12rem"
+            "width": "150px"
           },
           {
             "idx": 6,
@@ -753,10 +753,10 @@
             "filter": false,
             "header": "",
             "sortable": true,
-            "width": "10rem"
+            "width": "50px"
           }
         ]
       }
-  }
+    }
   }
 }

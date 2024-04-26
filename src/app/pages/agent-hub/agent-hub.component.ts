@@ -4,7 +4,10 @@ import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constant } from './agent-hub.constant';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { agentHubDetail } from './constant/agent-hub';
+import { agentHubDetail, dialogConfigDetail } from './constant/agent-hub';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TopicOverviewComponent } from './module/agent-topic/component/overview/overview.component';
+import { ModelOverviewComponent } from './module/agent-model/component/overview/overview.component';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -13,9 +16,12 @@ import { agentHubDetail } from './constant/agent-hub';
 })
 export class AgentHubComponent implements OnInit {
   agentHubDetailObj: any;
+  dynamicDialogRef: DynamicDialogRef | undefined;
+  dialogConfigDetail: any = dialogConfigDetail;
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
+    private dialogService: DialogService,
     private router: Router) {
     let agentHubDetailData: any = this.agentHubService.getAgentHeader() ? this.agentHubService.getAgentHeader() : this.storageService.getItem(StorageKeys.AGENT_HUB_DETAIL);
     if (agentHubDetailData && Object.keys(agentHubDetailData.agentInfo).length) {
@@ -33,6 +39,8 @@ export class AgentHubComponent implements OnInit {
     this.agentHubService.changeAgentHeaderObj().subscribe((response: any) => {
       if (response) {
         this.agentHubDetailObj = response;
+        this.agentHubService.setAgentHeader(response);
+        this.agentHubDetailObj = Object.assign({}, this.agentHubDetailObj);
       }
     });
     this.getAgentCount();
@@ -66,12 +74,66 @@ export class AgentHubComponent implements OnInit {
     this.router.navigate(['/create-agent']);
   }
 
+  //common dialog
+  commonDialog(dialogDetail: any) {
+    this.dynamicDialogRef = this.dialogService.open(dialogDetail.component, dialogDetail.configDetail);
+    //onclose dialog event
+    this.dynamicDialogRef.onClose.subscribe((data: any) => {
+      if (data.eventType === "CLOSE") {
+        // close event
+      }
+      if (data.eventType === "CANCEL") {
+        // cancel event
+      }
+    });
+    this.dynamicDialogRef.onMaximize.subscribe((value: any) => {
+    });
+  }
+
+  continueCreateActionButton(eventData: any) {
+    let dialogDetail: any = { component: '', configDetail: this.dialogConfigDetail };
+    switch (eventData.eventType) {
+      case 'createAgent':
+
+        break;
+      case 'createTopic':
+        dialogDetail.component = TopicOverviewComponent;
+        dialogDetail.configDetail.data = {
+          componentType: "CREATE",
+          header: {
+            headerText: "Add Topic",
+            subHeaderText: "Please enter the details below to add or create topic"
+          }
+        }
+        // dialogDetail.configDetail.templates.header = '<h1>Add Topic</h1><p>Venkat</p>';
+        this.commonDialog(dialogDetail);
+        break;
+      case 'createModel':
+        dialogDetail.component = ModelOverviewComponent;
+        dialogDetail.configDetail.header = 'Add Model';
+        this.commonDialog(dialogDetail);
+        break;
+      default:
+        break;
+    }
+  }
+
   //agent header Event
   agentheaderEvent(event: any) {
-    if (event.eventType === "createAgent") {
-      this.createAgentHandler();
-    } else if (event.eventType === "breadcrum") {
-      this.goBackBreadCrumbsHandler(event.data);
+    if (event?.eventType) {
+      switch (event.eventType) {
+        case 'createAgent':
+          this.createAgentHandler();
+          break;
+        case 'breadcrum':
+          this.goBackBreadCrumbsHandler(event.eventData);
+          break;
+        case 'actionButton':
+          this.continueCreateActionButton(event.eventData)
+          break;
+        default:
+          break;
+      }
     }
   }
 
