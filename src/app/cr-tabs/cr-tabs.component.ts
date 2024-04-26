@@ -920,7 +920,7 @@ export class CrTabsComponent {
         if (res && res.data) {
           // this.specUtils._openCommentsPanel(true);
           // this.specUtils._loadActiveTab(1);
-          this.specUtils._getMeUpdatedCrs(res.data);
+          this.specUtils._getMeUpdatedCrs(res.data.data);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
