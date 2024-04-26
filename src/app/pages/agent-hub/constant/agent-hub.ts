@@ -63,7 +63,7 @@ export const dialogConfigDetail = {
     contentStyle: { overflow: 'auto' },
     breakpoints: { '960px': '75vw', '640px': '90vw' },
     templates: {
-        header:'',
+        header: '',
         footer: ''
     }
 }
@@ -72,34 +72,50 @@ export const dialogConfigDetail = {
 export const agentHeaderActionOptions = {
     overview: {
         buttonText: 'Action',
-        options: [{ label: 'Add Agent', eventType: 'createAgent', icon: '', command: (() => { }) }]
+        options: [{ label: 'Add Agent', eventType: 'CREATE', eventName: 'Agent', icon: '', command: (() => { }) }]
+    },
+    agent: {
+        buttonText: 'Action',
+        options: [{ label: 'Add Agent', eventType: 'CREATE', eventName: 'Agent', icon: '', command: () => { } },
+        { label: 'Import Agent', eventType: 'IMPORT', eventName: 'Agent', icon: '', command: () => { } }]
     },
     agent_instructions: {
         buttonText: 'Action',
-        options: [{ label: 'Add Agent', eventType: 'createAgent', icon: '', command: () => { } }]
+        options: [{ label: 'Add Agent', eventType: 'CREATE', eventName: 'Agent', icon: '', command: () => { } }]
     },
     capability: {
         buttonText: 'Action',
-        options: [{ label: 'Add Capability', eventType: 'createCapability', icon: '', command: () => { } }]
+        options: [{ label: 'Add Capability', eventType: 'CREATE', eventName: 'Capability', icon: '', command: () => { } },
+        { label: 'Import Capability', eventType: 'IMPORT', eventName: 'Capability', icon: '', command: () => { } }]
     },
     topic: {
         buttonText: 'Action',
-        options: [{ label: 'Add Topic', eventType: 'createTopic', icon: '', command: () => { } }]
+        options: [{ label: 'Add Topic', eventType: 'CREATE', eventName: 'Topic', icon: '', command: () => { } },
+        { label: 'Import Topic', eventType: 'IMPORT', eventName: 'Topic', icon: '', command: () => { } }
+        ]
     },
     prompt: {
         buttonText: 'Action',
-        options: [{ label: 'Add Prompt', eventType: 'createPrompt', icon: '', command: () => { } }]
+        options: [{ label: 'Add Prompt', eventType: 'CREATE', eventName: 'Prompt', icon: '', command: () => { } },
+        { label: 'Import Prompt', eventType: 'IMPORT', eventName: 'Prompt', icon: '', command: () => { } }
+        ]
     },
     knowledge: {
         buttonText: 'Action',
-        options: [{ label: 'Add Knowledge', eventType: 'createKnowledge', icon: '', command: () => { } }]
+        options: [{ label: 'Add Knowledge', eventType: 'CREATE', eventName: 'Knowledge', icon: '', command: () => { } },
+        { label: 'Import Knowledge', eventType: 'IMPORT', eventName: 'Knowledge', icon: '', command: () => { } }
+        ]
     },
     model: {
         buttonText: 'Action',
-        options: [{ label: 'Add Model', eventType: 'createModel', icon: '', command: () => { } }]
+        options: [{ label: 'Add Model', eventType: 'CREATE', eventName: 'Model', icon: '', command: () => { } },
+        { label: 'Import Model', eventType: 'IMPORT', eventName: 'Model', icon: '', command: () => { } }
+        ]
     },
     tool: {
         buttonText: 'Action',
-        options: [{ label: 'Add Tool', eventType: 'createTool', icon: '', command: () => { } }]
+        options: [{ label: 'Add Tool', eventType: 'CREATE', eventName: 'Tool', icon: '', command: () => { } },
+        { label: 'Import Tool', eventType: 'IMPORT', eventName: 'Tool', icon: '', command: () => { } }
+        ]
     },
 }

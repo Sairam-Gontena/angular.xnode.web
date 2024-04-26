@@ -92,26 +92,35 @@ export class AgentHubComponent implements OnInit {
 
   continueCreateActionButton(eventData: any) {
     let dialogDetail: any = { component: '', configDetail: this.dialogConfigDetail };
-    switch (eventData.eventType) {
-      case 'createAgent':
+    switch (eventData.eventName) {
+      case 'Agent':
 
         break;
-      case 'createTopic':
-        dialogDetail.component = TopicOverviewComponent;
-        dialogDetail.configDetail.data = {
-          componentType: "CREATE",
-          header: {
-            headerText: "Add Topic",
-            subHeaderText: "Please enter the details below to add or create topic"
+      case 'Topic':
+        if (eventData.eventType === "CREATE") {
+          dialogDetail.component = TopicOverviewComponent;
+          dialogDetail.configDetail.data = {
+            componentType: eventData.eventType,
+            header: {
+              headerText: "Add Topic",
+              subHeaderText: "Please enter the details below to add or create topic"
+            }
           }
+          this.commonDialog(dialogDetail);
         }
-        // dialogDetail.configDetail.templates.header = '<h1>Add Topic</h1><p>Venkat</p>';
-        this.commonDialog(dialogDetail);
         break;
       case 'createModel':
-        dialogDetail.component = ModelOverviewComponent;
-        dialogDetail.configDetail.header = 'Add Model';
-        this.commonDialog(dialogDetail);
+        if (eventData.eventType === "CREATE") {
+          dialogDetail.component = ModelOverviewComponent;
+          dialogDetail.configDetail.data = {
+            componentType: eventData.eventType,
+            header: {
+              headerText: "Add Model",
+              subHeaderText: "Please enter the details below to add a model."
+            }
+          }
+          this.commonDialog(dialogDetail);
+        }
         break;
       default:
         break;

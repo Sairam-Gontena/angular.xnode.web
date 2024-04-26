@@ -7,7 +7,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { agentHubDetail } from '../../constant/agent-hub';
+import { agentHeaderActionOptions, agentHubDetail } from '../../constant/agent-hub';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -22,6 +22,7 @@ const InitialPaginatorInfo = {
   styleUrls: ['./agent-hub-detail.component.scss']
 })
 export class AgentHubDetailComponent {
+  agentHubDetail: any;
   tableInfo: ITableInfo = {
     delete_action: false,
     export_action: false,
@@ -148,43 +149,7 @@ export class AgentHubDetailComponent {
   activeIndex: number;
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
   tableData!: ITableDataEntry[];
-  headerActionBtnOption = {
-    agent: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Agent', icon: '', command: () => { } },
-      { label: 'Import Agent', icon: '', command: () => { } }]
-    },
-    capability: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Capability', icon: '', command: () => { } },
-      { label: 'Import Capability', icon: '', command: () => { } }]
-    },
-    topic: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Topic', icon: '', command: () => { } },
-      { label: 'Import Topic', icon: '', command: () => { } }]
-    },
-    prompt: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Prompt', icon: '', command: () => { } },
-      { label: 'Import Prompt', icon: '', command: () => { } }]
-    },
-    knowledge: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Knowledge', icon: '', command: () => { } },
-      { label: 'Import Knowledge', icon: '', command: () => { } }]
-    },
-    model: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Model', icon: '', command: () => { } },
-      { label: 'Import Model', icon: '', command: () => { } }]
-    },
-    tool: {
-      buttonText: 'Action',
-      options: [{ label: 'Add Tool', icon: '', command: () => { } },
-      { label: 'Import Tool', icon: '', command: () => { } }]
-    }
-  };
+  headerActionBtnOption = agentHeaderActionOptions;
   activeHeaderActionBtnOption!: any[];
   viewAll = {
     showButton: true,
@@ -211,6 +176,7 @@ export class AgentHubDetailComponent {
       this.agentHubService.setAgentHeader(JSON.parse(JSON.stringify(agentHubDetail)));
       this.agentHubService.saveAgentHeaderObj(JSON.parse(JSON.stringify(agentHubDetail)));
     }
+    this.agentHubDetail = this.agentHubService.getAgentHeader();
   }
 
   ngOnInit() {
@@ -284,7 +250,8 @@ export class AgentHubDetailComponent {
     // };
     // this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
     if (item.identifier in this.headerActionBtnOption) {
-      this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
     } else {
       console.error('Invalid identifier:', item.identifier);
       // Handle the error appropriately
@@ -296,8 +263,6 @@ export class AgentHubDetailComponent {
 
   viewHandler(item: any) {
     let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
-    this.tabItems[this.activeIndex]
-    this.headerActionBtnOption
     if (agentHubDetailObj) {
       agentHubDetailObj.showActionButton = true;
       agentHubDetailObj.agentConnectedFlow = true;

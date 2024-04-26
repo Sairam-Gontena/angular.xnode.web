@@ -22,7 +22,7 @@ export class AgentHeaderComponent {
       if (this.headerData?.actionButtonOption?.length) {
         this.headerData.actionButtonOption.forEach((element: any) => {
           if (element?.command) {
-            let eventTypeData = { eventType: element.eventType, label: element.label }
+            let eventTypeData = { eventType: element.eventType, eventName: element.eventName, label: element.label }
             element.command = () => { this.actionButtonEvent(eventTypeData) };
           }
         });

@@ -9,7 +9,7 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OnInit } from '@angular/core';
-import { InitialPaginatorInfo, agentHeaderActionOptions, agentHubDetail } from '../../constant/agent-hub';
+import { InitialPaginatorInfo, agentHeaderActionOptions } from '../../constant/agent-hub';
 
 export class AgentDetailsModel {
   agentHubDetail: any;
@@ -176,7 +176,6 @@ export class AgentDetailsModel {
       // Handle  Topic Case
     } else if (this.activeIndex == 4) {
       // Handle Prompt Case
-
       const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
       if (overViewTabIdentifier === "overview") {
         this.overviewInstructionForm.enableOverview = true;
@@ -197,21 +196,31 @@ export class AgentDetailsModel {
       // Handle Tool Case
     }
 
+    if (this.activeIndex > 1) {
+      let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+      if (agentHubDetailObj) {
+        agentHubDetailObj.showActionButton = true;
+        agentHubDetailObj.agentConnectedFlow = true;
+        agentHubDetailObj.agentInfo = item;
+        this.agentHubService.setAgentHeader(agentHubDetailObj);
+        this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+      }
+      this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
+    }
 
     // Update breadcrumbs
-
-    let breadcrumbItem = this.tabItems[this.activeIndex];
-    const newPayload = [{
-      label: breadcrumbItem.title,
-      index: this.breadCrumbsAction.breadcrumb.length,
-    }, {
-      label: item?.name,
-      index: this.breadCrumbsAction.breadcrumb.length + 1
-    }];
-    this.breadCrumbsAction.breadcrumb = [
-      ...this.breadCrumbsAction.breadcrumb,
-      ...newPayload,
-    ];
+    // let breadcrumbItem = this.tabItems[this.activeIndex];
+    // const newPayload = [{
+    //   label: breadcrumbItem.title,
+    //   index: this.breadCrumbsAction.breadcrumb.length,
+    // }, {
+    //   label: item?.name,
+    //   index: this.breadCrumbsAction.breadcrumb.length + 1
+    // }];
+    // this.breadCrumbsAction.breadcrumb = [
+    //   ...this.breadCrumbsAction.breadcrumb,
+    //   ...newPayload,
+    // ];
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -350,20 +359,16 @@ export class AgentDetailsModel {
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
     if (this.activeIndex > 1) {
-      /**
-       * Fetch result when activeIndex is > 1
-       */
       let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
       let urlParam = this.makeTableParamObj(paginatorInfo);
       this.changeURL(event.index, urlParam);
       this.getAgentDetailByCategory(urlParam);
-      this.updateHeaderOption();
-
     } else {
       /**
        * Show agent overview/instruction
        */
     }
+    this.updateHeaderOption();
   }
 
   updateHeaderOption() {
