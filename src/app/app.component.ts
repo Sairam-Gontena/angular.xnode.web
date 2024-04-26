@@ -157,6 +157,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      this.importFilePopupToShow = false;
       this.newWithNavi = false;
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
