@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { AgentSharedModule } from '../../agent-shared.module';
 import { AgentCapabilityRoutingModule } from './agent-capability-routing.module';
 import { AgentCapabilityComponent } from './agent-capability.component';
-import { OverviewComponent } from './component/overview/overview.component';
+import { CapabilityOverviewComponent } from './component/overview/overview.component';
 
 
 
 @NgModule({
     declarations: [
         AgentCapabilityComponent,
-        OverviewComponent
+        CapabilityOverviewComponent
     ],
     imports: [
         CommonModule,

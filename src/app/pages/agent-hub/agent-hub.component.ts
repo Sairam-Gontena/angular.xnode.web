@@ -8,6 +8,7 @@ import { agentHubDetail, dialogConfigDetail } from './constant/agent-hub';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TopicOverviewComponent } from './module/agent-topic/component/overview/overview.component';
 import { ModelOverviewComponent } from './module/agent-model/component/overview/overview.component';
+import { CapabilityOverviewComponent } from './module/agent-capability/component/overview/overview.component';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -95,6 +96,19 @@ export class AgentHubComponent implements OnInit {
     switch (eventData.eventName) {
       case 'Agent':
 
+        break;
+      case 'Capability':
+        if (eventData.eventType === "CREATE") {
+          dialogDetail.component = CapabilityOverviewComponent;
+          dialogDetail.configDetail.data = {
+            componentType: eventData.eventType,
+            header: {
+              headerText: "Add Capability",
+              subHeaderText: "Please enter the details below to add or create capability"
+            }
+          }
+          this.commonDialog(dialogDetail);
+        }
         break;
       case 'Topic':
         if (eventData.eventType === "CREATE") {

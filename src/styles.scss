@@ -45,6 +45,10 @@ body {
   background-color: var(--metalBlack) !important;
 }
 
+::placeholder {
+  color: var(--star-dust)
+}
+
 .agent-playground-headerActionBtn {
   background: var(--cerulean);
   color: white;

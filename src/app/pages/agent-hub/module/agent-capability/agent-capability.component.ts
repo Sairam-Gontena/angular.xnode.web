@@ -41,7 +41,6 @@ export class AgentCapabilityComponent {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
-  ngOnInit() { }
 
   // get agent detail by category after success
   getAgentDetailByCategorySuccess(response: any) {
@@ -52,7 +51,6 @@ export class AgentCapabilityComponent {
       const identifier = this.capabilityTabs[this.activeIndex].component as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
       this.columns =
         dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
-      debugger
 
       this.paginatorInfo.page = response.page;
       this.paginatorInfo.perPage = response.per_page;
@@ -109,6 +107,14 @@ export class AgentCapabilityComponent {
       let paginatorInfo = { ...InitialPaginatorInfo };
       let urlParam = this.makeTableParamObj(paginatorInfo);
       this.changeURL(event.index, urlParam);
+
+      // Empty the list and update the column name
+      const identifier = this.capabilityTabs[this.activeIndex].component as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+      this.tableData = [];
+      this.paginatorInfo = { ...InitialPaginatorInfo };
+
+
       this.getAgentDetailByCategory(urlParam);
       // this.updateHeaderOption();
 
@@ -159,44 +165,6 @@ export class AgentCapabilityComponent {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         this.getAgentDetailByCategorySuccess(response);
-      }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
-      }
-    });
-  }
-
-  //  get the agent details by Id
-  getCapalityDetailsById() {
-    let capabilityId = this.activatedRoute.snapshot.paramMap.get('id')
-    let url: string = "agent/capbility_by_id/",
-      getID: any = capabilityId,
-      urlParam: any = {
-        url: url + getID,
-        params: {}
-      }
-
-    this.agentHubService.getAgentDetail(urlParam).subscribe({
-      next: (response: any) => {
-        // this.getAgentDetailByCategorySuccess(response);
-        this.agentInfo = response
-        console.log(response, "response")
-
-        // NOTE: Will handle Breadcrumbs later.
-
-        // const newPayload = [
-        //   {
-        //     label: 'Capability',
-        //     index: 1
-        //   },
-        //   {
-        //     label: response?.name,
-        //     index: this.breadCrumbsAction.breadcrumb.length + 1
-        //   }
-        // ]
-        // this.breadCrumbsAction.breadcrumb = [
-        //   ...this.breadCrumbsAction.breadcrumb,
-        //   ...newPayload
-        // ]
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }
