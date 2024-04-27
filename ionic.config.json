@@ -1,0 +1,7 @@
+{
+  "name": "xnode",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

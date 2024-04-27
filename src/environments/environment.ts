@@ -10,7 +10,7 @@ export const environment = {
     userUtilsApi: 'https://dev-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://dev-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'http://localhost:4200/',
-    naviAppUrl: 'http://localhost:4202/',
+    naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://dev-frontend-builder.azurewebsites.net/',
