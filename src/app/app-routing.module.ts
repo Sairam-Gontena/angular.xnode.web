@@ -245,13 +245,6 @@ const routes: Routes = [
         (m) => m.AgentHubModule
       ),
   },
-  {
-    path: 'agent-playground/capability/:id',
-    loadChildren: () =>
-      import('./pages/capability-view/capability-view.module').then(
-        (m) => m.CapabilityViewModule
-      ),
-  },
 
   {
     path: 'agent-playground/tool/:id',

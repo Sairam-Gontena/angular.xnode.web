@@ -13,6 +13,10 @@ const routes: Routes = [
     component: AgentHubComponent, loadChildren: () => import('./module/agent-details/agent-details.module').then((m) => m.AgentDetailsModule),
   },
   {
+    path: 'capability/:id',
+    component: AgentHubComponent, loadChildren: () => import('./module/agent-capability/agent-capability.module').then((m) => m.AgentCapabilityModule),
+  },
+  {
     path: 'topic/:id',
     component: AgentHubComponent, loadChildren: () => import('./module/agent-topic/agent-topic.module').then(m => m.AgentTopicModule)
   },

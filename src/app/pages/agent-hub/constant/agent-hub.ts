@@ -9,7 +9,7 @@ export const InitialPaginatorInfo = {
 
 //Agent prompt details
 //prompt table row action option
-export const promptTableRowActionOptions = [{
+export const tableRowActionOptions = [{
     label: 'View', icon: '',
     command: (event: any) => {
         console.log(event, 'event');
@@ -33,8 +33,8 @@ export const promptTableRowActionOptions = [{
 }]
 
 //prompt search filter options
-export const promptSearchFilterOptions = {
-    showFilterOption: true,
+export const searchFilterOptions = {
+    showFilterOption: false,
     filter: false,
     showToggleAll: false,
     showHeader: false
@@ -67,6 +67,14 @@ export const dialogConfigDetail = {
         footer: ''
     }
 }
+
+// Table config
+export const tableInfo = {
+    delete_action: false,
+    export_action: false,
+    name: 'Notification List',
+    search_input: true,
+};
 
 //agent header action options
 export const agentHeaderActionOptions = {

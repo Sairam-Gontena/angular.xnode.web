@@ -6,7 +6,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import dynamicTableColumnData from './../../../../../../../assets/json/dynamictabledata.json';
 import { IPaginatorInfo } from '../../../agent-details/IAgent-details';
-import { InitialPaginatorInfo, promptSearchFilterOptions, promptTableRowActionOptions } from 'src/app/pages/agent-hub/constant/agent-hub';
+import { InitialPaginatorInfo, searchFilterOptions, tableRowActionOptions } from 'src/app/pages/agent-hub/constant/agent-hub';
 
 @Component({
   selector: 'xnode-prompt',
@@ -20,8 +20,8 @@ export class PromptComponent {
     tableData: new Array(),
     columns: dynamicTableColumnData.dynamicTable.AgentHub.prompt.columns,
     paginatorInfo: { ...InitialPaginatorInfo },
-    promptTableRowActionOptions: promptTableRowActionOptions,
-    promptSearchFilterOptions: promptSearchFilterOptions
+    promptTableRowActionOptions: tableRowActionOptions,
+    promptSearchFilterOptions: searchFilterOptions
   }
 
   constructor(private activatedRoute: ActivatedRoute,
