@@ -175,6 +175,29 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  onClickProductChat(data: any): void {
+    this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
+    if (this.currentUser?.email == data.email) {
+      this.utils.hasProductPermission(true);
+    } else {
+      this.utils.hasProductPermission(false);
+    }
+    delete data.created_by;
+    delete data.timeAgo;
+    this.storageService.saveItem(StorageKeys.Product, data);
+    localStorage.setItem('record_id', data.id);
+    localStorage.setItem('app_name', data.title);
+    localStorage.setItem('has_insights', data.has_insights);
+    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat' } });
+    const product: any = this.storageService.getItem(StorageKeys.Product);
+    this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
+      if (data.data)
+        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+    }).catch((err: any) => {
+      console.log(err, 'err')
+    })
+  }
+  
   onClickProductCard(data: any): void {
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {

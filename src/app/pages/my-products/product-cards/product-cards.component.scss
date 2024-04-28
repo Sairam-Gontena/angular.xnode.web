@@ -309,6 +309,12 @@
     background: transparent;
 }
 
+.text-align-center {
+    text-align: center;
+}
+.w-100 {
+    width: 100%;
+}
 .card-body {
     height: 328px;
 }
@@ -424,4 +430,9 @@
 
 .new-product-card{
     min-height: 300px;
+}
+
+.dis {
+    justify-content: space-between;
+    display: flex;
 }
