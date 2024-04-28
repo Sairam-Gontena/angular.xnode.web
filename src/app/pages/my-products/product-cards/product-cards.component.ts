@@ -19,6 +19,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class ProductCardsComponent implements OnInit, OnChanges {
   @Output() createNewWithNavi = new EventEmitter<any>();
   @Output() onClickProductCard = new EventEmitter<any>();
+  @Output() onClickProductChat = new EventEmitter<any>();
   @Output() openExternalLink = new EventEmitter<any>();
   @Input() filteredProducts: any[] = [];
   @Input() end: any;
