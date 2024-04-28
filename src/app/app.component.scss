@@ -361,3 +361,13 @@
   height: calc(100vh - 42px);
   z-index: 2;
 }
+
+.mobileShow { display: none; }
+@media only screen and (min-device-width: 280px) and (max-device-width: 720px) {
+    .mobileShow { display: inline; }
+}
+
+.mobileHide { display: inline; }
+@media only screen and (min-device-width: 200px) and (max-device-width: 720px) {
+    .mobileHide { display: none; }
+}

@@ -173,3 +173,8 @@ label {
     border-color: var(--primary-color);
     border: 1px solid var(--primary-color);
 }
+
+:host ::ng-deep.otp-input {
+    width: 25px !important;
+    // height: 60px !important;
+}
