@@ -19,13 +19,13 @@
             <div class="flex align-items-center justify-content-end mb-3">
                 <ng-container *ngIf="overViewObj.formEditable">
                     <p-button type="submit" label="Save" icon="pi pi-save" iconPos="right" [outlined]="true"
-                        size="small" class=""></p-button>
+                        size="small" styleClass="border-round-2xl"></p-button>
                     <p-button type="button" label="Cancel" icon="pi pi-times" iconPos="right" [outlined]="true"
-                        (onClick)="onEditSaveEvent()" size="small" class="ml-2"></p-button>
+                        (onClick)="onEditSaveEvent()" size="small" styleClass="ml-2 border-round-2xl"></p-button>
                 </ng-container>
                 <ng-container *ngIf="!overViewObj.formEditable">
                     <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="right" [outlined]="true"
-                        (onClick)="onEditSaveEvent()" size="small" class=""></p-button>
+                        (onClick)="onEditSaveEvent()" size="small" styleClass="border-round-2xl"></p-button>
                 </ng-container>
             </div>
         </ng-container>
@@ -45,14 +45,14 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="category">Category</label>
             <div class="w-full">
                 <input pInputText type="text" class="w-full form-control" id="category" formControlName="category"
                     placeholder="Create new or add from existing prompt" />
             </div>
         </div>
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="source">Source</label>
             <div class="w-full">
                 <input pInputText type="text" class="w-full form-control" id="source" formControlName="source"
@@ -117,13 +117,13 @@
 
         </ng-container>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="starter">Conversation Starters</label>
             <div class="w-full">
                 <input pInputText type="text" formControlName="initialConversationStarter" class="w-full form-control"
                     id="starterInput" placeholder="Enter Starter Value" />
-                <p-button type="button" (onClick)="addStarterValue()" label="add more" icon="pi pi-plus"
-                    iconPos="left"></p-button>
+                <p-button styleClass="background-none" type="button" (onClick)="addStarterValue()" label="add more"
+                    icon="pi pi-plus" iconPos="left"></p-button>
                 <div *ngIf="overviewForm.get('starter')?.value?.length > 0">
                     <div>
                         <div *ngFor="let item of overviewForm.get('starter')?.value">{{ item }}</div>
@@ -132,7 +132,7 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="starter">Key Value</label>
             <div class="w-full">
                 <div class="flex gap-4">
@@ -141,8 +141,8 @@
                     <input pInputText type="text" formControlName="value" class="w-full form-control" id="valueInput"
                         placeholder="Enter Value" />
                 </div>
-                <p-button type="button" (onClick)="addKeyValue()" label="add more" icon="pi pi-plus"
-                    iconPos="left"></p-button>
+                <p-button styleClass="background-none" type="button" (onClick)="addKeyValue()" label="add more"
+                    icon="pi pi-plus" iconPos="left"></p-button>
                 <div *ngIf="overviewForm.get('key_value')?.value?.length > 0">
                     <div>
                         <div *ngFor="let item of overviewForm.get('key_value')?.value">
@@ -155,7 +155,7 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="opening_message">opening_message</label>
             <div class="w-full">
                 <textarea rows="3" pInputTextarea class="w-full form-control" id="opening_message"
@@ -163,7 +163,7 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="concluding_message">Concluding_message</label>
             <div class="w-full">
                 <textarea rows="3" pInputTextarea class="w-full form-control" id="concluding_message"
@@ -171,7 +171,7 @@
             </div>
         </div>
 
-        <div class="flex flex-column align-items-center mb-3">
+        <div class="flex flex-column gap-2">
             <label class="w-full" for="linkParent">link Parent</label>
             <div class="w-full">
                 <p-dropdown styleClass="w-full" formControlName="linkParent" appendTo="body"
@@ -193,9 +193,10 @@
     </div>
     <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
         <div class="flex align-item-center justify-content-end p-2">
-            <p-button type="button" label="Cancel" [outlined]="true" (onClick)="onCancelEvent()"
-                size="small"></p-button>
-            <p-button type="submit" label="Add" [outlined]="true" size="small" class="ml-2"></p-button>
+            <p-button type="button" label="Cancel" [outlined]="true" (onClick)="onCancelEvent()" size="small"
+                styleClass="border-round-2xl"></p-button>
+            <p-button type="submit" label="Add" [outlined]="true" size="small"
+                styleClass="ml-2 border-round-2xl"></p-button>
         </div>
     </ng-container>
 </form>
