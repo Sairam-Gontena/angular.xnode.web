@@ -110,6 +110,11 @@ label {
     .resend-text {
         font-size: 14px;
     }
+
+    :host ::ng-deep.otp-input {
+        width: 25px !important;
+        // height: 60px !important;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {

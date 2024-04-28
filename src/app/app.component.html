@@ -1,18 +1,18 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0" [class.hidden]="showDockedNavi">
+        <!-- <div class="absolute bottom-0 right-0" [class.hidden]="showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
-        </div>
+        </div> -->
         <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
         <div class="w-full">
             <div class="flex">
-                <div class="app-side-menu-wrapper hidden lg:block">
+                <!-- <div class="app-side-menu-wrapper hidden lg:block">
                     <xnode-app-side-menu  (navigateToHome)="navigateToHome()" (enableDockedNavi)="enableDockedNavi()"></xnode-app-side-menu>
-                </div>
+                </div> -->
                 <div [class.app-body-wrapper]="!showDockedNavi" [class.app-body-wrapper-navi]="showDockedNavi">
                     <router-outlet></router-outlet>
                 </div>
-                <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
+                <!-- <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
                     [class.navi-frame]="!isNaviExpanded && showDockedNavi">
                     <div class="flex justify-content-center align-items-center h-full" *ngIf="showNaviSpinner">
                         <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
@@ -20,7 +20,7 @@
                     <iframe id="naviFrame" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
                     </iframe>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
