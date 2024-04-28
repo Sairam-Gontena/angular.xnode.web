@@ -11,7 +11,8 @@
 </ng-container>
 
 
-<form [formGroup]="overviewForm" (ngSubmit)="promptOverviewSubmit()">
+<form [formGroup]="overviewForm"
+    (ngSubmit)="overViewObj.componentDetail.enableDialog ? submitPromptHandler() : promptOverviewSubmit()">
     <div class="flex flex-column gap-4 col-12 p-3"
         [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 px-8' : 'sm:col-10 md:col-8 sm:mx-auto'">
         <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">

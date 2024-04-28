@@ -31,6 +31,7 @@ export class PromptOverviewComponent {
 
   public enableAdvancedOtion: boolean = false;
 
+  agentInfo: any;
   selectedLinkParentType: ParentType = ParentType.Capability
   parentLinkOptionList = []
 
@@ -81,8 +82,8 @@ export class PromptOverviewComponent {
     } else {
       // Overview
       this.overviewForm.disable();
+      this.getPrompDetailByID(); //get topic detail by topicID
     }
-    this.getPrompDetailByID(); //get topic detail by topicID
 
     this.getAllAgentList()
   }
@@ -96,6 +97,7 @@ export class PromptOverviewComponent {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         if (response) {
+          this.agentInfo = response
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
@@ -103,10 +105,10 @@ export class PromptOverviewComponent {
             source: response?.source,
             instruction: response?.instruction,
             initialConversationStarter: response?.initialConversationStarter,
-            starter: response?.starter,
+            starter: response?.starter != "" ? JSON.stringify(response?.starter) : [],
             key: response?.key,
             value: response?.value,
-            key_value: response?.key_value,
+            key_value: response?.key_value != "" ? JSON.stringify(response?.key_value) : [],
             opening_message: response?.opening_message,
             concluding_message: response?.concluding_message,
             linkParent: response?.linkParent,
@@ -146,30 +148,48 @@ export class PromptOverviewComponent {
 
   //topic oversubmit
   promptOverviewSubmit() {
-    // let urlPayload: any = {
-    //   url: ("agent/update_topic/" + this.activatedRoute.snapshot.paramMap.get('id')),
-    //   payload: this.overviewForm.value
-    // }
-    // this.utilsService.loadSpinner(true);
-    // this.agentHubService.updateTopicDetailByID(urlPayload).subscribe({
-    //   next: (response: any) => {
-    //     if (response) {
-    //       this.overviewForm.patchValue({
-    //         name: response?.name,
-    //         description: response?.description,
-    //         parentCapability: response?.idx
-    //       });
-    //     } else if (response?.detail) {
-    //       this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
-    //     }
-    //     this.utilsService.loadSpinner(false);
-    //   }, error: (error: any) => {
-    //     this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
-    //     this.utilsService.loadSpinner(false);
-    //   }
-    // });
+    const formData = this.overviewForm.value
 
+    formData.version = this.agentInfo?.version
+    let urlPayload: any = {
+      url: ("agent/update_prompt/" + this.activatedRoute.snapshot.paramMap.get('id')) + `/${this.agentInfo?.version}`,
+      data: formData
+    }
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.updateData(urlPayload).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.overviewForm.patchValue({
+            name: response?.name,
+            description: response?.description,
+            category: response?.category,
+            source: response?.source,
+            instruction: response?.instruction,
+            initialConversationStarter: response?.initialConversationStarter,
+            starter: response?.starter != "" ? JSON.stringify(response?.starter) : [],
+            key: response?.key,
+            value: response?.value,
+            key_value: response?.key_value != "" ? JSON.stringify(response?.key_value) : [],
+            opening_message: response?.opening_message,
+            concluding_message: response?.concluding_message,
+            linkParent: response?.linkParent,
+            guideline: response?.guideline,
+            responsibility: response?.responsibility,
+            context: response?.context,
+            example: response?.example
+          });
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    });
+  }
 
+  submitPromptHandler() {
     console.log(this.overviewForm.value);
     const formData = this.overviewForm.value
     // this.onClose();
@@ -181,7 +201,7 @@ export class PromptOverviewComponent {
 
     if (formData.key && formData.value) {
       formData.key_value.push({
-        [formData.key]: formData.value
+        [formData.key]: formData?.value
       })
     }
 
@@ -215,7 +235,8 @@ export class PromptOverviewComponent {
         console.log("responseData", response)
         promptResponse = response
 
-        this.utilsService.loadSpinner(false);
+        this.linkParent(promptResponse, linkParent)
+        // this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
         console.log("responseData", error)
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
@@ -224,6 +245,40 @@ export class PromptOverviewComponent {
     })
 
 
+    // /**
+    //  * Link promot to parent
+    //  */
+
+    // urlParam.data = {
+    //   account_id: this.userInfo.account_id,
+    //   prompt_id: promptResponse?.data?.prompt_id // Need to check proper response object.
+    // }
+
+    // if (this.selectedLinkParentType == ParentType.Capability) {
+    //   urlParam.url = 'agent/create_capability_prompt'
+
+    //   urlParam.data.capability_id = linkParent.id
+    // } else {
+    //   urlParam.url = 'agent/create_prompt_topic'
+
+    //   urlParam.data.topic_id = linkParent.id
+    // }
+
+
+    // this.agentHubService.postData(urlParam).subscribe({
+    //   next: (response: any) => {
+    //     console.log("responseData", response)
+    //     promptResponse = response
+    //   }, error: (error: any) => {
+    //     console.log("responseData", error)
+    //     this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+    //     this.utilsService.loadSpinner(false);
+    //   }
+    // })
+  }
+
+  linkParent(promptResponse: any, linkParent: any) {
+    let urlParam: any = {}
     /**
      * Link promot to parent
      */
@@ -250,6 +305,8 @@ export class PromptOverviewComponent {
         promptResponse = response
       }, error: (error: any) => {
         console.log("responseData", error)
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
       }
     })
   }
