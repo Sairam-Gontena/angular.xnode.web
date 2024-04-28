@@ -9,6 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TopicOverviewComponent } from './module/agent-topic/component/overview/overview.component';
 import { ModelOverviewComponent } from './module/agent-model/component/overview/overview.component';
 import { CapabilityOverviewComponent } from './module/agent-capability/component/overview/overview.component';
+import { PromptOverviewComponent } from './module/agent-prompt/component/prompt-overview/prompt-overview.component';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -118,6 +119,19 @@ export class AgentHubComponent implements OnInit {
             header: {
               headerText: "Add Topic",
               subHeaderText: "Please enter the details below to add or create topic"
+            }
+          }
+          this.commonDialog(dialogDetail);
+        }
+        break;
+      case 'Prompt':
+        if (eventData.eventType === "CREATE") {
+          dialogDetail.component = PromptOverviewComponent;
+          dialogDetail.configDetail.data = {
+            componentType: eventData.eventType,
+            header: {
+              headerText: "Add Prompt",
+              subHeaderText: "Please enter the details below to add or create prompt"
             }
           }
           this.commonDialog(dialogDetail);

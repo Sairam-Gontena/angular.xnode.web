@@ -21,6 +21,10 @@ const routes: Routes = [
     component: AgentHubComponent, loadChildren: () => import('./module/agent-topic/agent-topic.module').then(m => m.AgentTopicModule)
   },
   {
+    path: 'prompt/:id',
+    component: AgentHubComponent, loadChildren: () => import('./module/agent-prompt/agent-prompt.module').then(m => m.AgentPromptModule)
+  },
+  {
     path: 'agent-hub-detail',
     component: AgentHubComponent, loadChildren: () => import('./module/agent-hub-detail/agent-hub-detail.module').then(m => m.AgentHubDetailModule)
   },
