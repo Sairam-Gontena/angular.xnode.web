@@ -1,0 +1,118 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+
+pr:
+  branches:
+    include:
+      - '*'
+
+variables:
+  repositoryName: $[replace(variables['Build.Repository.Name'], 'repository', '')]
+  repositoryID: $[replace(variables['Build.Repository.ID'], 'repository', '')]
+
+jobs:
+- job: Validate_PR
+  displayName: Validate_PR
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:  
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+            #!/bin/bash
+            set -e
+            # Azure DevOps project name
+            PROJECT=$(System.TeamProject)
+            # Pull Request ID
+            PR_ID=$(System.PullRequest.PullRequestId)
+            if [ -z "$PR_ID" ]; then 
+              echo "PR ID received as NULL. This could mean the build did not trigger when a PR is created. Aborting !!";
+              exit
+            fi
+            # API URL to get work items associated with a pull request                        
+            URL="$(ORG_URL)/$(System.TeamProject)/_apis/git/repositories/$(Build.Repository.Name)/pullRequests/$PR_ID/workitems?api-version=5.1"
+            echo "Getting work items from : $URL"
+            
+            # Perform the HTTP GET request
+            response=$(curl -s -u ":$(PAT)" $URL)
+
+            # Check if the request was successful
+            if [ $? -eq 0 ]; then
+              echo "Work Items : $response"
+              count=$(echo $response | jq -r '.count')
+              echo "Work items for PR : $count"
+              # Parse work item IDs from the response
+              work_item_ids=$(echo $response | jq -r '.value | map(.id) | join(" ")')
+              
+              # Iterate over work item IDs
+              for work_item_id in $work_item_ids; do
+                # API URL to get work item details
+                WORK_ITEM_URL="$(ORG_URL)/$PROJECT/_apis/wit/workItems/$work_item_id?api-version=5.1"
+                echo "Fetching details for work item ID: $work_item_id"
+                
+                # Perform HTTP GET request to get work item details
+                work_item_details=$(curl -s -u ":$(PAT)" $WORK_ITEM_URL)
+                
+                # Check if the request was successful
+                if [ $? -eq 0 ]; then
+                  echo "Work Item Details: $work_item_details"
+                  workItemType=$(jq -r '.fields."System.WorkItemType"' <<< "$work_item_details" | xargs)
+                  iterationPath=$(jq -r '.fields."System.IterationPath"' <<< "$work_item_details" | xargs)
+                  areaPath=$(jq -r '.fields."System.AreaPath"' <<< "$work_item_details" | xargs)
+                  state=$(jq -r '.fields."System.State"' <<< "$work_item_details" | xargs)
+                  echo "Work Item details : "
+                  echo "------------------ "                  
+                  echo "Work Item Type: $workItemType"
+                  echo "Work Item Iteration Path: $iterationPath"
+                  echo "Work Item Area Path: $areaPath"    
+                  echo "Work Item Status: $state"
+                  # get current iteration of the project
+                  iteration_url="$(ORG_URL)/$PROJECT/_apis/work/teamsettings/iterations?\$timeframe=current&api-version=5.1"
+                  echo "Get Iteration URL: $iteration_url"
+                  work_iteration_details=$(curl -s -u ":$(PAT)" $iteration_url)
+                  echo "Get Iteration Response: $work_iteration_details"
+                  # Extract current iteration name from the response
+                  current_iteration_path="$areaPath$(echo $work_iteration_details | jq -r '.value[0].name' | xargs)"
+                  echo "Project Current Iteration : $current_iteration_path"
+                  pr_comment=""
+                  abandon_pr="false"
+                  #validate work-item details
+                  if [[ "${state^^}" != "READY FOR DEPLOYMENT" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The work item linked must be in Ready for Deployment state"
+                      abandon_pr="true"
+                  elif [[ "${workItemType^^}" != "USER STORY" && ${workItemType^^} != "BUG" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The work-item linked must be either a User story or a Bug"
+                      abandon_pr="true"
+                  elif [[ "${iterationPath^^}" != "${current_iteration_path^^}" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The current iteration of the project and iteration attached to work item do not match"
+                      abandon_pr="true"
+                  fi
+                  if [[ $abandon_pr == "false" ]]; then
+                      echo "Work Item ID: $work_item_id - Validation Passed"
+                  else
+                      echo "Work Item ID: $work_item_id - Validation Failed. Abandoning the PR!! - $pr_comment"     
+                      pr_url="$ORG_URL/$PROJECT/_apis/git/repositories/$(repositoryName)/pullrequests/$PR_ID?api-version=5.1"
+                      comment_url="$ORG_URL/$PROJECT/_apis/git/repositories/$(repositoryName)/pullrequests/$PR_ID/threads?api-version=6.0"
+                      commentData="{\"comments\":[{\"content\":\"$pr_comment\"}]}"
+                      commentResponse=$(curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Basic $(echo -n :$(PAT) | base64)" -d "$commentData" $comment_url)
+                      echo "commentResponse:$commentResponse"
+                      updateData="{\"status\":\"abandoned\"}"
+                      # Send PATCH request to update pull request status to abandoned
+                      updateResponse=$(curl -s -X PATCH -H "Content-Type: application/json" -H "Authorization: Basic $(echo -n :$(PAT) | base64)" -d "$updateData" $pr_url)
+                      echo "updateResponse:$updateResponse"
+                      exit
+                  fi
+                else
+                  # Print error message
+                  echo "Error: Failed to fetch details for work item ID: $work_item_id."
+                fi
+              done
+            else
+              # Print error message
+              echo "Error: Failed to fetch work items for pull request $PR_ID."
+            fi

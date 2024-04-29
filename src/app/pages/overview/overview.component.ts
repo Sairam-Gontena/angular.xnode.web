@@ -1,208 +1,72 @@
 import { Component, Input } from '@angular/core';
-import * as data from '../../constants/overview.json';
 import { UserUtil } from '../../utils/user-util';
-import { MessageService } from 'primeng/api';
-import { UtilsService } from 'src/app/components/services/utils.service';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
-import { NaviApiService } from 'src/app/api/navi-api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import * as data from '../../constants/overview.json';
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
-  providers: [MessageService],
 })
+
 export class OverViewComponent {
-  @Input() currentStep: number = 2;
-  loading: boolean = true;
-  templates: any;
-  appName = localStorage.getItem('app_name');
-  highlightedIndex: string | null = null;
-  iconClicked: any;
-  stepper: any;
-  show = false;
-  counter: any = 1;
-  counter2: any = 1;
   jsondata: any;
-  childData: any;
   currentUser?: any;
-  overview: any;
+  overview: any = {};
   features: any;
   createOn: any;
   overviewData: any;
   product: any;
-  username: string = '';
 
   constructor(
-    private utils: UtilsService,
-    private auditUtil: AuditutilsService,
-    private naviApiService: NaviApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
   ) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
+    this.jsondata = data?.data;
     this.getMeStorageData();
   }
 
   getMeStorageData(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.populateOverview();
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    if (this.product && !this.product?.has_insights) {
-      this.utils.showProductStatusPopup(true);
-      return;
-    }
-    this.utils.loadSpinner(true);
-    this.jsondata = data?.data;
-    this.templates = [{ label: localStorage.getItem('app_name') }];
-    this.getMeOverview();
   }
 
-  emitIconClicked(icon: string) {
-    if (this.highlightedIndex === icon) {
-      this.highlightedIndex = null;
-    } else {
-      this.highlightedIndex = icon;
-    }
-    this.iconClicked.emit(icon);
-  }
-
-  nextStep(): void {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-    }
-    this.counter++;
-  }
-  prevStep(): void {
-    this.stepper.prevStep();
-    this.counter--;
-  }
-  setStep(step: any) {
-    this.counter = step;
-  }
-  nextStep2() {
-    this.stepper.nextStep();
-    this.counter2++;
-  }
-  prevStep2() {
-    this.stepper.prevStep();
-    this.counter2--;
-  }
-
-  setStep2(step: any) {
-    this.counter2 = step;
-  }
-  formatName(fullName: string): string {
-    const names = fullName.split(' ');
-    if (names.length >= 2) {
-      return `${names[0]} ${names[names.length - 1]}`;
-    } else {
-      return fullName;
-    }
-  }
-  getMeOverview() {
-    this.naviApiService
-      .getOverview(this.currentUser?.email, this.product?.id)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.overview = response.data;
-          this.features = response.data?.Features;
-          this.appName = response?.data?.Title
-            ? response?.data?.Title
-            : response?.data?.title;
-          this.createOn = response?.data?.created_on;
-          localStorage.setItem(
-            'app_name',
-            response?.data?.Title
-              ? response?.data?.Title
-              : response?.data?.title
-          );
-          this.auditUtil.postAudit(
-            'RETRIEVE_OVERVIEW',
-            1,
-            'SUCCESS',
-            'user-audit'
-          );
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.detail,
-          });
-          this.auditUtil.postAudit(
-            'RETRIEVE_OVERVIEW' + response?.data?.detail,
-            1,
-            'FAILURE',
-            'user-audit'
-          );
+  populateOverview() {
+    if (this.product?.overview?.length) {
+      this.product.overview.forEach((element: any) => {
+        if (element.title == 'Title') {
+          this.overview.title = element;
         }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser?.email,
-          this.product?.id
-        );
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: error,
-        });
-        this.utils.loadSpinner(false);
-        this.auditUtil.postAudit(
-          'RETRIEVE_OVERVIEW' + error,
-          1,
-          'FAILURE',
-          'user-audit'
-        );
+        if (element.title == 'Tag') {
+          this.overview.tag = element;
+        }
+        if (element.title == 'Description') {
+          this.overview.description = element;
+        }
+        if (element.title == 'Features') {
+          this.overview.features = element;
+        }
+        if (element.title == 'Stakeholders') {
+          this.overview.stakeholders = element;
+        }
+        if (element.title == 'Product_url') {
+          this.overview.productUrl = element;
+        }
+        if (element.title == 'product_uuid') {
+          this.overview.productuuid = element;
+        }
       });
+    }
+    if (this.product.owners) {
+      this.overview.owners = this.product.owners
+    }
   }
 
   onChangeProduct(obj: any): void {
-    localStorage.setItem('record_id', obj?.id);
-    localStorage.setItem('app_name', obj.title);
-    localStorage.setItem(
-      'product_url',
-      obj.url && obj.url !== '' ? obj.url : ''
-    );
-    localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
   }
 }

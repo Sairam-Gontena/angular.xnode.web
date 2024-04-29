@@ -29,4 +29,24 @@ export class SpecApiService extends BaseApiService {
     return this.get(url);
   }
 
+  getUsecases(product_id?: any) {
+    let url = 'product-spec/usecases/' + product_id;
+    return this.get(url);
+  }
+  getDataModel(product_id?: any) {
+    let url = 'product-spec/datamodel/' + product_id;
+    return this.get(url);
+  }
+
+  getXflows(productId?: string) {
+    let url = 'product-spec/xflows/' + productId;
+    return this.get(url);
+  }
+
+  //share link to users in spec  
+  createUpdateUserListProdSpec(paramPayload?: any) {
+    let url = 'product-spec';
+    return this.patch(url, paramPayload);
+  }
+
 }

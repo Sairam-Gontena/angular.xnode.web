@@ -72,31 +72,28 @@ textarea {
     color: #ffffff;
     background: #2E2D36;
     padding: 0.75rem 0.75rem;
-    border: 1px solid #2E2D36;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    -webkit-appearance: none;
     appearance: none;
     border-radius: 6px;
     resize: none !important;
 }
 
-  :host ::ng-deep .general-feedback.confirm-success.p-button {
+:host ::ng-deep .general-feedback.confirm-success.p-button {
     background: var(--primary-button-color);
-    color : var(--primary-button-text-color) !important;
-  }
+    color: var(--primary-button-text-color) !important;
+}
 
-  :host ::ng-deep .general-feedback.cancel-btn.p-button {
-   background: var(--secondary-button-color);
-   color: var(--secondary-button-text-color);
-  }
- 
+:host ::ng-deep .general-feedback.cancel-btn.p-button {
+    background: var(--secondary-button-color);
+    color: var(--secondary-button-text-color);
+}
 
- :host::ng-deep.browseFiles .p-button:hover {
+
+:host::ng-deep.browseFiles .p-button:hover {
     border-radius: 2rem;
     background-color: #23222B !important;
     color: #2C91FD !important;
     border: solid 1px #2C91FD;
- }
+}
 
 :host::ng-deep .p-dialog .p-dialog-header {
     border-bottom: 1px solid #4B4B4B;
@@ -137,11 +134,6 @@ textarea {
     height: 61px;
 }
 
-:host ::ng-deep.p-inputtext:enabled:hover,
-textarea:enabled:hover {
-    border-color: #2E2D36 !important;
-}
-
 .feedback-history {
     color: #02ADEE;
 }
@@ -167,4 +159,34 @@ textarea:enabled:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100% - 60%);
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper {
+    max-height: 180px !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+}
+
+:host::ng-deep .p-dropdown-panel .p-dropdown-header {
+    padding: 0;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    border: none;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter .p-inputtext:enabled:focus {
+    box-shadow: none !important;
+    border-color: none;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+}
+
+:host::ng-deep .p-dropdown {
+    width: 100%;
 }

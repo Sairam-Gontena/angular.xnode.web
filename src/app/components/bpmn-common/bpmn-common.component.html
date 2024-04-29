@@ -8,7 +8,7 @@
         <div [id]="bpmnRefId ? bpmnRefId : 'diagramRef'" #diagramRefContainer class="diagram-container" [ngClass]="{'disable-height':referenceId}" >
         </div>
         <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
-            styleClass="w-30rem" [modal]="false">
+            styleClass="bpmn-panel" [modal]="false">
             <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
             <div class="flex">
                 <div class="col-auto">
@@ -32,19 +32,19 @@
                 <!-- General Tab -->
                 <p-tabPanel header="General">
                     <p-panel header="General" [toggleable]="true">
-                        <div class="row">
+                        <div class="flex gap-2 align-items-center my-2">
                             <label htmlFor="username">{{generalInfo[0].label}}</label>
                             <input pInputText id="username" aria-describedby="username-help" [(ngModel)]="entity" />
                             <!--overview.Tag  overview.title -->
                         </div>
-                        <div class="row">
+                        <div class="flex gap-2 align-items-center my-2">
                             <label htmlFor="username">{{generalInfo[1].label}}</label>
                             <input pInputText id="username" aria-describedby="username-help"
                                 [value]="flowInfo?.[0]?.name" /> <!--[(ngModel)]='overview.title'  -->
                         </div>
                     </p-panel>
                     <p-panel header="Documentation" [toggleable]="true">
-                        <label htmlFor="username">{{generalInfo[2].label}}</label>
+                        <label class="my-2" htmlFor="username">{{generalInfo[2].label}}</label>
                         <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="overview.Description"></textarea>
 
                     </p-panel>
@@ -53,20 +53,21 @@
                 <!-- Properties tab -->
                 <p-tabPanel header="Properties">
                     <p-panel header={{taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true">
-                        <p-table [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
+                        <p-table  class="bpmn-table" [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
                             <ng-template pTemplate="body" let-product>
-                                <tr *ngIf="product.index%2===0">
-                                    <td>
-                                        <label htmlFor="username">{{product.label}}</label>
+                                <span *ngIf="product.index%2===0">
+                                    <td class="flex gap-2 align-items-center">
+                                        <label class="my-2" htmlFor="username">{{product.label}}</label>
                                         <input pInputText id="username" aria-describedby="username-help"
                                             [(ngModel)]="product.name" />
                                     </td>
-                                    <td *ngIf="flowInfo[product.index+1]">
-                                        <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
+                                    <br/>
+                                    <td class="flex gap-2 align-items-center" *ngIf="flowInfo[product.index+1]">
+                                        <label  class="my-2"  htmlFor="username">{{flowInfo[product.index+1].label}}</label>
                                         <input pInputText id="username" aria-describedby="username-help"
                                             [(ngModel)]="flowInfo[product.index+1].name" />
-                                    </td>
-                                </tr>
+                                    </td><br/>
+                                </span>
                             </ng-template>
                         </p-table>
                     </p-panel>
@@ -75,34 +76,34 @@
 
                     <p-panel *ngIf="sP" header="Userflows" [toggleable]="true" [collapsed]="true"
                         styleClass="{ 'width': '30rem' }">
-                        <p-table [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
+                        <p-table class="bpmn-table" [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
                             <ng-template pTemplate="body" let-product>
-                                <tr *ngIf="product.index%2===0">
-                                    <td>
-                                        <label>TaskId</label>
+                                <tr  *ngIf="product.index%2===0">
+                                    <td  class="flex gap-2 align-items-center">
+                                        <label class="my-2">TaskId</label>
                                         <input pInputText [(ngModel)]="product.name" />
-                                    </td>
-                                    <td *ngIf="userTask[product.index+1]">
-                                        <label>TaskId</label>
+                                    </td><br/>
+                                    <td   class="flex gap-2 align-items-center" *ngIf="userTask[product.index+1]">
+                                        <label class="my-2">TaskId</label>
                                         <input pInputText [(ngModel)]="userTask[product.index+1].name" />
-                                    </td>
+                                    </td><br/>
                                 </tr>
                             </ng-template>
                         </p-table>
                     </p-panel>
 
                     <p-panel *ngIf="sP" header="Backendflows" [toggleable]="true" [collapsed]="true">
-                        <p-table [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
+                        <p-table  class="bpmn-table" [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
                             <ng-template pTemplate="body" let-product>
                                 <tr *ngIf="product.index%2===0">
-                                    <td>
-                                        <label>TaskId</label>
+                                    <td class="flex gap-2 align-items-center">
+                                        <label class="my-2">TaskId</label>
                                         <input pInputText [(ngModel)]="product.name" />
-                                    </td>
-                                    <td *ngIf="serviceTask[product.index+1]">
-                                        <label>TaskId</label>
+                                    </td><br/>
+                                    <td class="flex gap-2 align-items-center" *ngIf="serviceTask[product.index+1]">
+                                        <label class="my-2">TaskId</label>
                                         <input pInputText [(ngModel)]="serviceTask[product.index+1].name" />
-                                    </td>
+                                    </td><br/>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -156,19 +157,19 @@
             <!-- General Tab -->
             <p-tabPanel header="General">
                 <p-panel header="General" [toggleable]="true">
-                    <div class="row">
+                    <div class="flex gap-2 align-items-center my-1">
                         <label htmlFor="username">{{generalInfo[0].label}}</label>
                         <input pInputText id="username" aria-describedby="username-help" [(ngModel)]="entity" />
                         <!--overview.Tag  overview.title -->
                     </div>
-                    <div class="row">
+                    <div class="flex gap-2 align-items-center my-1">
                         <label htmlFor="username">{{generalInfo[1].label}}</label>
                         <input pInputText id="username" aria-describedby="username-help"
                             [value]="flowInfo?.[0]?.name" /> <!--[(ngModel)]='overview.title'  -->
                     </div>
                 </p-panel>
                 <p-panel header="Documentation" [toggleable]="true">
-                    <label htmlFor="username">{{generalInfo[2].label}}</label>
+                    <label  class="my-2" htmlFor="username">{{generalInfo[2].label}}</label>
                     <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="overview.Description"></textarea>
 
                 </p-panel>
@@ -177,20 +178,21 @@
             <!-- Properties tab -->
             <p-tabPanel header="Properties">
                 <p-panel header={{taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true">
-                    <p-table [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
+                    <p-table  class="bpmn-table" [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
                         <ng-template pTemplate="body" let-product>
-                            <tr *ngIf="product.index%2===0">
+                            <span *ngIf="product.index%2===0">
                                 <td>
-                                    <label htmlFor="username">{{product.label}}</label>
+                                    <label class="my-2" htmlFor="username">{{product.label}}</label>
                                     <input pInputText id="username" aria-describedby="username-help"
                                         [(ngModel)]="product.name" />
                                 </td>
+                                <br/>
                                 <td *ngIf="flowInfo[product.index+1]">
-                                    <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
+                                    <label  class="my-2" htmlFor="username">{{flowInfo[product.index+1].label}}</label>
                                     <input pInputText id="username" aria-describedby="username-help"
                                         [(ngModel)]="flowInfo[product.index+1].name" />
-                                </td>
-                            </tr>
+                                </td><br/>
+                            </span>
                         </ng-template>
                     </p-table>
                 </p-panel>
@@ -199,34 +201,34 @@
 
                 <p-panel *ngIf="sP" header="Userflows" [toggleable]="true" [collapsed]="true"
                     styleClass="{ 'width': '30rem' }">
-                    <p-table [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
+                    <p-table  class="bpmn-table" [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
                         <ng-template pTemplate="body" let-product>
                             <tr *ngIf="product.index%2===0">
-                                <td>
-                                    <label>TaskId</label>
+                                <td class="flex gap-2 align-items-center">
+                                    <label class="my-2">TaskId</label>
                                     <input pInputText [(ngModel)]="product.name" />
-                                </td>
-                                <td *ngIf="userTask[product.index+1]">
-                                    <label>TaskId</label>
+                                </td><br/>
+                                <td class="flex gap-2 align-items-center" *ngIf="userTask[product.index+1]">
+                                    <label class="my-2">TaskId</label>
                                     <input pInputText [(ngModel)]="userTask[product.index+1].name" />
-                                </td>
+                                </td><br/>
                             </tr>
                         </ng-template>
                     </p-table>
                 </p-panel>
 
                 <p-panel *ngIf="sP" header="Backendflows" [toggleable]="true" [collapsed]="true">
-                    <p-table [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
+                    <p-table  class="bpmn-table" [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
                         <ng-template pTemplate="body" let-product>
                             <tr *ngIf="product.index%2===0">
-                                <td>
-                                    <label>TaskId</label>
+                                <td class="flex gap-2 align-items-center">
+                                    <label class="my-2">TaskId</label>
                                     <input pInputText [(ngModel)]="product.name" />
-                                </td>
-                                <td *ngIf="serviceTask[product.index+1]">
-                                    <label>TaskId</label>
+                                </td><br/>
+                                <td class="flex gap-2 align-items-center" *ngIf="serviceTask[product.index+1]">
+                                    <label class="my-2">TaskId</label>
                                     <input pInputText [(ngModel)]="serviceTask[product.index+1].name" />
-                                </td>
+                                </td><br/>
                             </tr>
                         </ng-template>
                     </p-table>

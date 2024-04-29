@@ -2,14 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User, UserUtil } from 'src/app/utils/user-util';
-import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-template-builder',
   templateUrl: './template-builder.component.html',
   styleUrls: ['./template-builder.component.scss'],
-  providers: [MessageService],
 })
 export class TemplateBuilderComponent implements OnInit {
   @Input() currentView: string = 'desktop';
@@ -31,7 +31,8 @@ export class TemplateBuilderComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private utils: UtilsService,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private storageService: LocalStorageService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.email = this.currentUser?.email;
@@ -44,37 +45,32 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   getMeStorageData(): void {
-    const product = localStorage.getItem('product');
-    let productDetails;
-    if (product) {
-      productDetails = JSON.parse(product);
-    }
-    if (product) {
-      this.product = JSON.parse(product);
-      this.product_id = JSON.parse(product).id;
-    }
-    if (this.product && !this.product?.has_insights) {
-      this.utils.showProductStatusPopup(true);
-    }
-    if (this.product_id) {
+    this.product = this.storageService.getItem(StorageKeys.Product)
+    console.log('this.product', this.product);
+
+    if (this.product) {
       let productEmail =
-        this.currentUser?.email == productDetails?.email
+        this.currentUser?.email === this.product?.owners[0]?.email
           ? this.currentUser?.email
-          : productDetails?.email;
+          : this.product?.owners[0]?.email;
       this.rawUrl =
         environment.designStudioAppUrl +
         '?email=' +
         productEmail +
         '&id=' +
-        this.product_id +
+        this.product?.id +
         '&targetUrl=' +
         environment.xnodeAppUrl +
-        '&has_insights=' +
-        this.product?.has_insights +
         '&isVerified=true' +
         '&userId=' +
         this.userId +
         '&embedded=true';
+      const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      if (token) {
+        this.rawUrl = this.rawUrl + '&token=' + token;
+      }
+      console.log('  this.rawUrl', this.rawUrl);
+
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
@@ -86,12 +82,16 @@ export class TemplateBuilderComponent implements OnInit {
         this.product_id +
         '&targetUrl=' +
         environment.xnodeAppUrl +
-        '&has_insights=' +
-        true +
         '&isVerified=true' +
         '&userId=' +
         this.userId +
         '&embedded=true';
+      const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      if (token) {
+        this.rawUrl = this.rawUrl + '&token=' + token;
+      }
+      console.log('  this.rawUrl', this.rawUrl);
+
       this.makeTrustedUrl();
     }
   }

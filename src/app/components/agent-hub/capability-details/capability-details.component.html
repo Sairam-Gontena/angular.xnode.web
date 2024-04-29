@@ -1,0 +1,127 @@
+<div class="pr-4 pl-5">
+    <div *ngIf="rowViewData.showHeader" class="flex justify-content-between py-6">
+        <div class="flex gap-2 align-items-center">
+            <xnode-breadcrumbs [items]="breadCrumbsAction.breadcrumb" (changeEvent)="goBackBreadCrumbsHandler($event)"
+                [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
+        </div>
+
+        <div class="flex align-items-center justify-content-between">
+            <!-- Left-aligned content -->
+            <div class="flex align-items-center">
+                <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
+                    [model]="activeHeaderActionBtnOption"></p-splitButton>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="flex align-items-center gap-2">
+                <p-button>
+                    <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
+                </p-button>
+
+                <p-button>
+                    <img src="../../../assets/agent-hub/chart-tree.svg" alt="" />
+                </p-button>
+            </div>
+        </div>
+    </div>
+    <!-- <p-tabView styleClass="pt-3 px-6" (onChange)="onTabSwitchHandler($event)"
+      [(activeIndex)]="activeIndex"
+      *ngIf="!overviewTabItem.showTab; else overviewBlock">
+      <p-tabPanel *ngFor="let tab of tabItems; let i = index" [header]="tab.title">
+      </p-tabPanel>
+    </p-tabView> -->
+
+    <xnode-agent-information [agentInfo]="agentInfo"></xnode-agent-information>
+
+    <div *ngIf="rowViewData.showTab">
+        <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex"
+            *ngIf="!overviewTabItem.showTab; else overviewBlock">
+            <ng-container *ngFor="let tabItem of tabItems">
+                <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <span>{{tabItem.title}}</span>
+                    </ng-template>
+                    <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+                        <ng-container *ngSwitchCase="'Overview'">
+                            <ng-container [ngTemplateOutlet]="overview"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Agent Instructions'">
+                            <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+                        </ng-container> -->
+                        <!-- <ng-container *ngSwitchCase="'Capabilities'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                        <ng-container *ngSwitchCase="'Topics'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Prompts'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Knowledge'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                        <ng-container *ngSwitchCase="'Models'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <!-- <ng-container *ngSwitchCase="'Tools'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container> -->
+                    </ng-template>
+                </p-tabPanel>
+            </ng-container>
+        </p-tabView>
+    </div>
+
+    <ng-template #overviewBlock>
+        <p-tabView styleClass="pt-3 px-6" [(activeIndex)]="overviewTabItem.activeIndex"
+            (onChange)="overviewTabItem.tabSwitchHandler()">
+            <p-tabPanel *ngFor="let tab of overviewTabItem.tabItems; let i = index" [header]="tab.title">
+            </p-tabPanel>
+        </p-tabView>
+    </ng-template>
+
+    <ng-template #dynamicTable>
+        <div class="w-full table-height" *ngIf="activeIndex > 0 && !overviewTabItem.showTab">
+            <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
+                [showColumnFilterOption]="showColumnFilterOption" [tableRowActionOptions]="tableRowActionOptions"
+                [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem"
+                altBgColorRow="#2E2D36" [showViewRowData]="true" (changeEvent)="viewHandler($event)"
+                (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
+        </div>
+
+    </ng-template>
+
+    <!-- overview html -->
+    <ng-template #overview>
+        <div class="table-height">
+            <xnode-agent-overview formType="overview" [agentInfo]="agentInfo"></xnode-agent-overview>
+        </div>
+    </ng-template>
+
+    <!-- instruction html -->
+    <!-- <ng-template #instruction>
+        <div class="table-height">
+            <xnode-agent-overview formType="instruction" [agentInfo]="agentInfo"></xnode-agent-overview>
+        </div>
+    </ng-template> -->
+
+
+    <div class="table-height" *ngIf="overviewTabItem.showTab">
+        <xnode-prompt-overview [overviewInstructionDetail]="overviewInstructionForm" [formEditable]="isFormEditable"
+            (onEditSave)="onEditSaveHandler($event)"></xnode-prompt-overview>
+    </div>
+
+    <!-- <xnode-prompt-overview *ngIf="overviewTabItem.showTab"
+      [overviewInstructionDetail]="overviewInstructionForm"
+      [formEditable]="isFormEditable"
+      (onEditSave)="onEditSaveHandler($event)"></xnode-prompt-overview> -->
+
+    <xnode-create-prompt-modal *ngIf="promptModalShow" [(display)]="promptModalShow"></xnode-create-prompt-modal>
+
+    <xnode-create-capability-modal *ngIf="capabilityModalShow"
+        [(display)]="capabilityModalShow"></xnode-create-capability-modal>
+
+    <xnode-create-topic-modal *ngIf="topicModalShow" [(display)]="topicModalShow"></xnode-create-topic-modal>
+
+</div>

@@ -37,7 +37,8 @@
     <div class="flex flex-row justify-content-between">
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
         contentObj?.title}}</h3>
-      <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title) && !contentObj?.parent_data_type"
+      <img src="./assets/spec-minimize.svg" alt="expand"
+        *ngIf="ComponentsToExpand.includes(contentObj.title) && !contentObj?.parent_data_type"
         class="expnad-icon pointer"
         (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
     </div>
@@ -47,7 +48,7 @@
           [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj" placeHolder="Add a Comment"
           [commentType]="'comment'" [parentEntity]="'SPEC'"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
-      <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end pb-4"
+      <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end mb-2"
         *ngIf="contentObj?.content_data_type === 'str' || contentObj?.content_data_type === 'VERSION_CONTROL' || contentObj?.content_data_type === 'USECASES'">
         <div *ngIf="contentObj.showCommentIcon && !onDiff" class="flex align-items-center justify-content-center">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
@@ -63,23 +64,28 @@
       <div class="col-12 py-0 list-view" *ngSwitchCase="'str'" [id]="contentObj.id">
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
-            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [keyword]="keyword" [objId]="contentObj.id" [oldContent]="contentObj.title" [type]="'title'" [newContent]="diffObj?.title"
-              [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
+            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)"
+              [keyword]="keyword" [objId]="contentObj.id" [oldContent]="contentObj.title" [type]="'title'"
+              [newContent]="diffObj?.title" [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </b>
-          <p>
-            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [objId]="contentObj.id" [oldContent]="contentObj.content" [type]="'content'" [newContent]="diffObj?.content"
-              [onDiff]="onDiff" [keyword]="keyword" [format]="format"></xnode-diff-generator>
+          <p [ngClass]="{'mt-3': isArray(contentObj.content) && !onDiff,'m-0': isArray(contentObj.content) && onDiff }">
+            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)"
+              [objId]="contentObj.id" [oldContent]="contentObj.content" [type]="'content'"
+              [newContent]="diffObj?.content" [onDiff]="onDiff" [keyword]="keyword"
+              [format]="format"></xnode-diff-generator>
           </p>
         </div>
-        <p-overlayPanel #selectionText *ngIf="selectedText?.length>0"  (onShow)="openOverlayPanel=true" (onHide)="onOverlayHide()">
+        <p-overlayPanel #selectionText *ngIf="selectedText?.length>0" (onShow)="openOverlayPanel=true"
+          (onHide)="onOverlayHide()">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" [selectedText]="selectedText"
-              [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
-              [parentId]="contentObj.id" [position]="'absolute'"
-              [selectedContent]="contentObj" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
-      </p-overlayPanel>
+            [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
+            [parentId]="contentObj.id" [position]="'absolute'" [selectedContent]="contentObj"
+            placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
         <div class="col-12 py-0" *ngIf="!contentObj?.parent_data_type">
-          <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [objId]="contentObj.id" [keyword]="keyword" [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff]="onDiff"
-            [format]="format"></xnode-diff-generator>
+          <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)"
+            [objId]="contentObj.id" [keyword]="keyword" [oldContent]="contentObj.content"
+            [newContent]="diffObj?.content" [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
         </div>
       </div>
       <div *ngSwitchCase="'DATA_DICTIONARY'" [id]="contentObj.id">
@@ -89,7 +95,7 @@
               <h3 class="mb-1">{{subitem.tableName}}</h3>
               <p class="mt-1">{{subitem.tableDescription}}</p>
               <xnode-common-spec-table [content]="subitem.columns"></xnode-common-spec-table>
-          </div>
+            </div>
           </span>
           <ng-template #directTable>
             <h3 class="mb-1">{{item.tableName}}</h3>
@@ -156,13 +162,14 @@
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
         <div class="flex justify-content-end align-items-center my-2 mr-2">
-          <i class="pi pi-list pointer mr-2" pTooltip="Json view" (click)="contentObj.viewType = 'list';"></i>
+          <i class="pi pi-list pointer mr-2" pTooltip="List view" (click)="contentObj.viewType = 'list';"></i>
           <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.viewType = 'json';"></i>
           <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="contentObj.viewType = 'table';"></i>
         </div>
         <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"
           *ngIf="contentObj?.viewType ==='json'"></pre>
-          <xnode-common-spec-table [content]="contentObj.content" *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table>
+        <xnode-common-spec-table [content]="contentObj.content"
+          *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table>
         <div *ngIf="!contentObj.viewType ||contentObj.viewType === 'list'">
           <div [ngSwitch]="getType(contentObj.content)">
             <div *ngSwitchCase="'array'">
@@ -226,7 +233,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
+              <div class="flex justify-content-end mb-2" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
@@ -250,7 +257,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="diffObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
+              <div class="flex justify-content-end mb-2" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(diffObj)"></i>
@@ -301,10 +308,12 @@
       </div>
     </div>
     <div *ngIf="!contentObj?.parent_data_type" [ngClass]="{'gradientback': !contentObj?.collapsed}">
-      <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
+      <p-button label="See More" size="small" [rounded]="true"
+        (click)="contentObj.collapsed = true;selectedSpecItem=contentObj" [outlined]="true"
         class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
-      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
+      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;scrollToItem()"
+        [outlined]="true" class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed"
+        severity="secondary"></p-button>
       <div class="" *ngIf="!contentObj?.collapsed"></div>
     </div>
   </div>

@@ -146,3 +146,10 @@ textarea {
 :host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
     color: black;
 }
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input::placeholder {
+    color: #999
+}
+
+::placeholder {
+    color: #999;
+  }

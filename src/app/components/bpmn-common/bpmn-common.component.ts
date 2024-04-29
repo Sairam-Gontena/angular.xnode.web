@@ -7,7 +7,6 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -24,7 +23,6 @@ import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { Observable, delay, of } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
 import { layoutProcess } from 'bpmn-auto-layout';
-import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
@@ -32,14 +30,16 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
   templateUrl: './bpmn-common.component.html',
   styleUrls: ['./bpmn-common.component.scss'],
 })
+
 export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
@@ -98,8 +98,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private router: Router,
-    private naviApiService: NaviApiService,
-    private workflowApiService: WorkflowApiService
+    private workflowApiService: WorkflowApiService,
+    private specApi: SpecApiService,
+    private conversationService: ConversationHubService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -110,7 +111,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
-    this.useCases = list[2].content[0].content;
+    if (list[2]?.content?.length)
+      this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow: HTMLElement;
@@ -146,7 +148,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     };
     setTimeout(() => {
       this.initializeBpmn();
-      this.graph();
+      this.getMeUsecases();
     });
   }
 
@@ -231,9 +233,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getFlow(flow: String) {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.specApi
+      .getXflows(this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -323,68 +325,40 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     this.getOverview();
   }
 
-  getOnboardingFlow() {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
-      .then(async (response: any) => {
-        if (response) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          let onboardingFlow = response.data.Flows.filter(
-            (f: any) => f.Name.toLowerCase() === 'onboarding'
-          );
-          this.auditUtil.postAudit(
-            'BPMN_ONBOARDING_FLOWS',
-            1,
-            'SUCCESS',
-            'user-audit'
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: 'Network Error',
-          });
-          this.auditUtil.postAudit(
-            'BPMN_ONBOARDING_FLOWS',
-            1,
-            'FAILURE',
-            'user-audit'
-          );
-        }
-      })
-      .catch((error) => {
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+  }
+
+  getLayout(layout: any): void {
+    if (layout) this.dashboard = this.layoutColumns[layout];
+  }
+
+  getOverview() {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
-          url: error?.request?.responseURL,
+          url: response?.request?.responseURL,
         };
         this.auditUtil.postAudit(
-          'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product?.id
+        );
+        this.overview = response.data;
+        this.sideBar = true;
+      } else {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
           1,
           'FAILED',
           'user-audit',
@@ -395,66 +369,10 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
-          detail: error,
+          detail: response.data?.detail,
         });
-        this.auditUtil.postAudit(
-          'BPMN_ONBOARDING_FLOWS_' + error,
-          1,
-          'FAILURE',
-          'user-audit'
-        );
-      });
-  }
-
-  toggleMenu() {
-    this.isOpen = !this.isOpen;
-  }
-
-  getLayout(layout: any): void {
-    if (layout) this.dashboard = this.layoutColumns[layout];
-  }
-
-  getOverview() {
-    this.naviApiService
-      .getOverview(this.product?.email, this.product?.id)
-      .then((response) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.overview = response.data;
-          this.sideBar = true;
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data?.detail,
-          });
-        }
-      })
+      }
+    })
       .catch((error: any) => {
         let user_audit_body = {
           method: 'GET',
@@ -780,30 +698,59 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   /**************************************************************************************************** */
   // graph functions and variables
   /*************************************************************************************************** */
-  modifyGraphData(data: any) {
-    data.forEach((d: any) => {
-      let temp_title;
-      d.children = [];
-      for (let i = 0; i < d.xflows?.length; i++) {
-        temp_title = d.xflows[i].name;
-        // d.xflows[i] = {};
-        // d.xflows[i] =
-        d.children.push({
-          id: i,
-          title: temp_title,
+  getMeUsecases(): void {
+    this.specApi
+      .getUsecases(this.product?.id)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          if (typeof response.data === 'string') {
+            try {
+              JSON.parse(response.data);
+              this.useCases = JSON.parse(response.data)
+            } catch (error) {
+              this.useCases = []
+            }
+          } else {
+            this.useCases = response.data
+          } this.graph();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
         });
-      }
-    });
-    return data;
+        this.utilsService.loadSpinner(false);
+      });
   }
 
   graph() {
-    let mod_data = this.modifyGraphData(this.useCases);
+    if (typeof this.useCases !== 'string' && this.useCases && this.useCases?.length)
+      this.useCases.forEach((d: any) => {
+        let temp_title;
+        d.children = [];
+        for (let i = 0; i < d.xflows?.length; i++) {
+          temp_title = d.xflows[i].name;
+          d.children.push({
+            id: i,
+            title: temp_title,
+          });
+        }
+      });
+    let mod_data = this.useCases;
     this.showUsecaseGraph = true;
 
     //TBD
     //group by usecase role and create different spider web where centre of web is role
-    let firstRole = mod_data ? mod_data[0].role : '';
+    let firstRole = mod_data?.length ? mod_data[0].role : '';
     var treeData = {
       description: '',
       id: '',
@@ -1051,7 +998,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-weight', 600)
       .style('fill', '#000000')
       .text((d: any) => {
-        return d.data.role;
+        return d.data?.role;
       })
       .clone(true)
       .lower()
@@ -1085,7 +1032,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .attr('stroke', '#959595')
       .attr('cursor', 'pointer')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }
@@ -1115,7 +1062,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-size', '12px')
       .style('opacity', 0)
       .text((d: any) => {
-        let title = d.data.title.split('-');
+        let title = d.data.title?.split('-');
         if (title[0]) {
           title = title[0];
         }
@@ -1150,7 +1097,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('opacity', 0)
       .attr('cursor', 'pointer')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }
@@ -1218,7 +1165,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('font-size', '12px')
       .style('opacity', 0)
       .text((d: any) => {
-        let title = d.data.title.split('-');
+        let title = d.data.title?.split('-');
         if (title[0]) {
           title = title[0];
         }
@@ -1254,7 +1201,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .style('opacity', 0)
       .style('font-size', '12px')
       .text((d: any) => {
-        let title = d.data.title.split('-').slice(1);
+        let title = d.data.title?.split('-').slice(1);
         if (title[0]) {
           title = title[0];
         }

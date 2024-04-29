@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { User } from 'src/models/user';
+import { SpecUtilsService } from './spec-utils.service';
+import { Router } from '@angular/router';
+import { AuthApiService } from 'src/app/api/auth.service';
+import { LocalStorageService } from './local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +31,10 @@ export class UtilsService {
   );
   public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
 
+  private expandNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public naviExpand: Observable<boolean> = this.expandNavi.asObservable();
   private showToaster: BehaviorSubject<Object> = new BehaviorSubject<Object>(
     false
   );
@@ -41,6 +50,12 @@ export class UtilsService {
   public getMeProductStatus: Observable<boolean> =
     this.productStatus.asObservable();
 
+  private activeRoute: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isInProductContext: Observable<boolean> =
+    this.activeRoute.asObservable();
+
   private productAlertPopup: BehaviorSubject<Object> =
     new BehaviorSubject<Object>({ popup: false, data: {} });
   public getMeproductAlertPopup: Observable<Object> =
@@ -52,8 +67,14 @@ export class UtilsService {
   public getMeFeedbackPopupTypeToDisplay: Observable<string> =
     this.popupToShow.asObservable();
 
+  private summaryPopupStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeSummaryPopupStatus: Observable<boolean> =
+    this.summaryPopupStatus.asObservable();
+
   private limitReachedPopup: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+
   public handleLimitReachedPopup: Observable<boolean> =
     this.limitReachedPopup.asObservable();
 
@@ -93,6 +114,11 @@ export class UtilsService {
   public getMeLatestConversation: Observable<string> =
     this.updateConversation.asObservable();
 
+  private loadIframeUrl: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getLatestIframeUrl: Observable<boolean> =
+    this.loadIframeUrl.asObservable();
+
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> =
     this.saveComments.asObservable();
@@ -115,7 +141,21 @@ export class UtilsService {
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
 
-  constructor() { }
+  private viewSummary$: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public loadViewSummary: Observable<any> =
+    this.viewSummary$.asObservable();
+
+  private summaryObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ summary: {} });
+
+  public getMeSummaryObject: Observable<Object> =
+    this.summaryObject.asObservable();
+
+  constructor(private specUtilsService: SpecUtilsService,
+    private authApiService: AuthApiService,
+    private localStorageService: LocalStorageService,
+    private router: Router) { }
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
@@ -135,6 +175,9 @@ export class UtilsService {
   }
   EnableDockedNavi() {
     this.dockedNavi.next(true);
+  }
+  expandNavi$() {
+    this.expandNavi.next(true);
   }
 
   loadSpinner(event: boolean): void {
@@ -164,6 +207,12 @@ export class UtilsService {
   showLimitReachedPopup(event: any): void {
     this.limitReachedPopup.next(event);
   }
+
+  showSummaryPopup(event: any): void {
+    this.summaryPopupStatus.next(event);
+  }
+
+
   reloadList(event: any): void {
     this.reload.next(event);
   }
@@ -208,12 +257,28 @@ export class UtilsService {
   changeSelectContentChange(event: boolean): void {
     this.selectedContent.next(event);
   }
+
+  productContext(event: boolean): void {
+    this.activeRoute.next(event);
+  }
+
   sendProductChangeBPMN(data: any) {
     this.productChangeBPMN.next(data);
   }
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+  viewSummary(event: any): void {
+    this.viewSummary$.next(event);
+  }
+
+  updateSummary(event: any): void {
+    this.summaryObject.next(event);
+  }
+
+  prepareIframeUrl(data: any) {
+    this.loadIframeUrl.next(data);
   }
 
   calculateTimeAgo(timestamp: string): string {
@@ -256,4 +321,84 @@ export class UtilsService {
     }
     return userDp;
   }
+  getDateFormat() {
+    const IndiaFromat = 'dd/MM/yyyy';
+    const INlocale = 'en-IN';
+    const USFormat = 'MM/dd/yyyy';
+    const userLang = navigator.language;
+    return userLang === INlocale ? IndiaFromat : USFormat;
+  }
+
+  //navigate the deeplink
+  navigateByDeepLink(urlObj: any, path: any, params: any) {
+    let templateId = params.get('template_id'),
+      templateType = params.get('template_type'),
+      productId = params.get('product_id'),
+      versionId = params.get('version_id'),
+      crId = params.get('crId'),
+      entity = params.get('entity'),
+      targetURL = params.get('targetUrl');
+    if ((templateId && templateType) || (crId && entity) || (productId && versionId) || targetURL) {
+      let deepLinkInfo;
+      if (templateId && templateType) {
+        deepLinkInfo = {
+          product_id: productId,
+          template_id: templateId,
+          template_type: templateType,
+          version_id: versionId,
+        };
+      } else if (productId && versionId) {
+        deepLinkInfo = {
+          product_id: productId,
+          version_id: versionId,
+        };
+      }
+      if (crId && entity) {
+        versionId = params.get('versionId');
+        productId = params.get('productId');
+        deepLinkInfo = {
+          product_id: productId,
+          entity: entity,
+          cr_id: crId,
+          version_id: versionId,
+        };
+        this.specUtilsService._openCommentsPanel(true);
+        this.specUtilsService._loadActiveTab({
+          activeIndex: 1,
+          productId: deepLinkInfo.product_id,
+          versionId: deepLinkInfo.version_id,
+        });
+      }
+      if (targetURL) {
+        deepLinkInfo = {
+          naviURL: true,
+          componentToShow: params.get('componentToShow'),
+          targetUrl: params.get('targetUrl'),
+          restriction_max_value: params.get('restriction_max_value'),
+          isNaviExpanded: params.get('isNaviExpanded'),
+          componentID: params.get('componentID')
+        }
+      }
+      this.setDeepLinkInStorage(deepLinkInfo);
+      this.router.navigateByUrl(path);
+    }
+  }
+
+  //set deep link in storage
+  setDeepLinkInStorage(deepLinkInfo: any): void {
+    return this.localStorageService.saveItem(StorageKeys.DEEP_LINK_INFO, deepLinkInfo);
+  }
+
+  //set deep link info
+  setDeepLinkInfo(winUrl: any) {
+    let urlObj = new URL(winUrl);
+    let hash = urlObj.hash;
+    let [path, queryString] = hash.substr(1).split('?');
+    if (winUrl.includes('naviURL')) {
+      queryString = hash.split('?')[2];
+    }
+    let params = new URLSearchParams(queryString);
+    this.navigateByDeepLink(urlObj, path, params);
+  }
+
 }

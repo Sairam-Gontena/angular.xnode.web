@@ -23,10 +23,9 @@
     // transform: rotate(90deg);
 }
 
-// .p-inputtext {
-//     background-color: #ffffff;
-//     color:black;
-// }
+:host ::ng-deep.bpmn-panel {
+    width: 32rem !important;
+}
 
 .graphViewBpmnCommon{
     height: 80vh;
@@ -186,4 +185,8 @@ img.highlighted {
 }
 :host ::ng-deep .djs-context-pad .entry{
     background-color: var(--breadcrumbs-item-color);
+}
+
+:host ::ng-deep.bpmn-table .p-datatable .p-datatable-tbody > tr{
+  background: transparent;
 }

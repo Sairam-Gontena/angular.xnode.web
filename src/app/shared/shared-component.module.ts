@@ -21,6 +21,8 @@ import { ThankYouComponent } from '../components/thank-you/thank-you.component';
 import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
+import { ViewSummaryPopupComponent } from '../components/view-summary-popup/view-summary-popup.component';
+
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
 import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.component';
@@ -63,10 +65,29 @@ import { CreateNewCrVersionComponent } from '../pages/specifications/create-new-
 import { SpecConversationComponent } from '../pages/specifications/spec-conversation/spec-conversation.component';
 import { ConversationActionsComponent } from '../pages/specifications/conversation-actions/conversation-actions.component';
 import { SpecChildConversationComponent } from '../pages/specifications/spec-child-conversation/spec-child-conversation.component';
+import { ImportFilePopupComponent } from '../components/import-file-popup/import-file-popup.component';
 // import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
+import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
+import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
+import { AgentOverviewComponent } from '../components/agent-hub/create-agent/agent-overview/agent-overview.component';
+import { AgentInstructionComponent } from '../components/agent-hub/create-agent/agent-instruction/agent-instruction.component';
+import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
+import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
+import { ShareLinkComponent } from './component/share-link/share-link.component';
+import { PromptOverviewComponent } from '../components/agent-hub/create-agent/prompt-overview/prompt-overview.component';
+import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
+import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
+import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
+import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
+import { ResourcesComponent } from '../components/resources/resources.component';
+import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
+import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
+import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
+import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
+import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -90,6 +111,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -133,6 +155,26 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     SpecConversationComponent,
     ConversationActionsComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    PromptOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent,
+    AgentInformationComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -157,6 +199,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -201,6 +244,26 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     CreateNewCrVersionComponent,
     SpecConversationComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    PromptOverviewComponent,
+    AgentInstructionComponent,
+    ImportFilePopupComponent,
+    DynamicFormModalComponent,
+    CreateCapabilityModalComponent,
+    CreateTopicModalComponent,
+    CreatePromptModalComponent,
+    XnodeCommonModalComponent,
+    ShareLinkComponent,
+    InActiveTimeoutPopupComponent,
+    ResourcesComponent,
+    ResourceDetailComponent,
+    ContentGridComponent,
+    AvatarsDisplayComponent,
+    CapabilityDetailsComponent,
+    AgentInformationComponent
   ],
 })
-export class SharedComponentModule {}
+export class SharedComponentModule { }

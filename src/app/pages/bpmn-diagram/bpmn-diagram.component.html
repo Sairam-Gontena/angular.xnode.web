@@ -10,7 +10,7 @@
                     <div id="diagramRef" class="diagram-container">
                     </div>
                     <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
-                         styleClass="w-30rem" [modal]="false">
+                         styleClass="w-35rem" [modal]="false">
                          <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
                          <div class="flex">
                               <div class="col-auto">
@@ -113,9 +113,9 @@
                <div id="diagramRef" class="diagram-container" *ngIf="showBpmn">
                </div>
                <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
-                    styleClass="w-30rem" [modal]="false">
+                    styleClass="bpmn-panel" [modal]="false">
                     <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
-                    <div class="flex w-full">
+                    <div class="flex w-full p-2 title-banner">
                          <div class="col-auto">
                               <div class="row">
                                    <p-avatar *ngIf="taskHeader?.label==='Task'" label="T" styleClass="mr-2"
@@ -138,14 +138,14 @@
                          <!-- General Tab -->
                          <p-tabPanel header="General">
                               <p-panel header="General" [toggleable]="true">
-                                   <div class="row">
+                                   <div class="row my-2">
                                         <label htmlFor="username">{{generalInfo[0].label}}</label>
-                                        <input pInputText id="username" aria-describedby="username-help"
+                                        <input pInputText id="username" class="mx-2" aria-describedby="username-help"
                                              [(ngModel)]="entity" /> <!--overview.Tag  overview.title -->
                                    </div>
-                                   <div class="row">
+                                   <div class="row my-2">
                                         <label htmlFor="username">{{generalInfo[1].label}}</label>
-                                        <input pInputText id="username" aria-describedby="username-help"
+                                        <input pInputText class="mx-2" id="username" aria-describedby="username-help"
                                              [value]="flowInfo?.[0]?.name" /> <!--[(ngModel)]='overview.title'  -->
                                    </div>
                               </p-panel>
@@ -153,7 +153,6 @@
                                    <label htmlFor="username">{{generalInfo[2].label}}</label>
                                    <textarea rows="5" cols="30" pInputTextarea
                                         [(ngModel)]="overview.Description"></textarea>
-
                               </p-panel>
                          </p-tabPanel>
 
@@ -164,15 +163,15 @@
                                     <span *ngIf="product.index%2===0">
                                       <span>
                                         <label htmlFor="username">{{product.label}}</label>
-                                      <input pInputText id="username" class="my-2"
+                                      <input pInputText id="username" class="m-2"
                                            aria-describedby="username-help"
                                            [(ngModel)]="product.name" />
-                                      </span>
+                                      </span><br/>
                                       <span *ngIf="flowInfo[product.index+1]">
                                             <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
-                                            <input pInputText id="username" class="my-2" aria-describedby="username-help"
+                                            <input pInputText id="username" class="m-2" aria-describedby="username-help"
                                                  [(ngModel)]="flowInfo[product.index+1].name" />
-                                       </span>
+                                       </span><br/>
                                     </span>
                                   </div>
                               </p-panel>
@@ -185,12 +184,12 @@
                                     <span *ngIf="product.index%2===0">
                                       <span>
                                         <label>TaskId</label>
-                                        <input pInputText  class="my-2" [(ngModel)]="product.name" />
-                                      </span>
+                                        <input pInputText  class="m-2" [(ngModel)]="product.name" />
+                                      </span><br/>
                                       <span *ngIf="userTask[product.index+1]">
                                         <label>TaskId</label>
-                                        <input pInputText  class="my-2" [(ngModel)]="userTask[product.index+1].name" />
-                                       </span>
+                                        <input pInputText  class="m-2" [(ngModel)]="userTask[product.index+1].name" />
+                                       </span><br/>
                                     </span>
                                   </div>
                               </p-panel>
@@ -200,12 +199,12 @@
                                     <span *ngIf="product.index%2===0">
                                       <span>
                                         <label>TaskId</label>
-                                        <input pInputText  class="my-2" [(ngModel)]="product.name" />
-                                      </span>
+                                        <input pInputText  class="m-2" [(ngModel)]="product.name" />
+                                      </span><br/>
                                       <span *ngIf="serviceTask[product.index+1]">
                                         <label>TaskId</label>
-                                        <input pInputText  class="my-2" [(ngModel)]="serviceTask[product.index+1].name" />
-                                       </span>
+                                        <input pInputText  class="m-2" [(ngModel)]="serviceTask[product.index+1].name" />
+                                       </span><br/>
                                     </span>
                                   </div>
                               </p-panel>

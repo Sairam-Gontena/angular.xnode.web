@@ -97,7 +97,7 @@ export class AddTaskComponent {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    if(!this.parentId){
+    if (!this.parentId) {
       this.parentId = this.selectedContent.parentId;
     }
   }
@@ -149,6 +149,12 @@ export class AddTaskComponent {
       references: this.setTemplateTypeInRefs(),
       followers: [],
       feedback: {},
+      users: [
+        {
+          userId: this.currentUser.user_id,
+          role: 'Owner'
+        }
+      ],
       assignee: this.currentUser.user_id,
       deadline: this.addTaskForm.value.duedate,
     };

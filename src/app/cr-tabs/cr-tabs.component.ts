@@ -767,9 +767,10 @@ export class CrTabsComponent {
   }
 
   publishApp(): void {
+    const product_uuid = this.product.overview.filter((obj: any) => obj.title === 'product_uuid')[0].content
     const body = {
       repoName: this.product.title,
-      productUuid: this.product.product_uuid,
+      productUuid: product_uuid,
       projectName: environment.projectName,
       email: this.currentUser.email,
       crId: this.selectedCr.id,
@@ -919,7 +920,7 @@ export class CrTabsComponent {
         if (res && res.data) {
           // this.specUtils._openCommentsPanel(true);
           // this.specUtils._loadActiveTab(1);
-          this.specUtils._getMeUpdatedCrs(res.data);
+          this.specUtils._getMeUpdatedCrs(res.data.data);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',

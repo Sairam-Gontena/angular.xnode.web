@@ -10,6 +10,9 @@ import { Product } from 'src/models/product';
 import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { MessageTypes } from 'src/models/message-types.enum';
+import { MessagingService } from '../services/messaging.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -19,10 +22,11 @@ import { SpecVersion } from 'src/models/spec-versions';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
+  @Output() viewSummaryPopup = new EventEmitter<any>();
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
   @Input() limitReachedContent: boolean = false;
-
+  showViewSummaryPopup: boolean = false;
   notifications: any[] = [];
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -44,7 +48,10 @@ export class NotificationPanelComponent {
     private storageService: LocalStorageService,
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
-    private specificationService: SpecificationsService
+    private specificationService: SpecificationsService,
+    private conversationService: ConversationHubService,
+    private messagingService: MessagingService,
+    private conversationApi: ConversationHubService
   ) { }
 
   ngOnInit(): void {
@@ -85,17 +92,16 @@ export class NotificationPanelComponent {
   }
 
   navigateToProduct(obj: any): void {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          const product = response.data.data?.filter((item: any) => {
-            return item.id === obj.product_id;
-          })[0];
-          localStorage.setItem('product', JSON.stringify(product));
-          this.prepareNavigation(obj);
-        }
-      });
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        const product = response.data?.filter((item: any) => {
+          return item.id === obj.product_id;
+        })[0];
+        localStorage.setItem('product', JSON.stringify(product));
+        this.prepareNavigation(obj);
+      }
+    });
   }
 
   prepareNavigation(obj: any): void {
@@ -117,31 +123,29 @@ export class NotificationPanelComponent {
   }
 
   getMeListOfProducts(): void {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-        }
-      });
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        localStorage.setItem('meta_data', JSON.stringify(response.data));
+      }
+    });
   }
   getMeMetaData() {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-          this.router.navigate(['/dashboard']);
-          this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
-        } else if (response?.status !== 200) {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.detail,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        localStorage.setItem('meta_data', JSON.stringify(response.data));
+        this.router.navigate(['/dashboard']);
+        this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
+      } else if (response?.status !== 200) {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: response?.data?.detail,
+        });
+      }
+      this.utils.loadSpinner(false);
+    })
       .catch((error) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -152,76 +156,110 @@ export class NotificationPanelComponent {
       });
   }
 
+  goToResources(notif: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.MAKE_TRUST_URL,
+      msgData: { isNaviExpanded: true, showDockedNavi: true, resource_id: notif.resource_id, componentToShow: 'Resources' },
+    });
+    this.closeNotificationPanel.emit(true)
+  }
+
+  viewInChat(notif?: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.MAKE_TRUST_URL,
+      msgData: { isNaviExpanded: true, 
+        showDockedNavi: true, 
+        conversation_id: notif.conversation_id, 
+        componentToShow: 'Chat' },
+    });
+    this.closeNotificationPanel.emit(true)
+  }
+
+  startNewChat(notif?: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.NAVI_CONTAINER_STATE,
+      msgData: { naviContainerState: 'EXPAND', resource_id: notif.resource_id },
+    });
+    this.closeNotificationPanel.emit(true)
+  }
+
   goToSpec(obj: any) {
     obj.productId = obj.productId ? obj.productId : obj.product_id;
     obj.versionId = obj.versionId ? obj.versionId : obj.version_id;
     this.utils.loadSpinner(true);
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          const metaData: any = response.data.data;
-          this.storageService.saveItem(
-            StorageKeys.MetaData,
-            response.data.data
-          );
-          let product = metaData.find((x: any) => x.id === obj.productId);
-          localStorage.setItem('record_id', product.id);
-          this.storageService.saveItem(StorageKeys.Product, product);
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          if (!window.location.hash.includes('#/specification')) {
-            this.closeNotificationPanel.emit(true);
-            const queryParams = {
-              productId: obj.productId,
-              versionId: obj.versionId,
-              template_type: obj.template_type ? obj.template_type : obj.entity,
-            };
-            this.router.navigate(['/specification'], { queryParams });
-          } else {
-            this.specificationService.getVersions(
-              product?.id,
-              (versions: SpecVersion[]) => {
-                this.specificationService.getMeSpecInfo(
-                  {
-                    productId: product?.id,
-                    versionId: obj.versionId,
-                  },
-                  (specList) => {
-                    if (specList) {
-                      this.storageService.saveItem(
-                        StorageKeys.SpecVersion,
-                        versions.filter((version: SpecVersion) => {
-                          return version.id === obj.versionId;
-                        })[0]
-                      );
-                      if (obj.entity === 'UPDATE_SPEC') {
-                        this.specificationService.getMeCrList({
-                          productId: product.id,
-                        });
-                        this.specificationUtils.openConversationPanel({
-                          openConversationPanel: true,
-                          mainTabIndex: 1,
-                          childTabIndex: null,
-                        });
-                      }
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        const metaData: any = response.data;
+        this.storageService.saveItem(
+          StorageKeys.MetaData,
+          response.data
+        );
+        let product = metaData.find((x: any) => x.id === obj.productId);
+        localStorage.setItem('record_id', product.id);
+        this.storageService.saveItem(StorageKeys.Product, product);
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        if (!window.location.hash.includes('#/specification')) {
+          this.closeNotificationPanel.emit(true);
+          this.messagingService.sendMessage({
+            msgType: MessageTypes.CLOSE_NAVI,
+            msgData: 'CLOSE',
+          });
+          this.messagingService.sendMessage({
+            msgType: MessageTypes.PRODUCT_CONTEXT,
+            msgData: true,
+          });
+          const queryParams = {
+            productId: obj.productId,
+            versionId: obj.versionId,
+            template_type: obj.template_type ? obj.template_type : obj.entity,
+          };
+          this.router.navigate(['/specification'], { queryParams });
+        } else {
+          this.specificationService.getVersions(
+            product?.id,
+            (versions: SpecVersion[]) => {
+              this.specificationService.getMeSpecInfo(
+                {
+                  productId: product?.id,
+                  versionId: obj.versionId,
+                },
+                (specList) => {
+                  if (specList) {
+                    this.storageService.saveItem(
+                      StorageKeys.SpecVersion,
+                      versions.filter((version: SpecVersion) => {
+                        return version.id === obj.versionId;
+                      })[0]
+                    );
+                    if (obj.entity === 'UPDATE_SPEC') {
+                      this.specificationService.getMeCrList({
+                        productId: product.id,
+                      });
+                      this.specificationUtils.openConversationPanel({
+                        openConversationPanel: true,
+                        mainTabIndex: 1,
+                        childTabIndex: null,
+                      });
                     }
                   }
-                );
-              }
-            );
-            this.closeNotificationPanel.emit(true);
-          }
-        } else if (response?.status !== 200) {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.detail,
-          });
+                }
+              );
+            }
+          );
+          this.closeNotificationPanel.emit(true);
         }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error) => {
+      } else if (response?.status !== 200) {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: response?.data?.detail,
+        });
+      }
+      this.utils.loadSpinner(false);
+    })
+      .catch((error: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -229,6 +267,7 @@ export class NotificationPanelComponent {
           detail: error,
         });
       });
+
   }
 
   getMeLabel(obj: any) {
@@ -442,8 +481,23 @@ export class NotificationPanelComponent {
     );
   }
 
+
   onClickLaunchProduct(url: any): void {
-    window.open(url, '_blank');
+    this.utils.loadSpinner(true);
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    const body = {
+      "id": product?.id,
+      "url": product?.product_url + '/login?product_id=' + product?.product_id,
+    }
+    this.conversationApi.updateProductUrl(body).then((res: any) => {
+      if (res) {
+        url += '&openExternal=true';
+        window.open(url, '_blank');
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      this.utils.loadSpinner(false);
+    })
   }
 
   navigateToFeedbackList(val: any) {
@@ -460,37 +514,35 @@ export class NotificationPanelComponent {
   }
 
   getMeMetaDataAndStoreTheProduct(product_id: any) {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          const product = response.data.data?.filter((item: any) => {
-            return item.id === product_id;
-          })[0];
-          localStorage.setItem('product', JSON.stringify(product));
-        }
-      });
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        const product = response.data?.filter((item: any) => {
+          return item.id === product_id;
+        })[0];
+        localStorage.setItem('product', JSON.stringify(product));
+      }
+    });
   }
 
   navigateToConversation(val: any) {
     val.productId = val.productId ? val.productId : val.product_id;
     val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          const product = response.data.data?.filter((item: any) => {
-            return item.id === val.productId;
-          })[0];
-          this.storageService.saveItem(StorageKeys.Product, product);
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
-          this.goToConversation(val);
-        }
-      });
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        const product = response.data?.filter((item: any) => {
+          return item.id === val.productId;
+        })[0];
+        this.storageService.saveItem(StorageKeys.Product, product);
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
+        this.goToConversation(val);
+      }
+    });
   }
 
   goToConversation(val: any) {
@@ -575,5 +627,10 @@ export class NotificationPanelComponent {
         reject(error);
       }
     });
+  }
+
+  viewSummary(notif: any): void {
+    this.showViewSummaryPopup = true;
+    this.viewSummaryPopup.emit(notif)
   }
 }

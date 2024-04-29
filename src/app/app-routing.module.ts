@@ -18,19 +18,25 @@ const routes: Routes = [
   {
     path: 'forgot-password/:email',
     loadChildren: () =>
-      import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
-    canActivate: [authGuard]
+      import('./pages/forgot-password/forgotpassword.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+    canActivate: [authGuard],
   },
   {
     path: 'reset-password',
     loadChildren: () =>
-      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule)
+      import('./pages/reset-password/resetpassword.module').then(
+        (m) => m.ResetPasswordModule
+      ),
   },
   {
     path: 'verify-otp/:email',
-    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule),
-    canActivate: [authGuard]
-
+    loadChildren: () =>
+      import('./pages/verify-otp/verify-otp.module').then(
+        (m) => m.VerifyOtpModule
+      ),
+    canActivate: [authGuard],
   },
   {
     path: 'usecases',
@@ -38,15 +44,13 @@ const routes: Routes = [
       import('./pages/use-cases/use-cases.module').then(
         (m) => m.UseCasesModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'publish',
     loadChildren: () =>
       import('./pages/publish/publish.module').then((m) => m.PublishModule),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'configuration/api-integration',
@@ -54,15 +58,13 @@ const routes: Routes = [
       import('./pages/configure/configure.module').then(
         (m) => m.ConfigureModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'overview',
     loadChildren: () =>
       import('./pages/overview/overview.module').then((m) => m.OverViewModule),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'my-products',
@@ -70,8 +72,7 @@ const routes: Routes = [
       import('./pages/my-products/my-products.module').then(
         (m) => m.MyProductsModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'acitvity',
@@ -79,8 +80,7 @@ const routes: Routes = [
       import('./pages/activity-logs/activity-logs.module').then(
         (m) => m.ActivityLogsModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'dashboard',
@@ -88,8 +88,7 @@ const routes: Routes = [
       import('./pages/template-builder/template-builder.module').then(
         (m) => m.TemplateBuilderModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'sample',
@@ -100,8 +99,7 @@ const routes: Routes = [
     path: 'operate',
     loadChildren: () =>
       import('./pages/operate/operate.module').then((m) => m.OperateModule),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'configuration/data-model/overview',
@@ -109,8 +107,7 @@ const routes: Routes = [
       import('./pages/er-modeller/er-modeller.module').then(
         (m) => m.ErModellerModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'workspace',
@@ -155,24 +152,22 @@ const routes: Routes = [
     data: {
       type: 'ExportGetStarted',
     },
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
-  {
-    path: 'x-pilot',
-    loadChildren: () =>
-      import('./pages/navi/navi.module').then((m) => m.NaviModule),
-    canActivate: [authGuard]
+  // {
+  //   path: 'x-pilot',
+  //   loadChildren: () =>
+  //     import('./pages/navi/navi.module').then((m) => m.NaviModule),
+  //   canActivate: [authGuard]
 
-  },
+  // },
   {
     path: 'configuration/workflow/overview',
     loadChildren: () =>
       import('./pages/bpmn-diagram/bpmn-diagram.module').then(
         (m) => m.BpmnDiagramModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'admin/user-invitation',
@@ -180,24 +175,25 @@ const routes: Routes = [
       import('./pages/user-invitation/user-invitation.module').then(
         (m) => m.UserInvitationModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'activity',
-    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
-    canActivate: [authGuard]
-
+    loadChildren: () =>
+      import('./pages/logs/logs.module').then((m) => m.LogsModule),
+    canActivate: [authGuard],
   },
   {
     path: 'operate/change/history-log',
-    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
-    canActivate: [authGuard]
+    loadChildren: () =>
+      import('./pages/logs/logs.module').then((m) => m.LogsModule),
+    canActivate: [authGuard],
   },
   {
     path: 'history-log',
-    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
-    canActivate: [authGuard]
+    loadChildren: () =>
+      import('./pages/logs/logs.module').then((m) => m.LogsModule),
+    canActivate: [authGuard],
   },
   {
     path: 'admin/user-approval',
@@ -205,32 +201,72 @@ const routes: Routes = [
       import('./pages/user-approval/user-approval.module').then(
         (m) => m.UserApprovalModule
       ),
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
-    canActivate: [authGuard]
-
+    canActivate: [authGuard],
   },
   {
     path: 'specification',
-    loadChildren: () => import('./pages/diff-viewer/diff-viewer.module').then((m) => m.DiffViewerModule),
-    canActivate: [authGuard]
+    loadChildren: () =>
+      import('./pages/diff-viewer/diff-viewer.module').then(
+        (m) => m.DiffViewerModule
+      ),
+    canActivate: [authGuard],
   },
   {
     path: 'help-center',
-    loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule),
-    canActivate: [authGuard]
+    loadChildren: () =>
+      import('./pages/help-center/help-center.module').then(
+        (m) => m.HelpCentreModule
+      ),
+    canActivate: [authGuard],
   },
   {
     path: 'feedback-list',
-    loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
+    loadChildren: () =>
+      import('./pages/feedback-list/feedback-list.module').then(
+        (m) => m.FeedbackListModule
+      ),
   },
   {
     path: 'specification1',
-    loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
+    loadChildren: () =>
+      import('./pages/specifications/specifications.module').then(
+        (m) => m.SpecificationsModule
+      ),
+  },
+  {
+    path: 'agent-playground',
+    loadChildren: () =>
+      import('./pages/agent-hub/agent-hub.module').then(
+        (m) => m.AgentHubModule
+      ),
+  },
+  {
+    path: 'agent-playground/agent/:id',
+    loadChildren: () =>
+      import('./pages/agent-details/agent-details.module').then(
+        (m) => m.AgentDetailsModule
+      ),
+  },
+
+  {
+    path: 'agent-playground/capability/:id',
+    loadChildren: () =>
+      import('./pages/capability-view/capability-view.module').then(
+        (m) => m.CapabilityViewModule
+      ),
+  },
+  { path: 'agent-playground/topic/:id', loadChildren: () => import('./pages/agent-topic/agent-topic.module').then(m => m.AgentTopicModule) },
+  {
+    path: 'create-agent',
+    loadChildren: () =>
+      import('./pages/create-agent/create-agent.module').then(
+        (m) => m.CreateAgentModule
+      ),
   },
   {
     path: '',

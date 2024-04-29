@@ -44,14 +44,14 @@ export class DiffCompComponent implements OnInit {
     onDiff: boolean;
     diffObj?: any;
   }>();
-  selectedText:any;
+  selectedText: any;
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  removeselectedContent:boolean=false;
+  removeselectedContent: boolean = false;
   functionCalled: boolean = false;
   openOverlayPanel: boolean = false;
   ComponentsToExpand = [
@@ -71,6 +71,7 @@ export class DiffCompComponent implements OnInit {
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedWordIndices: any;
+  selectedSpecItem: any;
 
   constructor(
     private storageService: LocalStorageService,
@@ -84,11 +85,11 @@ export class DiffCompComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if (this.contentObj?.content_data_type === 'DASHBOARD') {
+    if (this.contentObj?.content_data_type === 'DASHBOARD' && this.currentUser) {
       this.targetUrl =
         environment.designStudioAppUrl +
         '?email=' +
-        this.product?.email +
+        this.product?.createdBy?.email +
         '&id=' +
         this.product?.id +
         '&version_id=' +
@@ -99,36 +100,43 @@ export class DiffCompComponent implements OnInit {
         true +
         '&isVerified=true' +
         '&userId=' +
-        this.currentUser.id;
+        this.currentUser.user_id;
+      const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+      if (token) {
+        this.targetUrl = this.targetUrl + '&token=' + token;
+      }
       this.makeTrustedUrl();
     }
-    if (this.contentObj?.content_data_type === 'DATA_DICTIONARY') {
+    if (this.contentObj?.content_data_type === 'DATA_DICTIONARY' && this.contentObj?.content) {
       this.stringifyDictionaryObject();
     }
   }
 
-  stringifyDictionaryObject(){
-    this.contentObj.content.forEach((item:any)=>{
-      if('columns' in item){
-        item.columns.forEach((subitem:any)=>{
+  stringifyDictionaryObject() {
+    this.contentObj.content.forEach((item: any) => {
+      if ('columns' in item) {
+        item.columns.forEach((subitem: any) => {
           subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
           subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
         })
       }
-      if('tables' in item){
-        item.tables.forEach((subitem:any)=>{
-            if('columns' in subitem){
-              subitem.columns.forEach((element:any) => {
-                element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-                element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-              });
-            }
+      if ('tables' in item) {
+        item.tables.forEach((subitem: any) => {
+          if ('columns' in subitem) {
+            subitem.columns.forEach((element: any) => {
+              element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+              element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+            });
+          }
         })
       }
     })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['contentObj']?.currentValue) {
+      this.product = this.storageService.getItem(StorageKeys.Product);
+    }
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
@@ -198,6 +206,14 @@ export class DiffCompComponent implements OnInit {
     localStorage.setItem('targetUrl', this.targetUrl);
   }
 
+  async scrollToItem() {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   makeTrustedUrlForDiffView(versionId: any): void {
     let targetUrl =
       environment.designStudioAppUrl +
@@ -213,7 +229,9 @@ export class DiffCompComponent implements OnInit {
       true +
       '&isVerified=true' +
       '&userId=' +
-      this.currentUser.id;
+      this.currentUser.id
+    '&token=' +
+      this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
     this.iframeSrc1 =
       this.domSanitizer.bypassSecurityTrustResourceUrl(targetUrl);
   }
@@ -249,8 +267,8 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  async onselect(data:any){
-    if(data){
+  async onselect(data: any) {
+    if (data) {
       this.selectedText = data.content;
       await new Promise((resolve) => setTimeout(resolve, 500));
       await this.selectionText.toggle(data.event);
@@ -260,5 +278,9 @@ export class DiffCompComponent implements OnInit {
   emptySelectedContent() {
     this.selectedText = '';
     this.selectedWordIndices = [];
+  }
+
+  isArray(data: any): boolean {
+    return Array.isArray(data);
   }
 }

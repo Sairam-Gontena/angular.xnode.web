@@ -1,0 +1,16 @@
+::ng-deep .p-dialog-mask {
+    .customDialog {
+        .p-dialog-header {
+            padding: 1rem;
+        }
+
+        .p-dialog-content {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .p-dialog-footer {
+            padding: 1rem;
+        }
+    }
+}

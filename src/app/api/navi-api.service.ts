@@ -73,6 +73,11 @@ export class NaviApiService extends BaseApiService {
     return this.get(url);
   }
 
+  getSummaryByProductId(productId?: string) {
+    let url = 'navi/get_summary/' + productId;
+    return this.get(url);
+  }
+
   generateSpec(body?: any) {
     let url = 'specs/generate';
     return this.post(url, body);
@@ -81,5 +86,9 @@ export class NaviApiService extends BaseApiService {
   updateSpec(body?: any) {
     let url = 'specs/update';
     return this.post(url, body);
+  }
+  postFile(body: unknown) {
+    const url = 'bot/process_file'
+    return this.post(url, body)
   }
 }

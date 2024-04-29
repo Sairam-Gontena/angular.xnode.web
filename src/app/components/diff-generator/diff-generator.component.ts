@@ -23,12 +23,12 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   @Input() newContent: string = '';
   @Input() oldContent: string = '';
   @Input() onDiff: boolean = false;
-  @Input() keyword:any;
+  @Input() keyword: any;
   @Input() private filename: string = '';
   @Input() format?: DiffFormat;
   @Input() private style: DiffStyle = 'word';
-  @Input() objId:any;
-  @Input() removeselectedContent:any;
+  @Input() objId: any;
+  @Input() removeselectedContent: any;
   @Output() diffChange: EventEmitter<string> = new EventEmitter();
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   @Output() selectedContent: EventEmitter<any> = new EventEmitter();
@@ -36,7 +36,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   diffHTML: string = '';
   selectedText: string = '';
   selectedWordIndices: number[] = [];
-  content:any;
+  content: any;
   openOverlayPanel: boolean = false;
 
   constructor(private diffService: DiffToHtmlService) {}
@@ -46,7 +46,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['oldContent']?.currentValue) {
       this.oldContent = changes['oldContent']?.currentValue;
-      this.content =  this.oldContent;
+      this.content = this.oldContent;
     }
     if (changes['format']?.currentValue) {
       this.format = changes['format']?.currentValue;
@@ -57,9 +57,12 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     if (changes['newContent']?.currentValue) {
       this.newContent = changes['newContent']?.currentValue;
     }
-    if (changes['removeselectedContent']?.currentValue==false||changes['removeselectedContent']?.currentValue==true) {
-      this.selectedText= '';
-      this.selectedWordIndices= [];
+    if (
+      changes['removeselectedContent']?.currentValue == false ||
+      changes['removeselectedContent']?.currentValue == true
+    ) {
+      this.selectedText = '';
+      this.selectedWordIndices = [];
       this.removeselectedContent = false;
     }
     if (
@@ -69,21 +72,22 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     ) {
       this.onDiff = false;
     } else {
-        this.getDiff();
+      this.getDiff();
     }
   }
 
   getDiff() {
     // ============temporary fix================
-    if(typeof this.oldContent!=='string'){
+    if (typeof this.oldContent !== 'string') {
       this.oldContent = '';
-    }if(typeof this.newContent!=='string'){
+    }
+    if (typeof this.newContent !== 'string') {
       this.newContent = '';
     }
     // ============================
     this.diff = this.diffService.getDiff(
-      this.oldContent || '',
       this.newContent || '',
+      this.oldContent || '',
       this.filename
     );
     this.refreshDiffHTML();
@@ -161,10 +165,10 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     if (this.selectedText.length > 0) {
       let selectedContentObj = {
         content: this.selectedText,
-        id:this.objId,
-        event:event
-      }
-    this.selectedContent.emit(selectedContentObj);
+        id: this.objId,
+        event: event,
+      };
+      this.selectedContent.emit(selectedContentObj);
     }
   }
 

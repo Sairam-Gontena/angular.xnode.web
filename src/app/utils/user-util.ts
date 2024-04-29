@@ -7,6 +7,9 @@ export interface User {
   role?: string;
   user_id?: string;
   account_id?: string;
+  username?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export class UserUtil {

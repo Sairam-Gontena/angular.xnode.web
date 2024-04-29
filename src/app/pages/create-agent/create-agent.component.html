@@ -1,0 +1,95 @@
+<div>
+  <div class="border-bottom-2 border-white-alpha-10">
+    <div class="flex justify-content-between p-4">
+      <div class="flex gap-3">
+        <div class="new-agent-status"></div>
+        <div>
+          <div class="font-semibold text-xl">New Agent</div>
+          <div class="flex align-items-center gap-2 mt-2">
+            <div class="draft-status"></div>
+            <div class="text-sm font-normal">Draft</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-buttons">
+        <p-button type="button" label="Create" styleClass="header-inactive-toggle-btn"
+          (click)="toggleActive(true)"></p-button>
+        <p-button type="button" label="Configure" styleClass="header-active-toggle-btn"
+          (click)="toggleActive(false)"></p-button>
+      </div>
+
+      <div class="flex align-items-center gap-3">
+        <p-button label="Preview" icon="pi pi-external-link" iconPos="right"
+          styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-3 py-2"
+          [outlined]="true"></p-button>
+
+        <p-button label="Save"
+          styleClass="text-white text-sm line-height-1 font-semibold border-white-alpha-70 border-round-2xl px-3 py-2"></p-button>
+
+        <i class="pi pi-times text-white cursor-pointer" (click)="createAgentModel.goBackHandler()"></i>
+      </div>
+    </div>
+  </div>
+
+  <p-tabView (onChange)="createAgentModel.switchHeaders($event)" [(activeIndex)]="createAgentModel.activeIndex">
+    <ng-container *ngFor="let tabItem of createAgentModel.tabItems">
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <span>{{tabItem.header.title}}</span>
+        </ng-template>
+        <ng-template pTemplate="content" [ngSwitch]="tabItem.tabContent.id">
+          <ng-container *ngSwitchCase="'overview'">
+            <ng-container [ngTemplateOutlet]="overview"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'instructions'">
+            <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'capabilities'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'topic'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'prompts'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'knowledge'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'model'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'tool'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+        </ng-template>
+      </p-tabPanel>
+    </ng-container>
+  </p-tabView>
+</div>
+
+<!-- dynamic Table -->
+<ng-template #dynamicTable>
+  <div class="table-height">
+    <xnode-dynamic-table [inputData]="createAgentModel.tableData" [cols]="createAgentModel.columns"
+      [tableInfo]="createAgentModel.tableInfo" [showColumnFilterOption]="createAgentModel.showColumnFilterOption"
+      [tableRowActionOptions]="createAgentModel.tableRowActionOptions" [paginatorInfo]="createAgentModel.paginatorInfo"
+      [searchFilterOptions]="createAgentModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+      (paginatorChangeEvent)="createAgentModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+  </div>
+</ng-template>
+
+<!-- overview html -->
+<ng-template #overview>
+  <div class="table-height">
+    <xnode-agent-overview formType="overview"></xnode-agent-overview>
+  </div>
+</ng-template>
+
+<!-- instruction html -->
+<ng-template #instruction>
+  <div class="table-height">
+    <xnode-agent-overview formType="instruction"></xnode-agent-overview>
+  </div>
+</ng-template>
