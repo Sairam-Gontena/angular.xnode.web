@@ -5,6 +5,7 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { MyProductsComponent } from './my-products.component';
 import { MyProductsRoutingModule } from './my-products-routing.module';
 import { ProductCardsComponent } from './product-cards/product-cards.component';
+import { TimeAgoPipe } from '../../pipes/timeAgo.pipe';
 
 @NgModule({
   declarations: [
@@ -17,5 +18,6 @@ import { ProductCardsComponent } from './product-cards/product-cards.component';
     SharedModule,
     SharedComponentModule
   ],
+  providers: [TimeAgoPipe]
 })
 export class MyProductsModule { }
