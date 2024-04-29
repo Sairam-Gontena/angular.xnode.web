@@ -10,6 +10,7 @@ import { TopicOverviewComponent } from './module/agent-topic/component/overview/
 import { ModelOverviewComponent } from './module/agent-model/component/overview/overview.component';
 import { CapabilityOverviewComponent } from './module/agent-capability/component/overview/overview.component';
 import { PromptOverviewComponent } from './module/agent-prompt/component/prompt-overview/prompt-overview.component';
+import { ToolOverviewComponent } from './module/agent-tools/component/tool-overview/tool-overview.component';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -145,6 +146,19 @@ export class AgentHubComponent implements OnInit {
             header: {
               headerText: "Add Model",
               subHeaderText: "Please enter the details below to add a model."
+            }
+          }
+          this.commonDialog(dialogDetail);
+        }
+        break;
+      case 'Tool':
+        if (eventData.eventType === "CREATE") {
+          dialogDetail.component = ToolOverviewComponent;
+          dialogDetail.configDetail.data = {
+            componentType: eventData.eventType,
+            header: {
+              headerText: "Add Tool",
+              subHeaderText: "Please enter the details below to add a tool."
             }
           }
           this.commonDialog(dialogDetail);
