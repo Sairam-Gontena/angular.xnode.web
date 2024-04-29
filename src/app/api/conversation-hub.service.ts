@@ -17,7 +17,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 
 export class ConversationHubService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.conversationApiUrl;
+    return environment.apiUrl + environment.endpoints.conversation;
   }
   constructor(private httpClient: HttpClient, private authApiService: AuthApiService, private storageService: LocalStorageService) {
     super();
@@ -110,6 +110,6 @@ export class ConversationHubService extends BaseApiService {
   }
 
   getRecentActivities(userId: any) {
-    return from(this.get(`user-activity?`, { userId }));
+    return from(this.get(`/user-activity?`, { userId }));
   }
 }

@@ -8,7 +8,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class ConversationApiService extends BaseApiService {
     override get apiUrl(): string {
-        return environment.conversationApiUrl;
+        return environment.apiUrl + environment.endpoints.conversation;
     }
 
     constructor() {

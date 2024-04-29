@@ -7,7 +7,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class PublishAppApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.publishApiUrl;
+    return environment.apiUrl + environment.endpoints.publish;
   }
   constructor() {
     super();
