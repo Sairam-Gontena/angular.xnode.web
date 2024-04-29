@@ -62,16 +62,13 @@ export class AgentHubComponent implements OnInit {
     }
   }
 
-  goBackBreadCrumbsHandler(event: any) {
-    // this.breadCrumbsAction.activeBreadCrumbsItem = ""
-    const newItem = this.agentHubDetailObj.breadCrumbsAction.breadcrumb;
-    const indexToDelete = event.item.index + 1;
-    newItem.splice(indexToDelete);
-    this.agentHubDetailObj.breadCrumbsAction.isBreadCrumbActive = false;
-    // Show viewALl button
-    // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
-    this.agentHubDetailObj.breadCrumbsAction.breadcrumb = [...newItem];
-  }
+  // goBackBreadCrumbsHandler(event: any) {
+  //   const newItem = this.agentHubDetailObj.breadCrumbsAction.breadcrumb;
+  //   const indexToDelete = event.item.index + 1;
+  //   newItem.splice(indexToDelete);
+  //   this.agentHubDetailObj.breadCrumbsAction.isBreadCrumbActive = false;
+  //   this.agentHubDetailObj.breadCrumbsAction.breadcrumb = [...newItem];
+  // }
 
   createAgentHandler() {
     this.router.navigate(['/create-agent']);
@@ -177,10 +174,13 @@ export class AgentHubComponent implements OnInit {
           this.createAgentHandler();
           break;
         case 'breadcrum':
-          this.goBackBreadCrumbsHandler(event.eventData);
+          // this.goBackBreadCrumbsHandler(event.eventData);
           break;
         case 'actionButton':
           this.continueCreateActionButton(event.eventData)
+          break;
+        case 'BREADCRUM':
+          this.router.navigate([event.eventData.routelink]);
           break;
         default:
           break;

@@ -31,9 +31,8 @@ export class AgentHeaderComponent {
   }
 
   //bread crumb event
-  breadCrumbsHandler(event: any) {
-    let eventTypeData: any = { eventType: "breadcrum", eventData: event };
-    this.headerClickHandler.emit(eventTypeData);
+  breadCrumbsHandler(eventDetail: any) {
+    this.headerClickHandler.emit(eventDetail);
   }
 
   //create agent event

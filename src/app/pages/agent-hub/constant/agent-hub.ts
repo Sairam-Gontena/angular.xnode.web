@@ -49,7 +49,7 @@ export const agentHubDetail = {
     actionButtonOption: new Array(),
     breadCrumbsAction: {
         isBreadCrumbActive: false,
-        breadcrumb: [{ label: 'Agent Hub', index: 0 }]
+        breadcrumb: []
     }
 }
 

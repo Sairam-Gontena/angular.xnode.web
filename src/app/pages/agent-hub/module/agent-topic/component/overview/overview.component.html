@@ -29,23 +29,31 @@
             </div>
         </ng-container>
 
-        <div class="flex align-items-center mb-3">
-            <label class="w-5" for="name">Name</label>
-            <div class="w-7">
+        <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="name">Name</label>
+            <div class="w-full">
                 <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name" formControlName="name"
                     placeholder="Name" />
             </div>
         </div>
-        <div class="flex align-items-center mb-3">
-            <label class="w-5" for="description">Description</label>
-            <div class="w-7">
+        <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="description">Description</label>
+            <div class="w-full">
                 <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
                     formControlName="description" placeholder="Description"></textarea>
             </div>
         </div>
-        <div class="flex align-items-center mb-3">
-            <label class="w-5" for="parentCapability">Parent Capability</label>
-            <div class="w-7">
+        <!-- <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="model">LinkParent</label>
+            <div class="w-full">
+                <p-dropdown styleClass="w-full" formControlName="link_parent" [filter]="true" filterBy="name"
+                    [options]="modelOptionList.optionList" optionLabel="name"
+                    placeholder="Enter Id or search for existing"></p-dropdown>
+            </div>
+        </div> -->
+        <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="parentCapability">Parent Capability</label>
+            <div class="w-full">
                 <input pInputText type="text" class="w-full p-2 border-1 border-round" id="parentCapability"
                     formControlName="parentCapability" placeholder="Parent Capability" />
             </div>

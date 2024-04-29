@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AgentTopicComponent } from './agent-topic.component';
 
-const routes: Routes = [{ path: '', component: AgentTopicComponent }];
+const routes: Routes = [{ path: '', data: { breadcrumb: null }, component: AgentTopicComponent },
+{ path: ':id', data: { breadcrumb: 'Topics' }, component: AgentTopicComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

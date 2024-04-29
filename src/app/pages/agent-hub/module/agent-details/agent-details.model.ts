@@ -52,16 +52,8 @@ export class AgentDetailsModel {
     filter: false,
     showToggleAll: false,
     showHeader: false,
-    options: [
-      {
-        idx: 0,
-        header: 'All',
-      },
-      {
-        idx: 1,
-        header: 'My Agents',
-      },
-    ],
+    options: [{ idx: 0, header: 'All' },
+    { idx: 1, header: 'My Agents' }],
     placeholder: 'All',
     optionLabel: 'header',
     styleClass: 'custom-multiselect',
@@ -77,51 +69,35 @@ export class AgentDetailsModel {
     styleClass: 'showColumnFilterOption',
     changeHandler: this.onShowDynamicColumnFilter.bind(this),
   };
-  tableRowActionOptions = [
-    {
-      label: 'View',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
-    {
-      label: 'Duplicate',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
-    {
-      label: 'Archieve',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
-    {
-      label: 'Delete',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
-  ];
+  tableRowActionOptions = [{
+    label: 'View', icon: '',
+    command: (event: any) => {
+      console.log(event, 'event');
+    }
+  }, {
+    label: 'Duplicate', icon: '',
+    command: (event: any) => {
+      console.log(event, 'event');
+    }
+  }, {
+    label: 'Archieve', icon: '',
+    command: (event: any) => {
+      console.log(event, 'event');
+    }
+  }, {
+    label: 'Delete', icon: '',
+    command: (event: any) => {
+      console.log(event, 'event');
+    }
+  }];
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
   activeIndex: number = 0;
   userInfo: any;
   headerActionBtnOption = agentHeaderActionOptions;
-  breadCrumbsAction: BreadCrumbsAction = {
-    isBreadCrumbActive: true,
-    breadcrumb: [
-      {
-        label: 'Agent Hub',
-        index: 0,
-        path: '/agent-playground'
-      },
-    ],
-    // activeBreadCrumbsItem: "",
-  };
+  // breadCrumbsAction: BreadCrumbsAction = {
+  //   isBreadCrumbActive: true,
+  //   breadcrumb: [{ label: 'Agent Hub', index: 0, path: '/agent-playground' }]
+  // };
   /**Overview Property: Using for showing details of the Agent or related property */
   overviewTabItem = {
     showTab: false,
@@ -223,22 +199,21 @@ export class AgentDetailsModel {
     // ];
   }
 
-  goBackBreadCrumbsHandler(event: any) {
-    // this.breadCrumbsAction.activeBreadCrumbsItem = ""
-    const newItem = this.breadCrumbsAction.breadcrumb;
-    const indexToDelete = event.item.index + 1;
-    newItem.splice(indexToDelete);
-    this.breadCrumbsAction.isBreadCrumbActive = true;
+  // goBackBreadCrumbsHandler(event: any) {
+  //   const newItem = this.breadCrumbsAction.breadcrumb;
+  //   const indexToDelete = event.item.index + 1;
+  //   newItem.splice(indexToDelete);
+  //   this.breadCrumbsAction.isBreadCrumbActive = true;
 
-    if (event?.item?.path) {
-      this.router.navigate([event.item.path]);
-    }
+  //   if (event?.item?.path) {
+  //     this.router.navigate([event.item.path]);
+  //   }
 
-    // Show viewALl button
-    // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
+  //   // Show viewALl button
+  //   // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
 
-    this.breadCrumbsAction.breadcrumb = [...newItem];
-  }
+  //   this.breadCrumbsAction.breadcrumb = [...newItem];
+  // }
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
@@ -347,8 +322,8 @@ export class AgentDetailsModel {
         this.agentHubDetail.showActionButton = true;
         this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
 
-        this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb,
-        { label: response?.name, index: this.breadCrumbsAction.breadcrumb.length }]
+        // this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb,
+        // { label: response?.name, index: this.breadCrumbsAction.breadcrumb.length }]
         console.log(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
@@ -419,7 +394,7 @@ export class AgentDetailsModel {
   //agent header Event
   agentheaderEvent(event: any) {
     if (event.eventType === "breadcrum") {
-      this.goBackBreadCrumbsHandler(event.data);
+      // this.goBackBreadCrumbsHandler(event.data);
     }
   }
 
