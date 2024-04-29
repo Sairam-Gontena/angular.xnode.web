@@ -181,7 +181,7 @@ export class AgentDetailsModel {
         this.agentHubService.setAgentHeader(agentHubDetailObj);
         this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
       }
-      this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
+      this.router.navigate(['/agent-playground/agent', this.tabItems[this.activeIndex].identifier, item?.id]);
     }
 
     // Update breadcrumbs

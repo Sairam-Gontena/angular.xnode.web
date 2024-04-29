@@ -42,7 +42,7 @@ export class BreadcrumbsComponent {
 
   //on change event handler
   onChangeHandler(eventData: any) {
-    const eventDetail: any = { eventType: 'BREADCRUM', eventData: eventData.item }
+    const eventDetail: any = { eventType: 'breadcrum', eventData: eventData.item }
     this.changeEvent.emit(eventDetail);
   }
 

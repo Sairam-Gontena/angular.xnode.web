@@ -174,13 +174,11 @@ export class AgentHubComponent implements OnInit {
           this.createAgentHandler();
           break;
         case 'breadcrum':
+          this.router.navigate([event.eventData.routelink]);
           // this.goBackBreadCrumbsHandler(event.eventData);
           break;
         case 'actionButton':
           this.continueCreateActionButton(event.eventData)
-          break;
-        case 'BREADCRUM':
-          this.router.navigate([event.eventData.routelink]);
           break;
         default:
           break;
