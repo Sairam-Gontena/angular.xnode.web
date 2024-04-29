@@ -14,7 +14,7 @@ export const environment = {
     publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/', //for now we have only dev url
     uigenApiUrl: 'https://beta-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://beta-xnode-xflows.azurewebsites.net/',
-    webSocketUrl: 'https://notify-now.azurewebsites.net',
+    webSocketUrl: 'https://notify-now-us.azurewebsites.net',
     webSocketNotifier: 'beta-xnode-notifier',
     branchName: 'beta',
     projectName: 'xnode-beta',
