@@ -3,10 +3,8 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
-  - dev
-  - release-qa
-  - release-demo
-  - release-beta
+  - APIM-int
+
 
 stages:
   - stage: build
@@ -31,7 +29,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/APIM-int'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -39,65 +37,65 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/APIM-int'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
-              WebAppName: 'dev-xnode'
+              WebAppName: 'apim-frontend'
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
 
-          - task: Bash@3
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
-            displayName: "Create Build"
-            inputs:
-              targetType: 'inline'
-              script: 'npm run build:qa'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+          # - task: Bash@3
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
+          #   displayName: "Create Build"
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'npm run build:qa'
+          #     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-          - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
-            displayName: "Deploy to Azure WebApp"
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'xnode-spn'
-              appType: 'webAppLinux'
-              WebAppName: 'qa-xnode'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+          # - task: AzureRmWebAppDeployment@4
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
+          #   displayName: "Deploy to Azure WebApp"
+          #   inputs:
+          #     ConnectionType: 'AzureRM'
+          #     azureSubscription: 'xnode-spn'
+          #     appType: 'webAppLinux'
+          #     WebAppName: 'qa-xnode'
+          #     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
             
-          - task: Bash@3
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
-            displayName: "Create Build"
-            inputs:
-              targetType: 'inline'
-              script: 'npm run build:demo'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+          # - task: Bash@3
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
+          #   displayName: "Create Build"
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'npm run build:demo'
+          #     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-          - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
-            displayName: "Deploy to Azure WebApp"
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'xnode-spn'
-              appType: 'webAppLinux'
-              WebAppName: 'demo-xnode'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+          # - task: AzureRmWebAppDeployment@4
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
+          #   displayName: "Deploy to Azure WebApp"
+          #   inputs:
+          #     ConnectionType: 'AzureRM'
+          #     azureSubscription: 'xnode-spn'
+          #     appType: 'webAppLinux'
+          #     WebAppName: 'demo-xnode'
+          #     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
             
-          - task: Bash@3
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
-            displayName: "Create Build"
-            inputs:
-              targetType: 'inline'
-              script: 'npm run build:beta'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+          # - task: Bash@3
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+          #   displayName: "Create Build"
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'npm run build:beta'
+          #     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-          - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
-            displayName: "Deploy to Azure WebApp"
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'xnode-spn'
-              appType: 'webAppLinux'
-              WebAppName: 'beta-xnode'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+          # - task: AzureRmWebAppDeployment@4
+          #   condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+          #   displayName: "Deploy to Azure WebApp"
+          #   inputs:
+          #     ConnectionType: 'AzureRM'
+          #     azureSubscription: 'xnode-spn'
+          #     appType: 'webAppLinux'
+          #     WebAppName: 'beta-xnode'
+          #     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
