@@ -89,7 +89,7 @@
                             <div class="">{{data?.modifiedOn | timeAgo}}</div>
                         </div>
                         <div class="text-align-center pt-3">
-                            <p-button label="View in Chat" (onClick)="$event.stopPropagation();onClickProductChat.emit(data)" [outlined]="true" [rounded]="true" severity="info"></p-button>
+                            <p-button class="view-button" label="View in Chat" (onClick)="$event.stopPropagation();onClickProductChat.emit(data)" [outlined]="true" [rounded]="true" severity="info"></p-button>
                         </div>
                     </div>
                 </div>
