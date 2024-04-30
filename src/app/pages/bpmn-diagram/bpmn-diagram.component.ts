@@ -453,7 +453,7 @@ export class BpmnDiagramComponent
 
   getOverview() {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id ,userRole:'all' }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
