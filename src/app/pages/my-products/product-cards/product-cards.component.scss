@@ -370,6 +370,12 @@
 //     padding: 1rem;
 // }
 
+.view-button {
+    width: 100%;
+    display: grid;
+    height: 35px;
+}
+
 :host ::ng-deep .import-btn {
     background-color: #EFEEEE;
     color: #4B4B4B;
@@ -385,11 +391,16 @@
     font-weight: 600;
 }
 
+:host ::ng-deep .view-button .p-button {
+    border: 1px solid grey;
+}
+
 :host::ng-deep.p-avatar .p-avatar-text {
     font-size: 11px;
 }
 
 .title-container {
+    text-wrap: balance;
     display: contents;
     flex: 1;
     white-space: nowrap;
