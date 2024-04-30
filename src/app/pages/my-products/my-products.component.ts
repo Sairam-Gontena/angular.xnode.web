@@ -381,7 +381,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id ,userRole:'all'}).then((response: any) => {
       this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data) {
         let user_audit_body = {

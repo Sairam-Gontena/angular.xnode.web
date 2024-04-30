@@ -93,7 +93,7 @@ export class NotificationPanelComponent {
 
   navigateToProduct(obj: any): void {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all'  }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === obj.product_id;
@@ -124,7 +124,7 @@ export class NotificationPanelComponent {
 
   getMeListOfProducts(): void {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all' }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
       }
@@ -132,7 +132,7 @@ export class NotificationPanelComponent {
   }
   getMeMetaData() {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all'  }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
         this.router.navigate(['/dashboard']);
@@ -167,9 +167,9 @@ export class NotificationPanelComponent {
   viewInChat(notif?: any): void {
     this.messagingService.sendMessage({
       msgType: MessageTypes.MAKE_TRUST_URL,
-      msgData: { isNaviExpanded: true, 
-        showDockedNavi: true, 
-        conversation_id: notif.conversation_id, 
+      msgData: { isNaviExpanded: true,
+        showDockedNavi: true,
+        conversation_id: notif.conversation_id,
         componentToShow: 'Chat' },
     });
     this.closeNotificationPanel.emit(true)
@@ -188,7 +188,7 @@ export class NotificationPanelComponent {
     obj.versionId = obj.versionId ? obj.versionId : obj.version_id;
     this.utils.loadSpinner(true);
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all'  }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const metaData: any = response.data;
         this.storageService.saveItem(
@@ -515,7 +515,7 @@ export class NotificationPanelComponent {
 
   getMeMetaDataAndStoreTheProduct(product_id: any) {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all'  }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === product_id;
@@ -530,7 +530,7 @@ export class NotificationPanelComponent {
     val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all'  }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === val.productId;
