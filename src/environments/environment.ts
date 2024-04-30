@@ -5,7 +5,7 @@ export const environment = {
     endpoints: {
         navi: 'navi-api',
         auth: 'auth-api',
-        conversation: 'conversation-api',
+        conversation: 'conversations-api',
         spec: 'spec-api',
         userUtil: 'userutil-api',
         common: 'common-api',
