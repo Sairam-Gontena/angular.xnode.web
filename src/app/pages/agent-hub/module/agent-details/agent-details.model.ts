@@ -1,14 +1,12 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
+import { CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
 import dynamicTableColumnData from '../../../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { agentName } from '../../../agent-hub/agent-hub.constant';
-import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 import { TabViewChangeEvent } from 'primeng/tabview';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { OnInit } from '@angular/core';
 import { InitialPaginatorInfo, agentHeaderActionOptions } from '../../constant/agent-hub';
 
 export class AgentDetailsModel {
@@ -94,43 +92,6 @@ export class AgentDetailsModel {
   activeIndex: number = 0;
   userInfo: any;
   headerActionBtnOption = agentHeaderActionOptions;
-  // breadCrumbsAction: BreadCrumbsAction = {
-  //   isBreadCrumbActive: true,
-  //   breadcrumb: [{ label: 'Agent Hub', index: 0, path: '/agent-playground' }]
-  // };
-  /**Overview Property: Using for showing details of the Agent or related property */
-  overviewTabItem = {
-    showTab: false,
-    activeIndex: 0,
-    tabItems: [
-      { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
-      { idx: 1, title: 'Instructions', value: 'instructions', identifier: 'instruction' }
-    ],
-    tabSwitchHandler: () => {
-      this.viewHandler(this.currentActiveRowData)
-    }
-  }
-  currentActiveRowData: any;
-  queryparamInfo!: IQueryParams; // Active query params property
-  dynamicFormBindingKeys: any // Define form field.
-  overviewInstructionForm: any = {
-    enableOverview: false,
-    enableInstruction: false,
-    overviewInstructionData: ""
-  };
-  promptModalShow = false;
-  capabilityModalShow = false;
-  topicModalShow = false;
-  isFormEditable = false;
-  showAgentDetailsContent = true
-  rowViewData = {
-    capability: {
-      showDetail: false,
-      showHeader: false,
-      showTab: true,
-      requestedId: ''
-    }
-  }
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -143,35 +104,6 @@ export class AgentDetailsModel {
   }
 
   viewHandler(item: any) {
-    if (this.activeIndex == 2) {
-      // Handle Capability case
-      this.rowViewData.capability.showDetail = true
-      this.rowViewData.capability.requestedId = item.id
-      this.showAgentDetailsContent = false
-    } else if (this.activeIndex == 3) {
-      // Handle  Topic Case
-    } else if (this.activeIndex == 4) {
-      // Handle Prompt Case
-      const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-      if (overViewTabIdentifier === "overview") {
-        this.overviewInstructionForm.enableOverview = true;
-        this.overviewInstructionForm.enableInstruction = false;
-      } else if (overViewTabIdentifier === "instruction") {
-        this.overviewInstructionForm.enableInstruction = true;
-        this.overviewInstructionForm.enableOverview = false;
-      }
-      this.overviewInstructionForm.overviewInstructionData = item;
-      // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-      this.currentActiveRowData = item;
-      this.overviewTabItem.showTab = true;
-    } else if (this.activeIndex == 5) {
-      // Handle Knowledge case
-    } else if (this.activeIndex == 6) {
-      // Handle Model Case
-    } else if (this.activeIndex == 7) {
-      // Handle Tool Case
-    }
-
     if (this.activeIndex > 1) {
       let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
       if (agentHubDetailObj) {
@@ -183,37 +115,7 @@ export class AgentDetailsModel {
       }
       this.router.navigate(['/agent-playground/agent', this.tabItems[this.activeIndex].identifier, item?.id]);
     }
-
-    // Update breadcrumbs
-    // let breadcrumbItem = this.tabItems[this.activeIndex];
-    // const newPayload = [{
-    //   label: breadcrumbItem.title,
-    //   index: this.breadCrumbsAction.breadcrumb.length,
-    // }, {
-    //   label: item?.name,
-    //   index: this.breadCrumbsAction.breadcrumb.length + 1
-    // }];
-    // this.breadCrumbsAction.breadcrumb = [
-    //   ...this.breadCrumbsAction.breadcrumb,
-    //   ...newPayload,
-    // ];
   }
-
-  // goBackBreadCrumbsHandler(event: any) {
-  //   const newItem = this.breadCrumbsAction.breadcrumb;
-  //   const indexToDelete = event.item.index + 1;
-  //   newItem.splice(indexToDelete);
-  //   this.breadCrumbsAction.isBreadCrumbActive = true;
-
-  //   if (event?.item?.path) {
-  //     this.router.navigate([event.item.path]);
-  //   }
-
-  //   // Show viewALl button
-  //   // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
-
-  //   this.breadCrumbsAction.breadcrumb = [...newItem];
-  // }
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
@@ -356,48 +258,4 @@ export class AgentDetailsModel {
       // Handle the error appropriately
     }
   }
-
-  addPrompt() {
-    this.promptModalShow = true
-  }
-
-
-  onEditSaveHandler(formData: any) {
-    const activeTab = this.tabItems[this.activeIndex].identifier
-
-    if (this.isFormEditable) {
-      let urlParam = {
-        url: '',
-        data: {}
-      }
-
-      if (activeTab == agentName.prompt) {
-        const id = formData?.id
-
-        delete formData?.id
-        urlParam.url = `agent/update_prompt/${id}/${formData.version}`
-        urlParam.data = formData
-      }
-
-
-      this.agentHubService.updateData(urlParam).subscribe({
-        next: (response: any) => {
-          console.log("responseData", response)
-        }, error: (error: any) => {
-          console.log("responseData", error)
-        }
-      })
-    }
-    this.isFormEditable = !this.isFormEditable
-  }
-
-  //agent header Event
-  agentheaderEvent(event: any) {
-    if (event.eventType === "breadcrum") {
-      // this.goBackBreadCrumbsHandler(event.data);
-    }
-  }
-
-
-
 }

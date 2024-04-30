@@ -1,7 +1,7 @@
 <div class="w-full">
-  <ng-container *ngIf="agentDetailsModel.showAgentDetailsContent">
-    <p-tabView (onChange)="agentDetailsModel.onTabSwitchHandler($event)" [(activeIndex)]="agentDetailsModel.activeIndex"
-      *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock">
+  <ng-container>
+    <p-tabView (onChange)="agentDetailsModel.onTabSwitchHandler($event)"
+      [(activeIndex)]="agentDetailsModel.activeIndex">
       <ng-container *ngFor="let tabItem of agentDetailsModel.tabItems">
         <p-tabPanel>
           <ng-template pTemplate="header">
@@ -37,17 +37,8 @@
       </ng-container>
     </p-tabView>
 
-    <ng-template #overviewBlock>
-      <p-tabView styleClass="pt-3 px-6" [(activeIndex)]="agentDetailsModel.overviewTabItem.activeIndex"
-        (onChange)="agentDetailsModel.overviewTabItem.tabSwitchHandler()">
-        <p-tabPanel *ngFor="let tab of agentDetailsModel.overviewTabItem.tabItems; let i = index" [header]="tab.title">
-        </p-tabPanel>
-      </p-tabView>
-    </ng-template>
-
     <ng-template #dynamicTable>
-      <div class="w-full table-height"
-        *ngIf="agentDetailsModel.activeIndex > 1 && !agentDetailsModel.overviewTabItem.showTab">
+      <div class="w-full table-height" *ngIf="agentDetailsModel.activeIndex > 1">
         <xnode-dynamic-table [inputData]="agentDetailsModel.tableData" [cols]="agentDetailsModel.columns"
           [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
           [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
@@ -74,33 +65,4 @@
         [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
   </ng-template>
-
-
-  <div class="table-height" *ngIf="agentDetailsModel.overviewTabItem.showTab">
-    <xnode-prompt-overview [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
-      [formEditable]="agentDetailsModel.isFormEditable"
-      (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview>
-  </div>
-
-
-  <!-- NOTE: Remove below code and its property -->
-  <!-- <div>
-    <xnode-capability-details *ngIf="agentDetailsModel.rowViewData.capability.showDetail"
-      [rowViewData]="agentDetailsModel.rowViewData.capability"></xnode-capability-details>
-  </div> -->
-
-  <!-- <xnode-prompt-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
-    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"
-    [formEditable]="agentDetailsModel.isFormEditable"
-    (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-prompt-overview> -->
-
-  <xnode-create-prompt-modal *ngIf="agentDetailsModel.promptModalShow"
-    [(display)]="agentDetailsModel.promptModalShow"></xnode-create-prompt-modal>
-
-  <xnode-create-capability-modal *ngIf="agentDetailsModel.capabilityModalShow"
-    [(display)]="agentDetailsModel.capabilityModalShow"></xnode-create-capability-modal>
-
-  <!-- <xnode-create-topic-modal *ngIf="agentDetailsModel.topicModalShow"
-    [(display)]="agentDetailsModel.topicModalShow"></xnode-create-topic-modal> -->
-
 </div>
