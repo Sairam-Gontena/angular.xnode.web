@@ -78,18 +78,12 @@ import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dyna
 import { XnodeCommonModalComponent } from './component/xnode-common-modal/xnode-common-modal.component';
 import { ShareLinkComponent } from './component/share-link/share-link.component';
 import { PromptOverviewComponent } from '../components/agent-hub/create-agent/prompt-overview/prompt-overview.component';
-import { CreatePromptModalComponent } from '../components/agent-hub/create-prompt-modal/create-prompt-modal.component';
-import { CreateCapabilityModalComponent } from '../components/agent-hub/create-capability-modal/create-capability-modal.component';
-import { CreateTopicModalComponent } from '../components/agent-hub/create-topic-modal/create-topic-modal.component';
 import { InActiveTimeoutPopupComponent } from '../components/inactive-timeout-popup/inactive-timeout-popup.component';
 import { ResourcesComponent } from '../components/resources/resources.component';
 import { ResourceDetailComponent } from '../components/resources/resource-detail/resource-detail.component';
 import { ContentGridComponent } from '../components/resources/content-grid/content-grid.component';
 import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
-import { CapabilityDetailsComponent } from '../components/agent-hub/capability-details/capability-details.component';
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
-import { ToolsDetailsComponent } from '../components/agent-hub/tools-details/tools-details.component';
-import { CreateToolModalComponent } from '../components/agent-hub/create-tool-modal/create-tool-modal.component';
 import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-knowledge-modal/create-knowledge-modal.component';
 
 @NgModule({
@@ -167,9 +161,6 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
-    CreateCapabilityModalComponent,
-    CreateTopicModalComponent,
-    CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
     InActiveTimeoutPopupComponent,
@@ -177,10 +168,7 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     ResourceDetailComponent,
     ContentGridComponent,
     AvatarsDisplayComponent,
-    CapabilityDetailsComponent,
     AgentInformationComponent,
-    ToolsDetailsComponent,
-    CreateToolModalComponent,
     CreateKnowledgeModalComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
@@ -259,9 +247,6 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     AgentInstructionComponent,
     ImportFilePopupComponent,
     DynamicFormModalComponent,
-    CreateCapabilityModalComponent,
-    CreateTopicModalComponent,
-    CreatePromptModalComponent,
     XnodeCommonModalComponent,
     ShareLinkComponent,
     InActiveTimeoutPopupComponent,
@@ -269,10 +254,7 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     ResourceDetailComponent,
     ContentGridComponent,
     AvatarsDisplayComponent,
-    CapabilityDetailsComponent,
     AgentInformationComponent,
-    ToolsDetailsComponent,
-    CreateToolModalComponent,
     CreateKnowledgeModalComponent
   ],
 })
