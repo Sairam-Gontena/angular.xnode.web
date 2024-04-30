@@ -1,7 +1,18 @@
 export const environment = {
     name: 'DEV',
     production: false,
-    apiUrl: 'https://dev-navi-api.azurewebsites.net/',
+    apiUrl: 'https://xnode-us-apim-dev.azure-api.net/',
+    endpoints: {
+        navi: 'navi-api',
+        auth: 'auth-api',
+        conversation: 'conversations-api',
+        spec: 'spec-api',
+        userUtil: 'userutil-api',
+        common: 'common-api',
+        naviData: 'navi-data',
+        publish: 'ui-gen/ui/angular',
+        notification: 'notification-api'
+    },
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
     conversationApiUrl: 'https://dev-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://dev-spec-api.azurewebsites.net/',
@@ -20,5 +31,5 @@ export const environment = {
     projectName: 'xnode-dev',
     homeUrl: 'https://dev.xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30
 }

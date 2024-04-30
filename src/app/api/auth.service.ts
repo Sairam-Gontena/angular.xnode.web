@@ -121,7 +121,7 @@ export class AuthApiService extends BaseApiService {
   }
 
   forgotPassword(email?: string) {
-    return this.post('mfa/forgotpassword?email=' + email);
+    return this.post('/mfa/forgotpassword?email=' + email);
   }
 
   signup(body?: any) {
@@ -129,16 +129,16 @@ export class AuthApiService extends BaseApiService {
   }
 
   verifyOtp(body?: any) {
-    return this.post('mfa/verifyOTP', body);
+    return this.post('/mfa/verifyOTP', body);
   }
 
   resendOtp(body?: any) {
-    return this.post('mfa/resendverfication', body);
+    return this.post('/mfa/resendverfication', body);
   }
 
   resetPassword(body?: any) {
     return this.patch(
-      'auth/prospect/resetpassword/' +
+      '/auth/prospect/resetpassword/' +
       body.email + '?password=' + body.password
     );
   }
