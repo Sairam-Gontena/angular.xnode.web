@@ -23,7 +23,7 @@ export class ContentGridComponent implements OnChanges {
   @Input() selectedLeftPanelConversation: any;
   @Input() selectedConversationData?: any;
   @Input() selectedTab: any;
-  @Input() enablePagination:boolean = true;
+  @Input() enablePagination: boolean = true;
   @Output() idClicked = new EventEmitter();
   @Output() onRowSelected = new EventEmitter();
   @Output() onRowUnselected = new EventEmitter();
@@ -50,7 +50,7 @@ export class ContentGridComponent implements OnChanges {
   globalFilterFields: any = [];
   selectedMainConversation: any;
   conversations: any = [];
-  localDateFormat:string =  "MM/dd/yyyy";
+  localDateFormat: string = "MM/dd/yyyy";
   get newStatus(): any {
     return this.status;
   }
@@ -188,12 +188,12 @@ export class ContentGridComponent implements OnChanges {
     }
   }
 
-  formatBytes(bytes:number, decimals = 2) {
+  formatBytes(bytes: number, decimals = 2) {
     if (!+bytes) return '0 Bytes'
     const k = 1024
     const dm = decimals < 0 ? 0 : decimals
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-}
+  }
 }

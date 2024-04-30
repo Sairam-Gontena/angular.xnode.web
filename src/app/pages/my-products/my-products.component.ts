@@ -10,12 +10,10 @@ import { cloneDeep, find, orderBy, sortBy } from 'lodash';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
-import { ConversationApiService } from 'src/app/api/conversation-api.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
-import { environment } from 'src/environments/environment';
+import { ColumnDefs } from './columnDefs';
 
 @Component({
   selector: 'xnode-my-products',
@@ -23,6 +21,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./my-products.component.scss'],
   providers: [MessageService, DropdownModule],
 })
+
 export class MyProductsComponent implements OnInit {
   templateCard: any[] = [];
   currentUser?: any;
@@ -89,6 +88,7 @@ export class MyProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.utils.loadSpinner(true);
+    this.columnDef = ColumnDefs;
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,
       msgData: false,
@@ -109,7 +109,6 @@ export class MyProductsComponent implements OnInit {
     this.filterProductsByUserEmail();
     this.utils.prepareIframeUrl(true);
     this.getRecentActivities();
-    this.getColumnDef();
   }
 
   removeProductDetailsFromStorage(): void {
@@ -197,7 +196,7 @@ export class MyProductsComponent implements OnInit {
       console.log(err, 'err')
     })
   }
-  
+
   onClickProductCard(data: any): void {
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
@@ -248,112 +247,63 @@ export class MyProductsComponent implements OnInit {
   }
 
   getRecentActivities() {
-    // this.utils.loadSpinner(true)
+    this.utils.loadSpinner(true);
     const userId = this.currentUser.user_id;
     if (userId) {
-      this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities: any = [];
-        // let shortIdMap:any = {
-        //   'COMMENT':"cmId",
-        //   'CHANGE_REQUEST':"crId",
-        //   'PRODUCT_SPEC': "psId",
-        //   'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-        //   'TASK':'tId',
-        //   'THREAD':'thId',
-        //   'CONVERSATION':'cId',
-        //   'RESOURCE':'rsId',
-        //   'PRODUCT_VERSION':'pvId'
-        // };
-
-        for (let activity of res.data.data) {
-          // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
-          let row: any = {
-            objectType: activity.objectType,
-            userAction: activity.userAction,
-            modifiedBy: [activity.modifiedBy],
-            modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
-              year: 'numeric', month: 'short', day: 'numeric',
-              hour: 'numeric', minute: 'numeric', second: 'numeric',
-              hour12: true,
-            })),
-            users: [activity.modifiedBy],
-            description: activity.description,
-            title: activity.actionDetail.title || "",
-            shortId: activity.objectShortId || ""
+      this.conversationService.getRecentActivities(userId).subscribe({
+        next: (response: any) => {
+          if (response && response.data?.data) {
+            this.handleActivitiesData(response.data?.data)
+          } else {
+            this.utils.loadToaster({ severity: 'error', summary: '', detail: response?.data });
           }
-          activities.push(row)
+          this.utils.loadSpinner(false);
+        }, error: (error: any) => {
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
         }
-        this.activities = activities; // Handle the response here
       });
     }
   }
 
-  getColumnDef() {
-    this.columnDef = [
-      {
-        field: "objectType",
-        header: "Entity",
-        width: 100,
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
-      {
-        field: "shortId",
-        header: "Id",
-        width: 100,
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
-      {
-        field: "title",
-        header: "Title",
-        // width: 250,
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
-      {
-        field: "userAction",
-        header: "Action",
-        width: 100,
-        visible: true,
-        default: true
-      },
-      // {
-      //   field: "description",
-      //   header: "Description",
-      //   filter: true,
-      //   sortable: true,
-      //   visible: true,
-      //   default: true
-      // },
-      {
-        field: "modifiedBy",
-        header: "Modified By",
-        // filter: true,
-        sortable: true,
-        type: 'avatar',
-        width: 120,
-        visible: true,
-        default: true
-      },
-      {
-        field: "modifiedOn",
-        header: "Modified On",
-        width: 200,
-        // type: "d/m/y",
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
-    ]
+
+  handleActivitiesData(data: any): void {
+    data.forEach((activity: any) => {
+      activity.modifiedBy = [activity.modifiedBy];
+      activity.users = activity.modifiedBy;
+      activity.title = activity.actionDetail.title;
+      activity.shortId = activity.objectShortId;
+      activity.modifiedOn = (new Date(activity.modifiedOn).toLocaleString(undefined, {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', second: 'numeric',
+        hour12: true,
+      }));
+    });
+    this.activities = data;
   }
+
+  idClicked(event: any): void {
+    console.log('event', event);
+    switch (event.objectType) {
+      case "Product_Spec":
+        this.onClickProductCard(event)
+        break;
+      case "Conversation":
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.MAKE_TRUST_URL,
+          msgData: {
+            isNaviExpanded: true,
+            showDockedNavi: true,
+            conversation_id: event.objectId,
+            componentToShow: 'Chat'
+          },
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   getUsersData() {
     this.utils.loadSpinner(true);
     this.authApiService
