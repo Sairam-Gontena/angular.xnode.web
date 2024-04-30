@@ -1,31 +1,21 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SharedModule } from 'primeng/api';
+import { CommonModule } from '@angular/common'
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CreateAgentRoutingModule } from './create-agent-routing.module';
 import { CreateAgentComponent } from './create-agent.component';
-import { TabViewModule } from 'primeng/tabview';
-import { TabMenuModule } from 'primeng/tabmenu';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CreateConfigureAgentHeaderComponent } from './component/create-configure-agent-header/create-configure-agent-header.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [CreateAgentComponent],
+  declarations: [
+    CreateAgentComponent,
+    CreateConfigureAgentHeaderComponent
+  ],
   imports: [
     CommonModule,
     CreateAgentRoutingModule,
-    TabMenuModule,
-    ReactiveFormsModule,
-    TabViewModule,
-    MultiSelectModule,
-    DropdownModule,
-    SplitButtonModule,
-    ButtonModule,
-    SharedModule,
     SharedComponentModule,
+    SharedModule
   ],
 })
-export class CreateAgentModule {}
+export class CreateAgentModule { }

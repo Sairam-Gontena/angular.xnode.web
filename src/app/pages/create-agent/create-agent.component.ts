@@ -5,6 +5,7 @@ import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { Location } from '@angular/common';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-create-agent',
@@ -12,27 +13,27 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./create-agent.component.scss'],
 })
 export class CreateAgentComponent {
-  createAgentModel: CreateAgentModel;
+  createConfigureDetailObj: any;
+  enablePreview: boolean = false;
 
-  constructor(private storageService: LocalStorageService,
-    private agentHubService: AgentHubService,
-    private location: Location,
-    private utilsService: UtilsService,
-    private formBuilder: FormBuilder) {
-    this.createAgentModel = new CreateAgentModel(
-      this.storageService,
-      this.agentHubService,
-      this.location,
-      this.utilsService,
-      this.formBuilder
-    );
+  constructor(private router: Router) { }
+
+  ngOnInit() { }
+
+  //create configure header event
+  createConfigureheaderEvent(event: any) {
+    if (event?.eventType) {
+      switch (event.eventType) {
+        case 'PREVIEW':
+          this.enablePreview = true;
+          break;
+        case 'CLOSE':
+          this.router.navigate(['agent-playground']);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
-  // onCloseHandler() {}
-
-  isCreateActive: boolean = true;
-
-  toggleActive(isCreate: boolean): void {
-    this.isCreateActive = isCreate;
-  }
 }

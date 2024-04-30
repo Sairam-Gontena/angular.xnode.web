@@ -5,11 +5,14 @@ import { SharedComponentModule } from "src/app/shared/shared-component.module";
 import { CommonModule } from "@angular/common";
 
 @NgModule({
-    declarations: [AgentHeaderComponent],
+    declarations: [
+        AgentHeaderComponent
+    ],
     imports: [CommonModule,
         SharedModule,
         SharedComponentModule],
     exports: [AgentHeaderComponent,
+        CommonModule,
         SharedModule,
         SharedComponentModule],
     providers: []

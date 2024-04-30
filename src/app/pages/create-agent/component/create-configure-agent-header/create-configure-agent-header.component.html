@@ -1,0 +1,30 @@
+<div class="flex justify-content-between p-3 border-bottom-2 border-white-alpha-10">
+    <div class="flex">
+        <div class="new-agent-status"></div>
+        <div>
+            <div class="font-semibold text-xl">New Agent</div>
+            <div class="flex align-items-center mt-2">
+                <div class="draft-status"></div>
+                <div class="text-sm font-normal">Draft</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <p-button type="button" label="Create" styleClass="header-inactive-toggle-btn"
+            (click)="createConfigureEvent('CREATE')"></p-button>
+        <p-button type="button" label="Configure" styleClass="header-active-toggle-btn"
+            (click)="createConfigureEvent('CONFIGURE')"></p-button>
+    </div>
+
+    <div class="flex align-items-center">
+        <p-button label="Preview" icon="pi pi-external-link" iconPos="right" (click)="createConfigureEvent('PREVIEW')"
+            styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-3 py-2"
+            [outlined]="true"></p-button>
+
+        <p-button label="Save" class="mx-2"
+            styleClass="text-white text-sm line-height-1 font-semibold border-white-alpha-70 border-round-2xl px-3 py-2"></p-button>
+        <p-button icon="pi pi-times" [rounded]="true" [text]="true"
+            (onClick)="createConfigureEvent('CLOSE')"></p-button>
+    </div>
+</div>
