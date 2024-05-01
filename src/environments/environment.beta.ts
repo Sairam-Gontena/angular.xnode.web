@@ -8,7 +8,7 @@ export const environment = {
     notifyApiUrl: 'https://beta-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://beta-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://beta-cmn-api.azurewebsites.net/',
-    xnodeAppUrl: 'https://beta-xnode.azurewebsites.net/',
+    xnodeAppUrl: 'https://app-us.xnode.ai/',
     naviAppUrl: 'https://beta-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/', //for now we have only dev url
