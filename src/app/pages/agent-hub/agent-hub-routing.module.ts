@@ -6,7 +6,7 @@ const routes: Routes = [{
   path: '', data: { breadcrumb: null },
   component: AgentHubComponent, loadChildren: () => import('./module/agent-hub-detail/agent-hub-detail.module').then(m => m.AgentHubDetailModule)
 }, {
-  path: 'agent', data: { breadcrumb: null }, component: AgentHubComponent,
+  path: 'agent/:id', data: { breadcrumb: null }, component: AgentHubComponent,
   loadChildren: () => import('./module/agent-details/agent-details.module').then((m) => m.AgentDetailsModule),
 }, {
   path: 'capability/:id', data: { breadcrumb: null }, component: AgentHubComponent,

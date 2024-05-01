@@ -27,7 +27,7 @@ export class AgentHubComponent implements OnInit {
     private dialogService: DialogService,
     private router: Router) {
     let agentHubDetailData: any = this.agentHubService.getAgentHeader() ? this.agentHubService.getAgentHeader() : this.storageService.getItem(StorageKeys.AGENT_HUB_DETAIL);
-    if (agentHubDetailData && Object.keys(agentHubDetailData.agentInfo).length) {
+    if (agentHubDetailData && agentHubDetailData?.agentInfo && Object.keys(agentHubDetailData?.agentInfo)?.length) {
       this.agentHubService.saveAgentHeaderObj(agentHubDetailData);
       this.agentHubService.setAgentHeader(agentHubDetailData);
       this.agentHubDetailObj = agentHubDetailData;
