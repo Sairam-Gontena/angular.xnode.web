@@ -4,7 +4,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { InitialPaginatorInfo, searchFilterOptions, tableRowActionOptions, tableInfo } from '../../constant/agent-hub';
 import { agentName } from '../../agent-hub.constant';
 import dynamicTableColumnData from '../../../../../assets/json/dynamictabledata.json';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { TabViewChangeEvent } from 'primeng/tabview';
@@ -37,7 +37,8 @@ export class AgentCapabilityComponent {
     private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private utilsService: UtilsService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
@@ -60,6 +61,17 @@ export class AgentCapabilityComponent {
   }
 
   viewHandler(item: any) {
+    if (this.activeIndex > 0) {
+      let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+      if (agentHubDetailObj) {
+        agentHubDetailObj.showActionButton = true;
+        agentHubDetailObj.agentConnectedFlow = true;
+        agentHubDetailObj.agentInfo = item;
+        this.agentHubService.setAgentHeader(agentHubDetailObj);
+        this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+      }
+      this.router.navigate([this.capabilityTabs[this.activeIndex].component, item?.id], { relativeTo: this.activatedRoute });
+    }
     // if (this.activeIndex == 2) {
     //   // Handle  Topic Case
     // } else if (this.activeIndex == 3) {

@@ -105,7 +105,6 @@ export class AgentDetailsModel {
 
   viewHandler(item: any) {
     if (this.activeIndex > 1) {
-      const currentAgentInfo = { ...this.agentHubDetail.agentInfo }
       let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
       if (agentHubDetailObj) {
         agentHubDetailObj.showActionButton = true;
@@ -114,7 +113,7 @@ export class AgentDetailsModel {
         this.agentHubService.setAgentHeader(agentHubDetailObj);
         this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
       }
-      this.router.navigate([`/agent-playground/agent/${currentAgentInfo?.id}`, this.tabItems[this.activeIndex].identifier, item?.id], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.tabItems[this.activeIndex].identifier, item?.id], { relativeTo: this.activatedRoute });
     }
   }
 
