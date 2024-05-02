@@ -19,7 +19,7 @@ export const environment = {
     notifyApiUrl: 'https://prod-notify-api-in.azurewebsites.net/',
     userUtilsApi: 'https://prod-userutil-api-in.azurewebsites.net/',
     commonApiUrl: 'https://prod-cmn-api-in.azurewebsites.net/',
-    xnodeAppUrl: 'https://prod-xnode-in.azurewebsites.net/',
+    xnodeAppUrl: 'https://app-in.xnode.ai/',
     naviAppUrl: 'https://prod-navi-web-in.azurewebsites.net/',
     designStudioAppUrl: 'https://prod-ui-gen-in.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://prod-frontend-builder-in.azurewebsites.net/ui/angular/',
