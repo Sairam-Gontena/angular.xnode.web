@@ -296,47 +296,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.closeOverlay.emit();
   }
 
-  getMeSpecLevelCommentsList() {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({
-        parentId: this.selectedContent.parentId,
-        isReplyCountRequired: true,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('COMMENT');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
-
-  getMeSpecLevelTaskList() {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasks({
-        parentId: this.selectedContent.parentId,
-        isReplyCountRequired: true,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('TASK');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
   prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
