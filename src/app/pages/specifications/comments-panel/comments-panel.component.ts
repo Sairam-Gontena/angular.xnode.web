@@ -22,7 +22,7 @@ export class CommentsPanelComponent implements OnInit {
   filter: any;
   searchIconKeyword: string = '';
   selectedUsers: any = [];
-  status:any;
+  status: any;
   filterOptions: Array<DropdownOptions> = [
     { label: 'All', value: 'ALL' },
     { label: 'Linked', value: 'LINKED' },
@@ -39,15 +39,15 @@ export class CommentsPanelComponent implements OnInit {
   constructor(
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
-    private apiComment:CommentsService,
-    private utils:UtilsService
+    private apiComment: CommentsService,
+    private utils: UtilsService
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
       this.specUtils.sendCommentSearchByKeywordListData(this.selectedUsers);
     });
-    if(!this.usersList || this.usersList==undefined){
-      this.usersList== this.storageService.getItem(StorageKeys.USERLIST);
+    if (!this.usersList || this.usersList == undefined) {
+      this.usersList == this.storageService.getItem(StorageKeys.USERLIST);
     }
   }
 
@@ -65,9 +65,6 @@ export class CommentsPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterList();
-    // this.specData = this.storageService.getItem(StorageKeys.SpecVersion);
-    // this.utils.loadSpinner(true);
-    // this.getCommentsByStatus();
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -76,22 +73,6 @@ export class CommentsPanelComponent implements OnInit {
       this.list = changes['list'].currentValue;
       this.filterList();
     }
-  }
-  getCommentsByStatus(status?:any){
-    let query = 'comment/comments-by-productId?productId='+this.specData.productId+'&verisonId='+this.specData.id;
-    if(status){
-      query = 'comment/comments-by-productId?productId='+this.specData.productId+'&verisonId='+this.specData.id+'&status='+status;
-    }
-    this.apiComment.getComments(query).then((res:any)=>{
-      if (res.status === 200 && res.data) {
-        this.list = res.data;
-        this.filteredList =  this.list;
-        // this.filterList(res.data);
-      }
-      this.utils.loadSpinner(false);
-    }).catch((err:any)=>{
-      this.utils.loadSpinner(false);
-    })
   }
 
   filterList(data?: any): void {
