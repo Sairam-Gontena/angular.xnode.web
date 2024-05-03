@@ -10,7 +10,6 @@ import { filter } from 'rxjs';
 })
 export class BreadcrumbsComponent {
   @Input() items: MenuItem[] | undefined;
-  @Input() highLightColor: string = ''
   @Output() changeEvent = new EventEmitter<{ event: any }>();
 
   constructor(private router: Router,
@@ -24,7 +23,7 @@ export class BreadcrumbsComponent {
 
   private createBreadcrumbs(route: ActivatedRoute, routelink: string = '', breadcrumbs: MenuItem[] = []): any {
     const children: ActivatedRoute[] = route.children;
-    if (children.length === 0) {
+    if (!children?.length) {
       return breadcrumbs;
     }
     for (const child of children) {

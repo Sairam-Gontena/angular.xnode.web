@@ -58,9 +58,9 @@ export const dialogConfigDetail = {
     data: {},
     showHeader: false,
     header: '',
-    width: '50vw',
+    width: '40vw',
     styleClass: 'customHeaderDynamicDialog',
-    contentStyle: { overflow: 'auto' },
+    contentStyle: {},
     breakpoints: { '960px': '75vw', '640px': '90vw' },
     templates: {
         header: '',

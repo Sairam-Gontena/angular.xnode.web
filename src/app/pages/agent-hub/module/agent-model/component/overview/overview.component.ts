@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-overview',
@@ -12,24 +15,61 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class ModelOverviewComponent {
   public overviewForm!: FormGroup;
   public overViewObj: any = {
-    formEditable: false
+    modelSelectionRadioArr: [{ name: 'Choose from existing provider', key: 'EXISTING_PROVIDER' },
+    { name: 'Add model using URL Endpoint', key: 'URL_ENDPOINT' }],
+    enableCreateModel: true,
+    enableAdvanceOption: false,
+    getModelID: "",
+    currentUser: "",
+    formEditable: false,
+    componentDetail: {
+      componentType: "",
+      enableDialog: false,
+      header: ""
+    }
   }
 
   constructor(private formBuilder: FormBuilder,
+    private dynamicDialogRef: DynamicDialogRef,
+    private dynamicDialogConfig: DynamicDialogConfig,
     private activatedRoute: ActivatedRoute,
     private agentHubService: AgentHubService,
+    private localStorageService: LocalStorageService,
     private utilsService: UtilsService) {
+    this.overViewObj.getModelID = this.activatedRoute.snapshot.paramMap.get('id');
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
       temperature: [''],
-      max_context_length: ['']
+      max_context_length: [''],
+      modelSelection: ['EXISTING_PROVIDER'],
+      model: [''],
+      version: ['']
     });
-    this.overviewForm.disable();
+    if (this.overViewObj.getModelID) {
+      this.overViewObj.enableCreateModel = false;
+      this.overviewForm.disable();
+    } else {
+
+    }
   }
 
   ngOnInit() {
-    this.getModelDetailByID(); //get model detail by modelID
+    this.overViewObj.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
+    this.checkCreateEditModel();
+  }
+
+  //checking create and edit in model
+  checkCreateEditModel() {
+    if (this.dynamicDialogConfig.data) {
+      this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
+      this.overViewObj.componentDetail.enableDialog = true;
+      if (this.dynamicDialogConfig.data.componentType === "CREATE") {
+
+      }
+    } else {
+      this.getModelDetailByID(); //get model detail by modelID
+    }
   }
 
   //get model detail by modelID
@@ -59,14 +99,55 @@ export class ModelOverviewComponent {
   }
 
   modelOverviewSubmit() {
-    this.overViewObj.formEditable = false;
-    this.overviewForm.disable();
+    let urlPayload: any = {
+      ID: "",
+      payload: this.overviewForm.value
+    },
+      getCreateUpdateModelDetail: any;
+    // this.utilsService.loadSpinner(true);
+    if (this.overViewObj.enableCreateModel) {
+      // getCreateUpdateModelDetail = this.agentHubService.createTopicDetail(urlPayload.payload);
+    } else {
+      urlPayload.ID = this.overViewObj.getModelID;
+      // getCreateUpdateModelDetail = this.agentHubService.updateTopicDetailByID(urlPayload)
+    }
+    debugger
+    // if (!getCreateUpdateModelDetail) {
+    //   return this.utilsService.loadSpinner(false);
+    // }
+
+    // getCreateUpdateModelDetail.subscribe({
+    //   next: (response: any) => {
+    //     if (response) {
+    //     }
+    //     this.utilsService.loadSpinner(false);
+    //   }, error: (error: any) => {
+    //     this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+    //     this.utilsService.loadSpinner(false);
+    //   }
+    // });
+  }
+
+  showHideAdvanceOption() {
+    this.overViewObj.enableAdvanceOption = !this.overViewObj.enableAdvanceOption;
   }
 
   //on edit save event
   onEditSaveEvent() {
     this.overViewObj.formEditable = !this.overViewObj.formEditable;
     this.overViewObj.formEditable ? this.overviewForm.enable() : this.overviewForm.disable();
+  }
+
+  //on close event
+  onCloseEvent() {
+    let eventTypeData: any = { eventType: "CLOSE" };
+    this.dynamicDialogRef.close(eventTypeData);
+  }
+
+  //on cancel event
+  onCancelEvent() {
+    let eventTypeData: any = { eventType: "CANCEL" };
+    this.dynamicDialogRef.close(eventTypeData);
   }
 
 }

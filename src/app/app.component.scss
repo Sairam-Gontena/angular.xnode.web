@@ -26,6 +26,7 @@
 @media(min-width: 1024px) {
   .app-body-wrapper-navi {
     width: calc(100% - 480px);
+    height: calc(100vh - 43px);
     background: #3A3942;
   }
 }

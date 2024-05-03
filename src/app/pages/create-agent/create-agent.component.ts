@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-create-agent',
@@ -16,7 +17,9 @@ export class CreateAgentComponent {
   createConfigureDetailObj: any;
   enablePreview: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private localStorageService: LocalStorageService,
+    private agentHubService: AgentHubService) { }
 
   ngOnInit() { }
 
@@ -24,6 +27,10 @@ export class CreateAgentComponent {
   createConfigureheaderEvent(event: any) {
     if (event?.eventType) {
       switch (event.eventType) {
+        case 'CREATE':
+          let agentHubDetailData: any = this.localStorageService.getItem(StorageKeys.AGENT_HUB_DETAIL);
+          this.agentHubService.saveAgentHeaderObj(agentHubDetailData);
+          break;
         case 'PREVIEW':
           this.enablePreview = true;
           break;

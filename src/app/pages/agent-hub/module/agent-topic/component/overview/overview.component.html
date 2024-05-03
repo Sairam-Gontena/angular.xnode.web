@@ -30,40 +30,45 @@
         </ng-container>
 
         <div class="flex flex-column align-items-center mb-3">
-            <label class="w-full" for="name">Name</label>
+            <label class="w-full mb-1" for="name">Name</label>
             <div class="w-full">
                 <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name" formControlName="name"
                     placeholder="Name" />
             </div>
         </div>
         <div class="flex flex-column align-items-center mb-3">
-            <label class="w-full" for="description">Description</label>
+            <label class="w-full mb-1" for="description">Description</label>
             <div class="w-full">
                 <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
                     formControlName="description" placeholder="Description"></textarea>
             </div>
         </div>
-        <!-- <div class="flex flex-column align-items-center mb-3">
-            <label class="w-full" for="model">LinkParent</label>
-            <div class="w-full">
-                <p-dropdown styleClass="w-full" formControlName="link_parent" [filter]="true" filterBy="name"
-                    [options]="modelOptionList.optionList" optionLabel="name"
-                    placeholder="Enter Id or search for existing"></p-dropdown>
+        <ng-container *ngIf="overViewObj?.enableCreateTopic">
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="parent_topic_id">LinkParent</label>
+                <div class="w-full">
+                    <p-dropdown appendTo="body" styleClass="w-full" formControlName="parent_topic_id" [filter]="true"
+                        filterBy="name" optionValue="id" [options]="overViewObj.capabilityLinkedAgentOption"
+                        optionLabel="name" placeholder="Enter Id or search for existing"></p-dropdown>
+                </div>
             </div>
-        </div> -->
-        <div class="flex flex-column align-items-center mb-3">
-            <label class="w-full" for="parentCapability">Parent Capability</label>
-            <div class="w-full">
-                <input pInputText type="text" class="w-full p-2 border-1 border-round" id="parentCapability"
-                    formControlName="parentCapability" placeholder="Parent Capability" />
+        </ng-container>
+        <ng-container *ngIf="!overViewObj?.enableCreateTopic">
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="parentCapability">Parent Capability</label>
+                <div class="w-full">
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="parentCapability"
+                        formControlName="parentCapability" placeholder="Parent Capability" />
+                </div>
             </div>
-        </div>
+        </ng-container>
     </div>
     <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
         <div class="flex align-item-center justify-content-end p-2">
-            <p-button type="button" label="Cancel" [outlined]="true" (onClick)="onCancelEvent()"
-                size="small"></p-button>
-            <p-button type="submit" label="Add" [outlined]="true" size="small" class="ml-2"></p-button>
+            <p-button styleClass="cutomGreyBtn border-transparent" [rounded]="true" type="button" label="Cancel"
+                [outlined]="true" (onClick)="onCancelEvent()" size="small"></p-button>
+            <p-button styleClass="cutomCeruleanBtn border-transparent" [rounded]="true" type="submit" label="Add"
+                [outlined]="true" size="small" class="ml-2"></p-button>
         </div>
     </ng-container>
 </form>

@@ -16,12 +16,29 @@ import { InitialPaginatorInfo, searchFilterOptions, tableRowActionOptions } from
 export class PromptComponent {
   promptObj: any = {
     topicId: "",
-    currentUser: "any",
+    currentUser: "",
     tableData: new Array(),
     columns: dynamicTableColumnData.dynamicTable.AgentHub.prompt.columns,
     paginatorInfo: { ...InitialPaginatorInfo },
     promptTableRowActionOptions: tableRowActionOptions,
-    promptSearchFilterOptions: searchFilterOptions
+    promptSearchFilterOptions: searchFilterOptions,
+    tableInfo: {
+      delete_action: false,
+      export_action: false,
+      name: 'Notification List',
+      search_input: true,
+    },
+    showColumnFilterOption: {
+      showFilterOption: true,
+      filter: false,
+      showToggleAll: false,
+      showHeader: false,
+      options: [],
+      placeholder: 'All',
+      optionLabel: 'header',
+      styleClass: 'showColumnFilterOption',
+      changeHandler: this.onShowDynamicColumnFilter.bind(this),
+    }
   }
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -36,13 +53,32 @@ export class PromptComponent {
     this.getPromptDataByTopic(urlParam); //get prompt details by topic ID
   }
 
+
+  onShowDynamicColumnFilter(event: any) {
+    debugger
+    dynamicTableColumnData.dynamicTable.AgentHub.prompt.columns
+    // if (!event?.value?.length) {
+    //   // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
+    //   const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    //   this.columns =
+    //     dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+    // } else {
+    //   const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    //   this.columns =
+    //     dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter(
+    //       (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+    //   // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
+    //   //   (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
+    // }
+  }
+
   //get prompts data by topic ID
   getPromptDataByTopic(urlParam: any) {
     this.utilsService.loadSpinner(true);
     this.agentHubService.getPromptDataByTopic(urlParam).subscribe({
       next: (response: any) => {
         if (response) {
-
+          this.promptObj.tableData = response?.data;
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
         }
@@ -60,10 +96,8 @@ export class PromptComponent {
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
     let urlParam: any = {
-      url: "agent/prompts/" + this.promptObj.topicId,
+      url: "agent/prompt_topic/" + this.promptObj.currentUser.account_id,
       params: {
-        account_id: this.promptObj.currentUser.account_id,
-        has_parent_info: true,
         page: paginationObj.page + 1,
         limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
       }

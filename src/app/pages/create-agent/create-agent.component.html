@@ -1,15 +1,16 @@
-<div class="w-full">
+<div class="w-full h-full">
   <xnode-create-configure-agent-header [createConfigureHeaderData]="createConfigureDetailObj"
     (headerClickHandler)="createConfigureheaderEvent($event)"></xnode-create-configure-agent-header>
+  <div class="w-full p-3 agentBodyPanel">
+    <router-outlet></router-outlet>
 
-  <router-outlet></router-outlet>
-
+    <!-- Side bar of preview -->
+    <p-sidebar [(visible)]="enablePreview" position="right" styleClass="w-30rem">
+      <h3>Preview</h3>
+    </p-sidebar>
+  </div>
 </div>
 
-<!-- Side bar of preview -->
-<p-sidebar [(visible)]="enablePreview" position="right" styleClass="w-30rem">
-  <h3>Preview</h3>
-</p-sidebar>
 
 <!-- <div>
   <p-tabView (onChange)="createAgentModel.switchHeaders($event)" [(activeIndex)]="createAgentModel.activeIndex">

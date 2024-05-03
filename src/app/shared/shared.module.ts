@@ -44,6 +44,7 @@ import { JoinPipe } from '../join.pipe';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [JoinPipe],
@@ -62,6 +63,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
     DividerModule,
     TableModule,
     InputTextModule,
+    RadioButtonModule,
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
@@ -104,6 +106,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
     DividerModule,
     TableModule,
     InputTextModule,
+    RadioButtonModule,
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,

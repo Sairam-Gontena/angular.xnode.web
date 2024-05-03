@@ -471,5 +471,22 @@ body {
 .customHeaderDynamicDialog {
   .p-dialog-content {
     padding: 0px;
+
+    .custom-modal-body {
+      height: calc(100vh - 180px);
+      overflow: auto;
+    }
+  }
+}
+
+.cutomGreyBtn {
+  &.p-button {
+    background-color: #343541;
+  }
+}
+
+.cutomCeruleanBtn {
+  &.p-button {
+    background-color: var(--cerulean);
   }
 }

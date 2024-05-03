@@ -135,7 +135,7 @@ export class AgentHubComponent implements OnInit {
           this.commonDialog(dialogDetail);
         }
         break;
-      case 'createModel':
+      case 'Model':
         if (eventData.eventType === "CREATE") {
           dialogDetail.component = ModelOverviewComponent;
           dialogDetail.configDetail.data = {

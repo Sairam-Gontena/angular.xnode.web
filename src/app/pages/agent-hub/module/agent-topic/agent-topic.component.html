@@ -2,7 +2,7 @@
     <p-tabView>
         <p-tabPanel *ngFor="let topicItem of topicTabs" [header]="topicItem.title">
             <ng-container [ngSwitch]="topicItem.component">
-                <div class="overflow-auto customTopicTabPanel">
+                <div class="w-full h-full">
                     <xnode-overview *ngSwitchCase="'topicOverview'" />
                     <xnode-prompt *ngSwitchCase="'topicPrompt'" />
                 </div>
