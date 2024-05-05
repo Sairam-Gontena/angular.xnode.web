@@ -16,6 +16,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class CreateAgentComponent {
   createConfigureDetailObj: any;
   enablePreview: boolean = false;
+  manualConfiguration: boolean = false;
 
   constructor(private router: Router,
     private localStorageService: LocalStorageService,
@@ -30,9 +31,13 @@ export class CreateAgentComponent {
         case 'CREATE':
           let agentHubDetailData: any = this.localStorageService.getItem(StorageKeys.AGENT_HUB_DETAIL);
           this.agentHubService.saveAgentHeaderObj(agentHubDetailData);
+          this.manualConfiguration = false
           break;
         case 'PREVIEW':
           this.enablePreview = true;
+          break;
+        case 'CONFIGURE':
+          this.manualConfiguration = true
           break;
         case 'CLOSE':
           this.router.navigate(['agent-playground']);

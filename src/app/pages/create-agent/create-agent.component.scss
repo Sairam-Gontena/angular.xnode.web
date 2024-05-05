@@ -17,7 +17,7 @@
 //   //   border: 1px solid var(--davy-grey);
 //   //   border-radius: 6px;
 // }
-:host ::ng-deep .header-inactive-toggle-btn {
+:host ::ng-deep .create-agent-btn {
   background: none;
   border: 1px solid var(--davy-grey);
   border-radius: 6px 0 0 6px;
@@ -25,13 +25,23 @@
   padding: 0.5rem 3rem;
 }
 
-:host ::ng-deep .header-active-toggle-btn {
-  background-color: var(--charcoalGrey);
+:host ::ng-deep .configure-agent-btn {
+  // background-color: var(--charcoalGrey);
   border: 1px solid var(--davy-grey);
   border-radius: 0 6px 6px 0;
   height: 100%;
   padding: 0.5rem 3rem;
 }
+
+:host ::ng-deep .active-btn {
+  background-color: var(--charcoalGrey);
+}
+
+:host ::ng-deep .inactive-btn {
+  background: none;
+}
+
+
 
 /*****TAB SECTION **********/
 :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {

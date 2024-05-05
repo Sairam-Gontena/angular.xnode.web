@@ -1,5 +1,6 @@
 <div class="w-full h-full">
   <xnode-create-configure-agent-header [createConfigureHeaderData]="createConfigureDetailObj"
+    [manualConfiguration]="manualConfiguration"
     (headerClickHandler)="createConfigureheaderEvent($event)"></xnode-create-configure-agent-header>
   <div class="w-full p-3 agentBodyPanel">
     <router-outlet></router-outlet>

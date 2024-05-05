@@ -11,9 +11,11 @@
     </div>
 
     <div class="">
-        <p-button type="button" label="Create" styleClass="header-inactive-toggle-btn"
+        <p-button type="button" label="Create"
+            [styleClass]="'create-agent-btn ' + (manualConfiguration ? 'inactive-btn' : 'active-btn')"
             (click)="createConfigureEvent('CREATE')"></p-button>
-        <p-button type="button" label="Configure" styleClass="header-active-toggle-btn"
+        <p-button type="button" label="Configure"
+            [styleClass]="'configure-agent-btn ' + (manualConfiguration ? 'active-btn' : 'inactive-btn')"
             (click)="createConfigureEvent('CONFIGURE')"></p-button>
     </div>
 

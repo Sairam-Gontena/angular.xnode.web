@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 export class CreateConfigureAgentHeaderComponent {
   @Input() createConfigureHeaderData: any;
   @Output() headerClickHandler: EventEmitter<any> = new EventEmitter<any>();
+  @Input() manualConfiguration: boolean = false;
 
   constructor() { }
 
