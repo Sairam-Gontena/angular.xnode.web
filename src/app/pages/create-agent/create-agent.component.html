@@ -9,6 +9,8 @@
     <p-sidebar [(visible)]="enablePreview" position="right" styleClass="w-30rem">
       <h3>Preview</h3>
     </p-sidebar>
+
+    <xnode-configure-agent *ngIf="manualConfiguration" />
   </div>
 </div>
 
