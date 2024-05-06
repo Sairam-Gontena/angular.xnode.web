@@ -159,7 +159,7 @@ export class VerifyOtpComponent implements OnInit {
   //get calls
   getAllProducts(): void {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id,userRole:'all' }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
         this.router.navigate(['/my-products']);

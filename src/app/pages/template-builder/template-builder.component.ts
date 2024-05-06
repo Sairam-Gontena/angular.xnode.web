@@ -46,8 +46,6 @@ export class TemplateBuilderComponent implements OnInit {
 
   getMeStorageData(): void {
     this.product = this.storageService.getItem(StorageKeys.Product)
-    console.log('this.product', this.product);
-
     if (this.product) {
       let productEmail =
         this.currentUser?.email === this.product?.owners[0]?.email
@@ -69,8 +67,7 @@ export class TemplateBuilderComponent implements OnInit {
       if (token) {
         this.rawUrl = this.rawUrl + '&token=' + token;
       }
-      console.log('  this.rawUrl', this.rawUrl);
-
+      this.rawUrl = this.rawUrl + '&refreshToken=' + this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
@@ -90,8 +87,7 @@ export class TemplateBuilderComponent implements OnInit {
       if (token) {
         this.rawUrl = this.rawUrl + '&token=' + token;
       }
-      console.log('  this.rawUrl', this.rawUrl);
-
+      this.rawUrl = this.rawUrl + '&refreshToken=' + this.storageService.getItem(StorageKeys.REFRESH_TOKEN);
       this.makeTrustedUrl();
     }
   }

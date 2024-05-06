@@ -446,7 +446,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53'
       };
       await this.fileUploadCall(formData, headers); // await here
     };
@@ -457,9 +458,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.uploadFile(formData, {
-        headers,
-      });
+      const res = await this.commonApi.uploadFile(formData, { headers });
       if (res.statusText === 'Created') {
         this.uploadedFiles.push(res.data.id);
         this.utils.loadToaster({

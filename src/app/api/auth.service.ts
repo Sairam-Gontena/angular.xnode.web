@@ -15,14 +15,14 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class AuthApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.authApiUrl;
+    return environment.apiUrl + environment.endpoints.auth;
   }
   userLoggedIn = false;
   otpVerifyInprogress = false;
   restInprogress = false;
   deepLinkURL: string = '';
 
-  public  userSubject: BehaviorSubject<User | null>;
+  public userSubject: BehaviorSubject<User | null>;
   private isLoggedIn = new Subject<boolean>();
   public user: Observable<User | null>;
 
@@ -56,12 +56,12 @@ export class AuthApiService extends BaseApiService {
   }
 
   login(body: any) {
-    return this.post('auth/prospect/login', body);
+    return this.post('/auth/prospect/login', body);
   }
 
   logout() {
     this.http
-      .get<any>(`${environment.authApiUrl}mfa/logout?email=${this.userValue?.email}`, { headers: { 'Content-Type': 'application/json'}})
+      .get<any>(`${environment.authApiUrl}mfa/logout?email=${this.userValue?.email}`, { headers: { 'Content-Type': 'application/json' } })
       .subscribe();
     this.stopRefreshTokenTimer();
     this.userSubject.next(null);
@@ -71,8 +71,8 @@ export class AuthApiService extends BaseApiService {
   refreshToken() {
     return this.http
       .get<any>(
-        `${environment.authApiUrl}mfa/refresh-token?email=${this.userValue?.email}&token=${this.userValue?.refreshToken}`,
-        { headers: { 'Content-Type': 'application/json'} }
+        `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token?email=${this.userValue?.email}&token=${this.userValue?.refreshToken}`,
+        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': 'dfa5a9e0fbfa43809ea3e6212647dd53', } }
       )
       .pipe(
         map((resp) => {
@@ -85,9 +85,9 @@ export class AuthApiService extends BaseApiService {
           this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, resp.refreshToken);
 
           const naviFrame = document.getElementById('naviFrame')
-          if(naviFrame) {
+          if (naviFrame) {
             const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
-            iWindow?.postMessage({accessToken: resp.accessToken, refreshToken : resp.refreshToken}, environment.naviAppUrl);
+            iWindow?.postMessage({ accessToken: resp.accessToken, refreshToken: resp.refreshToken }, environment.naviAppUrl);
           }
 
           this.userSubject.next(decodedUser);
@@ -108,11 +108,12 @@ export class AuthApiService extends BaseApiService {
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
-    if(this.userValue?.email) {
+    if (this.userValue?.email) {
       this.refreshTokenTimeout = setTimeout(() => {
         console.log('called timeout')
-        this.refreshToken().subscribe()},timeout);
-      }
+        this.refreshToken().subscribe()
+      }, timeout);
+    }
   }
 
   private stopRefreshTokenTimer() {
@@ -120,7 +121,7 @@ export class AuthApiService extends BaseApiService {
   }
 
   forgotPassword(email?: string) {
-    return this.post('mfa/forgotpassword?email=' + email);
+    return this.post('/mfa/forgotpassword?email=' + email);
   }
 
   signup(body?: any) {
@@ -128,22 +129,22 @@ export class AuthApiService extends BaseApiService {
   }
 
   verifyOtp(body?: any) {
-    return this.post('mfa/verifyOTP', body);
+    return this.post('/mfa/verifyOTP', body);
   }
 
   resendOtp(body?: any) {
-    return this.post('mfa/resendverfication', body);
+    return this.post('/mfa/resendverfication', body);
   }
 
   resetPassword(body?: any) {
     return this.patch(
-      'auth/prospect/resetpassword/' +
+      '/auth/prospect/resetpassword/' +
       body.email + '?password=' + body.password
     );
   }
 
   updateUserId(body: any) {
-    return this.patch('auth/prospect/prospect_status_update', body);
+    return this.patch('/auth/prospect/prospect_status_update', body);
   }
 
   isOtpVerifiedInprogress(event: boolean) {
@@ -155,16 +156,16 @@ export class AuthApiService extends BaseApiService {
   }
 
   getUsersByAccountId(params?: any) {
-    let url = 'user/get_all_users?account_id=' + params.account_id;
+    let url = '/user/get_all_users?account_id=' + params.account_id;
     return this.get(url);
   }
 
   getAllUsers(account_id?: string) {
-    return this.get('user/get_all_users?account_id=' + account_id);
+    return this.get('/user/get_all_users?account_id=' + account_id);
   }
 
   getUserDetails(email?: string) {
-    return this.get('user/' + email);
+    return this.get('/user/' + email);
   }
 
   setDeeplinkURL(url: string) {
