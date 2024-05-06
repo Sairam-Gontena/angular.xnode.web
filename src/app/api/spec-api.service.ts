@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SpecApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.commentsApiUrl;
+    return environment.apiUrl + environment.endpoints.spec;
   }
 
   constructor() {

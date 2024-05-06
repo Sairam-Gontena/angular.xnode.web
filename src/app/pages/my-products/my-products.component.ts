@@ -197,7 +197,7 @@ export class MyProductsComponent implements OnInit {
       console.log(err, 'err')
     })
   }
-  
+
   onClickProductCard(data: any): void {
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
@@ -381,7 +381,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id ,userRole:'all'}).then((response: any) => {
       this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data) {
         let user_audit_body = {
@@ -519,7 +519,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeCreateAppLimit(): void {
-    this.authApiService.get('user/get_create_app_limit/' + this.currentUser.email).then(
+    this.authApiService.get('/user/get_create_app_limit/' + this.currentUser.email).then(
       (response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
