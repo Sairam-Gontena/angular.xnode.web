@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -14,6 +14,9 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   styleUrls: ['./overview.component.scss']
 })
 export class TopicOverviewComponent {
+  @Input() topicId: string | undefined;
+  @Input() showBackButton = false
+  @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
     enableCreateTopic: true,
@@ -35,7 +38,7 @@ export class TopicOverviewComponent {
     private agentHubService: AgentHubService,
     private localStorageService: LocalStorageService,
     private utilsService: UtilsService) {
-    this.overViewObj.getTopicID = this.activatedRoute.snapshot.paramMap.get('id');
+    this.overViewObj.getTopicID = this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id');
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
@@ -102,7 +105,7 @@ export class TopicOverviewComponent {
   //get topic detail by topicID
   getTopicDetailByID() {
     let urlParam: any = {
-      url: ("agent/topic_by_id/" + this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/topic_by_id/" + this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id'))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getTopicDetailByID(urlParam).subscribe({
@@ -179,4 +182,7 @@ export class TopicOverviewComponent {
     this.dynamicDialogRef.close(eventTypeData);
   }
 
+  onGoBackHandler() {
+    this.goBack.emit(false)
+  }
 }

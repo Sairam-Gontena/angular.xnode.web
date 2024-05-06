@@ -32,14 +32,14 @@ export class ConfigureAgentComponent {
       idx: 2,
       title: 'Capabilities',
       value: 'capabilities_linked_agents',
-      identifier: agentName.capability
+      identifier: agentName.capability,
     },
     { idx: 3, title: 'Topics', value: 'topic', identifier: agentName.topic },
     {
       idx: 4,
       title: 'Prompts',
-      value: 'prompt_linked_topic',
-      identifier: agentName.prompt
+      value: 'prompt',
+      identifier: agentName.prompt,
     },
     {
       idx: 5,
@@ -48,7 +48,7 @@ export class ConfigureAgentComponent {
       identifier: agentName.knowledge,
     },
     { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
-    { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
+    { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool }
   ];
   tableData!: any;
   columns: any; // Define the type of columns based on the actual data structure
@@ -81,30 +81,45 @@ export class ConfigureAgentComponent {
   activeIndex: number = 0;
   userInfo: any;
   // headerActionBtnOption = agentHeaderActionOptions;
+  viewTableData: { [key: string]: { viewData: boolean; Id: string } } = {
+    [agentName.capability]: {
+      viewData: false,
+      Id: ''
+    }
+  }
+
+  showDynamicTable = true
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
-    private activatedRoute: ActivatedRoute,
-    private utilsService: UtilsService,
-    private router: Router) {
+    private utilsService: UtilsService) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.agentHubDetail = this.agentHubService.getAgentHeader();
+    // this.agentHubDetail = this.agentHubService.getAgentHeader();
   }
 
   viewHandler(item: any) {
     if (this.activeIndex > 1) {
-      let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
-      if (agentHubDetailObj) {
-        agentHubDetailObj.showActionButton = true;
-        agentHubDetailObj.agentConnectedFlow = true;
-        agentHubDetailObj.agentInfo = item;
-        this.agentHubService.setAgentHeader(agentHubDetailObj);
-        this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+      // let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+      // if (agentHubDetailObj) {
+      //   agentHubDetailObj.showActionButton = true;
+      //   agentHubDetailObj.agentConnectedFlow = true;
+      //   agentHubDetailObj.agentInfo = item;
+      //   this.agentHubService.setAgentHeader(agentHubDetailObj);
+      //   this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+      // }
+      // this.router.navigate([this.tabItems[this.activeIndex].identifier, item?.id], { relativeTo: this.activatedRoute });
+
+      const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+
+      this.viewTableData[identifier] = {
+        viewData: true,
+        Id: item.id
       }
-      this.router.navigate([this.tabItems[this.activeIndex].identifier, item?.id], { relativeTo: this.activatedRoute });
+      this.showDynamicTable = false
     }
   }
 
+  // NOTE: Will move this function to service later as It is duplication of code
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
       // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
@@ -116,8 +131,6 @@ export class ConfigureAgentComponent {
       this.columns =
         dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns?.filter(
           (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
-      // this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
-      //   (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -129,11 +142,21 @@ export class ConfigureAgentComponent {
 
   async getAllAgentList({ endpoint = '' } = {}) {
     if (this.activeIndex > 1) {
+
+      /**
+       * Update the Columns Name.
+       * Empty the table data
+       * Update the Pagination Information
+       */
       const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
       this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
       endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
       this.tableData = [];
       this.paginatorInfo = { ...InitialPaginatorInfo };
+
+      /**
+       * Fetch the data of active tabs
+       */
       try {
         this.utilsService.loadSpinner(true);
         const response = await this.agentHubService.getAllAgent({
@@ -161,8 +184,8 @@ export class ConfigureAgentComponent {
 
   // tab event
   onTabSwitchHandler(event: TabViewChangeEvent) {
+    this.goBackHandler()
     if (this.activeIndex > 1) {
-      let paginatorInfo = { ...InitialPaginatorInfo };
       this.getAllAgentList();
     } else {
       /**
@@ -181,5 +204,14 @@ export class ConfigureAgentComponent {
     //   console.error('Invalid identifier:', item.identifier);
     //   // Handle the error appropriately
     // }
+  }
+
+  goBackHandler() {
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+
+    if (identifier in this.viewTableData) {
+      this.viewTableData[identifier].viewData = false
+    }
+    this.showDynamicTable = true
   }
 }

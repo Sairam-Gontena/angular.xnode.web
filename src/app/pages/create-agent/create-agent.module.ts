@@ -6,6 +6,11 @@ import { CreateAgentComponent } from './create-agent.component';
 import { CreateConfigureAgentHeaderComponent } from './component/create-configure-agent-header/create-configure-agent-header.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ConfigureAgentComponent } from './component/configure-agent/configure-agent.component';
+import { AgentPromptModule } from '../agent-hub/module/agent-prompt/agent-prompt.module';
+import { AgentCapabilityModule } from '../agent-hub/module/agent-capability/agent-capability.module';
+import { AgentTopicModule } from '../agent-hub/module/agent-topic/agent-topic.module';
+import { AgentToolsModule } from '../agent-hub/module/agent-tools/agent-tools.module';
+import { AgentModelModule } from '../agent-hub/module/agent-model/agent-model.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,12 @@ import { ConfigureAgentComponent } from './component/configure-agent/configure-a
     CommonModule,
     CreateAgentRoutingModule,
     SharedComponentModule,
-    SharedModule
+    SharedModule,
+    AgentPromptModule,
+    AgentCapabilityModule,
+    AgentTopicModule,
+    AgentToolsModule,
+    AgentModelModule
   ],
 })
 export class CreateAgentModule { }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -8,11 +8,14 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
-  selector: 'xnode-overview',
+  selector: 'xnode-capability-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
 export class CapabilityOverviewComponent {
+  @Input() capabilityId: string | undefined;
+  @Input() showBackButton = false
+  @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   userInfo: any;
   public overviewForm!: FormGroup;
   public overViewObj: any = {
@@ -76,7 +79,7 @@ export class CapabilityOverviewComponent {
   //get capability detail by capabilityID
   getCapabilityDetailByID() {
     let urlParam: any = {
-      url: ("agent/capbility_by_id/" + this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/capbility_by_id/" + this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id'))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -136,7 +139,7 @@ export class CapabilityOverviewComponent {
   //capability Edit
   capabilityOverviewSubmit() {
     let urlPayload: any = {
-      url: ("agent/update_capability/" + this.activatedRoute.snapshot.paramMap.get('id')),
+      url: ("agent/update_capability/" + this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id')),
       payload: this.overviewForm.value
     }
     this.utilsService.loadSpinner(true);
@@ -176,5 +179,8 @@ export class CapabilityOverviewComponent {
   onCancelEvent() {
     let eventTypeData: any = { eventType: "CANCEL" };
     this.dynamicDialogRef.close(eventTypeData);
+  }
+  onGoBackHandler() {
+    this.goBack.emit(false)
   }
 }

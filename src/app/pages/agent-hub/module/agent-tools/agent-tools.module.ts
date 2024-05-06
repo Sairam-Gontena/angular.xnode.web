@@ -16,6 +16,9 @@ import { ToolOverviewComponent } from './component/tool-overview/tool-overview.c
         CommonModule,
         AgentToolsRoutingModule,
         AgentSharedModule
+    ],
+    exports: [
+        ToolOverviewComponent
     ]
 })
 export class AgentToolsModule { }

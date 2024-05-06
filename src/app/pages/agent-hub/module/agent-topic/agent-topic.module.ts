@@ -18,6 +18,9 @@ import { PromptComponent } from './component/prompt/prompt.component';
     CommonModule,
     AgentTopicRoutingModule,
     AgentSharedModule
+  ],
+  exports: [
+    TopicOverviewComponent
   ]
 })
 

@@ -18,6 +18,9 @@ import { AgentSharedModule } from '../../agent-shared.module';
     CommonModule,
     AgentModelRoutingModule,
     AgentSharedModule
+  ],
+  exports: [
+    ModelOverviewComponent
   ]
 })
 export class AgentModelModule { }

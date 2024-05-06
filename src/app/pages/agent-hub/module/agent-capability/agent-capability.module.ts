@@ -16,6 +16,9 @@ import { CapabilityOverviewComponent } from './component/overview/overview.compo
         CommonModule,
         AgentCapabilityRoutingModule,
         AgentSharedModule
+    ],
+    exports: [
+        CapabilityOverviewComponent
     ]
 })
 

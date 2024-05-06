@@ -13,6 +13,9 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   styleUrls: ['./tool-overview.component.scss']
 })
 export class ToolOverviewComponent {
+  @Input() toolId: string | undefined;
+  @Input() showBackButton = false
+  @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
     formEditable: false,
@@ -55,7 +58,7 @@ export class ToolOverviewComponent {
   //get tool detail by toolID
   getToolDetailByID() {
     let urlParam: any = {
-      url: ("agent/tool_by_id/" + this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/tool_by_id/" + this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id'))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -82,7 +85,7 @@ export class ToolOverviewComponent {
   //tool oversubmit
   toolOverviewSubmit() {
     let urlPayload: any = {
-      url: ("agent/update_tool/" + this.activatedRoute.snapshot.paramMap.get('id')),
+      url: ("agent/update_tool/" + this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id')),
       payload: this.overviewForm.value
     }
     this.utilsService.loadSpinner(true);
@@ -130,6 +133,10 @@ export class ToolOverviewComponent {
   onCancelEvent() {
     let eventTypeData: any = { eventType: "CANCEL" };
     this.dynamicDialogRef.close(eventTypeData);
+  }
+
+  onGoBackHandler() {
+    this.goBack.emit(false)
   }
 
 }

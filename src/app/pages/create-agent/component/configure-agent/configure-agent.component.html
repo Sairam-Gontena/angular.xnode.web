@@ -37,7 +37,7 @@
         </p-tabView>
 
         <ng-template #dynamicTable>
-            <div class="w-full table-height" *ngIf="activeIndex > 1">
+            <div class="w-full table-height" *ngIf="activeIndex > 1 && showDynamicTable">
                 <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                     [searchFilterOptions]="searchFilterOptions" [showColumnFilterOption]="showColumnFilterOption"
                     [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
@@ -61,4 +61,30 @@
             <xnode-agent-overview formType="instruction" [agentInfo]="agentHubDetail?.agentInfo"></xnode-agent-overview>
         </div>
     </ng-template>
+
+    <!-- Capability View -->
+
+    <div class="table-height" *ngIf="viewTableData?.capability?.viewData">
+        <xnode-capability-overview [capabilityId]="viewTableData.capability.Id" [showBackButton]="true"
+            (goBack)="goBackHandler()" />
+    </div>
+
+    <div class="table-height" *ngIf="viewTableData?.prompt?.viewData">
+        <xnode-prompt-overview-instruction [promptId]="viewTableData.prompt.Id" [showBackButton]="true"
+            (goBack)="goBackHandler()" />
+    </div>
+
+    <!--  Topic -->
+    <div class="table-height" *ngIf="viewTableData?.topic?.viewData">
+        <xnode-overview [topicId]="viewTableData.topic.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
+
+    <!-- Tool -->
+    <div class="table-height" *ngIf="viewTableData?.tool?.viewData">
+        <xnode-tool-overview [toolId]="viewTableData.tool.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
+
+    <div class="table-height" *ngIf="viewTableData?.model?.viewData">
+        <xnode-model-overview [modelId]="viewTableData.model.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
 </div>

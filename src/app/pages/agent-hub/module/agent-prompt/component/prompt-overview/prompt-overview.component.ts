@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -19,6 +19,9 @@ enum ParentType {
   styleUrls: ['./prompt-overview.component.scss']
 })
 export class PromptOverviewComponent {
+  @Input() promptId!: string | undefined;
+  @Input() showBackButton = false
+  @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
     formEditable: false,
@@ -91,7 +94,7 @@ export class PromptOverviewComponent {
   //get topic detail by topicID
   getPrompDetailByID() {
     let urlParam: any = {
-      url: ("agent/prompt_by_id/" + this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/prompt_by_id/" + this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id'))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -152,7 +155,7 @@ export class PromptOverviewComponent {
 
     formData.version = this.agentInfo?.version
     let urlPayload: any = {
-      url: ("agent/update_prompt/" + this.activatedRoute.snapshot.paramMap.get('id')) + `/${this.agentInfo?.version}`,
+      url: ("agent/update_prompt/" + this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id')) + `/${this.agentInfo?.version}`,
       data: formData
     }
     this.utilsService.loadSpinner(true);
@@ -377,5 +380,9 @@ export class PromptOverviewComponent {
   onCancelEvent() {
     let eventTypeData: any = { eventType: "CANCEL" };
     this.dynamicDialogRef.close(eventTypeData);
+  }
+
+  onGoBackHandler() {
+    this.goBack.emit(false)
   }
 }

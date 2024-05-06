@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CreateAgentModel } from './create-agent.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { Location } from '@angular/common';

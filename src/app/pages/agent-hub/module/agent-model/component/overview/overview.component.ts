@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -8,11 +8,14 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
-  selector: 'xnode-overview',
+  selector: 'xnode-model-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
 export class ModelOverviewComponent {
+  @Input() modelId: string | undefined;
+  @Input() showBackButton = false
+  @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
     modelSelectionRadioArr: [{ name: 'Choose from existing provider', key: 'EXISTING_PROVIDER' },
@@ -36,7 +39,7 @@ export class ModelOverviewComponent {
     private agentHubService: AgentHubService,
     private localStorageService: LocalStorageService,
     private utilsService: UtilsService) {
-    this.overViewObj.getModelID = this.activatedRoute.snapshot.paramMap.get('id');
+    this.overViewObj.getModelID = this.modelId ?? this.activatedRoute.snapshot.paramMap.get('id');
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
@@ -75,7 +78,7 @@ export class ModelOverviewComponent {
   //get model detail by modelID
   getModelDetailByID() {
     let urlParam: any = {
-      url: ("agent/model_by_id/" + this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/model_by_id/" + this.modelId ?? this.activatedRoute.snapshot.paramMap.get('id'))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getModelDetailByID(urlParam).subscribe({
@@ -148,6 +151,10 @@ export class ModelOverviewComponent {
   onCancelEvent() {
     let eventTypeData: any = { eventType: "CANCEL" };
     this.dynamicDialogRef.close(eventTypeData);
+  }
+
+  onGoBackHandler() {
+    this.goBack.emit(false)
   }
 
 }

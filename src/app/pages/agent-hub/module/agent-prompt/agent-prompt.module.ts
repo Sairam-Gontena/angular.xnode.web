@@ -18,6 +18,9 @@ import { TextareaAutoresizeDirective } from 'src/app/directive/textarea-autoresi
         CommonModule,
         AgentPromptRoutingModule,
         AgentSharedModule
+    ],
+    exports: [
+        PromptOverviewComponent
     ]
 })
 export class AgentPromptModule { }
