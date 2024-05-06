@@ -79,7 +79,7 @@ export class CapabilityOverviewComponent {
   //get capability detail by capabilityID
   getCapabilityDetailByID() {
     let urlParam: any = {
-      url: ("agent/capbility_by_id/" + this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/capbility_by_id/" + (this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -139,7 +139,7 @@ export class CapabilityOverviewComponent {
   //capability Edit
   capabilityOverviewSubmit() {
     let urlPayload: any = {
-      url: ("agent/update_capability/" + this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id')),
+      url: ("agent/update_capability/" + (this.capabilityId ?? this.activatedRoute.snapshot.paramMap.get('id'))),
       payload: this.overviewForm.value
     }
     this.utilsService.loadSpinner(true);

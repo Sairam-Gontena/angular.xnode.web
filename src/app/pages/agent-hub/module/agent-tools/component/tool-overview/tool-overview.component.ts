@@ -58,7 +58,7 @@ export class ToolOverviewComponent {
   //get tool detail by toolID
   getToolDetailByID() {
     let urlParam: any = {
-      url: ("agent/tool_by_id/" + this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/tool_by_id/" + (this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -85,7 +85,7 @@ export class ToolOverviewComponent {
   //tool oversubmit
   toolOverviewSubmit() {
     let urlPayload: any = {
-      url: ("agent/update_tool/" + this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id')),
+      url: ("agent/update_tool/" + (this.toolId ?? this.activatedRoute.snapshot.paramMap.get('id'))),
       payload: this.overviewForm.value
     }
     this.utilsService.loadSpinner(true);

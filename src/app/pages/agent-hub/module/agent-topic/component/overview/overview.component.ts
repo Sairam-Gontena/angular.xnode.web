@@ -105,7 +105,7 @@ export class TopicOverviewComponent {
   //get topic detail by topicID
   getTopicDetailByID() {
     let urlParam: any = {
-      url: ("agent/topic_by_id/" + this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/topic_by_id/" + (this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getTopicDetailByID(urlParam).subscribe({

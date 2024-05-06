@@ -94,7 +94,7 @@ export class PromptOverviewComponent {
   //get topic detail by topicID
   getPrompDetailByID() {
     let urlParam: any = {
-      url: ("agent/prompt_by_id/" + this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id'))
+      url: ("agent/prompt_by_id/" + (this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -155,7 +155,7 @@ export class PromptOverviewComponent {
 
     formData.version = this.agentInfo?.version
     let urlPayload: any = {
-      url: ("agent/update_prompt/" + this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id')) + `/${this.agentInfo?.version}`,
+      url: ("agent/update_prompt/" + (this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id'))) + `/${this.agentInfo?.version}`,
       data: formData
     }
     this.utilsService.loadSpinner(true);
