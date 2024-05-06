@@ -13,8 +13,9 @@ export class AgentHubService extends BaseApiService {
   private agentHeaderDetail: any;
 
   override get apiUrl(): string {
-    return environment.apiUrl;
+    return environment.apiUrl + environment.endpoints.navi;
   }
+
   constructor(private injector: Injector) {
     super();
   }

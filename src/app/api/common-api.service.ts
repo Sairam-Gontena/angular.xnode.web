@@ -7,10 +7,10 @@ import { BaseApiService } from './base-api.service';
 })
 export class CommonApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.commonApiUrl;
+    return environment.apiUrl + environment.endpoints.common;
   }
 
   uploadFile(body?: any, headers?: any) {
-    return this.fileUpload('file-azure/upload', body, { headers });
+    return this.fileUpload('/file-azure/upload', body, headers);
   }
 }

@@ -10,7 +10,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class AuditutilsService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.userUtilsApi;
+    return environment.apiUrl + environment.endpoints.userUtil;
   }
   currentUser: any;
   constructor(
@@ -20,7 +20,7 @@ export class AuditutilsService extends BaseApiService {
     super();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   postAudit(
     activity: any,
@@ -32,7 +32,7 @@ export class AuditutilsService extends BaseApiService {
     productid?: any
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    if(!this.currentUser || !this.currentUser?.user_id) {
+    if (!this.currentUser || !this.currentUser?.user_id) {
       return
     }
     const body = {
