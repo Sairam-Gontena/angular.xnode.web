@@ -11,6 +11,6 @@ export class CommonApiService extends BaseApiService {
   }
 
   uploadFile(body?: any, headers?: any) {
-    return this.fileUpload('/file-azure/upload', body, { headers });
+    return this.fileUpload('/file-azure/upload', body, headers);
   }
 }

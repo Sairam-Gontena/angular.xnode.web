@@ -242,7 +242,7 @@ export class GeneralFeedbackComponent implements OnInit {
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53'
       };
       return this.fileUploadCall(formData, headers);
