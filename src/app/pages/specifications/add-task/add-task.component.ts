@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { environment } from 'src/environments/environment';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -242,7 +243,8 @@ export class AddTaskComponent {
       const formData = new FormData();
       formData.append('file', file);
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       await this.fileUploadCall(formData, headers); // await here
     };

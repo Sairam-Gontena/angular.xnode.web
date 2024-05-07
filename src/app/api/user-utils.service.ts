@@ -9,7 +9,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class UserUtilsService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.userUtilsApi;
+    return environment.apiUrl + environment.endpoints.userUtil;
   }
   constructor() {
     super();

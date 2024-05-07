@@ -11,8 +11,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class AgentHubService extends BaseApiService {
 
   override get apiUrl(): string {
-    return environment.apiUrl;
+    return environment.apiUrl + environment.endpoints.navi;
   }
+
   constructor(private injector: Injector) {
     super();
   }

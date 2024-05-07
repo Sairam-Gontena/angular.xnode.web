@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { LocalStorageService } from '../components/services/local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -81,6 +81,7 @@ export abstract class BaseApiService {
     return {
       headers: {
         'Content-Type': 'application/json',
+        'ocp-apim-subscription-key': environment.apimSubscriptionKey
       },
     };
   }

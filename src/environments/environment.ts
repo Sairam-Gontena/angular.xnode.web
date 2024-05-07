@@ -1,8 +1,19 @@
 export const environment = {
     name: 'DEV',
     production: false,
-    apiUrl: 'https://dev-navi-api.azurewebsites.net/',
-    // apiUrl: 'http://localhost:8000/',
+    apiUrl: 'https://xnode-us-apim-dev.azure-api.net/',
+    apimSubscriptionKey: 'dfa5a9e0fbfa43809ea3e6212647dd53',
+    endpoints: {
+        navi: 'navi-api',
+        auth: 'auth-api',
+        conversation: 'conversations-api',
+        spec: 'spec-api/',
+        userUtil: 'userutil-api/',
+        common: 'common-api',
+        naviData: 'navi-data',
+        publish: 'ui-gen/ui/angular',
+        notification: 'notification-api'
+    },
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
     conversationApiUrl: 'https://dev-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://dev-spec-api.azurewebsites.net/',
@@ -10,8 +21,8 @@ export const environment = {
     userUtilsApi: 'https://dev-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://dev-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'http://localhost:4200/',
-    naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
-    designStudioAppUrl: 'http://localhost:4201/dashboard/',
+    naviAppUrl: 'http://localhost:4202/',
+    designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://dev-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
@@ -21,5 +32,5 @@ export const environment = {
     projectName: 'xnode-dev',
     homeUrl: 'https://dev.xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30
 }
