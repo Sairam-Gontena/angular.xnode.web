@@ -19,7 +19,7 @@ export class ConversationHubService extends BaseApiService {
   constructor(private httpClient: HttpClient, private authApiService: AuthApiService, private storageService: LocalStorageService) {
     super();
   }
-  rootUrl = environment.conversationApiUrl;
+  rootUrl = environment.apiUrl + environment.endpoints.conversation;
 
   getConversations(params: any) {
     let url = '/conversation' + params;
