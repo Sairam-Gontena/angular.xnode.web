@@ -2,6 +2,7 @@ export const environment = {
     name: 'DEV',
     production: false,
     apiUrl: 'https://xnode-us-apim-dev.azure-api.net/',
+    apimSubscriptionKey: 'dfa5a9e0fbfa43809ea3e6212647dd53',
     endpoints: {
         navi: 'navi-api',
         auth: 'auth-api',
