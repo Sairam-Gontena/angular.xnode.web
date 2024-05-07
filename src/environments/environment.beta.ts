@@ -14,16 +14,10 @@ export const environment = {
         publish: 'ui-gen/ui/angular',
         notification: 'notification-api'
     },
-    authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
-    conversationApiUrl: 'https://beta-conversation-api.azurewebsites.net/',
-    commentsApiUrl: 'https://beta-spec-api.azurewebsites.net/',
-    notifyApiUrl: 'https://beta-notify-api.azurewebsites.net/',
-    userUtilsApi: 'https://beta-user-util-api.azurewebsites.net/',
-    commonApiUrl: 'https://beta-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://app-us.xnode.ai/',
     naviAppUrl: 'https://beta-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
-    publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/', //for now we have only dev url
+    publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://beta-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://beta-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now-us.azurewebsites.net',
