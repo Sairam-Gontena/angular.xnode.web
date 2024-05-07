@@ -139,7 +139,7 @@ export class AgentCapabilityComponent {
 
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
-    let url: string = "agent/",
+    let url: string = "/agent/",
       // getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
       urlParam: any = {
         url: url,

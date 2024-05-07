@@ -78,7 +78,7 @@ export class ModelOverviewComponent {
   //get model detail by modelID
   getModelDetailByID() {
     let urlParam: any = {
-      url: ("agent/model_by_id/" + (this.modelId ?? this.activatedRoute.snapshot.paramMap.get('id')))
+      url: ("/agent/model_by_id/" + (this.modelId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getModelDetailByID(urlParam).subscribe({

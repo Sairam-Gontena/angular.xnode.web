@@ -96,7 +96,7 @@ export class PromptComponent {
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
     let urlParam: any = {
-      url: "agent/prompt_topic/" + this.promptObj.currentUser.account_id,
+      url: "/agent/prompt_topic/" + this.promptObj.currentUser.account_id,
       params: {
         page: paginationObj.page + 1,
         limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows

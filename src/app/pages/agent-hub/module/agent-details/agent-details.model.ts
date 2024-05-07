@@ -158,7 +158,7 @@ export class AgentDetailsModel {
 
   //making the url param for category
   makeTableParamObj(paginationObj: any) {
-    let url: string = "agent/agents/{agent_id}/",
+    let url: string = "/agent/agents/{agent_id}/",
       getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
       urlParam: any = {
         url: url.replace("{agent_id}", getID),
@@ -176,19 +176,19 @@ export class AgentDetailsModel {
   changeURL(tabIndex: number, urlParam: any) {
     switch (tabIndex) {
       case 2:
-        urlParam.url = urlParam.url + "capabilities/";
+        urlParam.url = urlParam.url + "/capabilities/";
         break;
       case 3:
-        urlParam.url = urlParam.url + "topics/";
+        urlParam.url = urlParam.url + "/topics/";
         break;
       case 4:
-        urlParam.url = urlParam.url + "prompts/";
+        urlParam.url = urlParam.url + "/prompts/";
         break;
       case 5:
 
         break;
       case 6:
-        urlParam.url = urlParam.url + "models/";
+        urlParam.url = urlParam.url + "/models/";
         break;
     }
   }
@@ -209,7 +209,7 @@ export class AgentDetailsModel {
 
   //  get the agent details by Id
   getAgentDetailsById() {
-    let url: string = "agent/agent_by_id/",
+    let url: string = "/agent/agent_by_id/",
       getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
       urlParam: any = {
         url: url + getID,

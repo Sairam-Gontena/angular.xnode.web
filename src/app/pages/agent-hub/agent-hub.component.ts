@@ -53,7 +53,7 @@ export class AgentHubComponent implements OnInit {
     let userInfo: any = this.storageService.getItem(StorageKeys.CurrentUser);
     try {
       let query = { account_id: userInfo.account_id };
-      const response = await this.agentHubService.getAgentCount({ endpoint: 'agent', query });
+      const response = await this.agentHubService.getAgentCount({ endpoint: '/agent', query });
       this.agentHubDetailObj?.statsItem?.forEach((element: any) => {
         element.count = response.data[element.key];
       });

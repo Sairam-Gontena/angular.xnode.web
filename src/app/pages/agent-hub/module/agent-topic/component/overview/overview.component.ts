@@ -63,7 +63,7 @@ export class TopicOverviewComponent {
   //making the url param for category
   makeTableParamObj() {
     let urlParam: any = {
-      url: "agent/capabilities_linked_agents/" + this.overViewObj.currentUser.account_id
+      url: "/agent/capabilities_linked_agents/" + this.overViewObj.currentUser.account_id
     };
     return urlParam;
   }
@@ -105,7 +105,7 @@ export class TopicOverviewComponent {
   //get topic detail by topicID
   getTopicDetailByID() {
     let urlParam: any = {
-      url: ("agent/topic_by_id/" + (this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id')))
+      url: ("/agent/topic_by_id/" + (this.topicId ?? this.activatedRoute.snapshot.paramMap.get('id')))
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getTopicDetailByID(urlParam).subscribe({
