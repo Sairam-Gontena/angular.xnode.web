@@ -49,11 +49,22 @@ export class AgentHubService extends BaseApiService {
     return this.get(url)
   }
 
-  getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {
-    let queryParams = new URLSearchParams(query).toString();
-    let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
+  // getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {
+  //   let queryParams = new URLSearchParams(query).toString();
+  //   let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
 
-    return this.get(url);
+  //   return this.get(url);
+  // }
+
+  getAgentCount(urlParam: any): Observable<any> {
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.get<any>(this.apiUrl + urlParam.url, requestOptions);
   }
 
   //get agent detail by accountID
