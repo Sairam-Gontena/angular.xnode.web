@@ -61,7 +61,11 @@ export class AuthApiService extends BaseApiService {
 
   logout() {
     this.http
-      .get<any>(`${environment.authApiUrl}mfa/logout?email=${this.userValue?.email}`, { headers: { 'Content-Type': 'application/json' } })
+      .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
+        headers: {
+          'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
+        }
+      })
       .subscribe();
     this.stopRefreshTokenTimer();
     this.userSubject.next(null);

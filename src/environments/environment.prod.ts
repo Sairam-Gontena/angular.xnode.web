@@ -14,12 +14,6 @@ export const environment = {
         publish: 'ui-gen/ui/angular',
         notification: 'notification-api'
     },
-    authApiUrl: 'https://prod-xnodeauth-api-in.azurewebsites.net/',
-    conversationApiUrl: 'https://prod-conversation-api-in.azurewebsites.net/',
-    commentsApiUrl: 'https://prod-spec-api-in.azurewebsites.net/',
-    notifyApiUrl: 'https://prod-notify-api-in.azurewebsites.net/',
-    userUtilsApi: 'https://prod-userutil-api-in.azurewebsites.net/',
-    commonApiUrl: 'https://prod-cmn-api-in.azurewebsites.net/',
     xnodeAppUrl: 'https://app-in.xnode.ai/',
     naviAppUrl: 'https://prod-navi-web-in.azurewebsites.net/',
     designStudioAppUrl: 'https://prod-ui-gen-in.azurewebsites.net/dashboard/',
