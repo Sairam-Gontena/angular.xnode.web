@@ -261,8 +261,8 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
       url:
-        environment.uigenApiUrl +
-        'openapi-spec/' +
+        environment.apiUrl + environment.endpoints.uiGen +
+        '/openapi-spec/' +
         localStorage.getItem('app_name') +
         '/' +
         email +

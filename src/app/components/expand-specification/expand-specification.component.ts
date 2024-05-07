@@ -73,7 +73,7 @@ export class ExpandSpecificationComponent {
     const product: any = this.storageService.getItem(StorageKeys.Product)
     let swaggerUrl =
       environment.apiUrl + environment.endpoints.spec +
-      'product-spec/openapi-spec/' +
+      '/product-spec/openapi-spec/' +
       product.title +
       '/' +
       product?.id +

@@ -15,11 +15,11 @@ export class ConversationApiService extends BaseApiService {
         super();
     }
     getAllConversations() {
-        let url = 'conversation';
+        let url = '/conversation';
         return this.get(url);
     }
     getConversationsByContributor(user_id: any) {
-        let url = 'conversation/conversations-by-contributor?contributors=' + user_id;
+        let url = '/conversation/conversations-by-contributor?contributors=' + user_id;
         return this.get(url);
     }
 
