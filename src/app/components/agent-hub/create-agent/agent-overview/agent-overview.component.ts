@@ -138,7 +138,7 @@ export class AgentOverviewComponent implements OnInit {
 
         console.log(response, "response")
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error?.detail });
       }
     });
   }
