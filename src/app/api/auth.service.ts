@@ -141,10 +141,9 @@ export class AuthApiService extends BaseApiService {
   }
 
   resetPassword(body?: any) {
-    return this.patch(
-      '/auth/prospect/resetpassword/' +
-      body.email + '?password=' + body.password
-    );
+    return this.put(
+      '/auth/prospect/resetpassword'
+      , body);
   }
 
   updateUserId(body: any) {
