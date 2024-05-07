@@ -12,11 +12,37 @@
   color: #fff !important;
 }
 
-:host ::ng-deep .p-tabview-panels,
-:host ::ng-deep .p-tabview-nav,
-:host ::ng-deep .p-tabview-nav li,
-:host ::ng-deep .p-tabview-nav li a {
-  background: transparent !important;
+:host ::ng-deep .p-tabview {
+  &.customTabView {
+
+    .p-tabview-nav {
+      margin-left: 40px;
+    }
+  }
+
+  .p-tabview-panels {
+    padding: 10px 0px;
+    height: calc(100vh - 265px);
+    overflow: auto;
+    background: transparent;
+  }
+
+  .p-tabview-nav {
+    background: transparent;
+
+    li {
+      a.p-tabview-nav-link {
+        background: transparent;
+      }
+
+      &:not(.p-highlight):not(.p-disabled):hover {
+        .p-tabview-nav-link {
+          background: transparent;
+        }
+
+      }
+    }
+  }
 }
 
 .separator {
@@ -30,9 +56,9 @@
   height: 3.5rem;
 }
 
-:host ::ng-deep.p-tabview-nav {
-  gap: 1.5rem;
-}
+// :host ::ng-deep.p-tabview-nav {
+//   gap: 1.5rem;
+// }
 
 /* Change background color of the dropdown */
 :host ::ng-deep .p-multiselect-panel {
@@ -129,6 +155,7 @@
   padding-left: 0;
   padding-right: 0;
 }
+
 .menu-hamburger:not(.p-disabled).p-focus {
   border: none;
 }
@@ -171,6 +198,7 @@
   height: calc(100vh - 56vh);
   overflow: auto;
 }
+
 // Column 3 dots action button
 :host ::ng-deep .p-splitbutton-defaultbutton,
 :host ::ng-deep .p-splitbutton-menubutton {

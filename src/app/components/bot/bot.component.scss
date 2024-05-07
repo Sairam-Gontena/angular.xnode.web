@@ -1,12 +1,3 @@
-.bot-container {
-  position: fixed !important;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-}
-
 .bot-text {
   border-bottom-left-radius: 261px;
   border-top-left-radius: 261px;
@@ -18,10 +9,8 @@
 }
 
 .bot-logo {
-  align-self: flex-end;
   width: 64px;
   height: 64px;
-  align-self: flex-end;
 }
 
 .text {
@@ -33,7 +22,6 @@
 }
 
 .draggable {
-  position: absolute;
   cursor: move;
   user-select: none;
 }
