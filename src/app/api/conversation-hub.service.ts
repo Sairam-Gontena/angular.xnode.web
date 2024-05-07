@@ -97,6 +97,7 @@ export class ConversationHubService extends BaseApiService {
     const authToken = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      'ocp-apim-subscription-key': environment.apimSubscriptionKey,
       'Authorization': `Bearer ${authToken}` // Include the token in the 'Authorization' header
     });
     return this.httpClient.patch(url, params, { headers });
