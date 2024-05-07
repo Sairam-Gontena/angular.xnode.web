@@ -1,7 +1,19 @@
 export const environment = {
     name: 'BETA',
     production: false,
-    apiUrl: 'https://beta-navi-api.azurewebsites.net/',
+    apiUrl: 'https://xnode-us-apim.azure-api.net/',
+    apimSubscriptionKey: '64182f1412f74e0fb4402f476e10d567',
+    endpoints: {
+        navi: 'navi-api',
+        auth: 'auth-api',
+        conversation: 'conversation-api',
+        spec: 'spec-api',
+        userUtil: 'userutil-api',
+        common: 'common-api',
+        naviData: 'navi-data',
+        publish: 'ui-gen/ui/angular',
+        notification: 'notification-api'
+    },
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
     conversationApiUrl: 'https://beta-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://beta-spec-api.azurewebsites.net/',
@@ -20,5 +32,5 @@ export const environment = {
     projectName: 'xnode-beta',
     homeUrl: 'https://xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30
 }

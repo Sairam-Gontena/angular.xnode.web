@@ -3,6 +3,7 @@ import { CommentsService } from 'src/app/api/comments.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-conversation-actions',
@@ -100,7 +101,7 @@ export class ConversationActionsComponent {
       formData.append('file', file);
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53'
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       await this.fileUploadCall(formData, headers); // await here
     };

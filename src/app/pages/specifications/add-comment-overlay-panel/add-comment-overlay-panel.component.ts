@@ -10,6 +10,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
@@ -447,7 +448,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       formData.append('file', file);
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53'
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       await this.fileUploadCall(formData, headers); // await here
     };

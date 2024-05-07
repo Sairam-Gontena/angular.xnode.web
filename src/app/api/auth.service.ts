@@ -72,7 +72,7 @@ export class AuthApiService extends BaseApiService {
     return this.http
       .get<any>(
         `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token?email=${this.userValue?.email}&token=${this.userValue?.refreshToken}`,
-        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': 'dfa5a9e0fbfa43809ea3e6212647dd53', } }
+        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey } }
       )
       .pipe(
         map((resp) => {

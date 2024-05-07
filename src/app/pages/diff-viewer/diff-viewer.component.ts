@@ -411,7 +411,7 @@ export class DiffViewerComponent implements OnInit {
   async fetchOpenAPISpec(id: string, versionId: string) {
     const product: any = this.storageService.getItem(StorageKeys.Product)
     let swaggerUrl =
-    environment.apiUrl + environment.endpoints.spec +
+      environment.apiUrl + environment.endpoints.spec +
       'product-spec/openapi-spec/' +
       product.title +
       '/' +
@@ -421,7 +421,7 @@ export class DiffViewerComponent implements OnInit {
     const headers = {
       'Authorization': `Bearer ${this.storageService.getItem(StorageKeys.ACCESS_TOKEN)}`,
       'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53',
+      'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
     };
     try {
       const response = await fetch(swaggerUrl, { headers });

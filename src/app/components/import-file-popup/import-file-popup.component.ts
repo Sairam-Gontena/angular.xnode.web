@@ -6,6 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-import-file-popup',
@@ -53,7 +54,7 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
       formData.append('file', file);
       const headers = {
         'Content-Type': 'multipart/form-data',
-        'Ocp-Apim-Subscription-Key': 'dfa5a9e0fbfa43809ea3e6212647dd53'
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       await this.fileUploadCall(formData, headers); // await here
     };
