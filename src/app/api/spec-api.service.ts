@@ -15,37 +15,37 @@ export class SpecApiService extends BaseApiService {
   }
 
   getSpec(params?: any) {
-    let url = 'product-spec';
+    let url = '/product-spec';
     return this.get(url, params);
   }
 
   getLatestSpec(productId?: any) {
-    let url = 'product-spec/latest/' + productId;
+    let url = '/product-spec/latest/' + productId;
     return this.get(url);
   }
 
   getVersionIds(product_id?: any) {
-    let url = 'product-spec/version-ids/' + product_id;
+    let url = '/product-spec/version-ids/' + product_id;
     return this.get(url);
   }
 
   getUsecases(product_id?: any) {
-    let url = 'product-spec/usecases/' + product_id;
+    let url = '/product-spec/usecases/' + product_id;
     return this.get(url);
   }
   getDataModel(product_id?: any) {
-    let url = 'product-spec/datamodel/' + product_id;
+    let url = '/product-spec/datamodel/' + product_id;
     return this.get(url);
   }
 
   getXflows(productId?: string) {
-    let url = 'product-spec/xflows/' + productId;
+    let url = '/product-spec/xflows/' + productId;
     return this.get(url);
   }
 
   //share link to users in spec  
   createUpdateUserListProdSpec(paramPayload?: any) {
-    let url = 'product-spec';
+    let url = '/product-spec';
     return this.patch(url, paramPayload);
   }
 
