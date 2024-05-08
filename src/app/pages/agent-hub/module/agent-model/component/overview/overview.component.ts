@@ -95,7 +95,7 @@ export class ModelOverviewComponent {
         }
         this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(false);
       }
     });

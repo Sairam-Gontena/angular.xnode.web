@@ -19,7 +19,7 @@ export class LocalStorageService {
       }
       catch (error) {
         console.log(`Failed to parse data with key - ${key}`);
-        console.error(error);
+        console.log(error);
         return undefined;
       }
     }
