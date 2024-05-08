@@ -40,8 +40,10 @@ export class DynamicTableComponent implements OnInit {
   @Input() verticalScrollHeight = '25rem';
   @Input() paginatorInfo: any = {};
   @Input() showViewRowData = false;
+  @Input() agentDataType = 'live'
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
+  @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
 
   @Input() tableRowActionOptions: any[] = [];
 
@@ -181,5 +183,10 @@ export class DynamicTableComponent implements OnInit {
     if (this.showViewRowData) {
       this.changeEvent.emit(rowData)
     }
+  }
+
+  setAgentDataType(type: any) {
+    this.agentDataType = type
+    this.agentDataTypeChange.emit(type)
   }
 }

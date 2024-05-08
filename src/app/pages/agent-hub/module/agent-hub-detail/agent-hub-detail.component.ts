@@ -28,6 +28,7 @@ export class AgentHubDetailComponent {
     export_action: false,
     name: 'Notification List',
     search_input: true,
+    showAgentDataType: true
   };
   searchFilterOptions = {
     showFilterOption: true,
@@ -151,6 +152,8 @@ export class AgentHubDetailComponent {
   tableData!: ITableDataEntry[];
   headerActionBtnOption = agentHeaderActionOptions;
   activeHeaderActionBtnOption!: any[];
+  agentDataType: string = 'live';
+
   viewAll = {
     showButton: true,
     clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
@@ -271,6 +274,11 @@ export class AgentHubDetailComponent {
       this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
     }
     this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
+  }
+
+  setAgentDataType(event: any) {
+    this.agentDataType = event
+    this.getAllAgentList()
   }
 
 }

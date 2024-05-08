@@ -33,6 +33,21 @@
             <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
           </span>
         </div>
+
+        <div *ngIf="tableInfo?.showAgentDataType" class="flex" [ngClass]="searchFilterOptions.styleClass">
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium"
+            [ngClass]="{'active-agent-data-type' : agentDataType === 'live'}" (click)="setAgentDataType('live')">
+            Live
+          </div>
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium agent-data-type-border"
+            [ngClass]="{'active-agent-data-type': agentDataType === 'training'}" (click)="setAgentDataType('training')">
+            Training
+          </div>
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium"
+            [ngClass]="{'active-agent-data-type': agentDataType === 'archived'}" (click)="setAgentDataType('archived')">
+            Archived
+          </div>
+        </div>
         <div class="flex-wrap">
           <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
             <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" />
