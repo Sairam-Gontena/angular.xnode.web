@@ -190,6 +190,7 @@
                 [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
             </p> -->
     <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
+      <span [innerHTML]="cmt.title"></span>
       <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
     </div>
     <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">

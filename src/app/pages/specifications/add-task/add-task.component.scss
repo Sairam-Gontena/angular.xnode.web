@@ -73,6 +73,19 @@ textarea {
     width: 30rem;
 }
 
+.add-task p-inputtext,
+.add-task textarea {
+  color: #ffffff;
+  background: #2E2D36;
+  padding: 0.75rem 0.75rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 6px;
+  resize: none !important;
+  width: 100%;
+}
+
 :host ::ng-deep .due-date .p-button {
     color: #ffffff;
     background: transparent;

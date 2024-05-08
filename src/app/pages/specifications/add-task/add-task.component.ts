@@ -10,6 +10,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { environment } from 'src/environments/environment';
+import _ from 'lodash';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -66,6 +67,7 @@ export class AddTaskComponent {
   product: any;
   isCommnetsPanelOpened: boolean = false;
   references: any;
+  assignees:any;
   userList: any;
 
   constructor(
@@ -81,14 +83,15 @@ export class AddTaskComponent {
     this.minDate = new Date();
     this.addTaskForm = this.fb.group({
       title: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      priority: ['', [Validators.required]],
-      duedate: ['', [Validators.required]],
+      description: ['',[]],
+      priority: ['MEDIUM', [Validators.required]],
+      duedate: [new Date(this.getTodayDate()), [Validators.required]],
       reviewersLOne: [[], [Validators.required]],
       files: [[]],
     });
-    this.references = [];
+    this.assignees = [];
   }
+
   ngOnInit() {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
@@ -101,42 +104,63 @@ export class AddTaskComponent {
     if (!this.parentId) {
       this.parentId = this.selectedContent.parentId;
     }
+    this.getTodayDate();
+  }
+
+  getTodayDate() {
+    this.onDateSelect(new Date());
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    return mm + '/' + dd + '/' + yyyy;
+  }
+
+  removeReference(event: any) {
+    this.assignees = this.assignees.filter((item: any) => (item.userId !== event.value.userId));
   }
 
   onDateSelect(event: any): void {
-    const selectedDate: Date = event;
-
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date();
+    const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const formattedSelectedDate = this.datePipe.transform(
-      selectedDate,
-      'shortDate'
-    );
-    const formattedToday = this.datePipe.transform(today, 'shortDate');
-    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
-
     let label: any;
-
-    if (formattedSelectedDate === formattedToday) {
+    if (this.isSameDay(event, today)) {
       label = 'Today';
-    } else if (formattedSelectedDate === formattedTomorrow) {
+    } else if (this.isSameDay(event, tomorrow)) {
       label = 'Tomorrow';
     } else {
-      label = formattedSelectedDate;
+      label = event.toLocaleDateString('en-US');
     }
-
     this.selectedDateLabel = label;
   }
+
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1?.getDate() === date2?.getDate() &&
+      date1?.getMonth() === date2?.getMonth() &&
+      date1?.getFullYear() === date2?.getFullYear();
+  }
+
+  convertToUTC(date: Date): Date {
+    if (typeof (date) == 'string' || !date)
+      date = new Date(date);
+    let returnDateInTime: any = new Date(date).getTime();
+    if (this.selectedDateLabel == 'Today') {
+      returnDateInTime = new Date().toISOString();
+    } else {
+      const selectedDate = this.datePipe.transform(new Date(date), 'MM/dd/yyyy');
+      const time: any = this.datePipe.transform(new Date(), 'HH:mm:ss');
+      returnDateInTime = new Date(selectedDate + ' ' + time).toISOString()
+    }
+    return returnDateInTime;
+  }
+
   createTask() {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
     }
+    const deadline = this.convertToUTC(this.addTaskForm.value.duedate);
     let body = {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
@@ -147,42 +171,38 @@ export class AddTaskComponent {
       referenceContent:
         this.parentEntity === 'SPEC' ? this.selectedContent : {},
       attachments: this.uploadedFiles,
-      references: this.setTemplateTypeInRefs(),
+      references: [],
       followers: [],
       feedback: {},
-      users: [
-        {
-          userId: this.currentUser.user_id,
-          role: 'Owner'
-        }
-      ],
-      assignee: this.currentUser.user_id,
-      deadline: this.addTaskForm.value.duedate,
+      assignee: this.setTemplateTypeInRefs(),
+      deadline: deadline,
     };
+    this.addTaskForm.markAsUntouched();
     this.saveAsTask(body);
     this.addTaskForm.reset();
   }
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
     this.addTaskForm.value.reviewersLOne.forEach((item: any) => {
-      this.references.push({
-        entity_type: 'User',
-        entity_id: item.user_id,
-      });
+      if (item) {
+        this.assignees.push({
+          role: "assignee", active: true, userId: item.userId ? item.userId : item.user_id, firstName: item.first_name ? item.first_name : item.firstName, lastName: item.last_name ? item.last_name : item.lastName, createdOn: new Date(), modifiedBy: this.currentUser.user_id
+        });
+      }
     });
-    if (this.references.length == 0) this.references = [{}];
+    if (this.assignees.length == 0) this.assignees = [{}];
     if (this.parentEntity === 'SPEC') {
-      this.references.forEach((obj: any) => {
+      this.assignees.forEach((obj: any) => {
         obj.template_type = 'TASK';
         obj.product_id = productId;
       });
     } else {
-      this.references.forEach((obj: any) => {
+      this.assignees.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
         obj.product_id = productId;
       });
     }
-    return this.references;
+    return this.assignees;
   }
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
@@ -307,6 +327,9 @@ export class AddTaskComponent {
     return reducedName;
   }
   cancelTask() {
+    this.addTaskForm.markAsUntouched();
+    this.files = [];
+    this.uploadedFiles = [];
     this.closeOverlay.emit();
   }
   saveAsTask(body: any): void {
@@ -315,6 +338,12 @@ export class AddTaskComponent {
     } else {
       body.referenceContent.parentTitle = this.specItem.title;
     }
+    body.users = [];
+    body.assignee = _.uniqBy(body.assignee, 'userId');
+    body.assignee.forEach((item: any) => { body.users.push({ "userId": item?.userId, "role": "Contributor", "active": true }); });
+    body.users = _.uniqBy(body.users, 'userId');
+    body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
+    console.log(body)
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {
