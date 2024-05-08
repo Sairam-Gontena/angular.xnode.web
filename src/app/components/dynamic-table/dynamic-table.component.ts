@@ -7,13 +7,13 @@ interface Column {
 }
 interface FilterOptions {
   showFilterOption?: boolean;
-  filter: boolean;
-  showToggleAll: boolean;
-  showHeader: boolean;
-  options: any[];
-  placeholder: string;
-  optionLabel: string;
-  styleClass: string;
+  filter?: boolean;
+  showToggleAll?: boolean;
+  showHeader?: boolean;
+  options?: any[];
+  placeholder?: string;
+  optionLabel?: string;
+  styleClass?: string;
   changeHandler?: (event: any) => void;
 }
 

@@ -1,0 +1,18 @@
+:host ::ng-deep .p-dropdown .p-dropdown-label.p-placeholder {
+    color: var(--star-dust)
+  }
+
+:host ::ng-deep .p-dropdown {
+  border-radius: 0%;
+//   background-color: #343541;
+background-color: #2E2D36;
+//   border: 2px solid #595959;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+:host ::ng-deep .p-inputtext {
+    border: none;
+    padding: 0;
+    background-color: #2E2D36;
+}

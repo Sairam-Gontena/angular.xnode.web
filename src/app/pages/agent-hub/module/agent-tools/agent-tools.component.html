@@ -1,0 +1,19 @@
+<div class="">
+    <p-tabView [(activeIndex)]="activeIndex">
+        <ng-container *ngFor="let tabItem of tabItems">
+            <p-tabPanel>
+                <ng-template pTemplate="header">
+                    <span>{{tabItem.title}}</span>
+                </ng-template>
+                <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+                    <ng-container *ngSwitchCase="'Overview'">
+                        <xnode-tool-overview />
+                    </ng-container>
+                    <!-- <ng-container *ngSwitchCase="'Actions'">
+                        <ng-container [ngTemplateOutlet]="actions"></ng-container>
+                    </ng-container> -->
+                </ng-template>
+            </p-tabPanel>
+        </ng-container>
+    </p-tabView>
+</div>

@@ -22,10 +22,11 @@
       <div class="flex justify-content-between align-items-center">
         <div class="flex gap-4 p-3">
           <xnode-multi-select-checkbox *ngIf="searchFilterOptions?.showFilterOption"
-            [filter]="searchFilterOptions.filter" [showToggleAll]="searchFilterOptions.showToggleAll"
-            [showHeader]="searchFilterOptions.showHeader" [options]="searchFilterOptions.options"
-            [placeholder]="searchFilterOptions.placeholder" [optionLabel]="searchFilterOptions.optionLabel"
-            [styleClass]="searchFilterOptions.styleClass"></xnode-multi-select-checkbox>
+            [filter]="searchFilterOptions.filter ?? false" [showToggleAll]="searchFilterOptions.showToggleAll ?? false"
+            [showHeader]="searchFilterOptions.showHeader ?? false" [options]="searchFilterOptions.options ?? []"
+            [placeholder]="searchFilterOptions.placeholder ?? 'All'"
+            [optionLabel]="searchFilterOptions.optionLabel ?? 'name'"
+            [styleClass]="searchFilterOptions.styleClass ?? ''"></xnode-multi-select-checkbox>
 
           <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
             <i class="pi pi-search"></i>
@@ -47,11 +48,12 @@
 
         <div class="flex gap-2 align-items-center px-2" *ngIf="showColumnFilterOption?.showFilterOption">
           <span>Columns: </span>
-          <xnode-multi-select-checkbox [filter]="showColumnFilterOption.filter"
-            [showToggleAll]="showColumnFilterOption.showToggleAll" [showHeader]="showColumnFilterOption.showHeader"
-            [options]="showColumnFilterOption.options" [placeholder]="showColumnFilterOption.placeholder"
-            [optionLabel]="showColumnFilterOption.optionLabel" [styleClass]="showColumnFilterOption.styleClass"
-            (changeEvent)="
+          <xnode-multi-select-checkbox [filter]="showColumnFilterOption.filter ?? false"
+            [showToggleAll]="showColumnFilterOption.showToggleAll ?? false"
+            [showHeader]="showColumnFilterOption.showHeader ?? false" [options]="showColumnFilterOption.options ?? []"
+            [placeholder]="showColumnFilterOption.placeholder ?? ''"
+            [optionLabel]="showColumnFilterOption.optionLabel ?? 'name'"
+            [styleClass]="showColumnFilterOption.styleClass ?? ''" (changeEvent)="
               showColumnFilterOption.changeHandler &&
                 showColumnFilterOption.changeHandler($event)
             "></xnode-multi-select-checkbox>

@@ -32,7 +32,7 @@ export class PromptOverviewComponent {
 
   @Input() formEditable!: boolean;
 
-  @Output() onEditSave = new EventEmitter<{ event: any }>(); 
+  @Output() onEditSave = new EventEmitter<{ event: any }>();
 
   overviewForm!: FormGroup;
   instructionForm!: FormGroup;
@@ -73,10 +73,10 @@ export class PromptOverviewComponent {
         example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
       });
     }
-    if(changes.formEditable) {
-      if(this.formEditable) {
+    if (changes.formEditable) {
+      if (this.formEditable) {
         this.instructionForm.enable();
-      }else {
+      } else {
         this.instructionForm.disable();
       }
     }
@@ -143,9 +143,8 @@ export class PromptOverviewComponent {
 
   onEditSaveHandler() {
     // this.onEditSave.emit(this.overviewInstructionDetailObj?.overviewInstructionData)
-
     const formData = this.instructionForm?.value
-    
+
     formData.id = this.overviewInstructionDetail?.overviewInstructionData?.id
 
     formData.version = this.overviewInstructionDetail?.overviewInstructionData?.version
