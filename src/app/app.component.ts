@@ -453,10 +453,7 @@ export class AppComponent implements OnInit {
       const product = event.data.product;
       this.storageService.saveItem(StorageKeys.Product, product);
       this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-      if (this.router.url === '/overview') {
-        location.reload()
-      } else
-        this.router.navigate(['/overview']);
+      location.reload()
     } else
       if (event?.data?.message === 'change-app' && !event.data.product) {
 
@@ -774,7 +771,7 @@ export class AppComponent implements OnInit {
         '&product_id=' +
         this.product.id +
         '&product=' +
-        JSON.stringify(this.product) +
+        JSON.stringify({ id: this.product.id, title: this.product.title }) +
         '&new_with_navi=' +
         false + '&componentToShow=Chat';
     }
