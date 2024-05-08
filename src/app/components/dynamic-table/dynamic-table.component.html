@@ -36,15 +36,18 @@
 
         <div *ngIf="tableInfo?.showAgentDataType" class="flex" [ngClass]="searchFilterOptions.styleClass">
           <div class="py-2 px-3 cursor-pointer text-lg font-medium"
-            [ngClass]="{'active-agent-data-type' : agentDataType === 'live'}" (click)="setAgentDataType('live')">
+            [ngClass]="{'active-agent-data-type' : agentDataType === recordType?.live}"
+            (click)="setAgentDataType('live')">
             Live
           </div>
           <div class="py-2 px-3 cursor-pointer text-lg font-medium agent-data-type-border"
-            [ngClass]="{'active-agent-data-type': agentDataType === 'training'}" (click)="setAgentDataType('training')">
+            [ngClass]="{'active-agent-data-type': agentDataType === recordType?.training}"
+            (click)="setAgentDataType('training')">
             Training
           </div>
           <div class="py-2 px-3 cursor-pointer text-lg font-medium"
-            [ngClass]="{'active-agent-data-type': agentDataType === 'archived'}" (click)="setAgentDataType('archived')">
+            [ngClass]="{'active-agent-data-type': agentDataType === recordType?.archived}"
+            (click)="setAgentDataType('archived')">
             Archived
           </div>
         </div>

@@ -7,7 +7,8 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { agentHeaderActionOptions, agentHubDetail } from '../../constant/agent-hub';
+import { agentHeaderActionOptions, agentHubDetail, agentRecordDataType } from '../../constant/agent-hub';
+import { TabViewChangeEvent } from 'primeng/tabview';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -152,7 +153,8 @@ export class AgentHubDetailComponent {
   tableData!: ITableDataEntry[];
   headerActionBtnOption = agentHeaderActionOptions;
   activeHeaderActionBtnOption!: any[];
-  agentDataType: string = 'live';
+  agentDataType: string = agentRecordDataType.live;
+  recordType = agentRecordDataType //live/training/archieve
 
   viewAll = {
     showButton: true,
@@ -274,6 +276,13 @@ export class AgentHubDetailComponent {
       this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
     }
     this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
+  }
+
+  onTabSwitchHandler(event: TabViewChangeEvent) {
+
+    this.agentDataType = this.recordType.live
+
+    this.getAllAgentList()
   }
 
   setAgentDataType(event: any) {

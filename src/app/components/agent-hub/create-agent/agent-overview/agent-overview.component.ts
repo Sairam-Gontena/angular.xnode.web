@@ -120,7 +120,7 @@ export class AgentOverviewComponent implements OnInit {
   // Async Call
 
   async getAgentCount() {
-    let url: string = "/agent/count_by_id/",
+    let url: string = "/agent/count_by_id",
       urlParam: any = {
         url: url,
         params: {

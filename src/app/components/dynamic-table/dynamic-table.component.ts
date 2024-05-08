@@ -41,6 +41,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() paginatorInfo: any = {};
   @Input() showViewRowData = false;
   @Input() agentDataType = 'live'
+  @Input() recordType!: any;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
   @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();

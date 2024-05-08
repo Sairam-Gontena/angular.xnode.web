@@ -127,3 +127,9 @@ export const agentHeaderActionOptions = {
         ]
     },
 }
+
+export const agentRecordDataType = {
+    training: 'training',
+    live: 'live',
+    archived: 'archived'
+}
