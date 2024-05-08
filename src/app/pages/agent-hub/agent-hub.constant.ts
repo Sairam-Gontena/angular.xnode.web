@@ -22,28 +22,28 @@ export const Constant = {
         label: "Agent",
         imgPath: "../../../assets/agent-hub/agent.svg",
         key: "agent_count",
-        count: '',
+        count: 0,
         value: 'agents',
         identifier: agentName.agent
     }, {
         label: "Capabilities",
         imgPath: "../../../assets/agent-hub/capabilities.svg",
         key: "capability_count",
-        count: '',
+        count: 0,
         value: 'capabilities_linked_agents',
         identifier: agentName.capability
     }, {
         label: "Topics",
         imgPath: "../../../assets/agent-hub/topics.svg",
         key: "topic_count",
-        count: '',
+        count: 0,
         value: "topic",
         identifier: agentName.topic
     }, {
         label: "Prompt",
         imgPath: "../../../assets/agent-hub/prompt.svg",
         key: "prompt_count",
-        count: '',
+        count: 0,
         value: 'prompt_linked_topic',
         identifier: agentName.prompt
     }]
