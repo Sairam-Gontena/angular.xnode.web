@@ -186,7 +186,7 @@
         </div>
         <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
           <p-button label="Launch Product" styleClass="p-button-primary launch-product" [rounded]="true"
-            (click)="onClickLaunchProduct(notification?.product_url)"></p-button>
+            (click)="onClickLaunchProduct(notification)"></p-button>
         </div>
       </div>
     </div>
