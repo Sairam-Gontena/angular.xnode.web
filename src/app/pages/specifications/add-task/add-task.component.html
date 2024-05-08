@@ -7,8 +7,10 @@
             <div class="col-12 m-0 p-0">
                 <p class="m-0 p-0">{{selectedContent?.title}}</p>
             </div>
-            <div class="col-12 flex m-0 p-0 mt-3">
-                <input type="text" pInputText formControlName="title" placeholder="Task Title">
+            <div class="col-12 m-0 p-0 mt-3">
+                <input type="text" pInputText formControlName="title" placeholder="Add Task Title">
+                <br/>
+                <span class="text-red-500 text-xs mt-1" *ngIf="addTaskForm.get('title')?.touched && addTaskForm.get('title')?.errors?.['required']"> Title is required </span>
             </div>
             <div class="w-full m-0 p-0 mt-3">
                 <div [class]="width+ ' border-round-md'">
@@ -54,7 +56,7 @@
                 </div>
                 <div class="col-6 justify-content-center m-0 p-0 ml-7">
                     <span class="text-sm  font-normal text-200" *ngIf="!selectedDateLabel">Due By</span>
-                    <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{
+                    <span class=" text-sm font-normal text-white" *ngIf="selectedDateLabel">{{
                         selectedDateLabel }}</span>
                     <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate"
                         (onSelect)="onDateSelect($event)" formControlName="duedate" [showIcon]="true"
@@ -63,7 +65,7 @@
             </div>
             <div class="col-12 p-0 m-0 mt-3">
                 <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
-                    formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                    formControlName="reviewersLOne" (click)="$event.stopPropagation()" (onUnselect)="removeReference($event)" (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
                     (click)="$event.stopPropagation()" [multiple]="true" styleClass="w-full">
                     <ng-template let-reviewer pTemplate="selectedItem">
                         <div class="flex align-items-center">
@@ -75,11 +77,12 @@
                         </div>
                     </ng-template>
                 </p-autoComplete>
+                <span class="text-red-500 text-xs mt-1" *ngIf="addTaskForm.get('reviewersLOne')?.touched && addTaskForm.get('reviewersLOne')?.errors?.['required']">Assignee is required </span>
             </div>
             <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
                 <p-button label="Cancel" [rounded]="true" class="cancel-button" (click)="cancelTask()"></p-button>
                 <p-button label="Create" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
-                    (click)="createTask()"></p-button>
+                (click)="addTaskForm.invalid?addTaskForm.markAllAsTouched():createTask()"></p-button>
             </div>
         </div>
     </form>
