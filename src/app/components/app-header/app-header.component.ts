@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -191,12 +191,11 @@ export class AppHeaderComponent implements OnInit {
         !data.product_url.includes('/login?')
       ) {
         const body = {
-          product_id: data.product_id,
-          product_url:
+          url:
             data.product_url + '/login?product_id=' + data.product_id,
         };
-        this.naviApiService
-          .updateProductUrl(body)
+        this.conversationService
+          .updateProductUrl(body, data.product_id)
           .then((response) => {
             if (!response) {
               this.utilsService.loadToaster({

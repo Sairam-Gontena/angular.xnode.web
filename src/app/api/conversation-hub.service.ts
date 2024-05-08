@@ -59,8 +59,9 @@ export class ConversationHubService extends BaseApiService {
     return this.get(url);
   }
 
-  updateProductUrl(body: any) {
-    return this.patch('/product/update-url', body);
+  updateProductUrl(obj: any, id: string) {
+    const body = { payload: obj, params: { id: id } }
+    return this.patchProductUrl('/product', body);
   }
 
   getAllUsers() {

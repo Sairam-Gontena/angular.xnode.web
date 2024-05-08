@@ -66,6 +66,13 @@ export abstract class BaseApiService {
       { ...this.getConfigJsonHeader(config), params: body.param }
     );
   }
+  patchProductUrl(url: string, body: { payload: any, params: any } = { payload: {}, params: {} }, config: AxiosRequestConfig = {}) {
+    return this.axiosInstance.patch(
+      this.apiUrl + url,
+      body.payload,
+      { ...this.getConfigJsonHeader(config), params: body.params }
+    );
+  }
 
   delete(url: string, config: AxiosRequestConfig = {}) {
     return this.axiosInstance.delete(
