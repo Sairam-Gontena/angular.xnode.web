@@ -761,7 +761,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         children: element,
       };
       var svgNode = this._chart(d3, treeData);
-      console.log('---',svgNode)
       var ele: HTMLElement;
       if (this.referenceId) {
         ele = this.bpmngraph.nativeElement;
@@ -772,7 +771,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         ele = document.getElementById(graphRefId) as HTMLElement;
       }
       const childs = ele.querySelectorAll('svg');
-      if(childs.length === 0 || this.onDiff){ //childs.length === 0 || this.onDiff
+      if(childs.length <grpdata.length || this.onDiff){
         ele?.appendChild(svgNode);
       }
       ele.classList.add('overflow-y-auto');
