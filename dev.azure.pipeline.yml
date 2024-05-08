@@ -3,7 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
-  - test-apim
+  - apim-v2
 
 stages:
   - stage: build
@@ -41,4 +41,8 @@ stages:
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
               WebAppName: 'apim-frontend'
+              deployToSlotOrASE: true
+              ResourceGroupName: 'test'
+              SlotName: 'uat'
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+              RuntimeStack: 'NODE|18-lts'
