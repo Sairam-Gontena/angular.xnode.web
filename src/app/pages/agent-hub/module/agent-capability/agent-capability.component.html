@@ -3,7 +3,7 @@
         <p-tabPanel *ngFor="let topicItem of capabilityTabs" [header]="topicItem.title">
             <ng-container [ngSwitch]="topicItem.component">
                 <div class="overflow-auto customTopicTabPanel">
-                    <xnode-capability-overview *ngSwitchCase="'capabilityOverview'" />
+                    <xnode-capability-overview *ngSwitchCase="'capability'" />
 
                     <ng-container *ngSwitchCase="'topic'">
                         <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>

@@ -1,9 +1,9 @@
 <div class="w-full">
     <p-tabView>
-        <p-tabPanel *ngFor="let topicItem of topicTabs" [header]="topicItem.title">
+        <p-tabPanel *ngFor="let topicItem of promptTabs" [header]="topicItem.title">
             <ng-container [ngSwitch]="topicItem.component">
                 <div class="overflow-auto customTopicTabPanel">
-                    <xnode-prompt-overview-instruction *ngSwitchCase="'promptOverview'" />
+                    <xnode-prompt-overview-instruction *ngSwitchCase="'prompt'" />
                     <!-- <xnode-prompt-overview-instruction *ngSwitchCase="'promptInstruction'" /> -->
                 </div>
             </ng-container>

@@ -6,7 +6,7 @@
                     <span>{{tabItem.title}}</span>
                 </ng-template>
                 <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
-                    <ng-container *ngSwitchCase="'Overview'">
+                    <ng-container *ngSwitchCase="'tool'">
                         <xnode-tool-overview />
                     </ng-container>
                     <!-- <ng-container *ngSwitchCase="'Actions'">
