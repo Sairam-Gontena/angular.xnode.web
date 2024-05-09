@@ -49,22 +49,23 @@
                     formControlName="description" placeholder="Description"></textarea>
             </div>
         </div>
-        <ng-container *ngIf="overViewObj?.enableCreateTopic">
+        <ng-container *ngIf="!overViewObj.enableCreateTopic">
             <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="parent_topic_id">LinkParent</label>
+                <label class="w-full mb-1" for="capability_id">Parent Capability</label>
                 <div class="w-full">
-                    <p-dropdown appendTo="body" styleClass="w-full" formControlName="parent_topic_id" [filter]="true"
+                    <p-dropdown appendTo="body" styleClass="w-full" formControlName="capability_id" [filter]="true"
                         filterBy="name" optionValue="id" [options]="overViewObj.capabilityLinkedAgentOption"
                         optionLabel="name" placeholder="Enter Id or search for existing"></p-dropdown>
                 </div>
             </div>
         </ng-container>
-        <ng-container *ngIf="!overViewObj?.enableCreateTopic">
+        <ng-container *ngIf="overViewObj.enableCreateTopic">
             <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="parentCapability">Parent Capability</label>
+                <label class="w-full mb-1" for="parent_topic_id">Link Parent</label>
                 <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="parentCapability"
-                        formControlName="parentCapability" placeholder="Parent Capability" />
+                    <p-dropdown appendTo="body" styleClass="w-full" formControlName="parent_topic_id" [filter]="true"
+                        filterBy="name" optionValue="id" [options]="overViewObj.capabilityLinkedAgentOption"
+                        optionLabel="name" placeholder="Enter Id or search for existing"></p-dropdown>
                 </div>
             </div>
         </ng-container>

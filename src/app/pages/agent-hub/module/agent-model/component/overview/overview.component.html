@@ -77,14 +77,14 @@
                     <label class="w-full mb-1" for="model">Model</label>
                     <div class="w-full">
                         <p-dropdown appendTo="body" styleClass="w-full" formControlName="model" [filter]="true"
-                            filterBy="name" [options]="" optionLabel="name" placeholder="Select provider"></p-dropdown>
+                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name" placeholder="Select provider"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="version">Version</label>
                     <div class="w-full">
                         <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
-                            filterBy="name" [options]="" optionLabel="name" placeholder="Select version"></p-dropdown>
+                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version" placeholder="Select version"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
