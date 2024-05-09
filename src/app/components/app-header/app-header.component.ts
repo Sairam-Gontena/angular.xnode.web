@@ -364,6 +364,7 @@ export class AppHeaderComponent implements OnInit {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
         this.convSummary = res.data?.data[0].content.conversation_summary;
+        this.convSummary?.incremental_summary.reverse();
       } else {
         this.utils.loadToaster({
           severity: 'error',
