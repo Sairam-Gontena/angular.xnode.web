@@ -68,7 +68,7 @@
             <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
               <xnode-data-model-common [specData]="'spec'"></xnode-data-model-common>
             </div>
-            <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
+            <div *ngIf="(cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases') && product.productTemplate.id=='TID2'">
               <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
                 [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
             </div>

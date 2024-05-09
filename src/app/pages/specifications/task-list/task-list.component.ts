@@ -60,6 +60,7 @@ export class TaskListComponent {
   parentId: any;
   private searchKeywordSubscription: Subscription = new Subscription();
   private searchByUserSubscription: Subscription = new Subscription();
+  product: any;
 
   constructor(
     private utils: UtilsService,
@@ -102,6 +103,8 @@ export class TaskListComponent {
       .subscribe((data: any) => {
         this.filterListByUsersFilter(data);
       });
+
+    this.product = this.storageService.getItem(StorageKeys.Product)
   }
 
   filterListBySearch(users?: any) {
@@ -174,6 +177,9 @@ export class TaskListComponent {
   checkParaViewSections(title: string, parentTitle?: string) {
     if (parentTitle == 'Technical Specifications') {
       return;
+    }
+    if((title == 'References'||title == 'Use Cases') && this.product.productTemplate.id=='TID1'){
+      return true;
     }
     return (
       this.paraViewSections.filter((secTitle) => {

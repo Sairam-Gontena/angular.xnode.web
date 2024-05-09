@@ -73,6 +73,7 @@ export class SpecConversationComponent {
   bpmnFrom: string = 'SPEC'; //;  'Comments'
   private searchKeywordSubscription: Subscription = new Subscription();
   private searchByUserSubscription: Subscription = new Subscription();
+  product: any;
 
   constructor(
     private utils: UtilsService,
@@ -90,6 +91,7 @@ export class SpecConversationComponent {
         this.action = '';
       }
     });
+    this.product = this.storageService.getItem(StorageKeys.Product)
   }
 
   ngOnInit() {
@@ -179,6 +181,9 @@ export class SpecConversationComponent {
   checkParaViewSections(title: string, parentTitle?: string) {
     if (parentTitle == 'Technical Specifications') {
       return;
+    }
+    if((title == 'References'||title == 'Use Cases') && this.product.productTemplate.id=='TID1'){
+      return true;
     }
     return (
       this.paraViewSections.filter((secTitle) => {
