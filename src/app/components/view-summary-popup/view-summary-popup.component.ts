@@ -4,10 +4,8 @@ import { UtilsService } from '../services/utils.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OverallSummary } from 'src/models/view-summary';
-import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { MessageTypes } from 'src/models/message-types.enum';
-import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 
 @Component({
   selector: 'xnode-view-summary-popup',
