@@ -159,6 +159,9 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       this.importFilePopupToShow = false;
       this.newWithNavi = false;
+      if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
+        this.makeTrustedUrl();
+      }
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
         const isNaviExpanded = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
@@ -332,6 +335,7 @@ export class AppComponent implements OnInit {
   }
 
   logout(): void {
+    this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     const naviFrame = document.getElementById('naviFrame')
     if (naviFrame) {
       const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
@@ -345,7 +349,6 @@ export class AppComponent implements OnInit {
     this.showInactiveTimeoutPopup = false;
     this.timedOut = false;
     this.idle.stop();
-    this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
     this.authApiService.logout();
