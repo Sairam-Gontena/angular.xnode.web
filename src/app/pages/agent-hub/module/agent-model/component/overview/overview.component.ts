@@ -47,8 +47,10 @@ export class ModelOverviewComponent {
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      temperature: [''],
-      max_context_length: [''],
+      model_configuration: this.formBuilder.group({
+        maxcontextlength: [''],
+        temperature: ['']
+      }),
       modelSelection: ['EXISTING_PROVIDER'],
       model: [''],
       version: ['']
@@ -119,8 +121,7 @@ export class ModelOverviewComponent {
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
-            temperature: response?.temperature,
-            max_context_length: response?.max_context_length
+            model_configuration: response?.model_configuration
           });
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });

@@ -48,18 +48,20 @@
                         formControlName="description" placeholder="Description"></textarea>
                 </div>
             </div>
-            <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="temperature">Temperature</label>
-                <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
-                        formControlName="temperature" placeholder="Temperature" />
+            <div formGroupName="model_configuration">
+                <div class="flex flex-column align-items-center mb-3">
+                    <label class="w-full mb-1" for="temperature">Temperature</label>
+                    <div class="w-full">
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
+                            formControlName="temperature" placeholder="Temperature" />
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="max_context_length">Max Context Length</label>
-                <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="max_context_length"
-                        formControlName="max_context_length" placeholder="Max Context Length" />
+                <div class="flex flex-column align-items-center mb-3">
+                    <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
+                    <div class="w-full">
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="maxcontextlength"
+                            formControlName="maxcontextlength" placeholder="Max Context Length" />
+                    </div>
                 </div>
             </div>
         </ng-container>
@@ -77,14 +79,16 @@
                     <label class="w-full mb-1" for="model">Model</label>
                     <div class="w-full">
                         <p-dropdown appendTo="body" styleClass="w-full" formControlName="model" [filter]="true"
-                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name" placeholder="Select provider"></p-dropdown>
+                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name"
+                            placeholder="Select provider"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="version">Version</label>
                     <div class="w-full">
                         <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
-                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version" placeholder="Select version"></p-dropdown>
+                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version"
+                            placeholder="Select version"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
@@ -120,19 +124,21 @@
                     </a>
                 </div>
                 <ng-container *ngIf="overViewObj.enableAdvanceOption">
-                    <div class="flex align-items-center mb-3">
-                        <div class="flex flex-column align-items-center mb-3 mr-3">
-                            <label class="w-full mb-1" for="temperature">Temperature</label>
-                            <div class="w-full">
-                                <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
-                                    formControlName="temperature" />
+                    <div formGroupName="model_configuration">
+                        <div class="flex align-items-center mb-3">
+                            <div class="flex flex-column align-items-center mb-3 mr-3">
+                                <label class="w-full mb-1" for="temperature">Temperature</label>
+                                <div class="w-full">
+                                    <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                        id="temperature" formControlName="temperature" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex flex-column align-items-center mb-3">
-                            <label class="w-full mb-1" for="max_context_length">Max Context Length</label>
-                            <div class="w-full">
-                                <input pInputText type="text" class="w-full p-2 border-1 border-round"
-                                    id="max_context_length" formControlName="max_context_length" />
+                            <div class="flex flex-column align-items-center mb-3">
+                                <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
+                                <div class="w-full">
+                                    <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                        id="maxcontextlength" formControlName="maxcontextlength" />
+                                </div>
                             </div>
                         </div>
                     </div>
