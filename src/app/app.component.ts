@@ -974,6 +974,7 @@ export class AppComponent implements OnInit {
     this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res?.data && res.status === 200) {
         this.convSummary = res.data?.data[0].content.conversation_summary;
+        this.convSummary?.incremental_summary.reverse();
         this.showSummaryPopup = true;
       } else {
         this.utilsService.loadToaster({
