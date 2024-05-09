@@ -305,7 +305,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         id: this.selectedComment.id,
         parentEntity: this.parentEntity,
         parentId: this.selectedComment.parentId,
-        priority: '1',
+        priority: 'MEDIUM',
         title: this.comment,
         description: this.comment,
         referenceContent:
@@ -323,10 +323,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       };
     } else if (this.action !== 'EDIT') {
       body = {
-        // createdBy: this.currentUser.user_id,
         parentEntity: this.parentEntity,
         parentId: this.selectedContent.parentId,
-        priority: '1',
+        priority: 'MEDIUM',
         title: this.comment,
         description: this.comment,
         referenceContent:
