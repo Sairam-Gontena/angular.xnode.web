@@ -40,6 +40,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() from: any;
   @Input() AssignedFrom: any;
   @Input() component: any;
+  deadlineDate:any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -47,6 +48,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   listToMention: any;
   mentionConfig: MentionConfig = {};
   references: any;
+  assignees:any;
   isCommnetsPanelOpened: boolean = false;
   isUploading: boolean = false;
   files: any[] = [];
@@ -70,6 +72,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   ) {
     this.minDate = new Date();
     this.references = [];
+    this.assignees = [];
     this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
       this.isCommnetsPanelOpened = event;
     });
@@ -100,11 +103,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   format(item: any) {
     const entityId = item.user_id;
-    const isDuplicate = this.references.some(
+    const isDuplicate = this.assignees.some(
       (reference: any) => reference.entity_id === entityId
     );
     if (!isDuplicate) {
-      this.references.push({
+      this.assignees.push({
         entity_type: 'User',
         entity_id: entityId,
         product_id: this.product?.id || null,
@@ -116,51 +119,49 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
-      this.references.forEach((obj: any) => {
+      this.assignees.forEach((obj: any) => {
+        obj.userId = obj.entity_id;
+        obj.role =  "Contributor";
+        obj.active = true;
+        obj.createdOn = new Date();
+        obj.modifiedBy = this.currentUser.user_id;
         obj.template_type = 'TASK';
         obj.product_id = productId;
       });
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
-      this.references.forEach((obj: any) => {
+      this.assignees.forEach((obj: any) => {
+        obj.userId = obj.entity_id;
         obj.template_type = 'COMMENT';
         obj.product_id = productId;
       });
     } else {
-      this.references.forEach((obj: any) => {
+      this.assignees.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
         obj.product_id = productId;
       });
     }
-    return this.references;
+    return this.assignees;
+  }
+
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1?.getDate() === date2?.getDate() &&
+      date1?.getMonth() === date2?.getMonth() &&
+      date1?.getFullYear() === date2?.getFullYear();
   }
 
   onDateSelect(event: any): void {
-    const selectedDate: Date = event;
-
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date();
+    const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const formattedSelectedDate = this.datePipe.transform(
-      selectedDate,
-      'shortDate'
-    );
-    const formattedToday = this.datePipe.transform(today, 'shortDate');
-    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
-
     let label: any;
-
-    if (formattedSelectedDate === formattedToday) {
+    if (this.isSameDay(event, today)) {
       label = 'Today';
-    } else if (formattedSelectedDate === formattedTomorrow) {
+    } else if (this.isSameDay(event, tomorrow)) {
       label = 'Tomorrow';
     } else {
-      label = formattedSelectedDate;
+      label = event.toLocaleDateString('en-US');
     }
-
+    this.selectedDateLabel = label;
     this.selectedDateLabel = label;
   }
 
@@ -192,7 +193,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           ? this.selectedComment.id
           : this.selectedContent.parentId;
       body = {
-        // createdBy: this.currentUser.user_id,
+        createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
         parentEntity: this.parentEntity,
         parentId: parentId, // It should be spec id at New comment level and parent commment id at reply level
@@ -214,7 +215,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         body = {
-          // createdBy: this.currentUser.user_id,
           topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           parentEntity: this.parentEntity,
           parentId: this.selectedComment.id, // It should be spec id at New comment level and parent commment id at reply level
@@ -297,11 +297,25 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.closeOverlay.emit();
   }
 
+  convertToUTC(date: Date): Date {
+    if (typeof (date) == 'string' || !date)
+      date = new Date(date);
+    let returnDateInTime: any = new Date(date).getTime();
+    if (this.selectedDateLabel == 'Today') {
+      returnDateInTime = new Date().toISOString();
+    } else {
+      const selectedDate = this.datePipe.transform(new Date(date), 'MM/dd/yyyy');
+      const time: any = this.datePipe.transform(new Date(), 'HH:mm:ss');
+      returnDateInTime = new Date(selectedDate + ' ' + time).toISOString()
+    }
+    return returnDateInTime;
+  }
+
   prepareDataToSaveAsTask(): void {
+    const deadline = this.convertToUTC(this.deadlineDate);
     let body;
     if (this.action === 'EDIT') {
       body = {
-        // createdBy: this.currentUser.user_id,
         id: this.selectedComment.id,
         parentEntity: this.parentEntity,
         parentId: this.selectedComment.parentId,
@@ -314,12 +328,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
             : this.selectedComment?.referenceContent
               ? this.selectedComment.referenceContent
               : {},
-        attachments: [],
-        references: this.setTemplateTypeInRefs(),
+        attachments:this.uploadedFiles,
+        references: [],
         followers: [],
         feedback: {},
-        assignee: this.selectedComment.assignee.userId,
-        deadline: '',
+        assignee: this.setTemplateTypeInRefs(),
+        deadline: deadline,
       };
     } else if (this.action !== 'EDIT') {
       body = {
@@ -331,20 +345,23 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         referenceContent:
           this.parentEntity === 'SPEC' ? this.selectedContent : {},
         attachments: this.uploadedFiles,
-        references: this.setTemplateTypeInRefs(),
+        references: [],
         followers: [],
         feedback: {},
-        assignee: this.currentUser.user_id,
-        deadline: '',
+        assignee: this.setTemplateTypeInRefs(),
+        deadline: deadline,
       };
     }
     this.saveAsTask(body);
   }
 
   saveAsTask(body: any): void {
-    this.commentsService
-      .addTask(body)
-      .then((commentsReponse: any) => {
+    body.users = [];
+    body.assignee = _.uniqBy(body.assignee, 'userId');
+    body.assignee.forEach((item: any) => { body.users.push({ "userId": item?.userId, "role": "Contributor", "active": true }); });
+    body.users = _.uniqBy(body.users, 'userId');
+    body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
+    this.commentsService.addTask(body).then((commentsReponse: any) => {
         this.utils.loadSpinner(false);
         if (commentsReponse.statusText === 'Created') {
           this.comment = '';
