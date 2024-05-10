@@ -24,7 +24,7 @@ export class CommentsService extends BaseApiService {
       '/comment/comments-by-productId?productId=' +
       params.productId +
       '&verisonId=' +
-      params.versionId;
+      params.versionId + '&isCountRequired=true';
     return this.get(url);
   }
 
@@ -33,7 +33,7 @@ export class CommentsService extends BaseApiService {
       '/task/tasks-by-productId?productId=' +
       params.productId +
       '&verisonId=' +
-      params.versionId;
+      params.versionId + '&isCountRequired=true';
     if (params.status) {
       url = url + '&status=' + params.status;
     }
