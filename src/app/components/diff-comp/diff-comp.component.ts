@@ -113,24 +113,26 @@ export class DiffCompComponent implements OnInit {
   }
 
   stringifyDictionaryObject() {
-    this.contentObj.content.forEach((item: any) => {
-      if ('columns' in item) {
-        item.columns.forEach((subitem: any) => {
-          subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-          subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-        })
-      }
-      if ('tables' in item) {
-        item.tables.forEach((subitem: any) => {
-          if ('columns' in subitem) {
-            subitem.columns.forEach((element: any) => {
-              element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-              element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-            });
-          }
-        })
-      }
-    })
+    if(Array.isArray(this.contentObj.content)){
+      this.contentObj.content.forEach((item: any) => {
+        if ('columns' in item) {
+          item.columns.forEach((subitem: any) => {
+            subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+            subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+          })
+        }
+        if ('tables' in item) {
+          item.tables.forEach((subitem: any) => {
+            if ('columns' in subitem) {
+              subitem.columns.forEach((element: any) => {
+                element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+                element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+              });
+            }
+          })
+        }
+      })
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
