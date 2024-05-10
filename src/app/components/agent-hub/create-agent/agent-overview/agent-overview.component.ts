@@ -184,7 +184,7 @@ export class AgentOverviewComponent implements OnInit {
         account_id: this.userInfo.account_id,
       };
       const response = await this.agentHubService.getAgentCount({
-        endpoint: 'agent',
+        endpoint: '/agent',
         query,
       });
 

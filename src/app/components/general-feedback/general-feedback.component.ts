@@ -22,6 +22,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { FileService } from 'src/app/file.service';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'xnode-general-feedback',
   templateUrl: './general-feedback.component.html',
@@ -242,7 +243,8 @@ export class GeneralFeedbackComponent implements OnInit {
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       return this.fileUploadCall(formData, headers);
     });

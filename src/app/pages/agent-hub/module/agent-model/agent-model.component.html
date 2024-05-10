@@ -1,0 +1,12 @@
+<div class="w-full">
+    <p-tabView>
+        <p-tabPanel *ngFor="let modelItem of modelTabs" [header]="modelItem.title">
+            <ng-container [ngSwitch]="modelItem.component">
+                <div class="overflow-auto customModelTabPanel">
+                    <xnode-model-overview *ngSwitchCase="'modelOverview'" />
+                    <xnode-configuration *ngSwitchCase="'modelConfiguration'" />
+                </div>
+            </ng-container>
+        </p-tabPanel>
+    </p-tabView>
+</div>

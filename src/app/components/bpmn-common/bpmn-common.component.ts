@@ -33,6 +33,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { SpecApiService } from 'src/app/api/spec-api.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'xnode-bpmn-common',
@@ -335,7 +336,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   getOverview() {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all' }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -712,7 +713,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
             }
           } else {
             this.useCases = response.data
-          } this.graph();
+          }
+          this.graph();
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -747,81 +749,75 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       });
     let mod_data = this.useCases;
     this.showUsecaseGraph = true;
-
-    //TBD
-    //group by usecase role and create different spider web where centre of web is role
-    let firstRole = mod_data?.length ? mod_data[0].role : '';
-    var treeData = {
-      description: '',
-      id: '',
-      role: firstRole,
-      title: this.product.title,
-      children: mod_data,
-    };
-    // var ele;
-    // if (this.referenceId) {
-    //   ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
-    // } else {
-    //   ele = document.getElementById('graph') as HTMLElement;
-    // }
-    // var svgNode = this._chart(d3, treeData);
-    // ele?.appendChild(svgNode);
-    var ele: HTMLElement;
-    if (this.referenceId) {
-      ele = this.bpmngraph.nativeElement;
-    } else {
-      let graphRefId = this.bpmnRefId
-        ? this.bpmnRefId + '-graph'
-        : 'diagramRef-graph';
-      ele = document.getElementById(graphRefId) as HTMLElement;
-      // ele = this.bpmngraph.nativeElement;
-    }
-    var svgNode = this._chart(d3, treeData);
-    ele?.appendChild(svgNode);
-    ele.classList.add('overflow-y-auto');
-
-    let nodes: NodeListOf<SVGGElement> | undefined;
-    nodes = svgNode?.querySelectorAll('g');
-    var svg_ele;
-    if (this.referenceId) {
-      of([])
-        .pipe(delay(1000))
-        .subscribe((results) => {
-          svg_ele = document.getElementById('graph' + this.referenceId);
-        });
-    } else {
-      let graphRefId = this.bpmnRefId
-        ? this.bpmnRefId + '-graph'
-        : 'diagramRef-graph';
-      svg_ele = document.getElementById(graphRefId);
-    }
-    if (svg_ele) {
-      svg_ele.addEventListener('click', (event: any) => {
-        let e = event.target.__data__;
-        let flow = e.data.title;
-        if (e.depth == 2) {
-          // this.utilsService.loadSpinner(true);
-          this.showUsecaseGraph = false;
-          let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
-          var bpmnWindow = document.getElementById(bpmnRefId);
-          if (bpmnWindow) bpmnWindow.style.display = '';
-          this.graphRedirection = true;
-          var graphWindow;
-          if (this.referenceId) {
-            of([])
-              .pipe(delay(500))
-              .subscribe((results) => {
-                graphWindow = document.getElementById('sc' + this.referenceId);
-              });
-          } else {
-            graphWindow = this.scgraph.nativeElement;
+    let grpdata:any=_.groupBy(mod_data, 'role');
+    grpdata = Object.values(grpdata)
+    grpdata.forEach((element:any)=>{
+      let firstRole = element?.length ? element[0]?.role : '';
+      var treeData = {
+        description: '',
+        id: '',
+        role: firstRole,
+        title: this.product.title,
+        children: element,
+      };
+      var svgNode = this._chart(d3, treeData);
+      var ele: HTMLElement;
+      if (this.referenceId) {
+        ele = this.bpmngraph.nativeElement;
+      } else {
+        let graphRefId = this.bpmnRefId
+          ? this.bpmnRefId + '-graph'
+          : 'diagramRef-graph';
+        ele = document.getElementById(graphRefId) as HTMLElement;
+      }
+      const childs = ele.querySelectorAll('svg');
+      if(childs.length <grpdata.length || this.onDiff){
+        ele?.appendChild(svgNode);
+      }
+      ele.classList.add('overflow-y-auto');
+      let nodes: NodeListOf<SVGGElement> | undefined;
+      nodes = svgNode?.querySelectorAll('g');
+      var svg_ele;
+      if (this.referenceId) {
+        of([])
+          .pipe(delay(1000))
+          .subscribe((results) => {
+            svg_ele = document.getElementById('graph' + this.referenceId);
+          });
+      } else {
+        let graphRefId = this.bpmnRefId
+          ? this.bpmnRefId + '-graph'
+          : 'diagramRef-graph';
+        svg_ele = document.getElementById(graphRefId);
+      }
+      if (svg_ele) {
+        svg_ele.addEventListener('click', (event: any) => {
+          let e = event.target.__data__;
+          let flow = e.data.title;
+          if (e.depth == 2) {
+            // this.utilsService.loadSpinner(true);
+            this.showUsecaseGraph = false;
+            let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+            var bpmnWindow = document.getElementById(bpmnRefId);
+            if (bpmnWindow) bpmnWindow.style.display = '';
+            this.graphRedirection = true;
+            var graphWindow;
+            if (this.referenceId) {
+              of([])
+                .pipe(delay(500))
+                .subscribe((results) => {
+                  graphWindow = document.getElementById('sc' + this.referenceId);
+                });
+            } else {
+              graphWindow = this.scgraph.nativeElement;
+            }
+            if (graphWindow) graphWindow.style.display = 'None';
+            this.getFlow(flow);
+            this.centerAndFitViewport(this.bpmnJS);
           }
-          if (graphWindow) graphWindow.style.display = 'None';
-          this.getFlow(flow);
-          this.centerAndFitViewport(this.bpmnJS);
-        }
-      });
-    }
+        });
+      }
+    })
   }
 
   _chart(d3: any, data: any) {

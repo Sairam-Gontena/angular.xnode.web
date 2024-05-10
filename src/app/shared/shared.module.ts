@@ -43,6 +43,8 @@ import { ChipsModule } from 'primeng/chips';
 import { JoinPipe } from '../join.pipe';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [JoinPipe],
@@ -61,6 +63,7 @@ import { MessagesModule } from 'primeng/messages';
     DividerModule,
     TableModule,
     InputTextModule,
+    RadioButtonModule,
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
@@ -103,6 +106,7 @@ import { MessagesModule } from 'primeng/messages';
     DividerModule,
     TableModule,
     InputTextModule,
+    RadioButtonModule,
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
@@ -131,6 +135,6 @@ import { MessagesModule } from 'primeng/messages';
     MessagesModule,
     JoinPipe
   ],
-  providers: [DataService],
+  providers: [DataService, DialogService, DynamicDialogRef, DynamicDialogConfig],
 })
 export class SharedModule { }

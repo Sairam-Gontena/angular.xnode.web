@@ -162,11 +162,11 @@ export class LinkToCrComponent implements OnInit {
       .getChangeRequestList(body)
       .then((response: any) => {
         if (response.status == 200 && response.data) {
-          response.data.forEach((element: any) => {
+          response.data.data.forEach((element: any) => {
             element.label = element.crId + ' - ' + element.title;
             element.value = element.id;
           });
-          this.crList = this.crList.concat(response.data);
+          this.crList = this.crList.concat(response.data.data);
           if (this.isNewCrCreated) {
             this.crForm.patchValue({ crToAdd: this.crList[1] });
             this.isNewCrCreated = false;

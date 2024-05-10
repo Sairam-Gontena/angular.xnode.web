@@ -72,8 +72,8 @@ export class ExpandSpecificationComponent {
   async fetchOpenAPISpec(id: string, versionId: string) {
     const product: any = this.storageService.getItem(StorageKeys.Product)
     let swaggerUrl =
-      environment.commentsApiUrl +
-      'product-spec/openapi-spec/' +
+      environment.apiUrl + environment.endpoints.spec +
+      '/product-spec/openapi-spec/' +
       product.title +
       '/' +
       product?.id +
@@ -81,7 +81,8 @@ export class ExpandSpecificationComponent {
       versionId;
     const headers = {
       'Authorization': `Bearer ${this.storageService.getItem(StorageKeys.ACCESS_TOKEN)}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
     };
     try {
       const response = await fetch(swaggerUrl, { headers });

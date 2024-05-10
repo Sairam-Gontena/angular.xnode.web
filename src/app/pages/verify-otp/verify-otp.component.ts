@@ -129,6 +129,8 @@ export class VerifyOtpComponent implements OnInit {
   async handleResponse(data: any) {
     const helper = new JwtHelperService();
     const decodedUser = helper.decodeToken(data?.accessToken);
+    console.log('decodedUser', decodedUser);
+
     this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
     this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, data.accessToken);
     this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, data.refreshToken);
@@ -140,7 +142,7 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.startRefreshTokenTimer();
 
     this.authApiService.isOtpVerifiedInprogress(false);
-    if (data?.role_name === 'Xnode Admin') {
+    if (decodedUser?.role_name === 'Xnode Admin') {
       this.authApiService.setUser(true);
       this.router.navigate(['/admin/user-invitation']);
       this.auditUtil.postAudit(
@@ -159,7 +161,7 @@ export class VerifyOtpComponent implements OnInit {
   //get calls
   getAllProducts(): void {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id }).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id, userRole: 'all' }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
         this.router.navigate(['/my-products']);

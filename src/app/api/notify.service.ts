@@ -7,7 +7,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class NotifyApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.notifyApiUrl;
+    return environment.apiUrl + environment.endpoints.notification;
   }
   constructor() {
     super();

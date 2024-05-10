@@ -66,23 +66,32 @@
                 <div class="flex justify-content-between align-items-center p-2 card-color card-title">
                     <div class="title-container" [title]="data?.title">
                         {{ data?.title }}
+                        <span>
+                          <p-avatar [label]="data?.createdBy| userInitials" [style]="{ 'background-color': '#99EDFF', color: '#000000', width:'23px', height:'23px' }"
+                          pTooltip="{{data?.createdBy?.displayName|titlecase}}" tooltipPosition="top" shape="circle"></p-avatar>
+                      </span>
                     </div>
                     <i class="pi pi-external-link " [title]="data.product_url"
                         (click)="openExternalLink.emit(data.product_url)"
                         *ngIf="data.product_url && data.product_url !== ''"></i>
                 </div>
-                <div class="flex align-items-start p-2 body-card">
+                <div class="flex align-items-start px-2 pb-2 body-card">
                     <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                         styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                         [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                    <div class="card-subheading-txt">
-                        <div class="mb-2">
+                    <div class="card-subheading-txt w-100">
+                        <!-- <div class="mb-2">
                             <div class="card-subheading">Author</div>
-                            <div class="">{{data.createdBy.displayName|titlecase}}</div>
-                        </div>
+                            <div class="dis">{{data.createdBy.displayName|titlecase}}
+                            <span><app-avatars-display [userIdsList]="[data.createdBy]" [data]="data">
+                            </app-avatars-display></span></div>
+                        </div> -->
                         <div class="">
-                            <div class="">Modified on</div>
-                            <div class="text-xs">{{data?.modifiedOn | date:'medium'}}</div>
+                            <!-- <div class="">Viewed </div> -->
+                            <div class="">{{data?.modifiedOn | timeAgo}}</div>
+                        </div>
+                        <div class="text-align-center pt-3">
+                            <p-button class="view-button" label="View in Chat" (onClick)="$event.stopPropagation();onClickProductChat.emit(data)" [outlined]="true" [rounded]="true" severity="info"></p-button>
                         </div>
                     </div>
                 </div>

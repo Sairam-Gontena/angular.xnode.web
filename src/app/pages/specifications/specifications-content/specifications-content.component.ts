@@ -251,8 +251,8 @@ export class SpecificationsContentComponent implements OnInit {
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     let swaggerUrl =
-      environment.uigenApiUrl +
-      'openapi-spec/' +
+      environment.apiUrl + environment.endpoints.uiGen +
+      '/openapi-spec/' +
       localStorage.getItem('app_name') +
       '/' +
       email +

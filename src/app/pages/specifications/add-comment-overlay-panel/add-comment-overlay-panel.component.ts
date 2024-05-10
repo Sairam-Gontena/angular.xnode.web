@@ -10,6 +10,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
@@ -296,47 +297,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.closeOverlay.emit();
   }
 
-  getMeSpecLevelCommentsList() {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({
-        parentId: this.selectedContent.parentId,
-        isReplyCountRequired: true,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('COMMENT');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
-
-  getMeSpecLevelTaskList() {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasks({
-        parentId: this.selectedContent.parentId,
-        isReplyCountRequired: true,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('TASK');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
   prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
@@ -345,7 +305,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         id: this.selectedComment.id,
         parentEntity: this.parentEntity,
         parentId: this.selectedComment.parentId,
-        priority: '1',
+        priority: 'MEDIUM',
         title: this.comment,
         description: this.comment,
         referenceContent:
@@ -363,10 +323,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       };
     } else if (this.action !== 'EDIT') {
       body = {
-        // createdBy: this.currentUser.user_id,
         parentEntity: this.parentEntity,
         parentId: this.selectedContent.parentId,
-        priority: '1',
+        priority: 'MEDIUM',
         title: this.comment,
         description: this.comment,
         referenceContent:
@@ -487,7 +446,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       await this.fileUploadCall(formData, headers); // await here
     };
@@ -498,9 +458,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.uploadFile(formData, {
-        headers,
-      });
+      const res = await this.commonApi.uploadFile(formData, { headers });
       if (res.statusText === 'Created') {
         this.uploadedFiles.push(res.data.id);
         this.utils.loadToaster({

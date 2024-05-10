@@ -1,0 +1,12 @@
+<div class="w-full">
+    <p-tabView>
+        <p-tabPanel *ngFor="let topicItem of topicTabs" [header]="topicItem.title">
+            <ng-container [ngSwitch]="topicItem.component">
+                <div class="w-full h-full">
+                    <xnode-overview *ngSwitchCase="'topicOverview'" />
+                    <xnode-prompt *ngSwitchCase="'topicPrompt'" />
+                </div>
+            </ng-container>
+        </p-tabPanel>
+    </p-tabView>
+</div>

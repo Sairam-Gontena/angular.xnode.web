@@ -23,6 +23,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { FileService } from 'src/app/file.service';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -133,7 +134,7 @@ export class ReportBugComponent implements OnInit {
   }
   prioritiesData() {
     this.commonApi
-      .get('lookup-code?lookupType=BUG_SEVERITY')
+      .get('/lookup-code?lookupType=BUG_SEVERITY')
       .then((res: any) => {
         this.priorities = res.data;
       });
@@ -225,7 +226,7 @@ export class ReportBugComponent implements OnInit {
     return comp;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void { }
 
   feedbackReport(value: any) {
     this.submitted = true;
@@ -250,7 +251,8 @@ export class ReportBugComponent implements OnInit {
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
       };
       return this.fileUploadCall(formData, headers);
     });
