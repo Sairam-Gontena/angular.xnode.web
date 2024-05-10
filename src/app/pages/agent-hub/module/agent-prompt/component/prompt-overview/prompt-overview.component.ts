@@ -19,7 +19,7 @@ enum ParentType {
   styleUrls: ['./prompt-overview.component.scss']
 })
 export class PromptOverviewComponent {
-  @Input() promptId!: string | undefined;
+  @Input() promptId!: string;
   @Input() showBackButton = false
   @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
@@ -44,6 +44,8 @@ export class PromptOverviewComponent {
   ]
   activeIndex = 0;
   userInfo: any;
+
+  display: boolean = false
 
   constructor(private formBuilder: FormBuilder,
     private storageService: LocalStorageService,
@@ -78,6 +80,7 @@ export class PromptOverviewComponent {
   }
 
   ngOnInit() {
+    this.promptId = this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id')
     if (this.dynamicDialogConfig.data) {
       // Modal
       this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
@@ -94,7 +97,7 @@ export class PromptOverviewComponent {
   //get topic detail by topicID
   getPrompDetailByID() {
     let urlParam: any = {
-      url: ("/agent/prompt_by_id/" + (this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id')))
+      url: ("/agent/prompt_by_id/" + this.promptId)
     }
     this.utilsService.loadSpinner(true);
     this.agentHubService.getAgentDetail(urlParam).subscribe({
@@ -118,7 +121,7 @@ export class PromptOverviewComponent {
             guideline: response?.guideline,
             responsibility: response?.responsibility,
             context: response?.context,
-            example: response?.example
+            example: JSON.stringify(response?.example)
           });
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
@@ -155,7 +158,7 @@ export class PromptOverviewComponent {
 
     formData.version = this.agentInfo?.version
     let urlPayload: any = {
-      url: ("/agent/update_prompt/" + (this.promptId ?? this.activatedRoute.snapshot.paramMap.get('id'))) + `/${this.agentInfo?.version}`,
+      url: ("/agent/update_prompt/" + this.promptId) + `/${this.agentInfo?.version}`,
       data: formData
     }
     this.utilsService.loadSpinner(true);
@@ -384,5 +387,9 @@ export class PromptOverviewComponent {
 
   onGoBackHandler() {
     this.goBack.emit(false)
+  }
+
+  onCompareClickHandler() {
+    this.display = true
   }
 }

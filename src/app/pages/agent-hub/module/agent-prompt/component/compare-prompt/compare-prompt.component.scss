@@ -1,0 +1,29 @@
+//Dialog header
+:host ::ng-deep .p-dialog, :host ::ng-deep .p-dialog-header {
+    padding-bottom: 0 !important;
+}
+
+.compare-config {
+    border-right: 2px solid var(--bright-grey);
+}
+ 
+
+// Prompt status 
+.agent-status {
+    background-color: var(--deep-green);
+    border-radius: 24px;
+    width: fit-content;
+  }
+
+  .agent-desc li:first-child {
+    list-style-type: none;
+  }
+
+  .agent-desc {
+    color: var(--star-dust);
+  }
+  
+// Prompt form value
+  .prompt-data-value{
+    color: #AFAFAF;
+}
