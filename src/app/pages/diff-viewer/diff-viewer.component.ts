@@ -413,7 +413,7 @@ export class DiffViewerComponent implements OnInit {
     let swaggerUrl =
       environment.apiUrl + environment.endpoints.spec +
       '/product-spec/openapi-spec/' +
-      product.title +
+      product?.title +
       '/' +
       product?.id +
       '/' +
