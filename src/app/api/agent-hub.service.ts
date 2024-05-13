@@ -97,11 +97,25 @@ export class AgentHubService extends BaseApiService {
   // }
 
   postData(urlParam: any): Observable<any> {
-    return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data);
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.post(this.apiUrl + "/" + urlParam.url, urlParam.data, requestOptions);
   }
 
   updateData(urlParam: any): Observable<any> {
-    return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data));
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    debugger
+    return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data), requestOptions);
   }
 
   //get prompts by topic id
