@@ -69,7 +69,7 @@
     "jsplumb": "^2.15.6",
     "lodash": "^4.17.21",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
-    "navi-web": "file:../../navi-web-lib/dist/navi-web/navi-web-0.0.85.tgz",
+    "navi-web": "file:../../navi-web-lib/dist/navi-web/navi-web-0.0.119.tgz",
     "ng": "^0.0.0",
     "ng-otp-input": "^1.9.2",
     "ng-select": "^1.0.2",

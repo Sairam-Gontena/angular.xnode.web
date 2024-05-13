@@ -14,13 +14,13 @@
                 </div>
                 <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
                     [class.navi-frame]="!isNaviExpanded && showDockedNavi">
-                    <div class="flex justify-content-center align-items-center h-full" *ngIf="showNaviSpinner">
+                    <!-- <div class="flex justify-content-center align-items-center h-full" *ngIf="showNaviSpinner">
                         <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
-                    </div>
+                    </div> -->
                     <!-- <iframe id="naviFrame" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
                     </iframe> -->
-                    <navi-root [routeParams]="tempObjStr" (customEvent)="childCall($event)"></navi-root>
+                    <navi-root *ngIf="naviData.showDockedNavi" [naviData]="naviData" (customEvent)="childCall($event)"></navi-root>
                 </div>
             </div>
         </div>
