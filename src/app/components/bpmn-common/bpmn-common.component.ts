@@ -112,8 +112,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
-    if (list[2]?.content?.length)
-      this.useCases = list[2].content[0].content;
+    if (list?.[2]?.content?.length)
+      this.useCases = list?.[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow: HTMLElement;

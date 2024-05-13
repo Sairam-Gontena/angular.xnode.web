@@ -148,7 +148,6 @@ export class ModelOverviewComponent {
     //   urlPayload.ID = this.overViewObj.getModelID;
     //   getCreateUpdateModelDetail = this.agentHubService.updateModelDetailByID(urlPayload)
     // }
-    debugger
     // if (!getCreateUpdateModelDetail) {
     //   return this.utilsService.loadSpinner(false);
     // }

@@ -9,6 +9,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { MessagingService } from '../components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,7 @@ export class AuthApiService extends BaseApiService {
   private isLoggedIn = new Subject<boolean>();
   public user: Observable<User | null>;
 
-  constructor(private router: Router, private http: HttpClient, private storageService: LocalStorageService) {
+  constructor(private router: Router, private http: HttpClient, private storageService: LocalStorageService, private messagingService: MessagingService) {
     super();
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) this.userLoggedIn = true;
@@ -87,7 +89,10 @@ export class AuthApiService extends BaseApiService {
           this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
           this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, resp.accessToken);
           this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, resp.refreshToken);
-
+          this.messagingService.sendMessage({
+            msgType: MessageTypes.REFRESH_TOKEN,
+            msgData: resp.refreshToken,
+          });
           const naviFrame = document.getElementById('naviFrame')
           if (naviFrame) {
             const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
