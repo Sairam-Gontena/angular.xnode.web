@@ -134,22 +134,53 @@ export class PromptOverviewComponent {
     });
   }
 
-  async getAllAgentList() {
+  getAllAgentList() {
     this.parentLinkOptionList = []
     const endpoint = this.parentLinkTabsItem[this.activeIndex].value
-    try {
-      const response = await this.agentHubService.getAllAgent({
-        accountId: this.userInfo.account_id,
-        endpoint: endpoint,
-        page: 1,
-        page_size: 10,
-      });
+    // try {
+    //   const response = await this.agentHubService.getAllAgent({
+    //     accountId: this.userInfo.account_id,
+    //     endpoint: endpoint,
+    //     page: 1,
+    //     page_size: 10,
+    //   });
 
-      this.parentLinkOptionList = response.data.data
+    //   this.parentLinkOptionList = response.data.data
 
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error fetching agent list:', error);
+    // }
+
+
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          page: 1,
+          page_size: 10,
+        }
+      }
+    this.utilsService.loadSpinner(true);
+
+    this.agentHubService.getAllAgent(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.parentLinkOptionList = response.data.data;
+          // this.paginatorInfo.page = response.data.page;
+          // this.paginatorInfo.perPage = response.data.per_page;
+          // this.paginatorInfo.totalRecords = response.data.total_items;
+          // this.paginatorInfo.totalPages = response.data.total_pages;
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
   }
 
   //topic oversubmit

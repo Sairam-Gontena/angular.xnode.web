@@ -44,9 +44,20 @@ export class AgentHubService extends BaseApiService {
     return this.agentHeaderObj.asObservable();
   }
 
-  getAllAgent({ accountId, endpoint, page, page_size }: { accountId: string, endpoint: string, page: number, page_size: number }) {
-    let url = `/agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
-    return this.get(url)
+  // getAllAgent({ accountId, endpoint, page, page_size }: { accountId: string, endpoint: string, page: number, page_size: number }) {
+  //   let url = `/agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
+  //   return this.get(url)
+  // }
+
+  getAllAgent(urlParam: any): Observable<any> {
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.get<any>(this.apiUrl + urlParam.url, requestOptions);
   }
 
   // getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {

@@ -104,37 +104,97 @@ export class CapabilityOverviewComponent {
   }
 
   async getAgentList() {
-    let endpoint = '/agents'
-    try {
-      const response = await this.agentHubService.getAllAgent({
-        accountId: this.userInfo.account_id,
-        endpoint: endpoint,
-        page: this.agentOptionList.page,
-        page_size: this.agentOptionList.perPage,
-      });
+    let endpoint = 'agents'
+    // try {
+    //   const response = await this.agentHubService.getAllAgent({
+    //     accountId: this.userInfo.account_id,
+    //     endpoint: endpoint,
+    //     page: this.agentOptionList.page,
+    //     page_size: this.agentOptionList.perPage,
+    //   });
 
-      this.agentOptionList.optionList = response.data.data
+    //   this.agentOptionList.optionList = response.data.data
 
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error fetching agent list:', error);
+    // }
+
+
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          page: this.agentOptionList.page,
+          page_size: this.agentOptionList.perPage,
+        }
+      }
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.getAllAgent(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.agentOptionList.optionList = response.data.data;
+          this.agentOptionList.page = response.data.page;
+          this.agentOptionList.perPage = response.data.per_page;
+          // this.paginatorInfo.totalRecords = response.data.total_items;
+          // this.paginatorInfo.totalPages = response.data.total_pages;
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
   }
 
   async getModelList() {
-    let endpoint = '/model'
-    try {
-      const response = await this.agentHubService.getAllAgent({
-        accountId: this.userInfo.account_id,
-        endpoint: endpoint,
-        page: this.agentOptionList.page,
-        page_size: this.agentOptionList.perPage,
-      });
+    let endpoint = 'model'
+    // try {
+    //   const response = await this.agentHubService.getAllAgent({
+    //     accountId: this.userInfo.account_id,
+    //     endpoint: endpoint,
+    //     page: this.agentOptionList.page,
+    //     page_size: this.agentOptionList.perPage,
+    //   });
 
-      this.modelOptionList.optionList = response.data.data
+    //   this.modelOptionList.optionList = response.data.data
 
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error fetching agent list:', error);
+    // }
+
+
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          page: this.agentOptionList.page,
+          page_size: this.agentOptionList.perPage,
+        }
+      }
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.getAllAgent(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.modelOptionList.optionList = response.data.data;
+          this.agentOptionList.page = response.data.page;
+          this.agentOptionList.perPage = response.data.per_page;
+          // this.paginatorInfo.totalRecords = response.data.total_items;
+          // this.paginatorInfo.totalPages = response.data.total_pages;
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
   }
 
   //capability Edit
