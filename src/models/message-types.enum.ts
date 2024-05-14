@@ -5,6 +5,7 @@ export enum MessageTypes {
     HAS_INSIGHTS = "HAS_INSIGHTS",
     CLOSE_NAVI = "CLOSE_NAVI",
     MAKE_TRUST_URL = "MAKE_TRUST_URL",
+    VIEW_IN_CHAT = "VIEW_IN_CHAT",
     ConversationId = 'conversation_id',
     ReloadTabList = 'reload_tab_list',
     NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE = "NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE",

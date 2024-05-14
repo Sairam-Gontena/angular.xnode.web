@@ -175,26 +175,16 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  onClickProductChat(data: any): void {
-    this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
-    if (this.currentUser?.email == data.email) {
-      this.utils.hasProductPermission(true);
-    } else {
-      this.utils.hasProductPermission(false);
-    }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat' } });
-    const product: any = this.storageService.getItem(StorageKeys.Product);
+  onClickProductChat(product: any): void {
+    this.utils.loadSpinner(true);
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
+      console.log('product', data);
       if (data.data)
-        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+        this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
       console.log(err, 'err')
+      this.utils.loadSpinner(false);
     })
   }
 
@@ -381,7 +371,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id ,userRole:'all'}).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id, userRole: 'all' }).then((response: any) => {
       this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data) {
         let user_audit_body = {
