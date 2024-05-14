@@ -105,6 +105,56 @@ export class AppHeaderComponent implements OnInit {
     })
   }
 
+  /////////////////////////////////////
+  searchQuery: string | undefined;
+  searchResults: any = {
+    'Category 1': [
+      { name: 'Result 1', category: 'Category 1', id: 1 },
+      { name: 'Result 2', category: 'Category 1', id: 2 },
+      { name: 'Result 3', category: 'Category 1', id: 3 }
+    ],
+    'Category 2': [
+      { name: 'Result 4', category: 'Category 2', id: 4 },
+      { name: 'Result 5', category: 'Category 2', id: 5 },
+      { name: 'Result 6', category: 'Category 2', id: 6 }
+    ],
+    'Category 3': [
+      { name: 'Result 7', category: 'Category 3', id: 7 },
+      { name: 'Result 8', category: 'Category 3', id: 8 },
+      { name: 'Result 9', category: 'Category 3', id: 9 }
+    ]
+  }; // Object to hold categorized search results
+  filteredResults: any = {}; // Object to hold filtered search results
+  categories: string[] = ['Category 1', 'Category 2', 'Category 3']; // Example categories
+  selectedCategories: string[] = ['Category 1']; // Selected category filters
+  panelVisible: boolean = false;
+
+  togglePanel() {
+    console.log('togglePanel');
+    this.panelVisible = !this.panelVisible;
+  }
+
+  navigateToResult(result: any) {
+    console.log(result);
+  }
+
+  search() {
+    this.filteredResults = { ...this.searchResults }; // Initialize filteredResults with all searchResults
+    this.filterByCategory();
+  }
+
+  filterByCategory() {
+    // Filter results based on selected categories
+    if (this.selectedCategories.length > 0) {
+      for (let category of this.categories) {
+        if (!this.selectedCategories.includes(category)) {
+          delete this.filteredResults[category];
+        }
+      }
+    }
+  }
+
+  //////////////////////////////////////
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {

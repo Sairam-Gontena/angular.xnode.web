@@ -37,6 +37,39 @@
 
 }
 
+.panel-container {
+    position: absolute;
+    top: 42px; /* Adjust the spacing between search bar and panel */
+    left: 0;
+    width: calc(100% - 2px); /* Adjust the width to match the search bar */
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  
+  .panel-container.active {
+    display: block;
+  }
+
+.search-bar {
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.search-icon{
+    color:#6c757d;
+    width: 20px;
+}
+
+:host :ng-deep .search-input .p-inputtext{
+    border: 1px solid #535354 !important;
+    border-radius: 0px;
+}
+
 a {
     color: #9f9ea5;
     font-weight: bold;
