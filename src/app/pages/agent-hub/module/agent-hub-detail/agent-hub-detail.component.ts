@@ -116,7 +116,7 @@ export class AgentHubDetailComponent {
     {
       idx: 1,
       title: 'Capabilities',
-      value: 'capabilities',
+      value: 'capabilities_linked_agents',
       identifier: agentName.capability,
     },
     { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },

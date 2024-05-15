@@ -1,2 +1,20 @@
-<p-breadcrumb styleClass="customBreadcrum text-2xl font-semibold" [model]="items"
-    (onItemClick)="onChangeHandler($event)"></p-breadcrumb>
+<!-- <p-breadcrumb styleClass="customBreadcrum text-2xl font-semibold" [model]="items"
+    (onItemClick)="onChangeHandler($event)"></p-breadcrumb> -->
+
+
+<nav aria-label="breadcrumb">
+    <ol class="flex gap-2 align-item-center list-none pl-0">
+        <ng-container *ngFor="let crumb of items; let last = last; let idx=index ">
+            <li [ngClass]=" {'breadcrumbs-item': !last}">
+                <span class="cursor-pointer active-item text-lg" *ngIf="!last; else elseBlock"
+                    (click)="onChangeHandler($event, crumb)">{{ crumb.label }}</span>
+                <ng-template #elseBlock>
+                    <span [ngClass]="{'customBreadcrum text-2xl font-semibold': idx==0}">{{ crumb.label }}</span>
+                </ng-template>
+            </li>
+            <li *ngIf="!last">
+                <i class="text-xs pi pi-chevron-right"></i>
+            </li>
+        </ng-container>
+    </ol>
+</nav>
