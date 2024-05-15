@@ -1,7 +1,7 @@
 export const environment = {
     name: 'DEV',
     production: false,
-    apiUrl: 'https://xnode-us-apim-dev.azure-api.net/',
+    apiUrl: 'https://xnode-us-apim-dev.xnode.ai/',
     apimSubscriptionKey: 'dfa5a9e0fbfa43809ea3e6212647dd53',
     endpoints: {
         navi: 'navi-api',
@@ -14,12 +14,12 @@ export const environment = {
         publish: 'ui-gen/ui/angular',
         notification: 'notification-api',
         uiGen: 'ui-gen',
+        xflows: 'xflows-api'
     },
     xnodeAppUrl: 'http://localhost:4200/',
-    naviAppUrl: 'http://localhost:4202/',
+    naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
-    workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',

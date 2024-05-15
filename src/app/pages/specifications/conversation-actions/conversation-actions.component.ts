@@ -4,6 +4,9 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 @Component({
   selector: 'xnode-conversation-actions',
@@ -17,13 +20,21 @@ export class ConversationActionsComponent {
   files: any[] = [];
   uploadedFiles: any = [];
   selectedComment: any;
+  currentUser: any;
 
   constructor(
     public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private localService:LocalStorageService,
+    private specificationUtils: SpecificationUtilsService
   ) { }
+
+  ngOnInit(){
+    this.currentUser = this.localService.getItem(StorageKeys.CurrentUser)
+  }
+
   onClickReply(cmt: any): void {
     this.updateAction.emit({
       action: 'REPLY',
@@ -115,7 +126,6 @@ export class ConversationActionsComponent {
         headers,
       });
       if (res.statusText === 'Created') {
-        // this.uploadedFiles.push(res.data.id);
         this.uploadedFiles.push({
           fileId: res.data.id,
           fileName: res.data.fileName,
@@ -150,21 +160,21 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [
-      ...this.uploadedFiles,
-      ...(cmt.attachments || []),
-    ];
-    cmt.attachments = concatenatedFiles.map((file) => file.fileId);
-    this.commentsService
-      .addComments(cmt)
-      .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created') {
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+    cmt.attachments = concatenatedFiles.map((file:any) => file.fileId);
+    let id = cmt.id;
+    delete cmt.id; delete cmt.createdOn; delete cmt.createdBy; delete cmt.cmId;delete cmt.repliesOpened;
+    delete cmt.parentEntity; delete cmt.parentId; delete cmt.referenceContent; delete cmt.replyCount;
+    delete cmt.taskCount; delete cmt.status; delete cmt.parentShortId; delete cmt.topParentId;
+    delete cmt.feedback;delete cmt.followers;
+    this.commentsService.patchComment( id, cmt).then((commentsReponse: any) => {
+        if (commentsReponse.statusText === "OK"||commentsReponse.status==200) {
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
             detail: 'File Updated successfully',
           });
-          this.specUtils._tabToActive('COMMENT');
+          this.getLatestComments();
           this.uploadedFiles = [];
         } else {
           this.utils.loadToaster({
@@ -184,44 +194,106 @@ export class ConversationActionsComponent {
       });
   }
 
+  getLatestComments(){
+      this.utils.loadSpinner(true);
+      const specVersion: any = this.localService.getItem(
+        StorageKeys.SpecVersion
+      );
+      const product: any = this.localService.getItem(StorageKeys.Product);
+      this.commentsService.getCommentsByProductId({
+          productId: product.id,
+          versionId: specVersion?.id,
+        }).then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.specificationUtils.saveCommentList(response.data);
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
+  }
+
   saveAsTask(): void {
     let cmt = this.selectedComment;
-    cmt.assignee = cmt.assignee.userId;
-
-    const concatenatedFiles = [
-      ...this.uploadedFiles,
-      ...(cmt.attachments || []),
-    ];
-
-    cmt.attachments = concatenatedFiles.map((file) => file.fileId);
-    cmt.deadline = '';
-    this.commentsService
-      .addTask(cmt)
-      .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created') {
-          this.utils.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: 'File updated successfully',
-          });
-          this.specUtils._tabToActive('TASK');
-          this.uploadedFiles = [];
+    const task: any = {};
+    task.modifiedOn = new Date();
+    task.modifiedBy = this.currentUser;
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || []),];
+    task.attachments = concatenatedFiles.map((file) => file.fileId);
+    this.commentsService.patchTask('/task?id=' + this.selectedComment.id, task).then((commentsReponse: any) => {
+          if (commentsReponse.statusText === "OK"||commentsReponse.status==200) {
+            this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS',detail: 'File updated successfully'});
+            // this.specUtils._tabToActive('TASK');
+            this.uploadedFiles = [];
+            this.getTasksList()
+            this.utils.loadSpinner(false);
+          } else {
+            this.utils.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: commentsReponse?.data?.common?.status,
+            });
+          }
+        })
+        .catch((err) => {
           this.utils.loadSpinner(false);
-        } else {
           this.utils.loadToaster({
             severity: 'error',
             summary: 'ERROR',
-            detail: commentsReponse?.data?.common?.status,
+            detail: err,
           });
+        });
+
+
+    // this.commentsService.addTask(cmt).then((commentsReponse: any) => {
+    //   console.log('commentsReponse',commentsReponse)
+    //     if (commentsReponse.statusText === 'Created') {
+    //       this.utils.loadToaster({
+    //         severity: 'success',
+    //         summary: 'SUCCESS',
+    //         detail: 'File updated successfully',
+    //       });
+    //       this.specUtils._tabToActive('TASK');
+    //       this.uploadedFiles = [];
+    //       this.utils.loadSpinner(false);
+    //     } else {
+    //       this.utils.loadToaster({
+    //         severity: 'error',
+    //         summary: 'ERROR',
+    //         detail: commentsReponse?.data?.common?.status,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     this.utils.loadSpinner(false);
+    //     this.utils.loadToaster({
+    //       severity: 'error',
+    //       summary: 'ERROR',
+    //       detail: err,
+    //     });
+    //   });
+  }
+
+  getTasksList(){
+    this.utils.loadSpinner(true);
+    const product: any = this.localService.getItem(StorageKeys.Product);
+    let specVersion: any = this.localService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getTasksByProductId({
+        productId: product.id,
+        versionId: specVersion?.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specificationUtils.saveTaskList(response.data);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((err) => {
+        console.log(err);
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
       });
   }
 }

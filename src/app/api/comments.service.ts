@@ -49,12 +49,22 @@ export class CommentsService extends BaseApiService {
     return this.patch('/specs/update-comments/', body);
   }
 
+  patchComment(id: string, body: any) {
+    const payloadbody = {  payload:body  }
+    return this.patch('/comment?id='+id, payloadbody)
+  }
+
   addComments(body: any) {
     return this.post('/comment', body);
   }
 
   addTask(body: any) {
     return this.post('/task', body);
+  }
+
+  patchTask(url: any, body: any) {
+    const payloadbody = {  payload:body  }
+    return this.patch( url, payloadbody)
   }
 
   deletComment(id: any) {
