@@ -27,10 +27,7 @@ export class NaviApiService extends BaseApiService {
     let url = '/navi/total_apps_published/' + accountId;
     return this.get(url);
   }
-  updateProductUrl(body?: any) {
-    let url = '/navi/update_product_url';
-    return this.patch(url, body);
-  }
+
   getXflows(email?: string, productId?: string) {
     let url = '/navi/get_xflows/' + email + '/' + productId;
     return this.get(url);

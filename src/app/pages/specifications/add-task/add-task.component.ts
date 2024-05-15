@@ -165,7 +165,7 @@ export class AddTaskComponent {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
       parentId: this.specItem.parentId,
-      priority: '1',
+      priority: this.addTaskForm.value.priority,
       title: this.addTaskForm.value.title,
       description: this.addTaskForm.value.description,
       referenceContent:
