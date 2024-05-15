@@ -11,8 +11,6 @@ export const environment = {
     xnodeAppUrl: 'https://demo-xnode.azurewebsites.net/',
     naviAppUrl: 'https://demo-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://demo-ui-gen.azurewebsites.net/dashboard/',
-    publishApiUrl: 'https://demo-frontend-builder.azurewebsites.net/ui/angular/', //for now we have only dev url
-    uigenApiUrl: 'https://demo-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://demo-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'demo-xnode-notifier',
@@ -20,5 +18,5 @@ export const environment = {
     projectName: 'xnode-demo',
     homeUrl: 'https://xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30
 }
