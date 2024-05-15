@@ -33,7 +33,7 @@ export class CommentsService extends BaseApiService {
       '/task/tasks-by-productId?productId=' +
       params.productId +
       '&verisonId=' +
-      params.versionId + '&replyCountRequired=true';
+      params.versionId;
     if (params.status) {
       url = url + '&status=' + params.status;
     }
@@ -43,6 +43,11 @@ export class CommentsService extends BaseApiService {
   getTasks(params?: any) {
     let url = '/task';
     return this.get(url, params);
+  }
+
+  getTasksByOnlyProductId(params:any){
+    let url = '/task/tasks-by-only-productId?productId=' +  params.productId + '&replyCountRequired=true';
+    return this.get(url);
   }
 
   updateComments(body: any) {
