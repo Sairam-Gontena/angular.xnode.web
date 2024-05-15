@@ -7,7 +7,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class WorkflowApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.workFlowApiUrl;
+    return environment.apiUrl + environment.endpoints.xflows;
   }
   constructor() {
     super();
