@@ -124,7 +124,7 @@ export class SpecificationsMenuComponent implements OnInit {
   openAccordions() {
     if (this.specData?.length)
       this.specData.forEach((element: any, index: any) => {
-        this.activeIndex.push(index);
+        this.activeIndex?.push(index);
       });
     if (this.searchText?.length > 0) this.multiAccordion = true;
   }

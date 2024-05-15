@@ -165,7 +165,7 @@ export class AddTaskComponent {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
       parentId: this.specItem.parentId,
-      priority: '1',
+      priority: this.addTaskForm.value.priority,
       title: this.addTaskForm.value.title,
       description: this.addTaskForm.value.description,
       referenceContent:
@@ -343,11 +343,10 @@ export class AddTaskComponent {
     body.assignee.forEach((item: any) => { body.users.push({ "userId": item?.userId, "role": "Contributor", "active": true }); });
     body.users = _.uniqBy(body.users, 'userId');
     body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
-    console.log(body)
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created') {
+        if (commentsReponse.statusText === 'Created'||commentsReponse.status==200) {
           this.comment = '';
           this.closeOverlay.emit();
           this.specService.getMeSpecLevelTaskList({ parentId: body.parentId });

@@ -136,9 +136,7 @@ export class SpecificationsService {
 
   getMeSpecLevelCommentsList(data: any) {
     this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({ parentId: data.parentId, isReplyCountRequired: true })
-      .then((response: any) => {
+    this.commentsService.getComments({ parentId: data.parentId,replyCountRequired:true }) .then((response: any) => {
         if (response.status === 200 && response?.data?.data) {
           this.specUtils.saveCommentList(response.data.data);
         } else {
@@ -163,9 +161,7 @@ export class SpecificationsService {
 
   getMeSpecLevelTaskList(data: any) {
     this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasks({ parentId: data.parentId })
-      .then((response: any) => {
+    this.commentsService.getTasks({ parentId: data.parentId }).then((response: any) => {
         if (response.status === 200 && response?.data?.data) {
           this.specUtils.saveTaskList(response?.data?.data);
         } else {
