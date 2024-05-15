@@ -21,7 +21,7 @@ export const environment = {
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://beta-frontend-builder.azurewebsites.net/',
-    webSocketUrl: 'https://notify-now-us.azurewebsites.net',
+    webSocketUrl: 'https://notify-now-us.xnode.ai',
     webSocketNotifier: 'beta-xnode-notifier',
     branchName: 'beta',
     projectName: 'xnode-beta',

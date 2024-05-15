@@ -21,7 +21,7 @@ export const environment = {
     designStudioAppUrl: 'https://prod-ui-gen-in.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://prod-frontend-builder-in.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://prod-frontend-builder-in.azurewebsites.net/',
-    webSocketUrl: 'https://notify-now-in.azurewebsites.net',
+    webSocketUrl: 'https://notify-now-in.xnode.ai',
     webSocketNotifier: 'prod-xnode-notifier',
     branchName: 'prod',
     projectName: 'xnode-in',
