@@ -19,7 +19,6 @@ export const environment = {
     xnodeAppUrl: 'http://localhost:4200/',
     naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
-    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
