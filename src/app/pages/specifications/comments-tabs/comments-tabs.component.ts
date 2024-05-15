@@ -27,9 +27,6 @@ export class CommentsTabsComponent implements OnInit {
     private specificationUtils: SpecificationUtilsService,
     private specService: SpecificationsService
   ) {
-    this.specUtils.tabToActive.subscribe((data:any)=>{
-      data=='TASK' ? this.onTabChange({index:0}) : this.onTabChange({index:1});
-    })
     this.specificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;

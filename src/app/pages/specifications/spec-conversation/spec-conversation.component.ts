@@ -22,6 +22,7 @@ import { SECTION_VIEW_CONFIG } from '../section-view-config';
 declare const SwaggerUIBundle: any;
 import { Subscription, delay, of } from 'rxjs';
 import { SpecificationsService } from 'src/app/services/specifications.service';
+import FileSaver from 'file-saver';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -533,6 +534,10 @@ export class SpecConversationComponent {
           detail: err,
         });
       });
+  }
+
+  downloadFile(filepath:any, fileName:any){
+    FileSaver.saveAs(filepath, fileName)
   }
 
   getMeAllCommentsList() {
