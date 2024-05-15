@@ -14,6 +14,6 @@ export class WorkflowApiService extends BaseApiService {
   }
 
   workflow(body: any) {
-    return this.post('api/json-bpmn', body);
+    return this.post('/api/json-bpmn', body);
   }
 }

@@ -17,7 +17,7 @@ export const environment = {
     xflows: 'xflows-api'
   },
   xnodeAppUrl: 'https://dev-xnode.azurewebsites.net/',
-  naviAppUrl: 'https://app-navi-in.xnode.ai/',
+  naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
   designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
   publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
   uigenApiUrl: 'https://dev-frontend-builder.azurewebsites.net/',

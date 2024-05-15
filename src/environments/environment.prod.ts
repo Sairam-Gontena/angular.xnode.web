@@ -1,7 +1,7 @@
 export const environment = {
     name: 'PROD',
     production: false,
-    apiUrl: 'https://xnode-in-apim.azure-api.net/',
+    apiUrl: 'https://xnode-in-apim.xnode.ai/',
     apimSubscriptionKey: '71ea046eccd542ab82e81f9bc7cf2358',
     endpoints: {
         navi: 'navi-api',
