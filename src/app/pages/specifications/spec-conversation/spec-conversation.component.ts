@@ -400,15 +400,15 @@ export class SpecConversationComponent {
       .getComments({ topParentId: this.selectedComment.id })
       .then((response: any) => {
         if (response && response.data) {
-          this.replies = response.data;
-          response.data.forEach((element: any) => {
+          this.replies = response.data.data;
+          response.data.data.forEach((element: any) => {
             element.parentUser = this.list.filter((ele: any) => {
               return ele.id === this.selectedComment.id;
             })[0].createdBy;
           });
           this.list.forEach((obj: any) => {
             if (obj.id === this.selectedComment.id) {
-              obj.comments = response.data;
+              obj.comments = response.data.data;
               obj.repliesOpened = true;
             }
           });
@@ -417,7 +417,7 @@ export class SpecConversationComponent {
           this.utils.loadToaster({
             severity: 'error',
             summary: 'Error',
-            detail: response.data?.status,
+            detail: response?.status,
           });
         }
         this.utils.loadSpinner(false);

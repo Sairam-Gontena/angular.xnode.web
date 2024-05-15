@@ -128,7 +128,7 @@
             (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
         </div>
       </div>
-      <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
+      <div class="col-12 pb-0" *ngIf="cmt.replyCount && cmt.replyCount !== -1 && !cmt.repliesOpened  ">
         <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See More</span>
         </div>
       </div>

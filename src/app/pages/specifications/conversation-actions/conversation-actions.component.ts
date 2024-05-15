@@ -4,6 +4,9 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 @Component({
   selector: 'xnode-conversation-actions',
@@ -17,13 +20,21 @@ export class ConversationActionsComponent {
   files: any[] = [];
   uploadedFiles: any = [];
   selectedComment: any;
+  currentUser: any;
 
   constructor(
     public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private localService:LocalStorageService,
+    private specificationUtils: SpecificationUtilsService
   ) { }
+
+  ngOnInit(){
+    this.currentUser = this.localService.getItem(StorageKeys.CurrentUser)
+  }
+
   onClickReply(cmt: any): void {
     this.updateAction.emit({
       action: 'REPLY',
@@ -115,7 +126,6 @@ export class ConversationActionsComponent {
         headers,
       });
       if (res.statusText === 'Created') {
-        // this.uploadedFiles.push(res.data.id);
         this.uploadedFiles.push({
           fileId: res.data.id,
           fileName: res.data.fileName,
@@ -150,14 +160,15 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [
-      ...this.uploadedFiles,
-      ...(cmt.attachments || []),
-    ];
-    cmt.attachments = concatenatedFiles.map((file) => file.fileId);
-    this.commentsService
-      .addComments(cmt)
-      .then((commentsReponse: any) => {
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+    cmt.attachments = concatenatedFiles.map((file:any) => file.fileId);
+    let id = cmt.id;
+    delete cmt.id; delete cmt.createdOn; delete cmt.createdBy; delete cmt.cmId;delete cmt.repliesOpened;
+    delete cmt.parentEntity; delete cmt.parentId; delete cmt.referenceContent; delete cmt.replyCount;
+    delete cmt.taskCount; delete cmt.status; delete cmt.parentShortId; delete cmt.topParentId;
+    delete cmt.feedback;delete cmt.followers;
+    console.log(cmt, id)
+    this.commentsService.patchComment( id, cmt).then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
           this.utils.loadToaster({
             severity: 'success',
