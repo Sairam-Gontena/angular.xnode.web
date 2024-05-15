@@ -5,8 +5,8 @@
         <!-- Left-aligned content -->
         <div class="flex align-items-center">
             <ng-container *ngIf="!headerData?.showActionButton; else elseBlock">
-                <p-button label="Create Agent" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
-                    styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
+                <p-button label="Create Agent" icon="pi pi-plus-circle" iconPos="left"
+                    styleClass="text-sm line-height-1 font-medium border-round-2xl px-2 py-2 create-agent-btn"
                     (onClick)="createAgentHandler()"></p-button>
             </ng-container>
 
@@ -36,7 +36,7 @@
                     <img class="agent-icons" [src]="item.imgPath" alt="" />
                 </p-button>
                 <div class="flex flex-column">
-                    <div class="font-semibold text-base star-dust">{{ item.label }}</div>
+                    <div class="font-semibold text-base stats-label">{{ item.label }}</div>
                     <div class="text-4xl font-bold">{{ item.count }}</div>
                 </div>
             </div>
