@@ -15,6 +15,7 @@ import { Subscription, delay, of } from 'rxjs';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import FileSaver from 'file-saver';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
@@ -370,6 +371,10 @@ export class TaskListComponent {
         return `${hoursDifference}h ago`;
       }
     }
+  }
+
+  downloadFile(filepath:any, fileName:any){
+    FileSaver.saveAs(filepath, fileName)
   }
 
   viewReplies(cmt?: any) {

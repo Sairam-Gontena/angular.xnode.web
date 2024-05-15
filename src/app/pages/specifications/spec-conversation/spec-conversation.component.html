@@ -128,7 +128,7 @@
             (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
         </div>
       </div>
-      <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
+      <div class="col-12 pb-0" *ngIf="cmt.replyCount && cmt.replyCount !== -1 && !cmt.repliesOpened  ">
         <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See More</span>
         </div>
       </div>
@@ -138,7 +138,8 @@
           <div class="flex align-items-center justify-content-center">
             <p class="m-0">{{ file.fileName }}</p>
           </div>
-          <div class="flex align-items-center justify-content-center">
+          <div class="flex align-items-center justify-content-center gap-2">
+            <i class="pi pi-download pointer" (click)="downloadFile(file?.filePath,file.fileName);"></i>
             <i class="pi pi-times pointer" (click)="deleteAttachment(cmt,i)"></i>
           </div>
         </div>
