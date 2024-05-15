@@ -39,7 +39,7 @@ export class AgentOverviewComponent implements OnInit {
   overviewForm!: FormGroup;
   instructionForm!: FormGroup;
   userInfo: any;
-  statsItem = Constant.stats;
+  statsItem = Constant.agentDetail.stats;
   instructionOption = [{ name: "General Instructions", value: "general_instruction" },
   { name: "Capability Specific Instructions", value: "capability_specific_instruction" }];
 
@@ -133,7 +133,7 @@ export class AgentOverviewComponent implements OnInit {
     this.agentHubService.getAgentCount(urlParam).subscribe({
       next: (response: any) => {
         this.statsItem.forEach((element: any) => {
-          element.count = response[element.key];
+          element.count = response[element.key] ?? 'N/A';
         });
 
         console.log(response, "response")

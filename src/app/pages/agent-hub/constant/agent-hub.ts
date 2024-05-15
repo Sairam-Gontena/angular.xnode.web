@@ -42,7 +42,7 @@ export const searchFilterOptions = {
 
 //agent hub detail object
 export const agentHubDetail = {
-    statsItem: Constant.stats,
+    statsItem: Constant.dashboard.stats,
     agentInfo: "",
     agentConnectedFlow: false,
     showActionButton: false,
