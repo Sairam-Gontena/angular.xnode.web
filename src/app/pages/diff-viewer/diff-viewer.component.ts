@@ -145,6 +145,10 @@ export class DiffViewerComponent implements OnInit {
     });
   }
 
+  onScroll(){
+    this.specificationUtils.triggerSpecOverlays(true);
+  }
+
   ngOnInit(): void {
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {

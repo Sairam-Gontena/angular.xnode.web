@@ -30,6 +30,8 @@ export class SpecificationUtilsService {
   public _openConversationPanel: Observable<any> =
     this.showConversationPanel.asObservable();
 
+  private triggerCloseOverlay: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public closeOverlayObserver: Observable<any> = this.triggerCloseOverlay.asObservable();
   constructor() { }
 
   saveVerions(event: SpecVersion[]): void {
@@ -54,5 +56,9 @@ export class SpecificationUtilsService {
 
   openConversationPanel(event: any): void {
     this.showConversationPanel.next(event);
+  }
+
+  triggerSpecOverlays(event: any): void {
+    this.triggerCloseOverlay.next(event);
   }
 }

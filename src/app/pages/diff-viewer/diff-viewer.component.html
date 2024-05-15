@@ -35,7 +35,7 @@
                 (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
                 class="version-dropdown"></p-dropdown>
             </div>
-            <div [ngClass]="isDiffEnabled ? 'spec-container-diff-view' :'spec-container'" id="content-container">
+            <div (scroll)="onScroll()" [ngClass]="isDiffEnabled ? 'spec-container-diff-view' :'spec-container'" id="content-container">
               <div *ngFor="let item of specList;let i = index" [id]="item.id">
                 <xnode-diff-comp [keyword]="keyword" (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)"
                   [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
