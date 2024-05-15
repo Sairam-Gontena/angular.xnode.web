@@ -1,6 +1,8 @@
 export interface NaviData {
     componentToShow: string;
     is_navi_expanded: boolean;
+    chat_type?: string;
+    import_event?: true;
     restriction_max_value?: number;
     user: {
         first_name: string;
@@ -12,7 +14,6 @@ export interface NaviData {
     access_token: string;
     toggleConversationPanel: boolean;
     new_with_navi?: boolean;
-    importFilePopupToShow?: boolean;
     showDockedNavi: boolean;
     product?: {
         id: string;
@@ -35,6 +36,7 @@ export interface NaviData {
         modifiedBy?: any;
         productId?: any;
     };
+    users?: any;
 }
 
 interface User {

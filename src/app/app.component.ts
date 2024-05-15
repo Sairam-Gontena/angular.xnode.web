@@ -24,6 +24,7 @@ import { User } from './utils/user-util';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { NaviData } from './models/interfaces/navi-data';
+import { NaviEventParams } from './models/interfaces/navi-event-params';
 
 @Component({
   selector: 'xnode-root',
@@ -166,8 +167,6 @@ export class AppComponent implements OnInit {
         // this.ngOnInit();
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {
-        console.log('msg.msgData', msg.msgData);
-
         this.naviData.is_navi_expanded = false;
         this.naviData.conversationDetails = msg.msgData.conversationDetails;
         this.naviData.componentToShow = 'Chat';
@@ -191,6 +190,16 @@ export class AppComponent implements OnInit {
         // this.makeTrustedUrl();
         this.showNaviSpinner = false;
       }
+      if (msg.msgData && msg.msgType === MessageTypes.NEW_WITH_NAVI) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true;
+        this.naviData.is_navi_expanded = true;
+        this.naviData.toggleConversationPanel = true;
+        this.naviData.componentToShow = 'Chat';
+        this.naviData.new_with_navi = true;
+        this.naviData.chat_type = 'new-chat';
+        this.naviData.conversationDetails = undefined;
+      }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
@@ -204,18 +213,17 @@ export class AppComponent implements OnInit {
         this.componentToShow = 'Chat';
         console.log('6');
 
-        this.makeTrustedUrl();
+        // this.makeTrustedUrl();
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE) {
         this.showDockedNavi = true
-        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
-        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
-        this.componentToShow = msg.msgData.componentToShow;
-        this.importFilePopupToShow = msg.msgData.importFilePopupToShow;
-        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-        console.log('7');
+        this.isNaviExpanded = true
+        this.naviData.is_navi_expanded = true;
+        this.naviData.toggleConversationPanel = true;
+        this.naviData.componentToShow = 'Resources';
+        this.naviData.import_event = true;
+        console.log('i>>>>', this.naviData);
 
-        this.makeTrustedUrl();
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
@@ -299,12 +307,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  childCall($event: any) {
-    console.log('From Library: ', $event);
-    switch ($event.message) {
+  childCall(event: NaviEventParams) {
+    console.log('From Library: ', event);
+    switch (event.message) {
       case 'select-conversation':
-        this.naviData.componentToShow = $event.componentToShow;
-        this.naviData.conversationDetails = $event.value;
+        this.naviData.componentToShow = event.componentToShow;
+        this.naviData.conversationDetails = event.value;
         break;
       case 'close-navi':
         this.naviData.showDockedNavi = false;
@@ -312,56 +320,65 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
         break;
       case 'expand-navi':
-        this.isNaviExpanded = $event.value;
-        this.naviData.is_navi_expanded = $event.value;
-        this.naviData.toggleConversationPanel = $event.value;
+        this.isNaviExpanded = event.value;
+        this.naviData.is_navi_expanded = event.value;
+        this.naviData.toggleConversationPanel = event.value;
+        break;
+      case 'new-chat':
+        this.isNaviExpanded = event.is_navi_expanded;
+        this.naviData.is_navi_expanded = event.is_navi_expanded;
+        this.naviData.toggleConversationPanel = event.toggleConversationPanel;
+        this.naviData.componentToShow = event.componentToShow;
+        this.naviData.new_with_navi = event.new_with_navi;
+        this.naviData.chat_type = event.chat_type;
+        this.naviData.conversationDetails = undefined;
         break;
       default:
         break;
     }
     return
-    if ($event.message === 'select-conversation') {
-      this.naviData.componentToShow = $event.componentToShow;
-      this.naviData.conversationDetails = $event.value;
+    if (event.message === 'select-conversation') {
+      this.naviData.componentToShow = event.componentToShow;
+      this.naviData.conversationDetails = event.value;
       console.log('this.naviData', this.naviData);
 
     }
-    if ($event.message === 'Chat') {
+    if (event.message === 'Chat') {
       this.naviData.componentToShow = 'Chat';
-      this.naviData.conversationDetails = $event.value;
+      this.naviData.conversationDetails = event.value;
     }
-    if ($event.message === 'triggerCustomEvent') {
+    if (event.message === 'triggerCustomEvent') {
       this.showDockedNavi = false;
       this.isNaviExpanded = false;
     }
-    if ($event.message === 'close-docked-navi') {
+    if (event.message === 'close-docked-navi') {
       this.showDockedNavi = false;
       this.isNaviExpanded = false;
     }
-    if ($event.message === 'close-navi') {
+    if (event.message === 'close-navi') {
       return
       this.naviData.showDockedNavi = false;
       this.showDockedNavi = false;
     }
-    if ($event.message === 'expand-navi') {
-      this.isNaviExpanded = $event.value;
-      this.naviData.is_navi_expanded = $event.value;
-      this.naviData.toggleConversationPanel = $event.value;
+    if (event.message === 'expand-navi') {
+      this.isNaviExpanded = event.value;
+      this.naviData.is_navi_expanded = event.value;
+      this.naviData.toggleConversationPanel = event.value;
     }
-    if ($event.message === 'contract-navi') {
+    if (event.message === 'contract-navi') {
       this.isNaviExpanded = false;
     }
-    if ($event.message === 'triggerProductPopup') {
-      this.content = $event.data;
+    if (event.message === 'triggerProductPopup') {
+      // this.content = event.data;
       let data = {
         popup: true,
         data: this.content,
       };
       this.utilsService.toggleProductAlertPopup(data);
     }
-    if ($event.message === 'change-app') {
-      this.storageService.saveItem(StorageKeys.Product, $event.data);
-      this.utilsService.saveProductId($event.id);
+    if (event.message === 'change-app') {
+      // this.storageService.saveItem(StorageKeys.Product, event.data);
+      // this.utilsService.saveProductId(event.id);
       this.router.navigate(['/overview']);
       this.utilsService.productContext(true);
     }
@@ -382,18 +399,18 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.showDockedNavi = true;
-    this.isNaviExpanded = false;
     this.product = undefined;
     localStorage.removeItem('has_insights')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
     this.storageService.removeItem(StorageKeys.Product);
-    this.componentToShow = 'Tasks';
-    console.log('8');
-
-    this.makeTrustedUrl();
     this.mainComponent = 'my-products';
+    this.showDockedNavi = true;
+    this.isNaviExpanded = false;
+    this.naviData.conversationDetails = undefined;
+    this.naviData.is_navi_expanded = false;
+    this.naviData.componentToShow = 'Tasks';
+    this.naviData.toggleConversationPanel = false;
     this.router.navigate(['/my-products']);
   }
 
@@ -1071,6 +1088,7 @@ export class AppComponent implements OnInit {
       this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         this.usersList = response.data;
+        this.naviData.users = response.data;
       })
     }
   }

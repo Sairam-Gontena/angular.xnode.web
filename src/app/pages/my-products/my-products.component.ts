@@ -178,7 +178,6 @@ export class MyProductsComponent implements OnInit {
   onClickProductChat(product: any): void {
     this.utils.loadSpinner(true);
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
-      console.log('product', data);
       if (data.data)
         this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
       this.utils.loadSpinner(false);
@@ -223,7 +222,10 @@ export class MyProductsComponent implements OnInit {
     productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
+
   importNavi(): void {
+    console.log('import');
+
     this.messagingService.sendMessage({
       msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
       msgData: {
@@ -503,8 +505,8 @@ export class MyProductsComponent implements OnInit {
 
   onClickNewWithNavi(): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.NAVI_CONTAINER_STATE,
-      msgData: { naviContainerState: 'EXPAND' },
+      msgType: MessageTypes.NEW_WITH_NAVI,
+      msgData: 'new-with-navi',
     });
   }
 
