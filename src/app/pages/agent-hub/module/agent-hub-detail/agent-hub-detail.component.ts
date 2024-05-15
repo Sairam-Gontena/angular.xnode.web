@@ -116,7 +116,7 @@ export class AgentHubDetailComponent {
     {
       idx: 1,
       title: 'Capabilities',
-      value: 'capabilities_linked_agents',
+      value: 'capabilities',
       identifier: agentName.capability,
     },
     { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },
@@ -256,10 +256,10 @@ export class AgentHubDetailComponent {
       next: (response: any) => {
         if (response) {
           this.tableData = response.data as ITableDataEntry[];
-          this.paginatorInfo.page = response.data.page;
-          this.paginatorInfo.perPage = response.data.per_page;
-          this.paginatorInfo.totalRecords = response.data.total_items;
-          this.paginatorInfo.totalPages = response.data.total_pages;
+          this.paginatorInfo.page = response.page;
+          this.paginatorInfo.perPage = response.per_page;
+          this.paginatorInfo.totalRecords = response.total_items;
+          this.paginatorInfo.totalPages = response.total_pages;
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
         }
