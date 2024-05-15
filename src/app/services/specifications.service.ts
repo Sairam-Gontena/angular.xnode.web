@@ -193,7 +193,6 @@ export class SpecificationsService {
       .getCommentsByProductId({
         productId: obj.productId,
         versionId: obj.versionId,
-        isCountRequired : true
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
@@ -224,7 +223,6 @@ export class SpecificationsService {
       .getTasksByProductId({
         productId: obj.productId,
         versionId: obj.versionId,
-        isCountRequired : true
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
