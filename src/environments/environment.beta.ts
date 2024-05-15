@@ -1,7 +1,7 @@
 export const environment = {
     name: 'BETA',
     production: false,
-    apiUrl: 'https://xnode-us-apim.azure-api.net/',
+    apiUrl: 'https://xnode-us-apim.xnode.ai/',
     apimSubscriptionKey: '64182f1412f74e0fb4402f476e10d567',
     endpoints: {
         navi: 'navi-api',
@@ -14,14 +14,14 @@ export const environment = {
         publish: 'ui-gen/ui/angular',
         notification: 'notification-api',
         uiGen: 'ui-gen',
+        xflows: 'xflows-api'
     },
     xnodeAppUrl: 'https://app-us.xnode.ai/',
-    naviAppUrl: 'https://beta-navi-web.azurewebsites.net/',
+    naviAppUrl: 'https://app-navi-us.xnode.ai/',
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://beta-frontend-builder.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://beta-frontend-builder.azurewebsites.net/',
-    workFlowApiUrl: 'https://beta-xnode-xflows.azurewebsites.net/',
-    webSocketUrl: 'https://notify-now-us.azurewebsites.net',
+    webSocketUrl: 'https://notify-now-us.xnode.ai',
     webSocketNotifier: 'beta-xnode-notifier',
     branchName: 'beta',
     projectName: 'xnode-beta',
