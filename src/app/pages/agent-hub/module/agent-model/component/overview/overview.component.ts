@@ -5,6 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { InitialPaginatorInfo } from 'src/app/pages/agent-hub/constant/agent-hub';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
@@ -29,7 +30,10 @@ export class ModelOverviewComponent {
       componentType: "",
       enableDialog: false,
       header: ""
-    }
+    },
+    modelOptions: new Array(),
+    versionOptions: new Array(),
+    paginatorInfo: { ...InitialPaginatorInfo }
   }
 
   constructor(private formBuilder: FormBuilder,
@@ -43,8 +47,10 @@ export class ModelOverviewComponent {
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      temperature: [''],
-      max_context_length: [''],
+      model_configuration: this.formBuilder.group({
+        maxcontextlength: [''],
+        temperature: ['']
+      }),
       modelSelection: ['EXISTING_PROVIDER'],
       model: [''],
       version: ['']
@@ -52,14 +58,47 @@ export class ModelOverviewComponent {
     if (this.overViewObj.getModelID) {
       this.overViewObj.enableCreateModel = false;
       this.overviewForm.disable();
-    } else {
-
     }
   }
 
   ngOnInit() {
     this.overViewObj.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    this.checkCreateEditModel();
+    this.checkCreateEditModel(); //checking create and edit in model
+    this.getAllModel(this.makeAllModelParamObj(this.overViewObj.paginatorInfo)); //get all model by agent
+  }
+
+  //making the url param for parent link capabilty
+  makeAllModelParamObj(paginationObj: any) {
+    let urlParam: any = {
+      url: "/agent/model/" + this.overViewObj.currentUser.account_id,
+      params: {
+        page: paginationObj.page + 1,
+        limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows,
+        status: "test"
+      }
+    };
+    return urlParam;
+  }
+
+  //get all model details to get existing provider and version
+  getAllModel(urlParam: any) {
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.getAllModels(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.overViewObj.modelOptions = ((response?.data) ? response.data : new Array());
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        if (!this.overViewObj.componentDetail.enableDialog) {
+          this.getModelDetailByID(); //get model detail by modelID
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(false);
+      }
+    });
   }
 
   //checking create and edit in model
@@ -67,11 +106,6 @@ export class ModelOverviewComponent {
     if (this.dynamicDialogConfig.data) {
       this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
       this.overViewObj.componentDetail.enableDialog = true;
-      if (this.dynamicDialogConfig.data.componentType === "CREATE") {
-
-      }
-    } else {
-      this.getModelDetailByID(); //get model detail by modelID
     }
   }
 
@@ -87,15 +121,14 @@ export class ModelOverviewComponent {
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
-            temperature: response?.temperature,
-            max_context_length: response?.max_context_length
+            model_configuration: response?.model_configuration
           });
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
         }
         this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(false);
       }
     });
@@ -107,14 +140,14 @@ export class ModelOverviewComponent {
       payload: this.overviewForm.value
     },
       getCreateUpdateModelDetail: any;
-    // this.utilsService.loadSpinner(true);
-    if (this.overViewObj.enableCreateModel) {
-      // getCreateUpdateModelDetail = this.agentHubService.createTopicDetail(urlPayload.payload);
-    } else {
-      urlPayload.ID = this.overViewObj.getModelID;
-      // getCreateUpdateModelDetail = this.agentHubService.updateTopicDetailByID(urlPayload)
-    }
     debugger
+    // this.utilsService.loadSpinner(true);
+    // if (this.overViewObj.enableCreateModel) {
+    //   getCreateUpdateModelDetail = this.agentHubService.createModelDetail(urlPayload.payload);
+    // } else {
+    //   urlPayload.ID = this.overViewObj.getModelID;
+    //   getCreateUpdateModelDetail = this.agentHubService.updateModelDetailByID(urlPayload)
+    // }
     // if (!getCreateUpdateModelDetail) {
     //   return this.utilsService.loadSpinner(false);
     // }
@@ -122,6 +155,11 @@ export class ModelOverviewComponent {
     // getCreateUpdateModelDetail.subscribe({
     //   next: (response: any) => {
     //     if (response) {
+    //       if (this.overViewObj.enableCreateModel) {
+    //         this.onCloseEvent(); //close the modal
+    //       } else {
+    //         this.onEditSaveEvent(); //on save event
+    //       }
     //     }
     //     this.utilsService.loadSpinner(false);
     //   }, error: (error: any) => {
@@ -131,6 +169,7 @@ export class ModelOverviewComponent {
     // });
   }
 
+  //show and hide advance option
   showHideAdvanceOption() {
     this.overViewObj.enableAdvanceOption = !this.overViewObj.enableAdvanceOption;
   }

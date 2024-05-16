@@ -44,16 +44,38 @@ export class AgentHubService extends BaseApiService {
     return this.agentHeaderObj.asObservable();
   }
 
-  getAllAgent({ accountId, endpoint, page, page_size }: { accountId: string, endpoint: string, page: number, page_size: number }) {
-    let url = `/agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
-    return this.get(url)
+  // getAllAgent({ accountId, endpoint, page, page_size }: { accountId: string, endpoint: string, page: number, page_size: number }) {
+  //   let url = `/agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
+  //   return this.get(url)
+  // }
+
+  getAllAgent(urlParam: any): Observable<any> {
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.get<any>(this.apiUrl + urlParam.url, requestOptions);
   }
 
-  getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {
-    let queryParams = new URLSearchParams(query).toString();
-    let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
+  // getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {
+  //   let queryParams = new URLSearchParams(query).toString();
+  //   let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
 
-    return this.get(url);
+  //   return this.get(url);
+  // }
+
+  getAgentCount(urlParam: any): Observable<any> {
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.get<any>(this.apiUrl + urlParam.url, requestOptions);
   }
 
   //get agent detail by accountID
@@ -86,11 +108,25 @@ export class AgentHubService extends BaseApiService {
   // }
 
   postData(urlParam: any): Observable<any> {
-    return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data);
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.post(this.apiUrl + "/" + urlParam.url, urlParam.data, requestOptions);
   }
 
   updateData(urlParam: any): Observable<any> {
-    return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data));
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    debugger
+    return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data), requestOptions);
   }
 
   //get prompts by topic id
@@ -107,9 +143,7 @@ export class AgentHubService extends BaseApiService {
 
   //get topic details by topic id
   getTopicDetailByID(urlParam: any): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
-
+    const headers = new HttpHeaders().set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
     const requestOptions = {
       headers: headers,
       params: urlParam.params
@@ -127,23 +161,39 @@ export class AgentHubService extends BaseApiService {
     return this.getHttp.put(this.apiUrl + "agent/update_topic/" + urlPayload.ID, urlPayload.payload);
   }
 
+  //get all model details
+  getAllModels(urlParam: any): Observable<any> {
+    const headers = new HttpHeaders().set('ocp-apim-subscription-key', environment.apimSubscriptionKey),
+      requestOptions = {
+        headers: headers,
+        params: urlParam.params
+      };
+    return this.getHttp.get(this.apiUrl + urlParam.url, requestOptions);
+  }
+
   //get model details by model id
   getModelDetailByID(urlParam: any): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
-
-    const requestOptions = {
-      headers: headers,
-      params: urlParam.params
-    };
+    const headers = new HttpHeaders().set('ocp-apim-subscription-key', environment.apimSubscriptionKey),
+      requestOptions = {
+        headers: headers,
+        params: urlParam.params
+      };
     return this.getHttp.get(this.apiUrl + urlParam.url, requestOptions);
+  }
+
+  //create model detail
+  createModelDetail(payload: any): Observable<any> {
+    return this.getHttp.post(this.apiUrl + "agent/create_model", payload);
+  }
+
+  //update model details by model id
+  updateModelDetailByID(urlPayload: any): Observable<any> {
+    return this.getHttp.put(this.apiUrl + "agent/update_model/" + urlPayload.ID, urlPayload.payload);
   }
 
   //get add capabilities by agent
   getCapabilitiesByAgent(urlParam: any): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
-
+    const headers = new HttpHeaders().set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
     const requestOptions = {
       headers: headers,
       params: urlParam.params

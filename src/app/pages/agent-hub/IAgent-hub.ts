@@ -13,6 +13,7 @@ export interface ITableInfo {
     export_action: boolean;
     name: string;
     search_input: boolean;
+    showAgentDataType: boolean;
 }
 
 export interface IPaginatorInfo {

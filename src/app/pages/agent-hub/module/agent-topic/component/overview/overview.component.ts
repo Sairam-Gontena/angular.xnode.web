@@ -42,7 +42,7 @@ export class TopicOverviewComponent {
     this.overviewForm = this.formBuilder.group({
       name: [''],
       description: [''],
-      parentCapability: [''],
+      capability_id: [''],
       parent_topic_id: ['']
     });
     if (this.overViewObj.getTopicID) {
@@ -50,18 +50,19 @@ export class TopicOverviewComponent {
       this.overviewForm.removeControl("parent_topic_id");
       this.overviewForm.disable();
     } else {
-      this.overviewForm.removeControl("parentCapability");
+      this.overviewForm.removeControl("capability_id");
       this.overviewForm.addControl("parent_topic_id", new FormControl(''));
     }
   }
 
   ngOnInit() {
     this.overViewObj.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    this.checkCreateEditTopic();
+    this.checkCreateTopic(); //checking create and edit in topic
+    this.getParentLinkOption(this.makeParentLinkParamObj()); //get all capabilities by agent
   }
 
-  //making the url param for category
-  makeTableParamObj() {
+  //making the url param for parent link capabilty
+  makeParentLinkParamObj() {
     let urlParam: any = {
       url: "/agent/capabilities_linked_agents/" + this.overViewObj.currentUser.account_id
     };
@@ -69,18 +70,10 @@ export class TopicOverviewComponent {
   }
 
   //checking create and edit in topic
-  checkCreateEditTopic() {
+  checkCreateTopic() {
     if (this.dynamicDialogConfig.data) {
       this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
       this.overViewObj.componentDetail.enableDialog = true;
-      if (this.dynamicDialogConfig.data.componentType === "CREATE") {
-        this.overviewForm.removeControl("parentCapability");
-        this.overviewForm.addControl("parent_topic_id", new FormControl(''));
-      }
-      let urlParam = this.makeTableParamObj();
-      this.getParentLinkOption(urlParam);
-    } else {
-      this.getTopicDetailByID(); //get topic detail by topicID
     }
   }
 
@@ -94,9 +87,13 @@ export class TopicOverviewComponent {
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
         }
+        // if dialog is not eneabled
+        if (!this.overViewObj.componentDetail.enableDialog) {
+          this.getTopicDetailByID(); //get topic detail by topicID
+        }
         this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(false);
       }
     });
@@ -114,7 +111,7 @@ export class TopicOverviewComponent {
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
-            parentCapability: response?.idx
+            capability_id: response?.capability_id
           });
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
@@ -151,8 +148,13 @@ export class TopicOverviewComponent {
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
-            parentCapability: response?.idx
+            capability_id: response?.capability_id
           });
+          if (this.overViewObj.enableCreateTopic) {
+            this.onCloseEvent(); //close the topic modal
+          } else {
+            this.onEditSaveEvent(); //on save event
+          }
         } else if (response?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
         }
