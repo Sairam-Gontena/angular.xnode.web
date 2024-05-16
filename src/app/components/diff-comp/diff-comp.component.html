@@ -89,20 +89,22 @@
         </div>
       </div>
       <div *ngSwitchCase="'DATA_DICTIONARY'" [id]="contentObj.id">
-        <div *ngFor="let item of contentObj?.content">
-          <span *ngIf="item.tables else directTable">
-            <div *ngFor="let subitem of item.tables">
-              <h3 class="mb-1">{{subitem.tableName}}</h3>
-              <p class="mt-1">{{subitem.tableDescription}}</p>
-              <xnode-common-spec-table [content]="subitem.columns"></xnode-common-spec-table>
-            </div>
-          </span>
-          <ng-template #directTable>
-            <h3 class="mb-1">{{item.tableName}}</h3>
-            <p class="mt-1">{{item.tableDescription}}</p>
-            <xnode-common-spec-table [content]="item.columns"></xnode-common-spec-table>
-          </ng-template>
-        </div>
+        <span *ngIf="isArray(contentObj?.content)">
+          <div *ngFor="let item of contentObj?.content">
+            <span *ngIf="item.tables else directTable">
+              <div *ngFor="let subitem of item.tables">
+                <h3 class="mb-1">{{subitem.tableName}}</h3>
+                <p class="mt-1">{{subitem.tableDescription}}</p>
+                <xnode-common-spec-table [content]="subitem.columns"></xnode-common-spec-table>
+              </div>
+            </span>
+            <ng-template #directTable>
+              <h3 class="mb-1">{{item.tableName}}</h3>
+              <p class="mt-1">{{item.tableDescription}}</p>
+              <xnode-common-spec-table [content]="item.columns"></xnode-common-spec-table>
+            </ng-template>
+          </div>
+        </span>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'list'" [id]="contentObj.id">
         <div [ngSwitch]="getType(contentObj.content)">
@@ -130,7 +132,7 @@
         <xnode-common-usecases [users]="[]" [useCases]="contentObj.content" *ngIf="!onDiff"></xnode-common-usecases>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
-        <div class="grid" *ngIf="onDiff">
+        <div class="grid" *ngIf="onDiff else bpmnElse">
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj"
               [dataToExpand]="contentObj"></xnode-bpmn-common>
@@ -140,7 +142,9 @@
               [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
-        <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
+        <ng-template #bpmnElse>
+          <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [onDiff]="false" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
+        </ng-template>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
         <xnode-user-roles [content]="contentObj.content" [parentTitle]="contentObj.title"

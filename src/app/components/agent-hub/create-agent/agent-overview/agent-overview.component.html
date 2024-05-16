@@ -43,19 +43,14 @@
 
 
 
-      <div class="flex agent-summary justify-content-between flex-wrap">
+      <div class="flex agent-summary flex-wrap gap-8">
         <!-- Agents Card -->
-        <div class="flex gap-2 " *ngFor="let item of statsItem">
-          <!-- <p-button
-            styleClass="p-0"
-            (onClick)="agentHubModel.OnbreabCrumbsClickHandler(item)"
-          > -->
-
+        <div class="flex gap-2 w-9rem" *ngFor="let item of statsItem">
           <p-button styleClass="p-0">
             <img class="agent-icons" [src]="item.imgPath" alt="" />
           </p-button>
           <div class="flex flex-column">
-            <div class="font-semibold text-base star-dust">{{ item.label }}</div>
+            <div class="font-semibold text-base stats-label">{{ item.label }}</div>
             <div class="text-4xl font-bold">{{ item.count }}</div>
           </div>
         </div>

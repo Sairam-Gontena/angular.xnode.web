@@ -1,0 +1,37 @@
+<div class="w-full agent-hub-container border-round-2xl p-4 mt-4">
+    <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
+        <p-tabPanel *ngFor="let topicItem of capabilityTabs" [header]="topicItem.title">
+            <ng-container [ngSwitch]="topicItem.component">
+                <div class="overflow-auto customTopicTabPanel">
+                    <xnode-capability-overview *ngSwitchCase="'capability'" />
+
+                    <ng-container *ngSwitchCase="'topic'">
+                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'prompt'">
+                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'model'">
+                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'tool'">
+                        <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </p-tabPanel>
+    </p-tabView>
+
+
+    <ng-template #dynamicTable>
+        <div class="w-full table-height">
+            <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
+                [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
+                [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+                [showViewRowData]="true" (changeEvent)="viewHandler($event)"
+                (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
+        </div>
+
+    </ng-template>
+</div>

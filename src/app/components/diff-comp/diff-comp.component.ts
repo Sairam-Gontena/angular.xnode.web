@@ -47,6 +47,10 @@ export class DiffCompComponent implements OnInit {
   selectedText: any;
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
+  @ViewChild('op1')
+  op1!: OverlayPanel;
+  @ViewChild('op')
+  op!: OverlayPanel;
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
@@ -79,6 +83,18 @@ export class DiffCompComponent implements OnInit {
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
   ) {
+    this.specificationUtils.closeOverlayObserver.subscribe((data:any)=>{
+      if(data)
+          this.closeOverlayPanel()
+    })
+  }
+
+  closeOverlayPanel() {
+    if (this.op1) {
+      this.op1.hide();
+    }if (this.op) {
+      this.op.hide();
+    }
   }
 
   ngOnInit(): void {
@@ -113,24 +129,26 @@ export class DiffCompComponent implements OnInit {
   }
 
   stringifyDictionaryObject() {
-    this.contentObj.content.forEach((item: any) => {
-      if ('columns' in item) {
-        item.columns.forEach((subitem: any) => {
-          subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-          subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-        })
-      }
-      if ('tables' in item) {
-        item.tables.forEach((subitem: any) => {
-          if ('columns' in subitem) {
-            subitem.columns.forEach((element: any) => {
-              element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-              element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-            });
-          }
-        })
-      }
-    })
+    if(Array.isArray(this.contentObj.content)){
+      this.contentObj.content.forEach((item: any) => {
+        if ('columns' in item) {
+          item.columns.forEach((subitem: any) => {
+            subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+            subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+          })
+        }
+        if ('tables' in item) {
+          item.tables.forEach((subitem: any) => {
+            if ('columns' in subitem) {
+              subitem.columns.forEach((element: any) => {
+                element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+                element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+              });
+            }
+          })
+        }
+      })
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

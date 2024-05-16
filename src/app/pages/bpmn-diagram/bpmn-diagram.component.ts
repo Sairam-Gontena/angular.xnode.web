@@ -35,6 +35,7 @@ import { Product } from 'src/models/product';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { SpecApiService } from 'src/app/api/spec-api.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -453,7 +454,7 @@ export class BpmnDiagramComponent
 
   getOverview() {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id }).then((response) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id ,userRole:'all' }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -895,45 +896,42 @@ export class BpmnDiagramComponent
   graph() {
     let mod_data = this.modifyGraphData(this.useCases);
     this.showUsecaseGraph = true;
-
-    //TBD
-    //group by usecase role and create different spider web where centre of web is role
-    let firstRole = mod_data?.length ? mod_data[0].role : '';
-    var treeData = {
-      description: '',
-      id: '',
-      role: firstRole,
-      title: this.product?.title,
-      children: mod_data,
-    };
-
+    let grpdata:any=_.groupBy(mod_data, 'role');
+    grpdata = Object.values(grpdata);
+    grpdata.forEach((element:any)=>{
+      let firstRole = element?.length ? element[0]?.role : '';
+      var treeData = {
+        description: '',
+        id: '',
+        role: firstRole,
+        title: this.product?.title,
+        children: element,
+      };
     var ele = document.getElementById('graph') as HTMLElement;
-    // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
     ele.classList.add('overflow-y-auto');
-
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g');
     var svg_ele = document.getElementById('graph');
-
-    if (svg_ele) {
-      svg_ele.addEventListener('click', (event: any) => {
-        let e = event.target.__data__;
-        let flow = e.data.title;
-        if (e.depth == 2) {
-          this.utilsService.loadSpinner(true);
-          this.showUsecaseGraph = false;
-          var bpmnWindow = document.getElementById('diagramRef');
-          if (bpmnWindow) bpmnWindow.style.display = '';
-          this.graphRedirection = true;
-          var graphWindow = document.getElementById('sc');
-          if (graphWindow) graphWindow.style.display = 'None';
-          this.getFlow(flow);
-          this.centerAndFitViewport(this.bpmnJS);
-        }
-      });
-    }
+      if (svg_ele) {
+        svg_ele.addEventListener('click', (event: any) => {
+          let e = event.target.__data__;
+          let flow = e.data.title;
+          if (e.depth == 2) {
+            this.utilsService.loadSpinner(true);
+            this.showUsecaseGraph = false;
+            var bpmnWindow = document.getElementById('diagramRef');
+            if (bpmnWindow) bpmnWindow.style.display = '';
+            this.graphRedirection = true;
+            var graphWindow = document.getElementById('sc');
+            if (graphWindow) graphWindow.style.display = 'None';
+            this.getFlow(flow);
+            this.centerAndFitViewport(this.bpmnJS);
+          }
+        });
+      }
+    });
   }
 
   _chart(d3: any, data: any) {

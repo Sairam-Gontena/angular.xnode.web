@@ -8,18 +8,18 @@ import { BaseApiService } from './base-api.service';
 })
 export class ConversationApiService extends BaseApiService {
     override get apiUrl(): string {
-        return environment.conversationApiUrl;
+        return environment.apiUrl + environment.endpoints.conversation;
     }
 
     constructor() {
         super();
     }
     getAllConversations() {
-        let url = 'conversation';
+        let url = '/conversation';
         return this.get(url);
     }
     getConversationsByContributor(user_id: any) {
-        let url = 'conversation/conversations-by-contributor?contributors=' + user_id;
+        let url = '/conversation/conversations-by-contributor?contributors=' + user_id;
         return this.get(url);
     }
 

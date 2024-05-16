@@ -41,8 +41,8 @@ export class CommonSpecTableComponent {
   },]
 
   ngOnChanges() {
-    if (this.content) {
-      this.columns = this.setColumnsToTheTable(this.content[0])
+    if (this.content && this.content?.[0]) {
+      this.columns = this.setColumnsToTheTable(this.content[0]);
     }
   }
   setColumnsToTheTable(data: any) {

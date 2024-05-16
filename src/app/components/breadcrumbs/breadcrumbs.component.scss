@@ -1,4 +1,16 @@
-.breadcrumbs-item {
-    cursor: pointer;
+::ng-deep.customBreadcrum {
+    &.p-breadcrumb {
+        padding-left: 0px;
+
+        .p-breadcrumb-list {
+            li {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.active-item {
     color: var(--cerulean);
+    cursor: pointer;
 }

@@ -145,6 +145,10 @@ export class DiffViewerComponent implements OnInit {
     });
   }
 
+  onScroll(){
+    this.specificationUtils.triggerSpecOverlays(true);
+  }
+
   ngOnInit(): void {
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {
@@ -411,16 +415,17 @@ export class DiffViewerComponent implements OnInit {
   async fetchOpenAPISpec(id: string, versionId: string) {
     const product: any = this.storageService.getItem(StorageKeys.Product)
     let swaggerUrl =
-      environment.commentsApiUrl +
-      'product-spec/openapi-spec/' +
-      product.title +
+      environment.apiUrl + environment.endpoints.spec +
+      '/product-spec/openapi-spec/' +
+      product?.title +
       '/' +
       product?.id +
       '/' +
       versionId;
     const headers = {
       'Authorization': `Bearer ${this.storageService.getItem(StorageKeys.ACCESS_TOKEN)}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key': environment.apimSubscriptionKey
     };
     try {
       const response = await fetch(swaggerUrl, { headers });

@@ -1,0 +1,76 @@
+<p-dialog [(visible)]="display" [style]="{width: '40vw', height: 'auto'}" [responsive]="true" [baseZIndex]="10000"
+    (onHide)="onClose()" [dismissableMask]="false" [closeOnEscape]="false">
+    <ng-template pTemplate="header" class="modal-header">
+        <div class="ml-4 flex flex-column gap-2">
+            <p class="w-10 m-0 text-2xl font-bold">Add Knowledge</p>
+            <p class="m-0 text-sm">Please enter the details below to add or create Resource</p>
+        </div>
+    </ng-template>
+    <div class="modal-content">
+        <div class="modal-body px-6 mx-auto">
+            <form class="flex flex-column gap-4" [formGroup]="createAgentKnowledge" (ngSubmit)="submitForm()">
+                <div class="flex flex-column align-items-center gap-2">
+                    <label class="w-full" for="folderName">Name</label>
+                    <div class="w-full">
+                        <input pInputText type="text" class="w-full form-control" id="folderName"
+                            formControlName="folderName" placeholder="Enter a folder Name" />
+                    </div>
+                </div>
+
+                <ng-container *ngIf="typeSelected !== selectedTypeEnum.link; else showLink">
+                    <div class="flex flex-column align-items-center gap-2">
+                        <div class="w-full">Upload File</div>
+
+                        <div class="flex flex-column gap-3 w-full link-btn-container border-round-2xl px-3 py-2">
+                            <p class="p-0 m-0 text-center">Browse file or import from</p>
+
+                            <div class="flex justify-content-between align-items-center px-4">
+                                <div class="flex">
+                                    <label class="cursor-pointer text-center" (click)="selectPdf.click()">
+                                        <img src="/assets/upload.svg" alt="upload">
+                                        <p class="p-0 m-0">My Device</p>
+                                    </label>
+
+                                    <input type="file" #selectPdf class="hidden" id="file" accept=".pdf"
+                                        (change)="onFileSelected($event)">
+                                </div>
+
+                                <p>(OR)</p>
+
+                                <div (click)="onSelectType(selectedTypeEnum.link)">
+                                    <p-button label="Link" [outlined]="true" icon="pi pi-link" iconPos="right"
+                                        styleClass="text-sm line-height-1 font-semibold border-round-2xl px-3 py-2 link-btn"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #showLink>
+                    <div class="flex flex-column align-items-center gap-2">
+                        <label class="w-full" for="link">Import From Link</label>
+                        <div class="w-full">
+                            <input pInputText type="text" pattern="https?://.+" class="w-full form-control" id="link"
+                                formControlName="link" placeholder="Enter URL to import a file" />
+                        </div>
+                    </div>
+                </ng-template>
+
+
+                <!-- Show All the selected attachment here -->
+
+                <!-- <div *ngFor="let file of selectedFiles; let i = index">
+                    <div>{{ file.name }}</div>
+                    <button type="button" (click)="removeFile(i)">Remove</button>
+                </div> -->
+                <!-- <button type="submit" [disabled]="!createAgentKnowledge.valid">Submit</button> -->
+
+                <div class="flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn-cancel cursor-pointer px-3 py-1"
+                        (click)="onClose()">Cancel</button>
+                    <button type="submit" class="btn-primary cursor-pointer px-3">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</p-dialog>

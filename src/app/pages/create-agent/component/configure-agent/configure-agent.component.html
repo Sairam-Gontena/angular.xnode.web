@@ -1,0 +1,90 @@
+<div class="w-full">
+    <ng-container>
+        <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
+            <ng-container *ngFor="let tabItem of tabItems">
+                <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <span>{{tabItem.title}}</span>
+                    </ng-template>
+                    <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
+                        <ng-container *ngSwitchCase="'Overview'">
+                            <ng-container [ngTemplateOutlet]="overview"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Agent Instructions'">
+                            <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Capabilities'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Topics'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Prompts'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Knowledge'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Models'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Tools'">
+                            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                </p-tabPanel>
+            </ng-container>
+        </p-tabView>
+
+        <ng-template #dynamicTable>
+            <div class="w-full table-height" *ngIf="activeIndex > 1 && showDynamicTable">
+                <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
+                    [searchFilterOptions]="searchFilterOptions" [showColumnFilterOption]="showColumnFilterOption"
+                    [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
+                    columnWidth="13.8rem" altBgColorRow="#2E2D36" [showViewRowData]="true"
+                    (changeEvent)="viewHandler($event)"
+                    (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
+            </div>
+        </ng-template>
+    </ng-container>
+
+    <!-- overview html -->
+    <ng-template #overview>
+        <div class="table-height">
+            <xnode-agent-overview formType="overview" [agentInfo]="agentHubDetail?.agentInfo"></xnode-agent-overview>
+        </div>
+    </ng-template>
+
+    <!-- instruction html -->
+    <ng-template #instruction>
+        <div class="table-height">
+            <xnode-agent-overview formType="instruction" [agentInfo]="agentHubDetail?.agentInfo"></xnode-agent-overview>
+        </div>
+    </ng-template>
+
+    <!-- Capability View -->
+
+    <div class="table-height" *ngIf="viewTableData?.capability?.viewData">
+        <xnode-capability-overview [capabilityId]="viewTableData.capability.Id" [showBackButton]="true"
+            (goBack)="goBackHandler()" />
+    </div>
+
+    <div class="table-height" *ngIf="viewTableData?.prompt?.viewData">
+        <xnode-prompt-overview-instruction [promptId]="viewTableData.prompt.Id" [showBackButton]="true"
+            (goBack)="goBackHandler()" />
+    </div>
+
+    <!--  Topic -->
+    <div class="table-height" *ngIf="viewTableData?.topic?.viewData">
+        <xnode-overview [topicId]="viewTableData.topic.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
+
+    <!-- Tool -->
+    <div class="table-height" *ngIf="viewTableData?.tool?.viewData">
+        <xnode-tool-overview [toolId]="viewTableData.tool.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
+
+    <div class="table-height" *ngIf="viewTableData?.model?.viewData">
+        <xnode-model-overview [modelId]="viewTableData.model.Id" [showBackButton]="true" (goBack)="goBackHandler()" />
+    </div>
+</div>

@@ -107,7 +107,7 @@ export class SpecificationsService {
                   element.content_data_type = 'TABLE';
                 } else if (element.title === 'Data Model') {
                   element.content_data_type = 'DATA_MODEL';
-                }else if (element.title === 'Data Dictionary') {
+                } else if (element.title === 'Data Dictionary') {
                   element.content_data_type = 'DATA_DICTIONARY';
                 } else if (element.title === 'Quality Assurance') {
                   element.content_data_type = 'QUALITY_ASSURANCE';
@@ -136,11 +136,9 @@ export class SpecificationsService {
 
   getMeSpecLevelCommentsList(data: any) {
     this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({ parentId: data.parentId, isReplyCountRequired: true })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils.saveCommentList(response.data);
+    this.commentsService.getComments({ parentId: data.parentId,replyCountRequired:true }) .then((response: any) => {
+        if (response.status === 200 && response?.data?.data) {
+          this.specUtils.saveCommentList(response.data.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -163,11 +161,9 @@ export class SpecificationsService {
 
   getMeSpecLevelTaskList(data: any) {
     this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasks({ parentId: data.parentId })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils.saveTaskList(response.data);
+    this.commentsService.getTasks({ parentId: data.parentId }).then((response: any) => {
+        if (response.status === 200 && response?.data?.data) {
+          this.specUtils.saveTaskList(response?.data?.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',

@@ -1,6 +1,6 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0" [class.hidden]="showDockedNavi">
+        <div class="absolute bottom-0 right-0 z-3" [class.hidden]="showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
         </div>
         <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
@@ -37,7 +37,7 @@
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 <xnode-import-file-popup [visible]="showImportFilePopup" (closeEventEmitter)="this.showImportFilePopup = false;"
     [conversation_id]="conversation_id"></xnode-import-file-popup>
-<xnode-view-summary-popup [visible]="showSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary"
+<xnode-view-summary-popup *ngIf="showSummaryPopup" [visible]="showSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary"
     [conversationID]="conversation_id" (closePopUp)="this.showSummaryPopup = false"></xnode-view-summary-popup>
 <xnode-inactive-timeout-popup *ngIf="showInactiveTimeoutPopup" [visible]="showInactiveTimeoutPopup" [countdown]="inactiveTimeoutCounter"
 (closePopup)="this.showInactiveTimeoutPopup = false;" (logout)="logout()"></xnode-inactive-timeout-popup>

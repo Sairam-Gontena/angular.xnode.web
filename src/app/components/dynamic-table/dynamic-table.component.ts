@@ -7,13 +7,13 @@ interface Column {
 }
 interface FilterOptions {
   showFilterOption?: boolean;
-  filter: boolean;
-  showToggleAll: boolean;
-  showHeader: boolean;
-  options: any[];
-  placeholder: string;
-  optionLabel: string;
-  styleClass: string;
+  filter?: boolean;
+  showToggleAll?: boolean;
+  showHeader?: boolean;
+  options?: any[];
+  placeholder?: string;
+  optionLabel?: string;
+  styleClass?: string;
   changeHandler?: (event: any) => void;
 }
 
@@ -40,8 +40,11 @@ export class DynamicTableComponent implements OnInit {
   @Input() verticalScrollHeight = '25rem';
   @Input() paginatorInfo: any = {};
   @Input() showViewRowData = false;
+  @Input() agentDataType = 'live'
+  @Input() recordType!: any;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
+  @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
 
   @Input() tableRowActionOptions: any[] = [];
 
@@ -181,5 +184,10 @@ export class DynamicTableComponent implements OnInit {
     if (this.showViewRowData) {
       this.changeEvent.emit(rowData)
     }
+  }
+
+  setAgentDataType(type: any) {
+    this.agentDataType = type
+    this.agentDataTypeChange.emit(type)
   }
 }

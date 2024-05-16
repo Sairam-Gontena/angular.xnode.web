@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-type Breadcrumb = {
-  label: string;
-  url?: string;
-};
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'xnode-breadcrumbs',
@@ -11,52 +9,43 @@ type Breadcrumb = {
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent {
-  @Input() items!: Breadcrumb[];
-  @Input() highLightColor: string = ''
-
+  @Input() items: MenuItem[] | undefined;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
 
+  constructor(private router: Router,
+    private activatedRoute: ActivatedRoute) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.items = this.createBreadcrumbs(this.activatedRoute.root);
+    });
+  }
+
+  ngOnInit() { }
+
+  private createBreadcrumbs(route: ActivatedRoute, routelink: string = '', breadcrumbs: MenuItem[] = []): any {
+    const children: ActivatedRoute[] = route.children;
+    if (!children?.length) {
+      return breadcrumbs;
+    }
+    for (const child of children) {
+      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+      if (routeURL !== '') {
+        routelink += `/${routeURL}`;
+      }
+      const label = child.snapshot.data.breadcrumb;
+      if (label) {
+        breadcrumbs.push({ label, routelink });
+      }
+      return this.createBreadcrumbs(child, routelink, breadcrumbs);
+    }
+  }
+
+  //on change event handler
   onChangeHandler(event: any, value: any) {
-    console.log("Hello", value)
     const eventData: any = {
       item: value
     }
-    this.changeEvent.emit(eventData);
+    const eventDetail: any = { eventType: 'breadcrum', eventData: eventData.item }
+    this.changeEvent.emit(eventDetail);
   }
 
-
-  // crumbs = [
-  //   { label: 'Home', url: '/' },
-  //   { label: 'Products', url: '/products' },
-  //   { label: 'Shoes', url: '/products/shoes' }
-  // ];
-  // testfn(event: any) {
-  //   console.log("onItemClicked", event)
-
-  //   this.testt()
-  // }
-
-  // //   home: any = {};
-
-  //   ngOnInit() {
-  //       this.items = [
-  //         { label: 'Computer' }];
-  //       // this.home = { label: 'Agent', routerLink: '/' };
-  //   }
-
-  //   test = [ { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }]
-
-  //   testt() {
-  //     if(this.items.length <= this.maxVisibleItems) {
-  //       this.items = [
-  //         ...this.items,
-  //         this.test[0]
-  //       ]
-  //     }else {
-  //       this.items = [this.items[0], { label: '...' }];
-  //     }
-  //     console.log("test", this.test[0])
-  //   }
-
-  // maxVisibleItems: number = 3; // Maximum number of visible breadcrumb items
 }

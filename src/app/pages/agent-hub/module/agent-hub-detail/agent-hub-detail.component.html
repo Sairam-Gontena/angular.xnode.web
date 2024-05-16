@@ -1,0 +1,30 @@
+<!-- TAB Section -->
+<div class="flex relative agent-hub-container border-round-2xl p-4 mt-4">
+    <xnode-multi-select-checkbox class="absolute z-1" [filter]="tabFilterOptions.filter"
+        [showToggleAll]="tabFilterOptions.showToggleAll" [showHeader]="tabFilterOptions.showHeader"
+        [options]="tabFilterOptions.options" [placeholder]="tabFilterOptions.placeholder"
+        [showIconOnly]="tabFilterOptions.showIconOnly" [hamburgerIconUrl]="tabFilterOptions.hamburgerIconUrl"
+        [optionLabel]="tabFilterOptions.optionLabel" [styleClass]="tabFilterOptions.styleClass"
+        (changeEvent)="tabFilterOptions.changeHandler($event)">
+    </xnode-multi-select-checkbox>
+
+    <p-tabView class="relative w-full " styleClass="relative w-full customTabView "
+        (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
+        <p-tabPanel *ngFor="let tab of tabItems; let i = index" [header]="tab.title">
+            <div class="w-full table-height">
+                <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
+                    [showColumnFilterOption]="showColumnFilterOption" [tableRowActionOptions]="tableRowActionOptions"
+                    [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" [showViewRowData]="true"
+                    (changeEvent)="viewHandler($event)" columnWidth="13.8rem" altBgColorRow="#1F2937"
+                    [agentDataType]="agentDataType" (agentDataTypeChange)="setAgentDataType($event)"
+                    [recordType]="recordType"></xnode-dynamic-table>
+                <!-- [viewAll]="viewAll" -->
+            </div>
+            <!-- For now Comment below code, uncomment once the functionality is decided -->
+            <!-- <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"
+          (onClick)="agentHubModel.agentTabDropDownHandler()"
+          (onDropdownClick)="agentHubModel.agentTabDropDownHandler()"
+          [model]="agentHubModel.agentTabItemDropdown"></p-splitButton> -->
+        </p-tabPanel>
+    </p-tabView>
+</div>

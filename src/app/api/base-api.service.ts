@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { LocalStorageService } from '../components/services/local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +66,13 @@ export abstract class BaseApiService {
       { ...this.getConfigJsonHeader(config), params: body.param }
     );
   }
+  patchProductUrl(url: string, body: { payload: any, params: any } = { payload: {}, params: {} }, config: AxiosRequestConfig = {}) {
+    return this.axiosInstance.patch(
+      this.apiUrl + url,
+      body.payload,
+      { ...this.getConfigJsonHeader(config), params: body.params }
+    );
+  }
 
   delete(url: string, config: AxiosRequestConfig = {}) {
     return this.axiosInstance.delete(
@@ -81,6 +88,7 @@ export abstract class BaseApiService {
     return {
       headers: {
         'Content-Type': 'application/json',
+        'ocp-apim-subscription-key': environment.apimSubscriptionKey
       },
     };
   }

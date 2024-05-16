@@ -22,6 +22,7 @@ import { SECTION_VIEW_CONFIG } from '../section-view-config';
 declare const SwaggerUIBundle: any;
 import { Subscription, delay, of } from 'rxjs';
 import { SpecificationsService } from 'src/app/services/specifications.service';
+import FileSaver from 'file-saver';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -73,6 +74,7 @@ export class SpecConversationComponent {
   bpmnFrom: string = 'SPEC'; //;  'Comments'
   private searchKeywordSubscription: Subscription = new Subscription();
   private searchByUserSubscription: Subscription = new Subscription();
+  product: any;
 
   constructor(
     private utils: UtilsService,
@@ -90,6 +92,7 @@ export class SpecConversationComponent {
         this.action = '';
       }
     });
+    this.product = this.storageService.getItem(StorageKeys.Product)
   }
 
   ngOnInit() {
@@ -179,6 +182,9 @@ export class SpecConversationComponent {
   checkParaViewSections(title: string, parentTitle?: string) {
     if (parentTitle == 'Technical Specifications') {
       return;
+    }
+    if((title == 'References'||title == 'Use Cases') && this.product.productTemplate.id=='TID1'){
+      return true;
     }
     return (
       this.paraViewSections.filter((secTitle) => {
@@ -395,15 +401,15 @@ export class SpecConversationComponent {
       .getComments({ topParentId: this.selectedComment.id })
       .then((response: any) => {
         if (response && response.data) {
-          this.replies = response.data;
-          response.data.forEach((element: any) => {
+          this.replies = response.data.data;
+          response.data.data.forEach((element: any) => {
             element.parentUser = this.list.filter((ele: any) => {
               return ele.id === this.selectedComment.id;
             })[0].createdBy;
           });
           this.list.forEach((obj: any) => {
             if (obj.id === this.selectedComment.id) {
-              obj.comments = response.data;
+              obj.comments = response.data.data;
               obj.repliesOpened = true;
             }
           });
@@ -412,7 +418,7 @@ export class SpecConversationComponent {
           this.utils.loadToaster({
             severity: 'error',
             summary: 'Error',
-            detail: response.data?.status,
+            detail: response?.status,
           });
         }
         this.utils.loadSpinner(false);
@@ -528,6 +534,10 @@ export class SpecConversationComponent {
           detail: err,
         });
       });
+  }
+
+  downloadFile(filepath:any, fileName:any){
+    FileSaver.saveAs(filepath, fileName)
   }
 
   getMeAllCommentsList() {
