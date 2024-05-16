@@ -19,7 +19,7 @@ export const environment = {
     xnodeAppUrl: 'https://app-in.xnode.ai/',
     naviAppUrl: 'https://app-navi-in.xnode.ai/',
     designStudioAppUrl: 'https://prod-ui-gen-in.azurewebsites.net/dashboard/',
-    webSocketUrl: 'https://app-notify-in.xnode.ai',
+    webSocketUrl: 'https://app-notify-in.xnode.ai/',
     webSocketNotifier: 'prod-xnode-notifier',
     branchName: 'prod',
     projectName: 'xnode-in',
