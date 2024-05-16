@@ -4,6 +4,11 @@ export interface NaviData {
     chat_type?: string;
     import_event?: true;
     restriction_max_value?: number;
+    banner?: {
+        show_banner: boolean;
+        type: string;
+        content: string;
+    },
     user: {
         first_name: string;
         last_name: string;
@@ -25,7 +30,7 @@ export interface NaviData {
         isNew?: boolean;
         cId: string;
         conversation_type?: string;
-        is_summarized?: boolean;
+        isSummarized?: boolean;
         is_navi_active?: boolean;
         content?: Content;
         users?: User[];

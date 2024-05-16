@@ -60,19 +60,22 @@ export class AuthApiService extends BaseApiService {
   login(body: any) {
     return this.post('/auth/prospect/login', body);
   }
-
   logout() {
-    this.http
-      .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
-        headers: {
-          'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
-        }
-      })
-      .subscribe();
-    this.stopRefreshTokenTimer();
-    this.userSubject.next(null);
-    this.router.navigate(['/login']);
+    return this.get(`/mfa/logout?email=${this.userValue?.email}`);
   }
+
+  // logout() {
+  //   this.http
+  //     .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
+  //       headers: {
+  //         'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
+  //       }
+  //     })
+  //     .subscribe();
+  //   this.stopRefreshTokenTimer();
+  //   this.userSubject.next(null);
+  //   this.router.navigate(['/login']);
+  // }
 
   refreshToken() {
     return this.http

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -33,8 +33,9 @@ import { NaviEventParams } from './models/interfaces/navi-event-params';
   providers: [MessageService],
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   showDockedNavi: boolean = true;
+  isXnodeLoaded: boolean = false;
   showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   email: String = '';
@@ -146,7 +147,7 @@ export class AppComponent implements OnInit {
         this.product = this.storageService.getItem(StorageKeys.Product);
         console.log('4');
 
-        this.makeTrustedUrl(data.email);
+        // this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
@@ -311,27 +312,20 @@ export class AppComponent implements OnInit {
     console.log('From Library: ', event);
     switch (event.message) {
       case 'select-conversation':
-        this.naviData.componentToShow = event.componentToShow;
-        this.naviData.conversationDetails = event.value;
+        this.naviData = { ... this.naviData, componentToShow: event.componentToShow, conversationDetails: event.value }
         break;
       case 'close-navi':
-        this.naviData.showDockedNavi = false;
         this.showDockedNavi = false;
         this.isNaviExpanded = false;
+        this.naviData = { ... this.naviData, showDockedNavi: false };
         break;
       case 'expand-navi':
-        this.isNaviExpanded = event.value;
-        this.naviData.is_navi_expanded = event.value;
-        this.naviData.toggleConversationPanel = event.value;
+        this.isNaviExpanded = event.is_navi_expanded;
+        this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded };
         break;
       case 'new-chat':
         this.isNaviExpanded = event.is_navi_expanded;
-        this.naviData.is_navi_expanded = event.is_navi_expanded;
-        this.naviData.toggleConversationPanel = event.toggleConversationPanel;
-        this.naviData.componentToShow = event.componentToShow;
-        this.naviData.new_with_navi = event.new_with_navi;
-        this.naviData.chat_type = event.chat_type;
-        this.naviData.conversationDetails = undefined;
+        this.naviData = { ... this.naviData, componentToShow: event.componentToShow, new_with_navi: event.new_with_navi, chat_type: event.chat_type, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.toggleConversationPanel, conversationDetails: undefined };
         break;
       default:
         break;
@@ -419,7 +413,7 @@ export class AppComponent implements OnInit {
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     console.log('9');
 
-    this.makeTrustedUrl();
+    // this.makeTrustedUrl();
   }
 
   async changeTheme(event: any) {
@@ -438,16 +432,12 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.handleTheme();
   }
-
+  ngAfterViewInit(): void {
+    this.isXnodeLoaded = true;
+  }
   logout(): void {
     this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
-    const naviFrame = document.getElementById('naviFrame')
-    if (naviFrame) {
-      const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
-      iWindow?.postMessage({ message: 'logout' }, environment.naviAppUrl);
-    } else {
-      this.logoutFromTheApp()
-    }
+    this.logoutFromTheApp();
   }
 
   defaultNaviData(): void {
@@ -474,12 +464,14 @@ export class AppComponent implements OnInit {
     this.idle.stop();
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
-    this.authApiService.logout();
-    setTimeout(() => {
-      localStorage.clear();
-      this.authApiService.setUser(false);
-      this.router.navigate(['/']);
-    }, 1000);
+    this.authApiService.logout().then((res: any) => {
+      if (res) {
+        localStorage.clear();
+        this.defaultNaviData()
+        this.authApiService.setUser(false);
+        this.router.navigate(['/']);
+      }
+    })
   }
 
   closeNavi(): void {
@@ -494,7 +486,7 @@ export class AppComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
     console.log('10');
 
-    this.makeTrustedUrl()
+    // this.makeTrustedUrl()
   }
 
   receiveMessage(event: MessageEvent) {
@@ -522,7 +514,7 @@ export class AppComponent implements OnInit {
       this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       console.log('11');
 
-      this.makeTrustedUrl()
+      // this.makeTrustedUrl()
     }
     if (event.data.message === 'expand-navi') {
       this.isNaviExpanded = true;
@@ -751,7 +743,7 @@ export class AppComponent implements OnInit {
           this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
           console.log('1');
 
-          this.makeTrustedUrl()
+          // this.makeTrustedUrl()
         }
         if (event.data.message === 'expand-navi') {
           this.isNaviExpanded = true;
@@ -867,7 +859,7 @@ export class AppComponent implements OnInit {
     if (access_token)
       this.naviData.access_token = access_token as string;
     console.log('>>>>>>>>>>>>>>>>>>>123', this.naviData);
-
+    // this.isXnodeLoaded = true;
     return
     this.product = this.storageService.getItem(StorageKeys.Product);
     const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION);
