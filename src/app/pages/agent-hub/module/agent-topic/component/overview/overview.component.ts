@@ -15,10 +15,11 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class TopicOverviewComponent {
   @Input() topicId: string | undefined;
-  @Input() showBackButton = false
+  @Input() showBackButton = false;
   @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
+    topicDetailData: "",
     enableCreateTopic: true,
     getTopicID: "",
     currentUser: "",
@@ -108,6 +109,7 @@ export class TopicOverviewComponent {
     this.agentHubService.getTopicDetailByID(urlParam).subscribe({
       next: (response: any) => {
         if (response) {
+          this.overViewObj.topicDetailData = response;
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,

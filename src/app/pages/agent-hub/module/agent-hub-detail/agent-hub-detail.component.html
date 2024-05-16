@@ -15,9 +15,9 @@
                 <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                     [showColumnFilterOption]="showColumnFilterOption" [tableRowActionOptions]="tableRowActionOptions"
                     [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" [showViewRowData]="true"
-                    (changeEvent)="viewHandler($event)" columnWidth="13.8rem" altBgColorRow="#1F2937"
-                    [agentDataType]="agentDataType" (agentDataTypeChange)="setAgentDataType($event)"
-                    [recordType]="recordType"></xnode-dynamic-table>
+                    (changeEvent)="viewHandler($event)" columnWidth="13.8rem" [tableHeaderbgColor]="tableHeaderbgColor"
+                    [bgColorRow]="bgColorRow" [agentDataType]="agentDataType"
+                    (agentDataTypeChange)="setAgentDataType($event)" [recordType]="recordType"></xnode-dynamic-table>
                 <!-- [viewAll]="viewAll" -->
             </div>
             <!-- For now Comment below code, uncomment once the functionality is decided -->

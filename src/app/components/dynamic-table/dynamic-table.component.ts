@@ -35,8 +35,8 @@ export class DynamicTableComponent implements OnInit {
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
   @Input() columnWidth: string = '18rem';
-  @Input() tableHeaderColor: string = '';
-  @Input() altBgColorRow: string = '';
+  @Input() tableHeaderbgColor: string = '';
+  @Input() bgColorRow: any = { evenRowColor: "", oddRowColor: "" };
   @Input() verticalScrollHeight = '25rem';
   @Input() paginatorInfo: any = {};
   @Input() showViewRowData = false;
@@ -99,6 +99,9 @@ export class DynamicTableComponent implements OnInit {
     if (changes['tableInfo']?.currentValue) {
       this.exportFileName =
         changes['tableInfo']?.currentValue.name + new Date().getTime();
+    }
+    if (changes['bgColorRow']?.currentValue) {
+      this.bgColorRow = changes['bgColorRow']?.currentValue;
     }
   }
 

@@ -94,8 +94,8 @@
 
 :host ::ng-deep .custom-multiselect {
   background-color: var(--bleached-cedar);
-  border: 2px solid var(--bright-grey);
-  border-radius: 6px;
+  border: 1px solid var(--bright-grey);
+  border-radius: 4px;
 }
 
 :host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus {

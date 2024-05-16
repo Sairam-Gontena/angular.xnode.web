@@ -41,8 +41,8 @@
                 <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                     [searchFilterOptions]="searchFilterOptions" [showColumnFilterOption]="showColumnFilterOption"
                     [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
-                    columnWidth="13.8rem" altBgColorRow="#2E2D36" [showViewRowData]="true"
-                    (changeEvent)="viewHandler($event)"
+                    columnWidth="13.8rem" [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow"
+                    [showViewRowData]="true" (changeEvent)="viewHandler($event)"
                     (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
             </div>
         </ng-template>

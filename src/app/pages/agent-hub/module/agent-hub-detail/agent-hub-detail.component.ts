@@ -160,6 +160,8 @@ export class AgentHubDetailComponent {
     showButton: true,
     clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
   };
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,

@@ -10,85 +10,22 @@
     </div>
 </ng-container>
 
-<form [formGroup]="overviewForm" (ngSubmit)="modelOverviewSubmit()">
-    <div class="col-12 p-3"
-        [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 custom-modal-body' : 'sm:col-10 md:col-8 lg:col-6 sm:mx-auto'">
-        <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">
-            <div class="flex justify-content-between">
-                <ng-container *ngIf="showBackButton">
-                    <p-button type="button" label="Back" icon="pi pi-arrow-left" iconPos="left" [outlined]="true"
-                        size="small" (onClick)="onGoBackHandler()" styleClass="border-round-2xl"></p-button>
-                </ng-container>
+<ng-container *ngIf="overViewObj.formEditable">
+    <form [formGroup]="overviewForm" (ngSubmit)="modelOverviewSubmit()">
+        <div class="col-12 p-3"
+            [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 custom-modal-body' : 'sm:col-10 md:col-8 lg:col-6 sm:mx-auto'">
+            <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">
                 <div class="flex align-items-center justify-content-end w-full mb-3">
-                    <ng-container *ngIf="overViewObj.formEditable">
-                        <p-button type="submit" label="Save" icon="pi pi-save" iconPos="right" [outlined]="true"
-                            size="small" class=""></p-button>
-                        <p-button type="button" label="Cancel" icon="pi pi-times" iconPos="right" [outlined]="true"
-                            (onClick)="onEditSaveEvent()" size="small" class="ml-2"></p-button>
-                    </ng-container>
-                    <ng-container *ngIf="!overViewObj.formEditable">
-                        <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="right" [outlined]="true"
-                            (onClick)="onEditSaveEvent()" size="small" class=""></p-button>
-                    </ng-container>
+                    <p-button type="submit" label="Save" icon="pi pi-save" iconPos="left" [outlined]="true" size="small"
+                        class=""></p-button>
                 </div>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="!overViewObj?.enableCreateModel else createModelForm">
-            <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="name">Name</label>
-                <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
-                        formControlName="name" placeholder="Name" />
-                </div>
-            </div>
-            <div class="flex flex-column align-items-center mb-3">
-                <label class="w-full mb-1" for="description">Description</label>
-                <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                        formControlName="description" placeholder="Description"></textarea>
-                </div>
-            </div>
-            <div formGroupName="model_configuration">
+            </ng-container>
+            <ng-container *ngIf="!overViewObj?.enableCreateModel else createModelForm">
                 <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="temperature">Temperature</label>
+                    <label class="w-full mb-1" for="name">Name</label>
                     <div class="w-full">
-                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
-                            formControlName="temperature" placeholder="Temperature" />
-                    </div>
-                </div>
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
-                    <div class="w-full">
-                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="maxcontextlength"
-                            formControlName="maxcontextlength" placeholder="Max Context Length" />
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-        <ng-template #createModelForm>
-            <div class="flex flex-column mb-3">
-                <label class="w-full mb-1">Model Selection</label>
-                <div *ngFor="let modelRadioItem of overViewObj.modelSelectionRadioArr" class="field-checkbox">
-                    <p-radioButton [inputId]="modelRadioItem.key" [value]="modelRadioItem.key"
-                        formControlName="modelSelection" />
-                    <label [for]="modelRadioItem.key" class="ml-2"> {{ modelRadioItem.name }} </label>
-                </div>
-            </div>
-            <ng-container *ngIf="overviewForm.controls['modelSelection']?.value === 'EXISTING_PROVIDER'">
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="model">Model</label>
-                    <div class="w-full">
-                        <p-dropdown appendTo="body" styleClass="w-full" formControlName="model" [filter]="true"
-                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name"
-                            placeholder="Select provider"></p-dropdown>
-                    </div>
-                </div>
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="version">Version</label>
-                    <div class="w-full">
-                        <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
-                            filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version"
-                            placeholder="Select version"></p-dropdown>
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
+                            formControlName="name" placeholder="Name" />
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
@@ -98,67 +35,140 @@
                             formControlName="description" placeholder="Description"></textarea>
                     </div>
                 </div>
+                <div formGroupName="model_configuration">
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="temperature">Temperature</label>
+                        <div class="w-full">
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
+                                formControlName="temperature" placeholder="Temperature" />
+                        </div>
+                    </div>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
+                        <div class="w-full">
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="maxcontextlength"
+                                formControlName="maxcontextlength" placeholder="Max Context Length" />
+                        </div>
+                    </div>
+                </div>
             </ng-container>
-            <ng-container *ngIf="overviewForm.controls['modelSelection']?.value === 'URL_ENDPOINT'">
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="model">Model</label>
-                    <div class="w-full">
-                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="model"
-                            formControlName="model" placeholder="e.g. https://llm.example.com" />
+            <ng-template #createModelForm>
+                <div class="flex flex-column mb-3">
+                    <label class="w-full mb-1">Model Selection</label>
+                    <div *ngFor="let modelRadioItem of overViewObj.modelSelectionRadioArr" class="field-checkbox">
+                        <p-radioButton [inputId]="modelRadioItem.key" [value]="modelRadioItem.key"
+                            formControlName="modelSelection" />
+                        <label [for]="modelRadioItem.key" class="ml-2"> {{ modelRadioItem.name }} </label>
                     </div>
                 </div>
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="version">Version</label>
-                    <div class="w-full">
-                        <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
-                            filterBy="name" [options]="" optionLabel="name" placeholder="Select version"></p-dropdown>
+                <ng-container *ngIf="overviewForm.controls['modelSelection']?.value === 'EXISTING_PROVIDER'">
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="model">Model</label>
+                        <div class="w-full">
+                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="model" [filter]="true"
+                                filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name"
+                                placeholder="Select provider"></p-dropdown>
+                        </div>
                     </div>
-                </div>
-                <div class="flex mb-3"
-                    [ngClass]="overViewObj.enableAdvanceOption ? 'justify-content-between' : 'justify-content-end'">
-                    <ng-container *ngIf="overViewObj.enableAdvanceOption">
-                        <label class="mb-1">Model Parameters</label>
-                    </ng-container>
-                    <a href="javascript:void(0);" class="no-underline" (click)="showHideAdvanceOption()">
-                        {{ overViewObj.enableAdvanceOption ? 'Hide Advance Options' : 'Show Advance Options'}}
-                    </a>
-                </div>
-                <ng-container *ngIf="overViewObj.enableAdvanceOption">
-                    <div formGroupName="model_configuration">
-                        <div class="flex align-items-center mb-3">
-                            <div class="flex flex-column align-items-center mb-3 mr-3">
-                                <label class="w-full mb-1" for="temperature">Temperature</label>
-                                <div class="w-full">
-                                    <input pInputText type="text" class="w-full p-2 border-1 border-round"
-                                        id="temperature" formControlName="temperature" />
-                                </div>
-                            </div>
-                            <div class="flex flex-column align-items-center mb-3">
-                                <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
-                                <div class="w-full">
-                                    <input pInputText type="text" class="w-full p-2 border-1 border-round"
-                                        id="maxcontextlength" formControlName="maxcontextlength" />
-                                </div>
-                            </div>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="version">Version</label>
+                        <div class="w-full">
+                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
+                                filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version"
+                                placeholder="Select version"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">Description</label>
+                        <div class="w-full">
+                            <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
+                                formControlName="description" placeholder="Description"></textarea>
                         </div>
                     </div>
                 </ng-container>
-                <div class="flex flex-column align-items-center mb-3">
-                    <label class="w-full mb-1" for="description">Description</label>
-                    <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                            formControlName="description" placeholder="Description"></textarea>
+                <ng-container *ngIf="overviewForm.controls['modelSelection']?.value === 'URL_ENDPOINT'">
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="model">Model</label>
+                        <div class="w-full">
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="model"
+                                formControlName="model" placeholder="e.g. https://llm.example.com" />
+                        </div>
                     </div>
-                </div>
-            </ng-container>
-        </ng-template>
-    </div>
-    <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
-        <div class="flex align-item-center justify-content-end p-2">
-            <p-button styleClass="cutomGreyBtn border-transparent" [rounded]="true" type="button" label="Cancel"
-                [outlined]="true" (onClick)="onCancelEvent()" size="small"></p-button>
-            <p-button styleClass="cutomCeruleanBtn border-transparent" [rounded]="true" type="submit" label="Add"
-                [outlined]="true" size="small" class="ml-2"></p-button>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="version">Version</label>
+                        <div class="w-full">
+                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
+                                filterBy="name" [options]="" optionLabel="name"
+                                placeholder="Select version"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="flex mb-3"
+                        [ngClass]="overViewObj.enableAdvanceOption ? 'justify-content-between' : 'justify-content-end'">
+                        <ng-container *ngIf="overViewObj.enableAdvanceOption">
+                            <label class="mb-1">Model Parameters</label>
+                        </ng-container>
+                        <a href="javascript:void(0);" class="no-underline" (click)="showHideAdvanceOption()">
+                            {{ overViewObj.enableAdvanceOption ? 'Hide Advance Options' : 'Show Advance Options'}}
+                        </a>
+                    </div>
+                    <ng-container *ngIf="overViewObj.enableAdvanceOption">
+                        <div formGroupName="model_configuration">
+                            <div class="flex align-items-center mb-3">
+                                <div class="flex flex-column align-items-center mb-3 mr-3">
+                                    <label class="w-full mb-1" for="temperature">Temperature</label>
+                                    <div class="w-full">
+                                        <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                            id="temperature" formControlName="temperature" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-column align-items-center mb-3">
+                                    <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
+                                    <div class="w-full">
+                                        <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                            id="maxcontextlength" formControlName="maxcontextlength" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">Description</label>
+                        <div class="w-full">
+                            <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
+                                formControlName="description" placeholder="Description"></textarea>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
         </div>
-    </ng-container>
-</form>
+        <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
+            <div class="flex align-item-center justify-content-end p-2">
+                <p-button styleClass="cutomGreyBtn border-transparent" [rounded]="true" type="button" label="Cancel"
+                    [outlined]="true" (onClick)="onCancelEvent()" size="small"></p-button>
+                <p-button styleClass="cutomCeruleanBtn border-transparent" [rounded]="true" type="submit" label="Add"
+                    [outlined]="true" size="small" class="ml-2"></p-button>
+            </div>
+        </ng-container>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!overViewObj.formEditable">
+    <div class="flex justify-content-end mb-3">
+        <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="left" [outlined]="true"
+            (onClick)="onEditSaveEvent()" size="small" [rounded]="true" styleClass="border-gray-600"></p-button>
+    </div>
+    <div class="w-full border-1 border-gray-600 border-round">
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Name</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.modelDetailData?.name}}</div>
+            </div>
+        </div>
+        <div class="w-full py-3 border-y-1 border-gray-600">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Description</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.modelDetailData?.description}}</div>
+            </div>
+        </div>
+    </div>
+</ng-container>

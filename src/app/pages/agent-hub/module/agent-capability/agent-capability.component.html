@@ -28,8 +28,9 @@
         <div class="w-full table-height">
             <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                 [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
-                [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-                [showViewRowData]="true" (changeEvent)="viewHandler($event)"
+                [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem"
+                [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow" [showViewRowData]="true"
+                (changeEvent)="viewHandler($event)"
                 (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
         </div>
 

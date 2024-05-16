@@ -12,7 +12,8 @@
 }
 
 .app-body-wrapper {
-  width: calc(100% - 80px);
+  width: calc(100vw - 80px);
+  height: calc(100vh - 42px);
   background: #3A3942;
 }
 

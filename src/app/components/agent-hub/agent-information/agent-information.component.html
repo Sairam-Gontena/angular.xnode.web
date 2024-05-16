@@ -2,15 +2,20 @@
     <div class="flex gap-2 align-items-center">
         <div class="text-4xl font-semibold">{{agentInfo?.name}}</div>
         <div class="pl-2 py-2 agent-status">
-            <ul class="flex px-4 m-0 gap-1 text-sm">
+            <ul class="flex px-4 m-0 text-sm">
                 <li class="m-0">{{agentInfo?.status}} {{agentInfo?.version}}</li>
             </ul>
         </div>
     </div>
-    <ul class="agent-desc flex gap-4 font-medium text-sm p-0 m-0">
-        <li>N/A</li>
-        <li>Created on {{agentInfo?.created_on | date:'MMM d, y'}}</li>
-        <li>Last Updated on {{agentInfo?.modified_on | date:'MMM d, y'}}</li>
-        <li>N/A</li>
-    </ul>
+    <div class="flex flex-wrap text-gray-500 text-sm">
+        <div class="" *ngIf="agentInfo?.created_on">
+            <span class="pi pi-calendar-plus"></span> {{agentInfo?.created_on | date:'MMM d, y h:mm a'}}
+        </div>
+        <div class="mx-3" *ngIf="agentInfo?.modified_on">
+            <span class="pi pi-pencil"></span> {{agentInfo?.modified_on | date:'MMM d, y h:mm a'}}
+        </div>
+        <div class="">
+            <span class="pi pi-user"></span>
+        </div>
+    </div>
 </div>

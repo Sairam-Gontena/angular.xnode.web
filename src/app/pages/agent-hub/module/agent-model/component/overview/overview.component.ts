@@ -15,10 +15,11 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class ModelOverviewComponent {
   @Input() modelId: string | undefined;
-  @Input() showBackButton = false
+  @Input() showBackButton = false;
   @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
+    modelDetailData: "",
     modelSelectionRadioArr: [{ name: 'Choose from existing provider', key: 'EXISTING_PROVIDER' },
     { name: 'Add model using URL Endpoint', key: 'URL_ENDPOINT' }],
     enableCreateModel: true,
@@ -118,6 +119,7 @@ export class ModelOverviewComponent {
     this.agentHubService.getModelDetailByID(urlParam).subscribe({
       next: (response: any) => {
         if (response) {
+          this.overViewObj.modelDetailData = response;
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,
@@ -192,8 +194,8 @@ export class ModelOverviewComponent {
     this.dynamicDialogRef.close(eventTypeData);
   }
 
-  onGoBackHandler() {
-    this.goBack.emit(false)
-  }
+  // onGoBackHandler() {
+  //   this.goBack.emit(false)
+  // }
 
 }

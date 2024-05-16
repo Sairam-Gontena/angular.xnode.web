@@ -43,8 +43,9 @@
           [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
           [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
           [paginatorInfo]="agentDetailsModel.paginatorInfo"
-          [searchFilterOptions]="agentDetailsModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-          [showViewRowData]="true" (changeEvent)="agentDetailsModel.viewHandler($event)"
+          [searchFilterOptions]="agentDetailsModel.searchFilterOptions" columnWidth="13.8rem"
+          [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow" [showViewRowData]="true"
+          (changeEvent)="agentDetailsModel.viewHandler($event)"
           (paginatorChangeEvent)="agentDetailsModel.paginatorViewHandler($event)"></xnode-dynamic-table>
       </div>
     </ng-template>

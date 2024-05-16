@@ -1,1 +1,14 @@
-<p>configuration works!</p>
+<div class="w-full border-1 border-gray-600 border-round">
+    <form [formGroup]="configurationForm">
+        <div class="col-12 p-3 sm:col-10 md:col-8 lg:col-6 sm:mx-auto">
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="model_configuration">Modal Configuration</label>
+                <div class="w-full">
+                    <textarea pInputTextarea rows="6" id="model_configuration" class="w-full p-2 border-1 border-round"
+                        formControlName="model_configuration" placeholder="Modal Configuration"
+                        xnodeTextareaAutoresize></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -40,6 +40,8 @@ export class PromptComponent {
       changeHandler: this.onShowDynamicColumnFilter.bind(this),
     }
   }
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private activatedRoute: ActivatedRoute,
     private agentHubService: AgentHubService,
