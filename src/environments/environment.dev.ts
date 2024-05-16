@@ -19,8 +19,6 @@ export const environment = {
   xnodeAppUrl: 'https://app-us-dev.xnode.ai/#/',
   naviAppUrl: 'https://app-navi-us-dev.xnode.ai/',
   designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
-  publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
-  uigenApiUrl: 'https://dev-frontend-builder.azurewebsites.net/',
   webSocketUrl: 'https://app-notify-us-dev.xnode.ai/',
   webSocketNotifier: 'dev-xnode-notifier',
   branchName: 'dev',
