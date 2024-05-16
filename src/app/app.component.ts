@@ -401,10 +401,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.mainComponent = 'my-products';
     this.showDockedNavi = true;
     this.isNaviExpanded = false;
-    this.naviData.conversationDetails = undefined;
-    this.naviData.is_navi_expanded = false;
-    this.naviData.componentToShow = 'Tasks';
-    this.naviData.toggleConversationPanel = false;
+    this.naviData = { ...this.naviData, conversationDetails: undefined, is_navi_expanded: false, componentToShow: 'Tasks', toggleConversationPanel: false }
     this.router.navigate(['/my-products']);
   }
 
