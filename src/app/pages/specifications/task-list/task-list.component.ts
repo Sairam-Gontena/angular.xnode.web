@@ -179,7 +179,7 @@ export class TaskListComponent {
     if (parentTitle == 'Technical Specifications') {
       return;
     }
-    if((title == 'References'||title == 'Use Cases') && this.product.productTemplate.id=='TID1'){
+    if((title == 'References'||title == 'Use Cases') && this.product?.productTemplate?.id=='TID1'){
       return true;
     }
     return (
@@ -385,23 +385,21 @@ export class TaskListComponent {
     if (cmt) this.selectedComment = cmt;
 
     this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({ parentId: this.selectedComment.id })
-      .then((response: any) => {
-        if (response && response.data) {
-          this.replies = response.data;
-          response.data.forEach((element: any) => {
+    this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
+        if (response && response.data.data) {
+          this.replies = response.data.data;
+          response.data.data.forEach((element: any) => {
             element.parentUser = this.list.filter((ele: any) => {
               return ele.id === this.selectedComment.id;
             })[0].createdBy;
           });
           this.list.forEach((obj: any) => {
             if (obj.id === cmt.id) {
-              obj.comments = response.data;
+              obj.comments = response.data.data;
               obj.repliesOpened = true;
             }
           });
-          this.replies = response.data;
+          this.replies = response.data.data;
         } else {
           this.utils.loadToaster({
             severity: 'error',

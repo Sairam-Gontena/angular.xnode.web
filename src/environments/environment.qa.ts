@@ -11,8 +11,6 @@ export const environment = {
     xnodeAppUrl: 'https://qa-xnode.azurewebsites.net/',
     naviAppUrl: 'https://qa-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
-    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
-    uigenApiUrl: 'https://qa-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'qa-xnode-notifier',
@@ -20,5 +18,5 @@ export const environment = {
     projectName: 'xnode',
     homeUrl: 'https://dev.xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30
 }

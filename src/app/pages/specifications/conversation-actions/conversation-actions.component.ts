@@ -225,7 +225,6 @@ export class ConversationActionsComponent {
     this.commentsService.patchTask('/task?id=' + this.selectedComment.id, task).then((commentsReponse: any) => {
           if (commentsReponse.statusText === "OK"||commentsReponse.status==200) {
             this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS',detail: 'File updated successfully'});
-            // this.specUtils._tabToActive('TASK');
             this.uploadedFiles = [];
             this.getTasksList()
             this.utils.loadSpinner(false);
@@ -245,35 +244,6 @@ export class ConversationActionsComponent {
             detail: err,
           });
         });
-
-
-    // this.commentsService.addTask(cmt).then((commentsReponse: any) => {
-    //   console.log('commentsReponse',commentsReponse)
-    //     if (commentsReponse.statusText === 'Created') {
-    //       this.utils.loadToaster({
-    //         severity: 'success',
-    //         summary: 'SUCCESS',
-    //         detail: 'File updated successfully',
-    //       });
-    //       this.specUtils._tabToActive('TASK');
-    //       this.uploadedFiles = [];
-    //       this.utils.loadSpinner(false);
-    //     } else {
-    //       this.utils.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: commentsReponse?.data?.common?.status,
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.utils.loadSpinner(false);
-    //     this.utils.loadToaster({
-    //       severity: 'error',
-    //       summary: 'ERROR',
-    //       detail: err,
-    //     });
-    //   });
   }
 
   getTasksList(){

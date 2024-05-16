@@ -170,7 +170,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       message: this.comment,
       attachments: this.uploadedFiles,
       referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {},
-      parentId: this.selectedContent.parentId,
+      parentId: this.selectedContent?.parentId,
     });
   }
   onClickSend(): void {
@@ -191,7 +191,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       let parentId =
         this.action === 'REPLY'
           ? this.selectedComment.id
-          : this.selectedContent.parentId;
+          : this.selectedContent?.parentId;
       body = {
         createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
@@ -242,7 +242,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService
       .addComments(body)
       .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created') {
+        if (commentsReponse.statusText === 'Created'||commentsReponse.status==200) {
           this.utils.loadSpinner(false);
           this.prepareDataToDisplayOnCommentsPanel();
         } else {
@@ -274,7 +274,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specService.getMeSpecLevelTaskList({
-        parentId: this.selectedContent.parentId,
+        parentId: this.selectedContent?.parentId?this.selectedContent?.parentId : this.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
@@ -283,7 +283,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       });
     } else {
       this.specService.getMeSpecLevelCommentsList({
-        parentId: this.selectedContent.parentId,
+        parentId: this.selectedContent.parentId?this.selectedContent?.parentId : this.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
@@ -363,7 +363,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
     this.commentsService.addTask(body).then((commentsReponse: any) => {
         this.utils.loadSpinner(false);
-        if (commentsReponse.statusText === 'Created') {
+        if (commentsReponse.statusText === 'Created'||commentsReponse.status==200) {
           this.comment = '';
           this.closeOverlay.emit();
           this.utils.loadToaster({
@@ -373,7 +373,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           });
           this.uploadedFiles = [];
           this.specService.getMeSpecLevelTaskList({
-            parentId: this.selectedContent.parentId,
+            parentId: this.selectedContent?.parentId,
           });
           this.specificationUtils.openConversationPanel({
             openConversationPanel: true,
