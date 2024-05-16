@@ -70,6 +70,7 @@ export class AppHeaderComponent implements OnInit {
   limitReachedContent: boolean = false;
   colorPallet: any;
   isDarkTheme: boolean = false;
+  userProfileMenu: boolean = false;
 
   constructor(
     private RefreshListService: RefreshListService,

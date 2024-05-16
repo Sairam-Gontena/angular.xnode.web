@@ -17,13 +17,21 @@
                 (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                 (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
         </p-overlayPanel>
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
+        <!-- <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
             shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
         <p-avatar [label]="userImage" *ngIf="username"
             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
             shape="circle"></p-avatar>
         <p-splitButton [label]="username" [model]="logoutDropdown" styleClass="p-button-raised logout-split-btn"
-            class="hidden md:block"></p-splitButton>
+            class="hidden md:block"></p-splitButton> userProfileMenu-->
+        <span class="flex gap-2 align-items-center profile-menu pointer p-3" (click)="userMenu.toggle($event);userProfileMenu=true">
+          <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
+          shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
+          <p-avatar [label]="userImage" *ngIf="username"
+          [style]="{ 'background-color': '#D7B9FF', color: '#111827',width:'23px',height:'23px' }"
+          shape="circle"></p-avatar>
+          <i class="pi text-xs" [ngClass]="userProfileMenu?'pi-chevron-up':'pi-chevron-down'"></i>
+        </span>
     </div>
     <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
         [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
@@ -43,3 +51,8 @@
 
 <xnode-view-summary-popup *ngIf="showViewSummaryPopup" [visible]="showViewSummaryPopup" [notifObj]="notifObj"
     [convSummary]="convSummary" [label]="'View in Chat'" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
+<p-overlayPanel #userMenu>
+    <div class="flex flex-column gap-3 w-25rem">
+      <div></div>
+    </div>
+</p-overlayPanel>
