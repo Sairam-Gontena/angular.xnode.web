@@ -38,6 +38,7 @@
     li {
       a.p-tabview-nav-link {
         background: transparent;
+        white-space: nowrap;
       }
 
       &:not(.p-highlight):not(.p-disabled):hover {

@@ -27,8 +27,8 @@
     </div>
 </div>
 
-<ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
-    <div class="w-full border-round-2xl header-stats p-4">
+<div class="w-full border-round-2xl header-stats p-3">
+    <ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
         <div class="flex flex-wrap justify-content-around m-auto sm:w-10 w-12 my-2">
             <!-- Agents Card -->
             <div class="flex" *ngFor="let item of headerData.statsItem">
@@ -41,11 +41,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</ng-container>
-
-<ng-container *ngIf="headerData?.agentConnectedFlow">
-    <div class="w-full border-round-2xl header-stats p-4">
+    </ng-container>
+    <ng-container *ngIf="headerData?.agentConnectedFlow">
         <xnode-agent-information [agentInfo]="headerData?.agentInfo"></xnode-agent-information>
-    </div>
-</ng-container>
+    </ng-container>
+</div>
