@@ -316,6 +316,7 @@ export class AppComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     window.addEventListener('message', this.receiveMessage.bind(this), false);
     this.handleTheme();
+    //change iframe detail
     this.naviService.changeIframeDetail().subscribe((response: any) => {
       if (response) {
         this.iframeUrl = response?.iframeUrl;
