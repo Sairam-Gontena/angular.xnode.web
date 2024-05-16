@@ -23,7 +23,7 @@ export class ContentGridComponent implements OnChanges {
   @Input() selectedLeftPanelConversation: any;
   @Input() selectedConversationData?: any;
   @Input() selectedTab: any;
-  @Input() enablePagination:boolean = true;
+  @Input() enablePagination: boolean = true;
   @Output() idClicked = new EventEmitter();
   @Output() onRowSelected = new EventEmitter();
   @Output() onRowUnselected = new EventEmitter();
@@ -50,7 +50,7 @@ export class ContentGridComponent implements OnChanges {
   globalFilterFields: any = [];
   selectedMainConversation: any;
   conversations: any = [];
-  localDateFormat:string =  "MM/dd/yyyy";
+  localDateFormat: string = "MM/dd/yyyy";
   get newStatus(): any {
     return this.status;
   }
@@ -188,12 +188,32 @@ export class ContentGridComponent implements OnChanges {
     }
   }
 
-  formatBytes(bytes:number, decimals = 2) {
+  formatBytes(bytes: number, decimals = 2) {
     if (!+bytes) return '0 Bytes'
     const k = 1024
     const dm = decimals < 0 ? 0 : decimals
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-}
+  }
+  modifiedTimeDifference(modifiedOn: Date): string {
+    const now = new Date();
+    const modifiedTime = new Date(modifiedOn);
+    const timeDifference = now.getTime() - modifiedTime.getTime();
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    if (minutesDifference < 1) {
+      return 'Just now';
+    } else if (minutesDifference === 1) {
+      return '1m ago';
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference}m ago`;
+    } else {
+      const hoursDifference = Math.floor(minutesDifference / 60);
+      if (hoursDifference === 1) {
+        return '1h ago';
+      } else {
+        return `${hoursDifference}h ago`;
+      }
+    }
+  }
 }
