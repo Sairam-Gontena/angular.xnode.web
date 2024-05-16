@@ -327,7 +327,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     );
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        reviewer.name.toLowerCase().includes(query.toLowerCase()) &&
         !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = _.uniq(filtered);
