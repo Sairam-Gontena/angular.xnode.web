@@ -307,9 +307,7 @@ export class AddTaskComponent {
     const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
       (reviewer: any) => reviewer.name.toLowerCase()
     );
-    filtered = this.userList.filter(
-      (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+    filtered = this.userList.filter((reviewer: any) => reviewer.name.toLowerCase().includes(query.toLowerCase()) &&
         !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;

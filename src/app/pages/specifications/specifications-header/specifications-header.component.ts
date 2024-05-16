@@ -465,10 +465,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     let filtered: any[] = [];
     let query = eventData.query;
     const selectedReviewers = eventData?.data.map((reviewer: any) => reviewer.name.toLowerCase());
-    filtered = this.sharedLinkDetail.getUserList.filter(
-      (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
-        !selectedReviewers.includes(reviewer.name.toLowerCase()));
+    filtered = this.sharedLinkDetail.getUserList.filter((reviewer: any) =>
+        reviewer.name.toLowerCase().includes(query.toLowerCase()) && !selectedReviewers.includes(reviewer.name.toLowerCase()));
     this.sharedLinkDetail.suggestionList = filtered && filtered.length ? filtered : '';
   }
 
