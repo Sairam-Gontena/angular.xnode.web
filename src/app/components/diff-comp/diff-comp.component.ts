@@ -47,6 +47,10 @@ export class DiffCompComponent implements OnInit {
   selectedText: any;
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
+  @ViewChild('op1')
+  op1!: OverlayPanel;
+  @ViewChild('op')
+  op!: OverlayPanel;
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
@@ -79,6 +83,18 @@ export class DiffCompComponent implements OnInit {
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
   ) {
+    this.specificationUtils.closeOverlayObserver.subscribe((data:any)=>{
+      if(data)
+          this.closeOverlayPanel()
+    })
+  }
+
+  closeOverlayPanel() {
+    if (this.op1) {
+      this.op1.hide();
+    }if (this.op) {
+      this.op.hide();
+    }
   }
 
   ngOnInit(): void {
