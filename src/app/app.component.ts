@@ -164,6 +164,22 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       this.importFilePopupToShow = false;
       this.newWithNavi = false;
+      if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_SELECTED) {
+        this.naviData = {
+          ...this.naviData,
+          componentToShow: 'Chat',
+          is_navi_expanded: false,
+          toggleConversationPanel: false,
+          product: {
+            id: msg.msgData.product?.id,
+            title: msg.msgData.product?.title
+          },
+          conversationDetails: msg.msgData.conversationDetails
+        }
+        this.storageService.saveItem(StorageKeys.Product, msg.msgData.product);
+        this.storageService.saveItem(StorageKeys.CONVERSATION_DETAILS, msg.msgData.conversationDetails);
+      }
+
       if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
         // this.ngOnInit();
       }

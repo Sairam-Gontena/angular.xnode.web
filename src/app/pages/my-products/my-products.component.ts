@@ -188,30 +188,30 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
+    this.utils.loadSpinner(true);
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
     } else {
       this.utils.hasProductPermission(false);
     }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat' } });
-    this.router.navigate(['/specification']);
+    this.getConversationByProduct(data);
+  }
 
-    const product: any = this.storageService.getItem(StorageKeys.Product);
+  getConversationByProduct(product: any): void {
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
-      if (data.data)
-        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+      if (data.data) {
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_SELECTED, msgData: { product: product, conversationDetails: data.data.data[0] } });
+        localStorage.setItem('record_id', data.id);
+        localStorage.setItem('app_name', data.title);
+        localStorage.setItem('has_insights', data.has_insights);
+        this.router.navigate(['/specification']);
+      }
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
       console.log(err, 'err')
+      this.utils.loadSpinner(false);
     })
-
   }
 
   onClickNew() {
