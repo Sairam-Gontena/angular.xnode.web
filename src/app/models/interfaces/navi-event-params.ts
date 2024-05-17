@@ -7,5 +7,6 @@ export interface NaviEventParams {
     chat_type?: string;
     value?: any;
     conversationDetails?: any;
+    product?: any;
 }
 

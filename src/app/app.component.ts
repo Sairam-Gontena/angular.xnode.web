@@ -339,6 +339,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isNaviExpanded = event.is_navi_expanded;
         this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded };
         break;
+      case 'change-product':
+        this.storageService.saveItem(StorageKeys.Product, event.product);
+        this.utilsService.saveProductId(event.product.id);
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+        this.utilsService.productContext(true);
+        this.router.navigate(['/overview']);
+        break;
       case 'new-chat':
         this.isNaviExpanded = event.is_navi_expanded;
         this.naviData = { ... this.naviData, componentToShow: event.componentToShow, new_with_navi: event.new_with_navi, chat_type: event.chat_type, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.toggleConversationPanel, conversationDetails: undefined };
@@ -417,16 +424,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.mainComponent = 'my-products';
     this.showDockedNavi = true;
     this.isNaviExpanded = false;
-    this.naviData = { ...this.naviData, conversationDetails: undefined, is_navi_expanded: false, componentToShow: 'Tasks', toggleConversationPanel: false }
+    this.naviData = { ...this.naviData, conversationDetails: undefined, is_navi_expanded: false, componentToShow: 'Tasks', toggleConversationPanel: false, product: undefined }
     this.router.navigate(['/my-products']);
   }
 
   enableDockedNavi(): void {
     this.isNaviExpanded = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-    console.log('9');
+    this.naviData = { ...this.naviData, is_navi_expanded: false, toggleConversationPanel: false }
 
-    // this.makeTrustedUrl();
   }
 
   async changeTheme(event: any) {
