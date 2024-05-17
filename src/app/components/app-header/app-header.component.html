@@ -52,7 +52,25 @@
 <xnode-view-summary-popup *ngIf="showViewSummaryPopup" [visible]="showViewSummaryPopup" [notifObj]="notifObj"
     [convSummary]="convSummary" [label]="'View in Chat'" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
 <p-overlayPanel #userMenu>
-    <div class="flex flex-column gap-3 w-25rem">
-      <div></div>
+    <div class="flex flex-column gap-3 p-2 w-20rem">
+      <div class="flex w-full gap-2 align-items-center">
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
+          shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px'}"></p-avatar>
+          <p-avatar [label]="userImage" *ngIf="username"
+          [style]="{ 'background-color': '#D7B9FF', color: '#111827',width:'23px',height:'23px',padding:'18px'}"
+          shape="circle"></p-avatar>
+          <div class="flex flex-column">
+            <p class="my-1">{{(currentUser.first_name+' '+currentUser.last_name)|titlecase}}</p>
+            <p class="my-1 text-sm disabled-color">{{currentUser.role_name}}</p>
+          </div>
+      </div>
+      <div class="border-1 border-300 py-2 px-3 border-round-lg">
+        <p class="my-1 text-sm access-color">Manage Access</p>
+      </div>
+      <hr/>
+      <div class="flex justify-content-center">
+        <i class="pi pi-clock"></i>
+        <p class="my-1">Set status</p>
+      </div>
     </div>
 </p-overlayPanel>
