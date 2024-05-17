@@ -162,7 +162,8 @@ export class NaviService {
     const showDockedNavi: any = this.localStorageService.getItem(StorageKeys.IS_NAVI_OPENED);
     let iframeDetail = {
       iframeUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl),
-      showDockedNavi: showDockedNavi ? JSON.parse(showDockedNavi) : false
+      showDockedNavi: showDockedNavi ? JSON.parse(showDockedNavi) : false,
+      isNaviExpanded: this.naviDetailObj.isNaviExpanded
     }
     this.saveIframeDetail(iframeDetail);
   }
@@ -195,11 +196,10 @@ export class NaviService {
       '&account_id=' +
       this.naviDetailObj.currentUser?.account_id;
     if (restriction_max_value) {
-      rawUrl =
-        rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
+      rawUrl = rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
     }
     if (this.naviDetailObj.newWithNavi) {
-      this.naviDetailObj.componentToShow = 'Chat';
+      this.setComponentToShow('Chat');
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
     if (this.naviDetailObj.conversatonDetails) {
@@ -207,8 +207,7 @@ export class NaviService {
     }
     if (this.naviDetailObj.product) {
       this.utilsService.disablePageToolsLayoutSubMenu();
-      rawUrl =
-        rawUrl +
+      rawUrl = rawUrl +
         '&product_user_email=' +
         productEmail +
         '&conversationId=' +
@@ -226,8 +225,8 @@ export class NaviService {
         '&new_with_navi=' +
         false + '&componentToShow=Chat';
     }
-    if (this.naviDetailObj.resource_id) {
-      rawUrl = rawUrl + '&resource_id=' + this.naviDetailObj.resource_id;
+    if (this.getResourceID()) {
+      rawUrl = rawUrl + '&resource_id=' + this.getResourceID();
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
       } else {
@@ -235,29 +234,29 @@ export class NaviService {
       }
       this.naviDetailObj.resource_id = undefined
     }
-    if (this.naviDetailObj.conversationId) {
+    if (this.getConversationID()) {
       if (rawUrl.includes("conversationId")) {
-        rawUrl = rawUrl.replace(/conversationId=[^&]*/, "conversationId=" + this.naviDetailObj.conversationId);
+        rawUrl = rawUrl.replace(/conversationId=[^&]*/, "conversationId=" + this.getConversationID());
       } else {
-        rawUrl += "&conversationId=" + this.naviDetailObj.conversationId;
+        rawUrl += "&conversationId=" + this.getConversationID();
       }
       this.naviDetailObj.conversationId = undefined
     }
-    if (this.naviDetailObj.importFilePopupToShow) {
+    if (this.getImportPopupToShow()) {
       if (rawUrl.includes("importFilePopupToShow")) {
-        rawUrl = rawUrl.replace(/importFilePopupToShow=[^&]*/, "importFilePopupToShow=" + this.naviDetailObj.importFilePopupToShow);
+        rawUrl = rawUrl.replace(/importFilePopupToShow=[^&]*/, "importFilePopupToShow=" + this.getImportPopupToShow());
       } else {
-        rawUrl += "&importFilePopupToShow=" + this.naviDetailObj.importFilePopupToShow;
+        rawUrl += "&importFilePopupToShow=" + this.getImportPopupToShow();
       }
     }
     const meta_data: any = this.localStorageService.getItem(StorageKeys.MetaData);
-    if (this.naviDetailObj.componentToShow || (meta_data && meta_data.length && !this.naviDetailObj.product) || this.naviDetailObj.importFilePopupToShow) {
+    if (this.getComponentToShow() || (meta_data && meta_data.length && !this.naviDetailObj.product) || this.getImportPopupToShow()) {
       if (rawUrl.includes("componentToShow")) {
         rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow :
-          (this.naviDetailObj.componentToShow ? this.naviDetailObj.componentToShow : (this.naviDetailObj.importFilePopupToShow ? "Resources" : "Tasks"))));
+          (this.getComponentToShow() ? this.getComponentToShow() : (this.getImportPopupToShow() ? "Resources" : "Tasks"))));
         this.naviDetailObj.componentToShow = undefined;
       } else {
-        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : (this.naviDetailObj.componentToShow ? this.naviDetailObj.componentToShow : ((meta_data && !meta_data.length) ? "Chat" : "Tasks")));
+        rawUrl += "&componentToShow=" + (deep_link_info?.componentToShow ? deep_link_info?.componentToShow : (this.getComponentToShow() ? this.getComponentToShow() : ((meta_data && !meta_data.length) ? "Chat" : "Tasks")));
         this.naviDetailObj.componentToShow = undefined;
       }
     }
