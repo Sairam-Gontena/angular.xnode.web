@@ -19,7 +19,7 @@ export const environment = {
     xnodeAppUrl: 'https://app-us.xnode.ai/',
     naviAppUrl: 'https://app-navi-us.xnode.ai/',
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
-    webSocketUrl: 'https://app-notify-us.xnode.ai',
+    webSocketUrl: 'https://app-notify-us.xnode.ai/',
     webSocketNotifier: 'beta-xnode-notifier',
     branchName: 'beta',
     projectName: 'xnode-beta',
