@@ -1,0 +1,61 @@
+<div class="content-grid pt-3">
+    <p-table [columns]="headers" [value]="dataContent" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header" let-columns>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field === 'title'">
+                        <div class="flex">
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Conversation'">
+                                <img src="../../assets/images/Conversation.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Thread'">
+                                <img src="../../assets/images/Thread.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Task'">
+                                <img src="../../assets/images/Task.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Comment'">
+                                <img src="../../assets/images/Comment.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Change-Request'">
+                                <img src="../../assets/images/ChangeRequest.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Resource'">
+                                <img src="../../assets/images/Resource.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex flex-column ml-2">
+                                <div class="font-normal text-base align-items-start">{{ rowData['title'] }}</div>
+                                <div class="font-normal activity-id align-items-start mt-2">{{ rowData['shortId'] }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="col.field === 'status'">
+                        <div [ngClass]="{
+                    'Success': (rowData['summarize'] != null && rowData['summarize']) || rowData['status'] === 'Active' || rowData['status'] === 'Summarized'  || rowData['status'] === 'GENERATED',                              
+                    'Warning': rowData['status'] === 'open',
+                    'Danger': rowData['summarize'] === 'false'
+                  }">
+                            <span class="status-label">
+                                {{ rowData['summarize'] != null ? rowData['summarize'] :
+                                rowData['status'] }}
+                            </span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="col.field === 'modifiedOn'">
+                        <img src="../../assets/images/modifiedOn.svg" class="align-items-center text-center -mb-1"
+                            alt="modifiedOn" />
+                        <span class="align-items-center text-center font-normal text-sm ml-1 modified-on">
+                            {{ modifiedTimeDifference(rowData['modifiedOn']) }}
+
+                            <!-- {{
+                            rowData['modifiedOn'] }} -->
+                        </span>
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

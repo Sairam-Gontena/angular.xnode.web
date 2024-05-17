@@ -24,7 +24,7 @@
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <ng-container *ngFor="let col of columns">
-                    <th *ngIf="col.visible" class="font-medium" [style.width.px]="col.width">
+                    <th *ngIf="!col.visible" class="font-medium" [style.width.px]="col.width">
                         <p-tableHeaderCheckbox class="grid-checkbox"
                             *ngIf="col.type==='checkbox' && isCheckbox"></p-tableHeaderCheckbox>
                         {{col.header|titlecase}}
@@ -55,7 +55,8 @@
                             </div>
                         </p-overlayPanel> -->
 
-                        <app-avatars-display *ngIf="col.type==='avatar'" [userIdsList]="data['users']" [data]="data">
+                        <app-avatars-display *ngIf="col.type==='avatar' && !col.visible" [userIdsList]="data['users']"
+                            [data]="data">
                         </app-avatars-display>
 
                         <!-- <app-button-component *ngIf="col.type ==='button'" [buttonType]="col.buttonType"
@@ -66,6 +67,7 @@
 
                         <span *ngIf="col.type === 'd/m/y'" class="text-sm font-medium">
                             {{ data[col.field] | date:localDateFormat }}
+                            <!-- {{ modifiedTimeDifference(data[col.field]) }} -->
                         </span>
 
                         <span *ngIf="col.type === 'File'" class="text-sm font-medium">

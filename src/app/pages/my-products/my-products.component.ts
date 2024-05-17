@@ -59,6 +59,10 @@ export class MyProductsComponent implements OnInit {
   loading: boolean = false;
   showImportFilePopup: boolean = false;
   tableFilterEvent: any;
+  activity: any;
+  selectedActivity: any;
+  selectedAllActivity: any;
+  allActivity: any;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -88,6 +92,18 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activity = [
+      { name: 'Your Activity', code: 'your' },
+      { name: 'Teams Activity', code: 'team' },
+    ];
+    this.allActivity = [
+      { name: 'Conversation', code: 'conversation' },
+      { name: 'Thread', code: 'thread' },
+      { name: 'Task', code: 'task' },
+      { name: 'Comment', code: 'comment' },
+      { name: 'Change Request', code: 'change Request' },
+      { name: 'Resource', code: 'resource' },
+    ]
     this.utils.loadSpinner(true);
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,
@@ -264,7 +280,6 @@ export class MyProductsComponent implements OnInit {
         //   'RESOURCE':'rsId',
         //   'PRODUCT_VERSION':'pvId'
         // };
-
         for (let activity of res.data.data) {
           // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
@@ -279,21 +294,26 @@ export class MyProductsComponent implements OnInit {
             users: [activity.modifiedBy],
             description: activity.description,
             title: activity.actionDetail.title || "",
-            shortId: activity.objectShortId || ""
+            shortId: activity.objectShortId || "",
+            summarize: activity.actionDetail.isSummarizationQueue,
+            status: activity.actionDetail.status
           }
           activities.push(row)
         }
         this.activities = activities; // Handle the response here
+        console.log(this.activities, "this.activities")
+
       });
     }
   }
 
   getColumnDef() {
     this.columnDef = [
+
       {
-        field: "objectType",
-        header: "Entity",
-        width: 100,
+        field: "title",
+        header: "Title",
+        width: 350,
         filter: true,
         sortable: true,
         visible: true,
@@ -308,22 +328,13 @@ export class MyProductsComponent implements OnInit {
         visible: true,
         default: true
       },
-      {
-        field: "title",
-        header: "Title",
-        // width: 250,
-        filter: true,
-        sortable: true,
-        visible: true,
-        default: true
-      },
-      {
-        field: "userAction",
-        header: "Action",
-        width: 100,
-        visible: true,
-        default: true
-      },
+      // {
+      //   field: "userAction",
+      //   header: "Action",
+      //   width: 100,
+      //   visible: true,
+      //   default: true
+      // },
       // {
       //   field: "description",
       //   header: "Description",
@@ -343,15 +354,43 @@ export class MyProductsComponent implements OnInit {
         default: true
       },
       {
+        field: "status",
+        header: "Status",
+        width: 300,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+      {
+        field: "summarize",
+        header: "Summarize",
+        width: 300,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+      {
+        field: "objectType",
+        header: "Entity",
+        width: 100,
+        filter: true,
+        sortable: true,
+        visible: true,
+        default: true
+      },
+      {
         field: "modifiedOn",
         header: "Modified On",
-        width: 200,
+        width: 300,
         // type: "d/m/y",
         filter: true,
         sortable: true,
         visible: true,
         default: true
       },
+
     ]
   }
   getUsersData() {
@@ -381,7 +420,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id ,userRole:'all'}).then((response: any) => {
+    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id, userRole: 'all' }).then((response: any) => {
       this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data) {
         let user_audit_body = {
