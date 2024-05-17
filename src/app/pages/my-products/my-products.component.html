@@ -64,10 +64,18 @@
                 </p-button>
             </div>
             <div class="col-12">
-                <h3 class="mt-2 mb-0 text-2xl font-semibold">Recent Activity</h3>
-                <div class="recentActivity">
-                    <app-content-grid [showSearch]="false" [headers]="columnDef" [enablePagination]="false"
-                        [dataContent]="activities" [tableFilterEvent]="tableFilterEvent"></app-content-grid>
+                <div class="flex justify-content-between align-items-center">
+                    <p-dropdown [options]="activity" class="mt-2 recentDropdown" [(ngModel)]="selectedActivity"
+                        optionLabel="name" placeholder="Your Activity" />
+                    <div class="dropdown-all px-2">
+                        <i class="pi pi-sliders-v" style="width:17px ; height:17px"></i>
+                        <p-dropdown [options]="allActivity" class="mt-2 allDropdown" [(ngModel)]="selectedAllActivity"
+                            optionLabel="name" placeholder="All" />
+                    </div>
+                </div>
+                <div class="recentActivity mt-1">
+                    <xnode-recent-activity-table [headers]="columnDef"
+                        [dataContent]="activities"></xnode-recent-activity-table>
                 </div>
             </div>
         </div>
