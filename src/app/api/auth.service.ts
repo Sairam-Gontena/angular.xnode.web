@@ -119,7 +119,7 @@ export class AuthApiService extends BaseApiService {
     const timeout = expires.getTime() - Date.now() - 60 * 1000;
     if (this.userValue?.email) {
       this.refreshTokenTimeout = setTimeout(() => {
-        console.log('called timeout')
+        console.info('called timeout')
         this.refreshToken().subscribe()
       }, timeout);
     }

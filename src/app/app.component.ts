@@ -214,7 +214,7 @@ export class AppComponent implements OnInit {
 
     idle.onIdleEnd.subscribe(() => {
       this.idleState = 'No longer idle.'
-      console.log(this.idleState);
+      console.info(this.idleState);
       this.reset();
     });
 
@@ -226,7 +226,7 @@ export class AppComponent implements OnInit {
 
     idle.onIdleStart.subscribe(() => {
       this.idleState = 'You\'ve gone idle!'
-      console.log(this.idleState);
+      console.info(this.idleState);
       if (this.storageService.getItem(StorageKeys.CurrentUser)) {
         this.showInactiveTimeoutPopup = true;
       }
@@ -236,7 +236,7 @@ export class AppComponent implements OnInit {
     idle.onTimeoutWarning.subscribe((countdown) => {
       this.idleState = 'You will time out in ' + countdown + ' seconds!'
       this.inactiveTimeoutCounter = countdown;
-      console.log(this.idleState);
+      console.info(this.idleState);
     });
 
     // sets the ping interval to 50 seconds

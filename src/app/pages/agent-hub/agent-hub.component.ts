@@ -66,7 +66,7 @@ export class AgentHubComponent implements OnInit {
           element.count = response[element.key];
         });
 
-        console.log(response, "response")
+        console.info(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }

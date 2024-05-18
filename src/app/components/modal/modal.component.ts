@@ -27,7 +27,7 @@ export class ModalComponent {
       linkParent: this.linkParent,
       description: this.description
     };
-    console.log(formData);
+    console.info(formData);
     this.onClose();
   }
 }

@@ -210,7 +210,7 @@ export class ConversationActionsComponent {
           this.utils.loadSpinner(false);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
           this.utils.loadSpinner(false);
         });
   }
@@ -262,7 +262,7 @@ export class ConversationActionsComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
       });
   }

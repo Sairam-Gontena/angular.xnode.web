@@ -181,7 +181,7 @@ export class DynamicFormModalComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.createPromptForm.value);
+    console.info(this.createPromptForm.value);
     const formData = this.createPromptForm.value
     // this.onClose();
 
@@ -208,7 +208,7 @@ export class DynamicFormModalComponent implements OnInit {
 
     formData["account_id"] = this.userInfo.account_id
 
-    console.log(linkParent, formData, "linkParent")
+    console.info(linkParent, formData, "linkParent")
 
     let urlParam = {
       url: 'agent/create_prompt',
@@ -222,10 +222,10 @@ export class DynamicFormModalComponent implements OnInit {
      */
     this.agentHubService.postData(urlParam).subscribe({
       next: (response: any) => {
-        console.log("responseData", response)
+        console.info("responseData", response)
         promptResponse = response
       }, error: (error: any) => {
-        console.log("responseData", error)
+        console.error("responseData", error)
       }
     })
 
@@ -252,17 +252,17 @@ export class DynamicFormModalComponent implements OnInit {
 
     this.agentHubService.postData(urlParam).subscribe({
       next: (response: any) => {
-        console.log("responseData", response)
+        console.info("responseData", response)
         promptResponse = response
       }, error: (error: any) => {
-        console.log("responseData", error)
+        console.error("responseData", error)
       }
     })
 
   }
 
   onLinkParentChangeHandler(event: any) {
-    console.log("he;;", event)
+    console.info("he;;", event)
     if (this.activeIndex == 0) {
       this.selectedLinkParentType = ParentType.Capability
     } else {

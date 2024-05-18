@@ -558,7 +558,7 @@ export class SpecConversationComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
       });
   }

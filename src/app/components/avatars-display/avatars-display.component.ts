@@ -16,11 +16,11 @@ export class AvatarsDisplayComponent implements OnInit {
   userCount: any;
   userListCopy: any = this.userList;
   constructor(private storageService: LocalStorageService) {
-    console.log()
+    console.info()
   }
 
   ngOnInit() {
-    //console.log("data",this.data);
+    //console.info("data",this.data);
     let totalUsersList: any = this.storageService.getItem(StorageKeys.USERLIST);
     if (this.userIdsList?.length)
       this.userIdsList.map(user => {

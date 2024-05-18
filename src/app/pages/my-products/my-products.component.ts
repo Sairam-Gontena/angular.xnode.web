@@ -210,7 +210,7 @@ export class MyProductsComponent implements OnInit {
       if (data.data)
         this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
     }).catch((err: any) => {
-      console.log(err, 'err')
+      console.error(err, 'err')
     })
   }
 
@@ -236,7 +236,7 @@ export class MyProductsComponent implements OnInit {
       if (data.data)
         this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
     }).catch((err: any) => {
-      console.log(err, 'err')
+      console.error(err, 'err')
     })
 
   }
@@ -301,7 +301,7 @@ export class MyProductsComponent implements OnInit {
           activities.push(row)
         }
         this.activities = activities; // Handle the response here
-        console.log(this.activities, "this.activities")
+        console.info(this.activities, "this.activities")
 
       });
     }

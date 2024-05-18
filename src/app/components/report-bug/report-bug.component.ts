@@ -236,7 +236,7 @@ export class ReportBugComponent implements OnInit {
       this.onFileDropped();
     } else {
       this.isInvalid = true;
-      console.log('error');
+      console.warn('error');
     }
     this.auditUtil.postAudit('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }

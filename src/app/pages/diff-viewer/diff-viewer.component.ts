@@ -260,7 +260,7 @@ export class DiffViewerComponent implements OnInit {
             this.utils.saveProductDetails(product);
           }
         }).catch((err: any) => {
-          console.log(err, 'err')
+          console.error(err, 'err')
           this.utils.saveProductDetails(product);
         })
       }

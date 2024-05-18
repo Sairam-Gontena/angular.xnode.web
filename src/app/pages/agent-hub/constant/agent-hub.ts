@@ -12,23 +12,23 @@ export const InitialPaginatorInfo = {
 export const tableRowActionOptions = [{
     label: 'View', icon: '',
     command: (event: any) => {
-        console.log(event, 'event');
+        console.info(event, 'event');
     }
 }, {
     label: 'Duplicate', icon: '',
     command: (event: any) => {
-        console.log(event, 'event');
+        console.info(event, 'event');
     }
 }, {
     label: 'Archieve', icon: '',
     command: (event: any) => {
-        console.log(event, 'event');
+        console.info(event, 'event');
     }
 }, {
     label: 'Delete',
     icon: '',
     command: (event: any) => {
-        console.log(event, 'event');
+        console.info(event, 'event');
     }
 }]
 

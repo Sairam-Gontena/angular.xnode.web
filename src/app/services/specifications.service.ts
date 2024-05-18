@@ -149,7 +149,7 @@ export class SpecificationsService {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadToaster({
           severity: 'error',
           summary: 'ERROR',
@@ -203,7 +203,7 @@ export class SpecificationsService {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',

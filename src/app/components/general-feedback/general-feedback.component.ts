@@ -222,7 +222,7 @@ export class GeneralFeedbackComponent implements OnInit {
     if (this.generalFeedbackForm.valid) {
       this.onFileDropped();
     } else {
-      console.log('error');
+      console.warn('error');
     }
   }
 

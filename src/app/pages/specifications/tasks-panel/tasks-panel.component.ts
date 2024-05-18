@@ -134,7 +134,7 @@ export class TasksPanelComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err:any) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
       });
   }
@@ -165,7 +165,7 @@ export class TasksPanelComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err:any) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -282,7 +282,7 @@ export class TasksPanelComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err:any) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',

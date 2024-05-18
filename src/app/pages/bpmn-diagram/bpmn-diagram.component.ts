@@ -846,7 +846,7 @@ export class BpmnDiagramComponent
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
-        console.log('err', error);
+        console.error('err', error);
         let xFlowJsonCopy = xFlowJson;
         xFlowJsonCopy.Flows = 'xflows data';
         let user_audit_body = {

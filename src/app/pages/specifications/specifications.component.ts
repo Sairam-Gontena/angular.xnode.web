@@ -452,7 +452,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
       });
   }
@@ -478,7 +478,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.utils.loadSpinner(false);
         this.storageService.removeItem(StorageKeys.NOTIF_INFO);
         this.notifInfo = undefined;

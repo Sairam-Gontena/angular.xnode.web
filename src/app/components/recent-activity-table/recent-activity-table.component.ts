@@ -15,7 +15,7 @@ export class RecentActivityTableComponent {
 
     if (changes['dataContent']?.currentValue) {
       this.dataContent = changes['dataContent']?.currentValue;
-      console.log(this.dataContent, 'DATA CONTENT');
+      console.info(this.dataContent, 'DATA CONTENT');
     }
   }
   modifiedTimeDifference(modifiedOn: Date): string {
