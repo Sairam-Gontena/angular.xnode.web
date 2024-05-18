@@ -181,6 +181,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
       if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.naviData.access_token = msg.msgData;
+        const currentuser:any = this.storageService.getItem(StorageKeys.CurrentUser);
+        if(currentuser){
+            const user = {
+              first_name: currentuser.first_name,
+              last_name: currentuser.last_name,
+              email: currentuser.email,
+              user_id: currentuser.user_id,
+              account_id: currentuser.account_id
+            }
+          this.naviData.user = user
+        }
       }
       if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
         // this.ngOnInit();
