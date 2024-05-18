@@ -94,12 +94,12 @@ export class AgentOverviewComponent implements OnInit {
 
   //overview form submit
   onOverviewSubmit() {
-    console.log(this.overviewForm.value);
+    console.info(this.overviewForm.value);
   }
 
   //instruction form submit
   onInstructionSubmit() {
-    console.log(this.instructionForm.value);
+    console.info(this.instructionForm.value);
   }
 
   //on change instruction dropdown event
@@ -136,7 +136,7 @@ export class AgentOverviewComponent implements OnInit {
           element.count = response[element.key] ?? 'N/A';
         });
 
-        console.log(response, "response")
+        console.info(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error?.detail });
       }

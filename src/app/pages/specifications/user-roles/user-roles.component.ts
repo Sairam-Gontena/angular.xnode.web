@@ -41,7 +41,7 @@ export class UserRolesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('contentcontent', this.content);
+    console.info('contentcontent', this.content);
   }
 
   getWords(subitem: any) {

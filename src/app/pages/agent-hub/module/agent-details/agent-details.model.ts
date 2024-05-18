@@ -70,22 +70,22 @@ export class AgentDetailsModel {
   tableRowActionOptions = [{
     label: 'View', icon: '',
     command: (event: any) => {
-      console.log(event, 'event');
+      console.info(event, 'event');
     }
   }, {
     label: 'Duplicate', icon: '',
     command: (event: any) => {
-      console.log(event, 'event');
+      console.info(event, 'event');
     }
   }, {
     label: 'Archieve', icon: '',
     command: (event: any) => {
-      console.log(event, 'event');
+      console.info(event, 'event');
     }
   }, {
     label: 'Delete', icon: '',
     command: (event: any) => {
-      console.log(event, 'event');
+      console.info(event, 'event');
     }
   }];
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
@@ -226,7 +226,7 @@ export class AgentDetailsModel {
 
         // this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb,
         // { label: response?.name, index: this.breadCrumbsAction.breadcrumb.length }]
-        console.log(response, "response")
+        console.info(response, "response")
       }, error: (error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }

@@ -44,7 +44,7 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['conversation_id']?.currentValue)
-      console.log('>>', changes['conversation_id']?.currentValue);
+      console.info('>>', changes['conversation_id']?.currentValue);
   }
 
   private async readFileContent(file: File) {
@@ -86,10 +86,10 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
     this.closeEventEmitter.emit(false);
   }
   search() {
-    console.log("search")
+    console.info("search")
   }
   switchChanged() {
-    console.log(this.checked)
+    console.info(this.checked)
   }
   selectedUserTab = 1;
   tabs = [
@@ -195,7 +195,7 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
 
   processFile(body: any): void {
     this.naviApiService.postFile(body).then((res: any) => {
-      console.log('res');
+      console.info('res');
     }).catch((err: any) => {
 
     })

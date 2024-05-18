@@ -113,7 +113,7 @@ export class ToolOverviewComponent {
   // Method to submit form
   submitToolHandler() {
     if (this.overviewForm.valid) {
-      console.log('Form submitted successfully!', this.overviewForm?.value);
+      console.info('Form submitted successfully!', this.overviewForm?.value);
     }
   }
 

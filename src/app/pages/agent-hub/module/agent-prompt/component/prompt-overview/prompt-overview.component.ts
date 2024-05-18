@@ -227,7 +227,7 @@ export class PromptOverviewComponent {
   }
 
   submitPromptHandler() {
-    console.log(this.overviewForm.value);
+    console.info(this.overviewForm.value);
     const formData = this.overviewForm.value
     // this.onClose();
 
@@ -254,7 +254,7 @@ export class PromptOverviewComponent {
 
     formData["account_id"] = this.userInfo.account_id
 
-    console.log(linkParent, formData, "linkParent")
+    console.info(linkParent, formData, "linkParent")
 
     let urlParam = {
       url: 'agent/create_prompt',
@@ -269,13 +269,13 @@ export class PromptOverviewComponent {
     this.utilsService.loadSpinner(true);
     this.agentHubService.postData(urlParam).subscribe({
       next: (response: any) => {
-        console.log("responseData", response)
+        console.info("responseData", response)
         promptResponse = response
 
         this.linkParent(promptResponse, linkParent)
         // this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
-        console.log("responseData", error)
+        console.error("responseData", error)
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
         this.utilsService.loadSpinner(false);
       }
@@ -338,10 +338,10 @@ export class PromptOverviewComponent {
 
     this.agentHubService.postData(urlParam).subscribe({
       next: (response: any) => {
-        console.log("responseData", response)
+        console.info("responseData", response)
         promptResponse = response
       }, error: (error: any) => {
-        console.log("responseData", error)
+        console.error("responseData", error)
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
         this.utilsService.loadSpinner(false);
       }
@@ -389,7 +389,7 @@ export class PromptOverviewComponent {
   }
 
   onLinkParentChangeHandler(event: any) {
-    console.log("he;;", event)
+    console.info("he;;", event)
     if (this.activeIndex == 0) {
       this.selectedLinkParentType = ParentType.Capability
     } else {

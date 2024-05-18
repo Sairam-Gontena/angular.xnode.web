@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeAgoPipe implements PipeTransform {
   transform(value: Date): string {
-    console.log('value in pipe: ', value);
+    console.info('value in pipe: ', value);
     if (!value) return '';
 
     const currentDate = new Date();

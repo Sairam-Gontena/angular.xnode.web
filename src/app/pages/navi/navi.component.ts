@@ -215,7 +215,7 @@ export class NaviComponent implements OnInit {
   }
 
   emitIframeComponentEvents(event: any): void {
-    console.log('eventevent', event);
+    console.info('eventevent', event);
 
     if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
       return;

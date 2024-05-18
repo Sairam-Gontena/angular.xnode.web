@@ -191,7 +191,7 @@ export class SpecificationsHeaderComponent implements OnInit {
         this.specUtils._updatedSelectedProduct(true);
         localStorage.removeItem('deep_link_info');
       } else {
-        console.log('not able to fetch product details');
+        console.warn('not able to fetch product details');
       }
     }).catch((error) => {
       console.error('Error fetching data from localStorage:', error);

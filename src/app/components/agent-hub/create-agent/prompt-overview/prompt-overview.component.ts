@@ -135,9 +135,9 @@ export class PromptOverviewComponent {
   // }
 
   onInstructionSubmit() {
-    console.log(this.overviewForm.value);
-    // console.log('Form valid: ', this.dynamicForm.valid);
-    // console.log('Form values: ', this.dynamicForm.value);
+    console.info(this.overviewForm.value);
+    // console.info('Form valid: ', this.dynamicForm.valid);
+    // console.info('Form values: ', this.dynamicForm.value);
   }
 
 

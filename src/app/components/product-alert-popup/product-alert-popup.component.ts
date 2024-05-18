@@ -180,7 +180,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       })
       .catch((err: any) => {
-        console.log(err);
+        console.error(err);
         let user_audit_body = {
           method: 'GET',
           url: err?.request?.responseURL,

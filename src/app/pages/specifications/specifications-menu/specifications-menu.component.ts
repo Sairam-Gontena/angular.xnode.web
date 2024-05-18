@@ -38,7 +38,7 @@ export class SpecificationsMenuComponent implements OnInit {
     });
 
     // this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
-    //   console.log('dataaa', data);
+    //   console.info('dataaa', data);
 
     //   if (data) {
     //     this.isSideMenuOpened = !data.openConversationPanel;

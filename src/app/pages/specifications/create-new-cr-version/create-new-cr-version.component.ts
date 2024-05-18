@@ -190,7 +190,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   save(event: Event): void {
     this.submitted = true;
     if (this.crForm.invalid) {
-      console.log('Invalid form. Please check the form for errors.');
+      console.warn('Invalid form. Please check the form for errors.');
       return;
     }
     this.utilsService.loadSpinner(true);
@@ -287,7 +287,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     if (specData) {
       body.baseVersionId = specData[0].versionId;
     } else {
-      console.log('specData is empty or undefined');
+      console.warn('specData is empty or undefined');
     }
     this.commentsService
       .createCr(body)

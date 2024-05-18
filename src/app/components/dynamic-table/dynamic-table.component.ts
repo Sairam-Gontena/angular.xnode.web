@@ -69,14 +69,14 @@ export class DynamicTableComponent implements OnInit {
     optionLabel: 'name',
     styleClass: 'showColumnFilterOption',
     changeHandler: (event: any): void => {
-      console.log('val');
+      console.info('val');
     },
   };
 
   @Input() viewAll: ViewAll = {
     showButton: false,
     clickHandler: (event: any): void => {
-      console.log('val');
+      console.info('val');
     },
   };
 
@@ -174,13 +174,13 @@ export class DynamicTableComponent implements OnInit {
 
   // Function to handle lazy loading (pagination)
   onPageChangeHandler(event: any) {
-    console.log(event, 'event');
+    console.info(event, 'event');
     this.paginatorChangeEvent.emit(event);
     // Emit event to parent
   }
 
   onTableRowHandler(rowData: any) {
-    console.log(rowData, "rowData")
+    console.info(rowData, "rowData")
     if (this.showViewRowData) {
       this.changeEvent.emit(rowData)
     }

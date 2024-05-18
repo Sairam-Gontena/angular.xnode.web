@@ -22,7 +22,7 @@ export class DiffListComponent {
     if (!isOnDiff) return undefined;
     const map: any = {};
     const list: any[] = [];
-    // console.log(fromArray, 'toArray', toArray)
+    // console.info(fromArray, 'toArray', toArray)
     if (!Array.isArray(fromArray) || !Array.isArray(toArray)) {
       return undefined;
     }
@@ -35,7 +35,7 @@ export class DiffListComponent {
         list.push(item);
       }
     }
-    // console.log('Diff List:', list)
+    // console.info('Diff List:', list)
     return list;
   }
 }

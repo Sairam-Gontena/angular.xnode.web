@@ -36,9 +36,9 @@ export class CreateKnowledgeModalComponent {
 
   // Method to submit form
   submitForm() {
-    console.log('Form Value', this.createAgentKnowledge.value);
+    console.info('Form Value', this.createAgentKnowledge.value);
     if (this.createAgentKnowledge.valid) {
-      console.log('Form submitted successfully!', this.createAgentKnowledge.value);
+      console.info('Form submitted successfully!', this.createAgentKnowledge.value);
     }
   }
 
