@@ -179,9 +179,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.storageService.saveItem(StorageKeys.Product, msg.msgData.product);
         this.storageService.saveItem(StorageKeys.CONVERSATION_DETAILS, msg.msgData.conversationDetails);
       }
-
-      if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
+      if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.naviData.access_token = msg.msgData;
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
         // this.ngOnInit();
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {
