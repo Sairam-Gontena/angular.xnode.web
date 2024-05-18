@@ -181,6 +181,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
 
       if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
+        this.naviData.access_token = msg.msgData;
         // this.ngOnInit();
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {

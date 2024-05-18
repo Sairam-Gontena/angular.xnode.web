@@ -134,7 +134,10 @@ export class VerifyOtpComponent implements OnInit {
     this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
     this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, data.accessToken);
     this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, data.refreshToken);
-
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.REFRESH_TOKEN,
+      msgData: data.refreshToken,
+    });
     decodedUser.accessToken = data.accessToken;
     decodedUser.refreshToken = data.refreshToken;
     this.authApiService.userSubject.next(decodedUser);
