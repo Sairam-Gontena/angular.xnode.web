@@ -20,9 +20,8 @@ export class AvatarsDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    //console.log("data",this.data);
     let totalUsersList: any = this.storageService.getItem(StorageKeys.USERLIST);
-    if (this.userIdsList?.length && totalUsersList.length)
+    if (this.userIdsList?.length && totalUsersList?.length)
       this.userIdsList.map(user => {
         totalUsersList.map((item: any) => {
           if (item.user_id === user.userId) {

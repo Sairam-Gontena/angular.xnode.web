@@ -406,12 +406,6 @@ export class MyProductsComponent implements OnInit {
         if (this.authApiService.getDeeplinkURL()) {
           this.utils.setDeepLinkInfo(this.authApiService.getDeeplinkURL());
         }
-
-        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.MAKE_TRUST_URL,
-          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: response?.data?.length ? 'Tasks' : 'Chat' },
-        });
         this.utils.loadSpinner(false);
       }
       else {

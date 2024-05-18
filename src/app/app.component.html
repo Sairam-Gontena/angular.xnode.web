@@ -1,6 +1,6 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0">
+        <div class="absolute bottom-0 right-0" *ngIf="!showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
         </div>
         <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
@@ -20,7 +20,7 @@
                     <!-- <iframe id="naviFrame" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
                     </iframe> -->
-                    <ng-container *ngIf="naviData.access_token">
+                    <ng-container *ngIf="naviData&&naviData.access_token">
                         <navi-root  [naviData]="naviData" (customEvent)="childCall($event)"></navi-root>
                       </ng-container>
                 </div>

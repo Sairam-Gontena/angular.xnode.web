@@ -93,15 +93,9 @@ export class AuthApiService extends BaseApiService {
           this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, resp.accessToken);
           this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, resp.refreshToken);
           this.messagingService.sendMessage({
-            msgType: MessageTypes.REFRESH_TOKEN,
-            msgData: resp.refreshToken,
+            msgType: MessageTypes.ACCESS_TOKEN,
+            msgData: { access_token: resp.accessToken, from: 'refresh-token' },
           });
-          const naviFrame = document.getElementById('naviFrame')
-          if (naviFrame) {
-            const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
-            iWindow?.postMessage({ accessToken: resp.accessToken, refreshToken: resp.refreshToken }, environment.naviAppUrl);
-          }
-
           this.userSubject.next(decodedUser);
           this.startRefreshTokenTimer();
           return decodedUser;

@@ -10,7 +10,6 @@ export enum MessageTypes {
     ConversationId = 'conversation_id',
     ReloadTabList = 'reload_tab_list',
     NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE = "NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE",
-    REFRESH_TOKEN = "REFRESH_TOKEN",
     PRODUCT_SELECTED = "PRODUCT_SELECTED",
     ACCESS_TOKEN = "ACCESS_TOKEN",
 }

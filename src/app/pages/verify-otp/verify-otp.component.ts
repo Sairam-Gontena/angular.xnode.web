@@ -129,14 +129,12 @@ export class VerifyOtpComponent implements OnInit {
   async handleResponse(data: any) {
     const helper = new JwtHelperService();
     const decodedUser = helper.decodeToken(data?.accessToken);
-    console.log('decodedUser', decodedUser);
-
     this.storageService.saveItem(StorageKeys.CurrentUser, decodedUser);
     this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, data.accessToken);
     this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, data.refreshToken);
     this.messagingService.sendMessage({
       msgType: MessageTypes.ACCESS_TOKEN,
-      msgData: data.accessToken,
+      msgData: { access_token: data.accessToken, from: 'verify-otp' },
     });
     decodedUser.accessToken = data.accessToken;
     decodedUser.refreshToken = data.refreshToken;

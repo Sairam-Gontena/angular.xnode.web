@@ -8,5 +8,6 @@ export interface NaviEventParams {
     value?: any;
     conversationDetails?: any;
     product?: any;
+    banner?: any;
 }
 
