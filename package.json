@@ -13,7 +13,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "ionic:build": "npm run build",
-    "ionic:serve": "npm run start"
+    "ionic:serve": "npm run start",
+    "cap:sync-qa": "SET NODE_ENV=qa & npx cap sync & npx cap open android",
+    "cap:sync-prod": "SET NODE_ENV=prod & npx cap sync"
   },
   "private": true,
   "dependencies": {
