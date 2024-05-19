@@ -24,6 +24,7 @@ export class PromptOverviewComponent {
   @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
+    promptData: "",
     formEditable: false,
     componentDetail: {
       componentType: "",
@@ -104,6 +105,7 @@ export class PromptOverviewComponent {
       next: (response: any) => {
         if (response) {
           this.agentInfo = response
+          this.overViewObj.promptData = response
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,

@@ -18,6 +18,7 @@ export class ToolOverviewComponent {
   @Output() goBack: EventEmitter<any> = new EventEmitter<any>();
   public overviewForm!: FormGroup;
   public overViewObj: any = {
+    toolData: "",
     formEditable: false,
     componentDetail: {
       componentType: "",
