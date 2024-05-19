@@ -388,14 +388,27 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log('xnode oninit');
-    const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
-    if (isNaviExpanded) {
-      this.isNaviExpanded = isNaviExpanded;
+    this.naviData = this.storageService.getItem(StorageKeys.NAVI_DATA) ?? {
+      componentToShow: 'Tasks',
+      is_navi_expanded: false,
+      restriction_max_value: 50,
+      user: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        user_id: '',
+        account_id: ''
+      },
+      access_token: '',
+      toggleConversationPanel: false,
+      showDockedNavi: false,
     };
+    this.isNaviExpanded = this.naviData.is_navi_expanded
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.handleTheme();
-    this.defaultNaviData()
+    if (!this.naviData.conversationDetails)
+      this.defaultNaviData()
   }
 
   ngAfterViewInit(): void {
