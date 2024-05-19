@@ -85,6 +85,7 @@ import { ContentGridComponent } from '../components/resources/content-grid/conte
 import { AvatarsDisplayComponent } from '../components/avatars-display/avatars-display.component';
 import { AgentInformationComponent } from '../components/agent-hub/agent-information/agent-information.component';
 import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-knowledge-modal/create-knowledge-modal.component';
+import { RecentActivityTableComponent } from '../components/recent-activity-table/recent-activity-table.component';
 
 @NgModule({
   declarations: [
@@ -169,7 +170,8 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     ContentGridComponent,
     AvatarsDisplayComponent,
     AgentInformationComponent,
-    CreateKnowledgeModalComponent
+    CreateKnowledgeModalComponent,
+    RecentActivityTableComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -255,7 +257,8 @@ import { CreateKnowledgeModalComponent } from '../components/agent-hub/create-kn
     ContentGridComponent,
     AvatarsDisplayComponent,
     AgentInformationComponent,
-    CreateKnowledgeModalComponent
+    CreateKnowledgeModalComponent,
+    RecentActivityTableComponent
   ],
 })
 export class SharedComponentModule { }
