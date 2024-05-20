@@ -32,7 +32,7 @@ stages:
             displayName: "Install Node Packages"
             inputs:
               targetType: 'inline'
-              script: 'npm install --legacy-peer-deps'
+              script: 'npm i --force'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
