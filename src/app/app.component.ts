@@ -231,13 +231,15 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.componentToShow = 'Chat';
         console.log('6');
       }
-      if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE) {
+      if (msg.msgData && msg.msgType === MessageTypes.IMPORT_RESOURCE) {
         this.showDockedNavi = true
         this.isNaviExpanded = true
-        this.naviData.is_navi_expanded = true;
-        this.naviData.toggleConversationPanel = true;
-        this.naviData.componentToShow = 'Resources';
-        this.naviData.import_event = true;
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Chat", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: true }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.VIEW_RESOURCE) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, conversationDetails: undefined, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: true, resource_id: msg.msgData.resource_id }
       }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
@@ -383,6 +385,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.showDockedNavi = true;
     this.isNaviExpanded = false;
     this.naviData = { ...this.naviData, conversationDetails: undefined, is_navi_expanded: false, componentToShow: 'Tasks', toggleConversationPanel: false, product: undefined }
+    this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
     this.router.navigate(['/my-products']);
   }
 
