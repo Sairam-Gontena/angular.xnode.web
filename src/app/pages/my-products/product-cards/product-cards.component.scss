@@ -400,13 +400,9 @@
 }
 
 .title-container {
-    text-wrap: balance;
-    display: contents;
-    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: calc(100% - 30px);
 }
 
 .recentActivity {
