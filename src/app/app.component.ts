@@ -167,7 +167,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {
+        this.isNaviExpanded = true;
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
+        this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
@@ -907,6 +909,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
       this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
+        console.log('response', response);
+
         this.usersList = response.data;
         this.naviData.users = response.data;
       })
