@@ -39,15 +39,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   isXnodeLoaded: boolean = false;
   showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
-  email: String = '';
-  id: String = '';
-  loading: boolean = true;
   isNaviExpanded: boolean = false;
   sideWindow: any = document.getElementById('side-window');
-  productContext: string | null = '';
-  iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-  targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
   productAlertPopup: boolean = false;
@@ -66,24 +60,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   mainComponent: string = '';
   showNaviSpinner: boolean = true;
   importFilePopupToShow: boolean = false;
-  routes: any = [
-    '#/dashboard',
-    '#/overview',
-    '#/usecases',
-    '#/configuration/workflow/overview',
-    '#/configuration/data-model/overview',
-    '#/operate',
-    '#/publish',
-    '#/specification',
-    '#/operate/change/history-log',
-  ];
   usersList: any;
   showImportFilePopup: boolean = false;
   isFileImported: boolean = false;
   showSummaryPopup: boolean = false;
   convSummary?: OverallSummary;
   notifObj: any;
-  copnversations: any;
   groupConversations: any;
   oneToOneConversations: any;
   conversation_id: any;
@@ -185,9 +167,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {
-        this.naviData.is_navi_expanded = false;
-        this.naviData.conversationDetails = msg.msgData.conversationDetails;
-        this.naviData.componentToShow = 'Chat';
+        this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
@@ -249,7 +229,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     })
 
-    this.authApiService.user.subscribe(x => this.user = x);
+    this.authApiService.user.subscribe((x: any) => this.user = x);
 
     // sets an idle timeout of seconds, for testing purposes.
     idle.setIdle(eval(environment.XNODE_IDLE_TIMEOUT_PERIOD_SECONDS));
@@ -290,7 +270,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
-    this.authApiService.getIsLoggedIn().subscribe(userLoggedIn => {
+    this.authApiService.getIsLoggedIn().subscribe((userLoggedIn: any) => {
       if (userLoggedIn) {
         idle.watch()
         this.timedOut = false;
@@ -482,7 +462,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   closeNavi(): void {
-    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.showDockedNavi = false;
@@ -507,7 +487,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     }
     if (event.data.message === 'close-event') {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+      // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
       this.product = undefined;
       this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
       this.showDockedNavi = false;
@@ -715,9 +695,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   loadIframeUrl(): void {
     if (window?.addEventListener) {
       window?.addEventListener('message', (event) => {
-        if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-          return;
-        }
+        // if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+        //   return;
+        // }
         if (event.data.message === 'triggerCustomEvent') {
           this.showDockedNavi = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
@@ -727,7 +707,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         }
         if (event.data.message === 'close-event') {
-          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+          // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.product = undefined;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.showDockedNavi = false;
@@ -795,9 +775,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         const contentWindow = iframe.contentWindow;
         if (contentWindow) {
           window.addEventListener('message', (event) => {
-            if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-              return;
-            }
+            // if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            //   return;
+            // }
             if (event.data?.message) {
               switch (event.data.message) {
                 case 'triggerCustomEvent':
