@@ -94,16 +94,20 @@
 }
 
 :host ::ng-deep .custom-multiselect {
+  height: 100%;
+  // background-color: var(--dark-grayish-blue);
   background-color: var(--bleached-cedar);
-  border: 1px solid var(--bright-grey);
+  border: 2px solid var(--bright-grey);
   border-radius: 4px;
 }
 
-:host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus {
+:host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus,
+:host ::ng-deep .custom-multiselect:not(.p-disabled):hover {
   outline: inherit;
   outline-offset: 0;
   box-shadow: none;
-  border: 2px solid var(--bright-grey);
+  border: 2px solid var(--cerulean);
+  background-color: var(--dark-grayish-blue);
 }
 
 :host ::ng-deep .p-placeholder {

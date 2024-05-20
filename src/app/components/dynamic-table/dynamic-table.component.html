@@ -19,7 +19,7 @@
   <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
     [scrollHeight]="verticalScrollHeight" styleClass="border-round-lg">
     <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
-      <div class="flex flex-wrap lg:justify-content-between mt-2 px-3 pb-2 table-header">
+      <div class="flex flex-wrap gap-4 xl:gap-0 xl:justify-content-between p-3 table-header">
         <div class="flex flex-wrap gap-4">
           <xnode-multi-select-checkbox *ngIf="searchFilterOptions?.showFilterOption"
             [filter]="searchFilterOptions.filter ?? false" [showToggleAll]="searchFilterOptions.showToggleAll ?? false"
@@ -30,11 +30,11 @@
 
           <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
+            <input pInputText type="text" class="table-search" placeholder="Search " (input)="onInputChange($event)" />
           </span>
         </div>
 
-        <div *ngIf="tableInfo?.showAgentDataType" class="flex" [ngClass]="searchFilterOptions.styleClass">
+        <div *ngIf="tableInfo?.showAgentDataType" class="flex h-auto record-type">
           <div class="py-2 px-3 cursor-pointer text-lg font-medium"
             [ngClass]="{'active-agent-data-type' : agentDataType === recordType?.live}"
             (click)="setAgentDataType('live')">
@@ -64,7 +64,8 @@
           </p-button>
         </div>
 
-        <div class="flex gap-2 align-items-center px-2" *ngIf="showColumnFilterOption?.showFilterOption">
+        <div class="flex align-items-center px-2" [ngClass]="searchFilterOptions.styleClass ?? ''"
+          *ngIf="showColumnFilterOption?.showFilterOption">
           <span>Columns: </span>
           <xnode-multi-select-checkbox [filter]="showColumnFilterOption.filter ?? false"
             [showToggleAll]="showColumnFilterOption.showToggleAll ?? false"

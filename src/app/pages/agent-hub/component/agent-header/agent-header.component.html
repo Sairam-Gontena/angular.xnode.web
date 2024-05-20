@@ -29,9 +29,9 @@
 
 <div class="w-full border-round-2xl header-stats p-3">
     <ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
-        <div class="flex flex-wrap justify-content-around m-auto sm:w-10 w-12 my-2">
+        <div class="grid px-8 my-2">
             <!-- Agents Card -->
-            <div class="flex" *ngFor="let item of headerData.statsItem">
+            <div class="flex col-10 sm:col-6 lg:col-4 xl:col-3" *ngFor="let item of headerData.statsItem">
                 <p-button styleClass="p-0">
                     <img class="agent-icons" [src]="item.imgPath" alt="" />
                 </p-button>

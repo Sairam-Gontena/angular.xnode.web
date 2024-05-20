@@ -43,6 +43,7 @@ body {
   --black-pearl: #111827;
   --bleached-cedar: #1F2937;
   --bright-grey: #424B57;
+  --dark-grayish-blue: #24232C;
 }
 
 .menuStyleTable {
@@ -505,4 +506,8 @@ body {
 
 .agent-hub-container {
   background-color: var(--bleached-cedar);
+}
+
+.p-multiselect-panel, .p-multiselect-item {
+  background-color: var(--dark-grayish-blue) !important;
 }

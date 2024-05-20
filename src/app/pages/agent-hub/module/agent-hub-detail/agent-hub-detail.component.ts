@@ -116,7 +116,7 @@ export class AgentHubDetailComponent {
     {
       idx: 1,
       title: 'Capabilities',
-      value: 'capabilities_linked_agents',
+      value: 'capabilitys', // Will update endpoint once backend is deployed
       identifier: agentName.capability,
     },
     { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },

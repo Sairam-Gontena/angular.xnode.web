@@ -171,16 +171,24 @@
   background: none;
 }
 
+.record-type {
+  border: 2px solid #595959;
+}
 .agent-data-type-border {
   border-left: 2px solid #595959;
   border-right: 2px solid #595959;
 }
 
 .active-agent-data-type {
-  background-color: #24232C;
+  background-color: var(--dark-grayish-blue);
   border-radius: 4px;
 }
 
 .table-header {
   background-color: var(--bleached-cedar) !important;
+}
+
+.table-search:focus, .table-search:hover  {
+  border: 2px solid var(--cerulean) !important;
+  background-color: var(--dark-grayish-blue) !important;
 }
