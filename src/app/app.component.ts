@@ -319,6 +319,14 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.naviData = { ... this.naviData, componentToShow: event.componentToShow, conversationDetails: event.value, chat_type: event.chat_type, banner: event.banner }
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
         break;
+      case 'view-summary':
+        this.naviData = { ... this.naviData, componentToShow: event.componentToShow, conversationDetails: event.value, chat_type: event.chat_type, banner: event.banner }
+        if (this.naviData)
+          this.conversation_id = this.naviData.conversationDetails?.id;
+        this.getConversation();
+        this.utilsService.loadSpinner(true);
+        this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
+        break;
       case 'close-navi':
         this.showDockedNavi = false;
         this.isNaviExpanded = false;
