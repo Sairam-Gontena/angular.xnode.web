@@ -158,8 +158,8 @@ export class NotificationPanelComponent {
 
   goToResources(notif: any): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.MAKE_TRUST_URL,
-      msgData: { isNaviExpanded: true, showDockedNavi: true, resource_id: notif.resource_id, componentToShow: 'Resources' },
+      msgType: MessageTypes.VIEW_RESOURCE,
+      msgData: { resource_id: notif.resource_id },
     });
     this.closeNotificationPanel.emit(true)
   }

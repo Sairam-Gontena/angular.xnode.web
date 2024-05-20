@@ -225,16 +225,14 @@ export class MyProductsComponent implements OnInit {
 
   importNavi(): void {
     console.log('import');
-
     this.messagingService.sendMessage({
-      msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
+      msgType: MessageTypes.IMPORT_RESOURCE,
       msgData: {
-        naviContainerState: 'EXPAND',
-        componentToShow: "Resources",
-        importFilePopupToShow: true
+        import_event: true
       },
     });
   }
+
   closeEventEmitter() {
     this.showImportFilePopup = false;
   }
