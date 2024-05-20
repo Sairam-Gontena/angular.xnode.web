@@ -511,3 +511,11 @@ body {
 .p-multiselect-panel, .p-multiselect-item {
   background-color: var(--dark-grayish-blue) !important;
 }
+
+.p-tooltip .p-tooltip-text { 
+  background-color: var(--bleached-cedar) !important;  
+}
+
+.p-tooltip-text { 
+  font-size: 0.75rem; 
+} 

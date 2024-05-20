@@ -45,6 +45,7 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [JoinPipe],
@@ -88,6 +89,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     ChipsModule,
     MessageModule,
     MessagesModule,
+    TooltipModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -133,7 +135,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     ChipsModule,
     MessageModule,
     MessagesModule,
-    JoinPipe
+    JoinPipe,
+    TooltipModule
   ],
   providers: [DataService, DialogService, DynamicDialogRef, DynamicDialogConfig],
 })

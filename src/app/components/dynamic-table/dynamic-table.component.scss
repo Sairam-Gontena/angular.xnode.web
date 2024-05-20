@@ -192,3 +192,10 @@
   border: 2px solid var(--cerulean) !important;
   background-color: var(--dark-grayish-blue) !important;
 }
+
+.table-column-formatting {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: inherit;
+}

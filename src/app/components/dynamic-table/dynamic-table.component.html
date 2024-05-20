@@ -101,8 +101,7 @@
         [style]="{
           'background-color': (i % 2 !== 0 && bgColorRow && bgColorRow.oddRowColor) ? bgColorRow.oddRowColor : 'transparent' }"
         (click)="onTableRowHandler(rowData)">
-        <td *ngFor="let col of columns" style="white-space: normal; border-bottom-width: 0px"
-          [style.width.px]="col.width">
+        <td *ngFor="let col of columns" style="white-space: normal; border-bottom-width: 0px" [style.width]="col.width">
           <ng-container *ngIf="col.field">
             <ng-container [ngSwitch]="col.field">
               <ng-container *ngSwitchCase="'datetime'">
@@ -135,7 +134,8 @@
                 </div>
               </ng-container>
               <ng-container *ngSwitchDefault>
-                <div [ngClass]="col.field === 'email' ? 'email-text-color normal-text' : 'normal-text'">
+                <div class="table-column-formatting" [pTooltip]="rowData[col.field]" tooltipPosition="top"
+                  [ngClass]="col.field === 'email' ? 'email-text-color normal-text' : 'normal-text'">
                   {{ rowData[col.field] }}
                 </div>
               </ng-container>
