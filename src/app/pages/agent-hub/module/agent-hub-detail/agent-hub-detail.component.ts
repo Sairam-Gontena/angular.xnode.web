@@ -129,7 +129,7 @@ export class AgentHubDetailComponent {
     {
       idx: 4,
       title: 'Knowledge',
-      value: 'resources-by-user',
+      value: 'resource/resources-by-user',
       identifier: agentName.knowledge,
     },
     { idx: 5, title: 'Models', value: 'model', identifier: agentName.model },
