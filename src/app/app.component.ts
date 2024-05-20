@@ -189,6 +189,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.naviData.conversationDetails = msg.msgData.conversationDetails;
         this.naviData.componentToShow = 'Chat';
       }
+      if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
+        this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
+      }
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData?.componentToShow;
         const isNaviExpanded = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
