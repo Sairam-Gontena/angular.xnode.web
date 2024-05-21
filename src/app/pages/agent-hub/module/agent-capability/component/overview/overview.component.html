@@ -29,34 +29,35 @@
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="name">Name</label>
                     <div class="w-full">
-                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
-                            formControlName="name" placeholder="Name" />
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                            id="name" formControlName="name" placeholder="Name" />
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="description">Description</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                            formControlName="description" placeholder="Description"></textarea>
+                        <textarea pInputTextarea rows="6" id="description"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="description"
+                            placeholder="Description"></textarea>
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="capability_id">Model</label>
                     <div class="w-full">
-                        <p-dropdown styleClass="w-full" formControlName="model"
+                        <p-dropdown appendTo="body" styleClass="w-full black-pearl-bg-dropdown" formControlName="model"
                             [dropdownIcon]="overViewObj?.formEditable || overViewObj.componentDetail.enableDialog ? '' : 'none'"
-                            appendTo="body" [filter]="true" filterBy="name" [options]="modelOptionList.optionList"
-                            optionLabel="name" placeholder="Select a Model"></p-dropdown>
+                            [filter]="true" filterBy="name" [options]="modelOptionList.optionList" optionLabel="name"
+                            placeholder="Select a Model"></p-dropdown>
                     </div>
                 </div>
 
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="capability_id">Agent</label>
                     <div class="w-full">
-                        <p-dropdown styleClass="w-full" formControlName="agent"
+                        <p-dropdown appendTo="body" styleClass="w-full  black-pearl-bg-dropdown" formControlName="agent"
                             [dropdownIcon]="overViewObj?.formEditable || overViewObj.componentDetail.enableDialog ? '' : 'none'"
-                            appendTo="body" [filter]="true" filterBy="name" [options]="agentOptionList.optionList"
-                            optionLabel="name" placeholder="Select a Agent"></p-dropdown>
+                            [filter]="true" filterBy="name" [options]="agentOptionList.optionList" optionLabel="name"
+                            placeholder="Select a Agent"></p-dropdown>
                     </div>
                 </div>
             </div>

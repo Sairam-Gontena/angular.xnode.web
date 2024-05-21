@@ -16,7 +16,7 @@
     <form [formGroup]="overviewForm"
         (ngSubmit)="overViewObj.componentDetail.enableDialog ? submitPromptHandler() : promptOverviewSubmit()">
         <div class="col-12 p-3"
-            [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1' : 'sm:col-10 md:col-8 lg:col-6 sm:mx-auto'">
+            [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 custom-modal-body' : 'sm:col-10 md:col-8 lg:col-6 sm:mx-auto'">
             <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">
                 <div class="flex align-items-center justify-content-end  w-full mb-3">
                     <p-button type="submit" label="Save" icon="pi pi-save" iconPos="left" [outlined]="true" size="small"
@@ -29,31 +29,32 @@
             <div class="flex flex-column align-items-center mb-3">
                 <label class="w-full mb-1" for="name">Name</label>
                 <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
-                        formControlName="name" placeholder="Name" />
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="name" formControlName="name" placeholder="Name" />
                 </div>
             </div>
             <div class="flex flex-column align-items-center mb-3">
                 <label class="w-full mb-1" for="description">Description</label>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                        formControlName="description" placeholder="Description"></textarea>
+                    <textarea pInputTextarea rows="6" id="description"
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="description"
+                        placeholder="Description"></textarea>
                 </div>
             </div>
 
             <div class="flex flex-column align-items-center mb-3">
                 <label class="w-full mb-1" for="category">Category</label>
                 <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="category"
-                        formControlName="category" placeholder="Create new or add from existing prompt" />
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="category" formControlName="category" placeholder="Create new or add from existing prompt" />
                 </div>
             </div>
 
             <div class="flex flex-column align-items-center mb-3">
                 <label class="w-full mb-1" for="source">Source</label>
                 <div class="w-full">
-                    <input pInputText type="text" class="w-full p-2 border-1 border-round" id="source"
-                        formControlName="source" placeholder="Create new or add from existing prompt" />
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="source" formControlName="source" placeholder="Create new or add from existing prompt" />
                 </div>
             </div>
 
@@ -64,8 +65,8 @@
                         {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
                 </div>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="instruction" class="w-full p-2 border-1 border-round"
-                        formControlName="instruction"
+                    <textarea pInputTextarea rows="6" id="instruction"
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="instruction"
                         placeholder="Please provide guidelines for initiating meaningful conversations, fostering connections, and cultivating engagement across diverse communities. Highlight the importance of these efforts in building understanding, empathy, and collaboration in today's interconnected world."
                         xnodeTextareaAutoresize></textarea>
                 </div>
@@ -75,16 +76,17 @@
                 <div class="flex flex-column gap-2">
                     <label class="w-3" for="guideline">Guideline</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="guideline" class="w-full p-2 border-1 border-round"
-                            formControlName="guideline" placeholder="Enter Guideline"
-                            xnodeTextareaAutoresize></textarea>
+                        <textarea pInputTextarea rows="6" id="guideline"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="guideline"
+                            placeholder="Enter Guideline" xnodeTextareaAutoresize></textarea>
                     </div>
                 </div>
 
                 <div class="flex flex-column gap-2">
                     <label class="w-3" for="responsibility">Responsibilities</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="responsibility" class="w-full p-2 border-1 border-round"
+                        <textarea pInputTextarea rows="6" id="responsibility"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input"
                             formControlName="responsibility" placeholder="Enter Responsibilities"
                             xnodeTextareaAutoresize></textarea>
                     </div>
@@ -93,16 +95,18 @@
                 <div class="flex flex-column gap-2">
                     <label class="w-3" for="context">Context</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="context" class="w-full p-2 border-1 border-round"
-                            formControlName="context" placeholder="Enter Context" xnodeTextareaAutoresize></textarea>
+                        <textarea pInputTextarea rows="6" id="context"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="context"
+                            placeholder="Enter Context" xnodeTextareaAutoresize></textarea>
                     </div>
                 </div>
 
                 <div class="flex flex-column gap-2">
                     <label class="w-3" for="example">Example</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="example" class="w-full p-2 border-1 border-round"
-                            formControlName="example" placeholder="Enter Example" xnodeTextareaAutoresize></textarea>
+                        <textarea pInputTextarea rows="6" id="example"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="example"
+                            placeholder="Enter Example" xnodeTextareaAutoresize></textarea>
                     </div>
                 </div>
 
@@ -112,7 +116,8 @@
                 <label class="w-full" for="starter">Conversation Starters</label>
                 <div class="w-full">
                     <input pInputText type="text" formControlName="initialConversationStarter"
-                        class="w-full form-control" id="starterInput" placeholder="Enter Starter Value" />
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" id="starterInput"
+                        placeholder="Enter Starter Value" />
                     <p-button styleClass="background-none" type="button" (onClick)="addStarterValue()" label="add more"
                         icon="pi pi-plus" iconPos="left"></p-button>
                     <div *ngIf="overviewForm.get('starter')?.value?.length > 0">
@@ -127,10 +132,12 @@
                 <label class="w-full" for="starter">Key Value</label>
                 <div class="w-full">
                     <div class="flex gap-4">
-                        <input pInputText type="text" formControlName="key" class="w-full form-control" id="keyInput"
+                        <input pInputText type="text" formControlName="key"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" id="keyInput"
                             placeholder="Enter Key" />
-                        <input pInputText type="text" formControlName="value" class="w-full form-control"
-                            id="valueInput" placeholder="Enter Value" />
+                        <input pInputText type="text" formControlName="value"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" id="valueInput"
+                            placeholder="Enter Value" />
                     </div>
                     <p-button styleClass="background-none" type="button" (onClick)="addKeyValue()" label="add more"
                         icon="pi pi-plus" iconPos="left"></p-button>
@@ -149,8 +156,8 @@
             <div class="flex flex-column gap-2">
                 <label class="w-full" for="opening_message">opening_message</label>
                 <div class="w-full">
-                    <textarea rows="3" pInputTextarea class="w-full form-control" id="opening_message"
-                        formControlName="opening_message" placeholder="Enter opening message"
+                    <textarea rows="3" pInputTextarea class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="opening_message" formControlName="opening_message" placeholder="Enter opening message"
                         xnodeTextareaAutoresize></textarea>
                 </div>
             </div>
@@ -158,8 +165,8 @@
             <div class="flex flex-column gap-2">
                 <label class="w-full" for="concluding_message">Concluding_message</label>
                 <div class="w-full">
-                    <textarea rows="3" pInputTextarea class="w-full form-control" id="concluding_message"
-                        formControlName="concluding_message" placeholder="Enter Closing message"
+                    <textarea rows="3" pInputTextarea class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="concluding_message" formControlName="concluding_message" placeholder="Enter Closing message"
                         xnodeTextareaAutoresize></textarea>
                 </div>
             </div>
@@ -167,24 +174,19 @@
             <div class="flex flex-column gap-2">
                 <label class="w-full" for="linkParent">link Parent</label>
                 <div class="w-full">
-                    <p-dropdown styleClass="w-full" formControlName="linkParent" appendTo="body"
-                        (onChange)="onLinkParentChangeHandler($event)" [options]="parentLinkOptionList"
-                        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"
-                        placeholder="Please Select">
+                    <p-dropdown appendTo="body" styleClass="w-full  black-pearl-bg-dropdown"
+                        formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"
+                        [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"
+                        [showClear]="true" placeholder="Please Select">
                         <ng-template pTemplate="header">
-
                             <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
                                 <p-tabPanel *ngFor="let tab of parentLinkTabsItem; let i = index" [header]="tab.title">
                                 </p-tabPanel>
                             </p-tabView>
-
                         </ng-template>
-
                     </p-dropdown>
                 </div>
             </div>
-
-
         </div>
         <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
             <div class="flex align-item-center justify-content-end p-2">
