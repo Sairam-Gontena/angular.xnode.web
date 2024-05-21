@@ -27,11 +27,11 @@
     </div>
 </div>
 
-<div class="w-full border-round-2xl header-stats p-3">
+<div class="w-full border-round-2xl header-stats py-3">
     <ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
-        <div class="grid px-8 my-2">
+        <div class="grid gap-6 px-8 my-2">
             <!-- Agents Card -->
-            <div class="flex col-10 sm:col-6 lg:col-4 xl:col-3" *ngFor="let item of headerData.statsItem">
+            <div class="flex col-10 sm:col-6 md:col-4 lg:col-3 xl:col-2" *ngFor="let item of headerData.statsItem">
                 <p-button styleClass="p-0">
                     <img class="agent-icons" [src]="item.imgPath" alt="" />
                 </p-button>

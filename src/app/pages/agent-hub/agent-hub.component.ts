@@ -63,7 +63,7 @@ export class AgentHubComponent implements OnInit {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         this.agentHubDetailObj?.statsItem.forEach((element: any) => {
-          element.count = response[element.key];
+          element.count = response[element.key] ?? 0;
         });
 
         console.log(response, "response")

@@ -17,7 +17,7 @@
 </p-overlayPanel>
 <div class="card flex flex-column">
   <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
-    [scrollHeight]="verticalScrollHeight" styleClass="border-round-lg">
+    [scrollHeight]="verticalScrollHeight" styleClass="border-round-lg p-1">
     <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
       <div class="flex flex-wrap gap-4 xl:gap-0 xl:justify-content-between p-3 table-header">
         <div class="flex flex-wrap gap-4">
