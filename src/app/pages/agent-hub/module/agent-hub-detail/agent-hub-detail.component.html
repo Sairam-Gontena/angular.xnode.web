@@ -17,6 +17,7 @@
                     [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" [showViewRowData]="true"
                     (changeEvent)="viewHandler($event)" columnWidth="13.8rem" [tableHeaderbgColor]="tableHeaderbgColor"
                     [bgColorRow]="bgColorRow" [agentDataType]="agentDataType"
+                    [actionsOption]="activeIndex > 0 && agentHubDetail?.actionButtonOption"
                     (agentDataTypeChange)="setAgentDataType($event)" [recordType]="recordType"
                     (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
                 <!-- [viewAll]="viewAll" -->

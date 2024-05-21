@@ -38,13 +38,13 @@
             <span class="p-input-icon-left">
               <label class="button searchbutton px-2" for="searchleft" (click)="focusSearchHandler()"><i
                   class="pi pi-search"></i></label>
-              <input pInputText class="search" id="searchleft" type="search" name="q" placeholder="Search"
-                (blur)="focusBlurHandler()" (input)="onInputChange($event)" />
+              <input pInputText class="search" [ngClass]="{'w-10': expandSearch }" id="searchleft" type="search"
+                name="q" placeholder="Search" (blur)="focusBlurHandler()" (input)="onInputChange($event)" />
             </span>
           </div>
         </div>
 
-        <div *ngIf="tableInfo?.showAgentDataType && !expandSearch" class="flex h-auto record-type">
+        <div *ngIf="tableInfo?.showAgentDataType && !expandSearch" class="flex h-auto record-type border-round-md">
           <div class="py-2 px-3 cursor-pointer text-lg font-medium"
             [ngClass]="{'active-agent-data-type' : agentDataType === recordType?.live}"
             (click)="setAgentDataType('live')">
@@ -86,6 +86,11 @@
               showColumnFilterOption.changeHandler &&
                 showColumnFilterOption.changeHandler($event)
             "></xnode-multi-select-checkbox>
+        </div>
+
+        <div *ngIf="actionsOption && !expandSearch">
+          <p-splitButton label="Actions" styleClass="custom-multiselect px-2" appendTo="body"
+            [model]="actionsOption"></p-splitButton>
         </div>
       </div>
     </ng-template>
