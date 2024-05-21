@@ -114,8 +114,6 @@ export class MyProductsComponent implements OnInit {
 
   getConversationById(id: string): void {
     this.conversationService.getConversations('?id=' + id).then((data: any) => {
-      console.log('data>>>>>>>>>>>>>>>>', data);
-
       if (data.data)
         this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: true, toggleConversationPanel: true, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
       this.utils.loadSpinner(false);

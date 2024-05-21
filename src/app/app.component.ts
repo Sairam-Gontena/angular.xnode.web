@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -33,45 +32,29 @@ import { NaviEventParams } from './models/interfaces/navi-event-params';
   providers: [MessageService],
 })
 
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   access_token!: string;
   showDockedNavi: boolean = true;
-  isXnodeLoaded: boolean = false;
   showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   isNaviExpanded: boolean = false;
-  sideWindow: any = document.getElementById('side-window');
   toastObj: any;
   currentUser: any;
   showLimitReachedPopup?: boolean;
-  productAlertPopup: boolean = false;
-  content: any;
-  contentFromNavi: boolean = false;
-  showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
   deepLink: boolean = false;
   colorPallet: any;
-  firstIteration: boolean = false;
-  inXpilotComp: boolean = false;
   product: any;
   newWithNavi: boolean = false;
   componentToShow: string = 'Tasks';
-  mainComponent: string = '';
-  showNaviSpinner: boolean = true;
-  importFilePopupToShow: boolean = false;
   usersList: any;
   showImportFilePopup: boolean = false;
   isFileImported: boolean = false;
   showSummaryPopup: boolean = false;
   convSummary?: OverallSummary;
-  notifObj: any;
-  groupConversations: any;
-  oneToOneConversations: any;
   conversation_id: any;
-  xnodeAppUrl: string = environment.xnodeAppUrl;
   conversationDetails: any;
-  tempObj: any = {};
   naviData!: NaviData;
   conversationId?: string;
   resource_id: any;
@@ -82,7 +65,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   lastPing?: Date = undefined;
   user?: User | null;
 
-  constructor(private domSanitizer: DomSanitizer,
+  constructor(
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
@@ -142,7 +125,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      this.importFilePopupToShow = false;
       this.newWithNavi = false;
       if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_SELECTED) {
         this.naviData = {
@@ -167,8 +149,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_IN_CHAT) {
-        this.isNaviExpanded = true;
-        this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
+        this.isNaviExpanded = msg.msgData.isNaviExpanded;
+        this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: msg.msgData.isNaviExpanded, toggleConversationPanel: msg.msgData.isNaviExpanded, new_with_navi: false, chat_type: 'old-chat' }
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
@@ -189,7 +171,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         this.isNaviExpanded = isNaviExpanded ? isNaviExpanded : msg.msgData?.isNaviExpanded;
         console.log('5');
-        this.showNaviSpinner = false;
       }
       if (msg.msgData && msg.msgType === MessageTypes.NEW_WITH_NAVI) {
         this.showDockedNavi = true
@@ -290,15 +271,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onNaviEvent(event: any, parent: any) {
-    if (!environment.naviAppUrl.includes(event.origin)) { return; }
-    switch (event.data) {
-      case "NAVI_USET_ACTIVE_EVENT":
-        parent.reset()
-        break;
-    }
-  }
-
   childCall(event: NaviEventParams) {
     console.log('From Library: ', event);
     switch (event.message) {
@@ -363,7 +335,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
     this.storageService.removeItem(StorageKeys.Product);
-    this.mainComponent = 'my-products';
     this.showDockedNavi = true;
     this.isNaviExpanded = false;
     this.naviData = { ...this.naviData, conversationDetails: undefined, is_navi_expanded: false, componentToShow: 'Tasks', toggleConversationPanel: false, product: undefined }
@@ -375,7 +346,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.isNaviExpanded = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.naviData = { ...this.naviData, is_navi_expanded: false, toggleConversationPanel: false }
-
   }
 
   async changeTheme(event: any) {
@@ -405,11 +375,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.handleTheme();
     if (!this.naviData.conversationDetails)
       this.defaultNaviData()
-  }
-
-  ngAfterViewInit(): void {
-    console.log('!@!@!@!@ngAfterViewInit');
-    this.isXnodeLoaded = true;
   }
 
   logout(): void {
@@ -464,129 +429,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   closeNavi(): void {
-    // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.showDockedNavi = false;
     localStorage.removeItem('has_insights')
     localStorage.removeItem('app_name')
     this.isNaviExpanded = false;
     this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-    console.log('10');
-  }
-
-  receiveMessage(event: MessageEvent) {
-    if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
-    if (event?.data?.message === 'close-event') {
-      this.closeNavi();
-    }
-    if (event.data.message === 'triggerCustomEvent') {
-      this.showDockedNavi = false;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-    }
-    if (event.data.message === 'close-docked-navi') {
-      this.showDockedNavi = false;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-    }
-    if (event.data.message === 'close-event') {
-      // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-      this.product = undefined;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-      this.showDockedNavi = false;
-      localStorage.removeItem('has_insights')
-      localStorage.removeItem('app_name')
-      this.isNaviExpanded = false;
-      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-      console.log('11');
-    }
-    if (event.data.message === 'expand-navi') {
-      this.isNaviExpanded = true;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-    }
-
-    if (event.data.message === 'logout') {
-      this.logoutFromTheApp()
-    }
-    if (event.data.message === 'contract-navi') {
-      this.isNaviExpanded = false;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-    }
-    if (event.data.message === 'triggerProductPopup') {
-      this.content = event.data.data;
-      let data = {
-        popup: true,
-        data: this.content,
-      };
-      this.utilsService.toggleProductAlertPopup(data);
-    }
-    if (event.data.message === 'view-summary-popup') {
-      this.conversation_id = event.data.conversation_id;
-      this.getConversation();
-      this.utilsService.loadSpinner(true);
-    }
-    if (event.data.message === 'triggerRouteToMyProducts') {
-      const itemId = event.data.id;
-      localStorage.setItem('record_id', itemId);
-      this.utilsService.saveProductId(itemId);
-      const metaData = localStorage.getItem('meta_data');
-      if (metaData) {
-        let templates = JSON.parse(metaData);
-        const product = templates?.filter((obj: any) => {
-          return obj.id === itemId;
-        })[0];
-        localStorage.setItem('app_name', product.title);
-        localStorage.setItem(
-          'product_url',
-          product.url && product.url !== '' ? product.url : ''
-        );
-        localStorage.setItem('product', JSON.stringify(product));
-      }
-      const newUrl = this.xnodeAppUrl + '#/dashboard';
-      this.showDockedNavi = false;
-      this.isNaviExpanded = false;
-      window.location.href = newUrl;
-    }
-    if (event.data.message === 'expand-navi') {
-      this.isNaviExpanded = true;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-    }
-    if (event.data.message === 'contract-navi') {
-      this.isNaviExpanded = false;
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-    }
-    if (event?.data?.message === 'change-app' && event.data.product) {
-      const product = event.data.product;
-      this.storageService.saveItem(StorageKeys.Product, product);
-      this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-      location.reload()
-    } else
-      if (event?.data?.message === 'change-app' && !event.data.product) {
-
-        this.storageService.removeItem(StorageKeys.Product);
-        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
-        this.router.navigate(['/my-products']);
-      }
-      else if (event?.data?.message === 'change-product-context') {
-        const conversationDetails = event.data.conversationDetails;
-        let product = localStorage.getItem('meta_data');
-        if (product) {
-          let allProducts = JSON.parse(product);
-          product = allProducts.find((p: any) => p.id == conversationDetails.productId);
-        }
-        this.storageService.saveItem(StorageKeys.Product, product);
-        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-        this.router.navigate(['/dashboard']);
-        this.showDockedNavi = false;
-        this.isNaviExpanded = false;
-      }
-    if (event.data.message === 'import-file-popup') {
-      this.conversation_id = event.data?.conversation_id;
-      this.showImportFilePopup = true;
-      localStorage.setItem('conversationId', event.data.id)
-    }
-    if (event?.data?.message === 'clear_deep_link_storage') {
-      this.storageService.removeItem(event?.data?.clearStorage);
-    }
   }
 
   async handleTheme(): Promise<void> {
@@ -694,117 +542,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
   }
 
-  loadIframeUrl(): void {
-    if (window?.addEventListener) {
-      window?.addEventListener('message', (event) => {
-        // if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-        //   return;
-        // }
-        if (event.data.message === 'triggerCustomEvent') {
-          this.showDockedNavi = false;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-        }
-        if (event.data.message === 'close-docked-navi') {
-          this.showDockedNavi = false;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-        }
-        if (event.data.message === 'close-event') {
-          // this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-          this.product = undefined;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-          this.showDockedNavi = false;
-          localStorage.removeItem('has_insights')
-          localStorage.removeItem('app_name')
-          this.isNaviExpanded = false;
-          this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-          console.log('1');
-        }
-        if (event.data.message === 'expand-navi') {
-          this.isNaviExpanded = true;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-        }
-        if (event.data.message === 'contract-navi') {
-          this.isNaviExpanded = false;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-        }
-        if (event.data.message === 'triggerProductPopup') {
-          this.content = event.data.data;
-          let data = {
-            popup: true,
-            data: this.content,
-          };
-          this.utilsService.toggleProductAlertPopup(data);
-        }
-        if (event.data.message === 'view-summary-popup') {
-          this.conversation_id = event.data.conversation_id;
-          this.getConversation();
-          this.utilsService.loadSpinner(true);
-        }
-        // if (event.data.message === 'change-app') {
-        //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
-        //   this.utilsService.saveProductId(event.data.id);
-        //   this.router.navigate(['/overview']);
-        //   this.utilsService.productContext(true);
-        // }
-        if (event.data.message === 'triggerRouteToDashboard') {
-          const itemId = event.data.id;
-          localStorage.setItem('record_id', itemId);
-          this.utilsService.saveProductId(itemId);
-          const metaData = localStorage.getItem('meta_data');
-          if (metaData) {
-            let templates = JSON.parse(metaData);
-            const product = templates?.filter((obj: any) => {
-              return obj.id === itemId;
-            })[0];
-            localStorage.setItem('app_name', product.title);
-            localStorage.setItem(
-              'product_url',
-              product.url && product.url !== '' ? product.url : ''
-            );
-            localStorage.setItem('product', JSON.stringify(product));
-          }
-          const newUrl = this.xnodeAppUrl + '#/dashboard';
-          this.showDockedNavi = false;
-          this.isNaviExpanded = false;
-          window.location.href = newUrl;
-        }
-      });
-    }
-
-    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    if (window?.addEventListener) {
-      iframe?.addEventListener('load', () => {
-        const contentWindow = iframe.contentWindow;
-        if (contentWindow) {
-          window.addEventListener('message', (event) => {
-            // if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-            //   return;
-            // }
-            if (event.data?.message) {
-              switch (event.data.message) {
-                case 'triggerCustomEvent':
-                  this.showDockedNavi = false;
-                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-                  break;
-                case 'close-docked-navi':
-                  this.showDockedNavi = false;
-                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-                  break;
-                case 'expand-navi':
-                  this.isNaviExpanded = true;
-                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-                  break;
-                case 'contract-navi':
-                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-                  break;
-              }
-            }
-          });
-        }
-      });
-    }
-  }
-
   refreshCurrentRoute(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -817,7 +554,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.showProductStatusPopup = false;
   }
 
-  makeTrustedUrl(productEmail?: string): void {
+  prepareNaviData(): void {
     const access_token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
     const product: any = this.storageService.getItem(StorageKeys.Product);
@@ -848,46 +585,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getMeComponent() {
-    let comp = '';
-    switch (this.router.url) {
-      case '/my-products':
-      case '/':
-        comp = 'my-products';
-        break;
-      case '/dashboard':
-        comp = 'dashboard';
-        break;
-      case '/overview':
-        comp = 'overview';
-        break;
-      case '/usecases':
-        comp = 'usecase';
-        break;
-      case '/configuration/workflow/overview':
-        comp = 'xflows';
-        break;
-      case '/configuration/data-model/overview':
-        comp = 'data_model';
-        break;
-      case '/operate':
-        comp = 'operate';
-        break;
-      case '/publish':
-        comp = 'publish';
-        break;
-      case '/specification':
-        comp = 'specification';
-        break;
-      case '/operate/change/history-log':
-        comp = 'history-log';
-        break;
-      default:
-        break;
-    }
-    return comp;
-  }
-
   openNavi() {
     this.prepareDataOnOpeningNavi()
   }
@@ -898,7 +595,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (product)
       this.componentToShow = 'Chat';
     this.newWithNavi = false;
-    this.makeTrustedUrl();
+    this.prepareNaviData();
   }
 
   getAllUsers() {
@@ -915,48 +612,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.naviData.users = response.data;
       })
     }
-  }
-
-  isUserExists() {
-    const currentUser = localStorage.getItem('currentUser');
-    return currentUser;
-  }
-
-  toggleSideWindow() {
-    this.showDockedNavi = !this.showDockedNavi;
-    const chatbotContainer = document.getElementById(
-      'side-window'
-    ) as HTMLElement;
-    chatbotContainer.classList.remove('open');
-    chatbotContainer.classList.add('chatbot-closing');
-    setTimeout(() => {
-      chatbotContainer.style.display = 'none';
-      chatbotContainer.classList.remove('chatbot-closing');
-    }, 1000);
-  }
-
-  closeSideWindow() {
-    this.showDockedNavi = false;
-  }
-
-  showSideMenu() {
-    const hashWithoutParams = window.location.hash.split('?')[0];
-    return (
-      hashWithoutParams === '#/configuration/data-model/overview' ||
-      hashWithoutParams === '#/usecases' ||
-      hashWithoutParams === '#/specification' ||
-      hashWithoutParams === '#/overview' ||
-      hashWithoutParams === '#/dashboard' ||
-      hashWithoutParams === '#/operate' ||
-      hashWithoutParams === '#/publish' ||
-      hashWithoutParams === '#/activity' ||
-      hashWithoutParams === '#/configuration/workflow/overview' ||
-      hashWithoutParams === '#/admin/user-invitation' ||
-      hashWithoutParams === '#/admin/user-approval' ||
-      hashWithoutParams === '#/configuration/workflow/overview' ||
-      hashWithoutParams === '#/logs' ||
-      hashWithoutParams === '#/operate/change/history-log'
-    );
   }
 
   sendEmailNotificationToTheUser(): void {
