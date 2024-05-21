@@ -20,7 +20,7 @@
     [scrollHeight]="verticalScrollHeight" styleClass="border-round-lg p-1">
     <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
       <div class="flex flex-wrap gap-4 xl:gap-0 xl:justify-content-between p-3 table-header">
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-4" [ngClass]="{'w-full': expandSearch}">
           <xnode-multi-select-checkbox *ngIf="searchFilterOptions?.showFilterOption"
             [filter]="searchFilterOptions.filter ?? false" [showToggleAll]="searchFilterOptions.showToggleAll ?? false"
             [showHeader]="searchFilterOptions.showHeader ?? false" [options]="searchFilterOptions.options ?? []"
@@ -28,13 +28,28 @@
             [optionLabel]="searchFilterOptions.optionLabel ?? 'name'"
             [styleClass]="searchFilterOptions.styleClass ?? ''"></xnode-multi-select-checkbox>
 
-          <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
+          <!-- <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
             <i class="pi pi-search"></i>
             <input pInputText type="text" class="table-search" placeholder="Search " (input)="onInputChange($event)" />
-          </span>
+          </span> -->
+
+          <!-- <div class="search-container">
+            <input class="search" id="searchleft" type="search" name="q" placeholder="Search" />
+            <label class="button searchbutton" for="searchleft"><i class="pi pi-search"></i></label>
+          </div> -->
+
+
+          <div class="search-container flex-auto">
+            <span class="p-input-icon-left">
+              <label class="button searchbutton px-2" for="searchleft" (click)="focusSearchHandler()"><i
+                  class="pi pi-search"></i></label>
+              <input pInputText class="search" id="searchleft" type="search" name="q" placeholder="Search"
+                (blur)="focusBlurHandler()" (input)="onInputChange($event)" />
+            </span>
+          </div>
         </div>
 
-        <div *ngIf="tableInfo?.showAgentDataType" class="flex h-auto record-type">
+        <div *ngIf="tableInfo?.showAgentDataType && !expandSearch" class="flex h-auto record-type">
           <div class="py-2 px-3 cursor-pointer text-lg font-medium"
             [ngClass]="{'active-agent-data-type' : agentDataType === recordType?.live}"
             (click)="setAgentDataType('live')">
@@ -65,7 +80,7 @@
         </div>
 
         <div class="flex align-items-center px-2" [ngClass]="searchFilterOptions.styleClass ?? ''"
-          *ngIf="showColumnFilterOption?.showFilterOption">
+          *ngIf="showColumnFilterOption?.showFilterOption && !expandSearch">
           <span>Columns: </span>
           <xnode-multi-select-checkbox [filter]="showColumnFilterOption.filter ?? false"
             [showToggleAll]="showColumnFilterOption.showToggleAll ?? false"

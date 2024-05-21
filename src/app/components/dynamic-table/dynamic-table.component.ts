@@ -42,6 +42,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() showViewRowData = false;
   @Input() agentDataType = 'live'
   @Input() recordType!: any;
+  @Input() expandSearch = false;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
   @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
@@ -192,5 +193,13 @@ export class DynamicTableComponent implements OnInit {
   setAgentDataType(type: any) {
     this.agentDataType = type
     this.agentDataTypeChange.emit(type)
+  }
+
+  focusSearchHandler() {
+    this.expandSearch = true
+  }
+
+  focusBlurHandler() {
+    this.expandSearch = false
   }
 }
