@@ -10,12 +10,9 @@ import { cloneDeep, find, orderBy, sortBy } from 'lodash';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
-import { ConversationApiService } from 'src/app/api/conversation-api.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-my-products',
@@ -94,6 +91,9 @@ export class MyProductsComponent implements OnInit {
       msgData: false,
     });
     this.route.queryParams.subscribe((params: any) => {
+      if (params?.entity) {
+        this.getConversationById(params?.conversation_id)
+      }
       if (params.product === 'created') {
         this.utils.loadToaster({
           severity: 'success',
@@ -110,6 +110,19 @@ export class MyProductsComponent implements OnInit {
     this.utils.prepareIframeUrl(true);
     this.getRecentActivities();
     this.getColumnDef();
+  }
+
+  getConversationById(id: string): void {
+    this.conversationService.getConversations('?id=' + id).then((data: any) => {
+      console.log('data>>>>>>>>>>>>>>>>', data);
+
+      if (data.data)
+        this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: true, toggleConversationPanel: true, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      console.log(err, 'err')
+      this.utils.loadSpinner(false);
+    })
   }
 
   removeProductDetailsFromStorage(): void {
