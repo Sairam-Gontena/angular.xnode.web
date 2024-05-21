@@ -27,6 +27,13 @@ stages:
             inputs:
               workingFile: .npmrc
             displayName: "Authenticate with Azure Artifacts"
+          
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'npm install navi-web -f'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: Bash@3
             displayName: "Install Node Packages"
