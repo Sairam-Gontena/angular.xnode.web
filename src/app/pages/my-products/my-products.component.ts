@@ -56,6 +56,10 @@ export class MyProductsComponent implements OnInit {
   loading: boolean = false;
   showImportFilePopup: boolean = false;
   tableFilterEvent: any;
+  activity: any;
+  selectedActivity: any;
+  selectedAllActivity: any;
+  allActivity: any;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -85,6 +89,18 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activity = [
+      { name: 'Your Activity', code: 'your' },
+      { name: 'Teams Activity', code: 'team' },
+    ];
+    this.allActivity = [
+      { name: 'Conversation', code: 'conversation' },
+      { name: 'Thread', code: 'thread' },
+      { name: 'Task', code: 'task' },
+      { name: 'Comment', code: 'comment' },
+      { name: 'Change Request', code: 'change Request' },
+      { name: 'Resource', code: 'resource' },
+    ]
     this.utils.loadSpinner(true);
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,

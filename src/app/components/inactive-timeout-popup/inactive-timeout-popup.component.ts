@@ -7,7 +7,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 })
 export class InActiveTimeoutPopupComponent {
   @Input() visible: any;
-  @Input() countdown?: number;
+  @Input() countdown?: any;
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() logout = new EventEmitter<boolean>();
 
