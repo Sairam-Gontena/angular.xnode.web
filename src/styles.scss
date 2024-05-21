@@ -475,12 +475,17 @@ body {
 }
 
 .customHeaderDynamicDialog {
+  background: var(--black-pearl);
+  border-color: var(--black-pearl);
+
   .p-dialog-content {
     padding: 0px;
+    background: var(--black-pearl);
 
     .custom-modal-body {
       height: calc(100vh - 180px);
       overflow: auto;
+      border-color: #424B57;
     }
   }
 }
@@ -497,6 +502,36 @@ body {
   }
 }
 
+.black-pearl-bg-input {
+  background-color: var(--black-pearl);
+  border-color: #424B57;
+
+  &:enabled {
+    &:hover {
+      border-color: #424B57;
+    }
+  }
+}
+
+.black-pearl-bg-dropdown {
+  background: var(--black-pearl);
+  border: 1px solid #424B57;
+}
+
+.blackPearlDropdownPanel {
+  background: var(--black-pearl);
+  border-color: #424B57;
+
+  .p-dropdown-header {
+    background: var(--black-pearl);
+    border-color: #424B57;
+
+    .p-inputtext {
+      background: var(--black-pearl);
+      border-color: #424B57;
+    }
+  }
+}
 
 // Agentplayground
 

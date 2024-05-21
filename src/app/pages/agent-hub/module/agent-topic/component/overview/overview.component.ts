@@ -75,6 +75,7 @@ export class TopicOverviewComponent {
     if (this.dynamicDialogConfig.data) {
       this.overViewObj.componentDetail = this.dynamicDialogConfig.data;
       this.overViewObj.componentDetail.enableDialog = true;
+      this.overViewObj.formEditable = true;
     }
   }
 

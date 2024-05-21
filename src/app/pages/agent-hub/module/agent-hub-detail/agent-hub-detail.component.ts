@@ -313,10 +313,20 @@ export class AgentHubDetailComponent {
   }
 
   onTabSwitchHandler(event: TabViewChangeEvent) {
-
-    this.agentDataType = this.recordType.live
-
+    this.agentDataType = this.recordType.live;
     this.getAllAgentList()
+    this.updateHeaderOption();
+  }
+
+  updateHeaderOption() {
+    let item = this.tabItems[this.activeIndex];
+    if (item.identifier in this.headerActionBtnOption) {
+      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
+    } else {
+      console.error('Invalid identifier:', item.identifier);
+      // Handle the error appropriately
+    }
   }
 
   setAgentDataType(event: any) {

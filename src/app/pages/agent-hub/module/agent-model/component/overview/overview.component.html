@@ -24,30 +24,32 @@
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="name">Name</label>
                     <div class="w-full">
-                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
-                            formControlName="name" placeholder="Name" />
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                            id="name" formControlName="name" placeholder="Name" />
                     </div>
                 </div>
                 <div class="flex flex-column align-items-center mb-3">
                     <label class="w-full mb-1" for="description">Description</label>
                     <div class="w-full">
-                        <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                            formControlName="description" placeholder="Description"></textarea>
+                        <textarea pInputTextarea rows="6" id="description"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="description"
+                            placeholder="Description"></textarea>
                     </div>
                 </div>
                 <div formGroupName="model_configuration">
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="temperature">Temperature</label>
                         <div class="w-full">
-                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="temperature"
-                                formControlName="temperature" placeholder="Temperature" />
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                                id="temperature" formControlName="temperature" placeholder="Temperature" />
                         </div>
                     </div>
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
                         <div class="w-full">
-                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="maxcontextlength"
-                                formControlName="maxcontextlength" placeholder="Max Context Length" />
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                                id="maxcontextlength" formControlName="maxcontextlength"
+                                placeholder="Max Context Length" />
                         </div>
                     </div>
                 </div>
@@ -65,7 +67,8 @@
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="model">Model</label>
                         <div class="w-full">
-                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="model" [filter]="true"
+                            <p-dropdown appendTo="body" styleClass="w-full black-pearl-bg-dropdown"
+                                panelStyleClass="blackPearlDropdownPanel" formControlName="model" [filter]="true"
                                 filterBy="name" [options]="overViewObj.modelOptions" optionLabel="name"
                                 placeholder="Select provider"></p-dropdown>
                         </div>
@@ -73,7 +76,8 @@
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="version">Version</label>
                         <div class="w-full">
-                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
+                            <p-dropdown appendTo="body" styleClass="w-full black-pearl-bg-dropdown"
+                                panelStyleClass="blackPearlDropdownPanel" formControlName="version" [filter]="true"
                                 filterBy="name" [options]="overViewObj.modelOptions" optionLabel="version"
                                 placeholder="Select version"></p-dropdown>
                         </div>
@@ -81,7 +85,8 @@
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="description">Description</label>
                         <div class="w-full">
-                            <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
+                            <textarea pInputTextarea rows="6" id="description"
+                                class="w-full p-2 border-1 border-round black-pearl-bg-input"
                                 formControlName="description" placeholder="Description"></textarea>
                         </div>
                     </div>
@@ -90,14 +95,15 @@
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="model">Model</label>
                         <div class="w-full">
-                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="model"
-                                formControlName="model" placeholder="e.g. https://llm.example.com" />
+                            <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                                id="model" formControlName="model" placeholder="e.g. https://llm.example.com" />
                         </div>
                     </div>
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="version">Version</label>
                         <div class="w-full">
-                            <p-dropdown appendTo="body" styleClass="w-full" formControlName="version" [filter]="true"
+                            <p-dropdown appendTo="body" styleClass="w-full black-pearl-bg-dropdown"
+                                panelStyleClass="blackPearlDropdownPanel" formControlName="version" [filter]="true"
                                 filterBy="name" [options]="" optionLabel="name"
                                 placeholder="Select version"></p-dropdown>
                         </div>
@@ -117,14 +123,16 @@
                                 <div class="flex flex-column align-items-center mb-3 mr-3">
                                     <label class="w-full mb-1" for="temperature">Temperature</label>
                                     <div class="w-full">
-                                        <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                        <input pInputText type="text"
+                                            class="w-full p-2 border-1 border-round black-pearl-bg-input"
                                             id="temperature" formControlName="temperature" />
                                     </div>
                                 </div>
                                 <div class="flex flex-column align-items-center mb-3">
                                     <label class="w-full mb-1" for="maxcontextlength">Max Context Length</label>
                                     <div class="w-full">
-                                        <input pInputText type="text" class="w-full p-2 border-1 border-round"
+                                        <input pInputText type="text"
+                                            class="w-full p-2 border-1 border-round black-pearl-bg-input"
                                             id="maxcontextlength" formControlName="maxcontextlength" />
                                     </div>
                                 </div>
@@ -134,7 +142,8 @@
                     <div class="flex flex-column align-items-center mb-3">
                         <label class="w-full mb-1" for="description">Description</label>
                         <div class="w-full">
-                            <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
+                            <textarea pInputTextarea rows="6" id="description"
+                                class="w-full p-2 border-1 border-round black-pearl-bg-input"
                                 formControlName="description" placeholder="Description"></textarea>
                         </div>
                     </div>
