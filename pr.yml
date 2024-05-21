@@ -36,7 +36,7 @@ jobs:
         scannerMode: 'CLI'
         configMode: 'manual'
         cliProjectKey: 'xnode'
-        cliProjectName: 'python.navi.api'
+        cliProjectName: 'angular.xnode.web'
         cliSources: '.'
         extraProperties: |
           sonar.exclusions=**/*.bin
