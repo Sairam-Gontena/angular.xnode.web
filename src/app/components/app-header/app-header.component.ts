@@ -143,6 +143,7 @@ export class AppHeaderComponent implements OnInit {
 
   toggleFeedbackPopup() {
     this.utilsService.loadSpinner(true);
+    console.log(this.selectedPopup, "FEED BACK POP UP")
     this.capture();
     this.auditUtil.postAudit('FEEDBACK', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
@@ -161,18 +162,48 @@ export class AppHeaderComponent implements OnInit {
   }
 
   capture(): void {
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-          this.utilsService.showProductStatusPopup(false);
-          this.selectedPopup = 'customer-feedback';
-          this.utilsService.loadSpinner(false);
-        })
-      )
-      .subscribe();
+    if (this.router.url === '/specification') {
+      console.log(this.router.url, 'URL spec')
+      var cropDimensions: any
+      cropDimensions = { x: 10, y: 10, width: 200, height: 200 };
+      this.captureService
+        .getImage(document.body, false, cropDimensions)
+        .pipe(
+          tap((img) => {
+            this.screenshot = img;
+            this.utilsService.showProductStatusPopup(false);
+            this.utilsService.loadSpinner(false);
+          })
+        )
+        .subscribe();
+    } else {
+      this.captureService
+        .getImage(document.body, true)
+        .pipe(
+          tap((img) => {
+            this.screenshot = img;
+            this.utilsService.showProductStatusPopup(false);
+            this.selectedPopup = 'customer-feedback';
+            this.utilsService.loadSpinner(false);
+          })
+        )
+        .subscribe();
+    }
+
   }
+  // capture(): void {
+  //   var cropDimensions: any = { x: 10, y: 10, width: 200, height: 200 }; // Define your crop dimensions here
+  //   this.captureService
+  //     .getImage(document.body, true, cropDimensions)
+  //     .pipe(
+  //       tap((img) => {
+  //         this.screenshot = img;
+  //         this.utilsService.showProductStatusPopup(false);
+  //         this.utilsService.loadSpinner(false);
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
