@@ -38,7 +38,7 @@
     </p-tabView>
 
     <ng-template #dynamicTable>
-      <div class="w-full table-height" *ngIf="agentDetailsModel.activeIndex > 1">
+      <div class="w-full" *ngIf="agentDetailsModel.activeIndex > 1">
         <xnode-dynamic-table [inputData]="agentDetailsModel.tableData" [cols]="agentDetailsModel.columns"
           [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
           [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
@@ -53,7 +53,7 @@
 
   <!-- overview html -->
   <ng-template #overview>
-    <div class="table-height">
+    <div class="">
       <xnode-agent-overview formType="overview"
         [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
@@ -61,7 +61,7 @@
 
   <!-- instruction html -->
   <ng-template #instruction>
-    <div class="table-height">
+    <div class="">
       <xnode-agent-overview formType="instruction"
         [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
