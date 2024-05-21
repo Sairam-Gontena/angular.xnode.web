@@ -1,15 +1,15 @@
 <div>
     <div *ngIf="formType == 'overview'; else elseBlock" class="w-12 overflow-auto">
-        <div class="p-6 border-1 border-gray-600 border-round">
-            <div class="w-full ">
+        <div class="p-6 px-8">
+            <div class="w-full border-1 border-gray-600 border-round py-4">
                 <div class="w-full pb-3">
-                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-9">
+                    <div class="flex px-8">
                         <label class="col-12 sm:col-4 md:col-3">Name</label>
                         <div class="col-12 sm:col-8 md:col-9">{{overViewObj.agentData?.name ?? 'N/A'}}</div>
                     </div>
                 </div>
-                <div class="w-full pb-3">
-                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-9">
+                <div class="w-full">
+                    <div class="flex px-8">
                         <label class="col-12 sm:col-4 md:col-3">Description</label>
                         <div class="col-12 sm:col-8 md:col-9">{{overViewObj.agentData?.description ?? 'N/A'}}</div>
                     </div>
@@ -33,7 +33,7 @@
                 </div>
             </div> -->
 
-            <div class="grid px-8 my-2">
+            <div class="grid px-8 py-4 border-1 border-gray-600 border-round m-0">
                 <!-- Agents Card -->
                 <div class="flex col-10 sm:col-6 lg:col-4 xl:col-4" *ngFor="let item of statsItem">
                     <p-button styleClass="p-0">
