@@ -43,7 +43,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/12846-npm-lib'))
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -51,7 +51,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/12846-npm-lib'))
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
