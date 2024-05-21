@@ -324,4 +324,11 @@ export class AgentHubDetailComponent {
     this.getAllAgentList()
   }
 
+
+  //pagination event for table
+  paginatorViewHandler(item: any) {
+    // let urlParam = this.makeTableParamObj(item);
+    // this.changeURL(this.activeIndex, urlParam);
+    // this.getAgentDetailByCategory(urlParam);
+  }
 }

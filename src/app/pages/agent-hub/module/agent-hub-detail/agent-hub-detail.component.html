@@ -17,7 +17,8 @@
                     [paginatorInfo]="paginatorInfo" [searchFilterOptions]="searchFilterOptions" [showViewRowData]="true"
                     (changeEvent)="viewHandler($event)" columnWidth="13.8rem" [tableHeaderbgColor]="tableHeaderbgColor"
                     [bgColorRow]="bgColorRow" [agentDataType]="agentDataType"
-                    (agentDataTypeChange)="setAgentDataType($event)" [recordType]="recordType"></xnode-dynamic-table>
+                    (agentDataTypeChange)="setAgentDataType($event)" [recordType]="recordType"
+                    (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
                 <!-- [viewAll]="viewAll" -->
             </div>
             <!-- For now Comment below code, uncomment once the functionality is decided -->

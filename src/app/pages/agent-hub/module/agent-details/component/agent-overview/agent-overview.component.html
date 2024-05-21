@@ -1,0 +1,119 @@
+<div>
+    <div *ngIf="formType == 'overview'; else elseBlock" class="w-12 overflow-auto">
+        <div class="p-6 border-1 border-gray-600 border-round">
+            <div class="w-full ">
+                <div class="w-full pb-3">
+                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-9">
+                        <label class="col-12 sm:col-4 md:col-3">Name</label>
+                        <div class="col-12 sm:col-8 md:col-9">{{overViewObj.agentData?.name ?? 'N/A'}}</div>
+                    </div>
+                </div>
+                <div class="w-full pb-3">
+                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-9">
+                        <label class="col-12 sm:col-4 md:col-3">Description</label>
+                        <div class="col-12 sm:col-8 md:col-9">{{overViewObj.agentData?.description ?? 'N/A'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full my-4">
+                <hr class="border-white-alpha-10" />
+            </div>
+
+            <!-- <div class="w-12 sm:w-10 sm:mx-auto md:w-8">
+                <div class="flex agent-summary flex-wrap gap-8">
+                    <div class="flex gap-2 w-9rem" *ngFor="let item of statsItem">
+                        <p-button styleClass="p-0">
+                            <img class="agent-icons" [src]="item.imgPath" alt="" />
+                        </p-button>
+                        <div class="flex flex-column">
+                            <div class="font-semibold text-base stats-label">{{ item.label }}</div>
+                            <div class="text-4xl font-bold">{{ item.count }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="grid px-8 my-2">
+                <!-- Agents Card -->
+                <div class="flex col-10 sm:col-6 lg:col-4 xl:col-4" *ngFor="let item of statsItem">
+                    <p-button styleClass="p-0">
+                        <img class="agent-icons" [src]="item.imgPath" alt="" />
+                    </p-button>
+                    <div class="flex flex-column ml-2">
+                        <div class="font-semibold text-base stats-label">{{ item.label }}</div>
+                        <div class="text-4xl font-bold">{{ item.count }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #elseBlock>
+        <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
+            <div class="col-12 p-3 sm:col-10 md:col-8 lg:col-6 sm:mx-auto">
+                <div class="flex flex-column align-items-center mb-3">
+                    <label class="w-full mb-1" for="name">Name</label>
+                    <div class="w-full">
+                        <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
+                            formControlName="name" placeholder="Name" />
+                    </div>
+                </div>
+
+                <div class="flex flex-column align-items-center mb-3">
+                    <label class="w-full mb-1" for="description">Description</label>
+                    <div class="w-full">
+                        <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
+                            formControlName="description" placeholder="Description"></textarea>
+                    </div>
+                </div>
+
+                <div class="w-full my-4">
+                    <hr class="border-white-alpha-10" />
+                </div>
+
+                <div class="flex align-items-center mb-3">
+                    <div class="w-5 border-2 border-gray-600 border-round pr-2">
+                        <p-dropdown [options]="instructionOption" styleClass="w-full" formControlName="instruction"
+                            optionLabel="name" (onChange)="onChangeInstruction($event)"></p-dropdown>
+                    </div>
+                </div>
+                <ng-container *ngIf="enableGeneralInstruction">
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">General Task</label>
+                        <div class="w-full">
+                            <textarea pInputTextarea rows="6" id="general_task" class="w-full p-2 border-1 border-round"
+                                formControlName="general_task"
+                                placeholder="If No Specific Task is Requested : Mention Task"></textarea>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!enableGeneralInstruction">
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">Specific Instruction</label>
+                        <div class="w-full">
+                            <input pInputText type="text" class="text-base p-2 border-1 border-round w-full"
+                                id="specific_instruction" formControlName="specific_instruction"
+                                placeholder="In particular, your task is to <Specific Task Description>" />
+                        </div>
+                    </div>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">Missing Information</label>
+                        <div class="w-full">
+                            <textarea pInputTextarea rows="6" id="missing_information"
+                                class="text-base p-2 border-1 border-round w-full" formControlName="missing_information"
+                                placeholder="If you think you are missing information :"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex flex-column align-items-center mb-3">
+                        <label class="w-full mb-1" for="description">Answer Format</label>
+                        <div class="w-full">
+                            <textarea pInputTextarea rows="6" id="answer_format"
+                                class="text-base p-2 border-1 border-round w-full" formControlName="answer_format"
+                                placeholder="You must Format your answer as follows :"></textarea>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </form>
+    </ng-template>
+</div>
