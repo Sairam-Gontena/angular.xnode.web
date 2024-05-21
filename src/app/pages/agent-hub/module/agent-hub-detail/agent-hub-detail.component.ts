@@ -129,7 +129,7 @@ export class AgentHubDetailComponent {
     {
       idx: 4,
       title: 'Knowledge',
-      value: 'resource/resources-by-user',
+      value: 'resources-by-user',
       identifier: agentName.knowledge,
     },
     { idx: 5, title: 'Models', value: 'model', identifier: agentName.model },
@@ -241,7 +241,6 @@ export class AgentHubDetailComponent {
     //   console.error('Error fetching agent list:', error);
     // }
 
-
     let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
       urlParam: any = {
         url: url,
@@ -253,24 +252,50 @@ export class AgentHubDetailComponent {
           page_size: this.paginatorInfo.perPage
         }
       }
-    this.utilsService.loadSpinner(true);
-    this.agentHubService.getAllAgent(urlParam).subscribe({
-      next: (response: any) => {
-        if (response) {
-          this.tableData = response.data as ITableDataEntry[];
-          this.paginatorInfo.page = response.page;
-          this.paginatorInfo.perPage = response.per_page;
-          this.paginatorInfo.totalRecords = response.total_items;
-          this.paginatorInfo.totalPages = response.total_pages;
-        } else if (response?.detail) {
-          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+
+    if (this.activeIndex == 4) {
+      urlParam.url = `/resource/${endpoint}`
+      urlParam.params.accountId = this.userInfo.account_id
+      urlParam.params.userId = this.userInfo.user_id
+
+      this.utilsService.loadSpinner(true);
+      this.agentHubService.getResouceData(urlParam).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.tableData = response.data as ITableDataEntry[];
+            this.paginatorInfo.page = response.page;
+            this.paginatorInfo.perPage = response.per_page;
+            this.paginatorInfo.totalRecords = response.total_items;
+            this.paginatorInfo.totalPages = response.total_pages;
+          } else if (response?.detail) {
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+          }
+          this.utilsService.loadSpinner(false);
+        }, error: (error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+          this.utilsService.loadSpinner(false);
         }
-        this.utilsService.loadSpinner(false);
-      }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
-        this.utilsService.loadSpinner(false);
-      }
-    })
+      })
+    } else {
+      this.utilsService.loadSpinner(true);
+      this.agentHubService.getAllAgent(urlParam).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.tableData = response.data as ITableDataEntry[];
+            this.paginatorInfo.page = response.page;
+            this.paginatorInfo.perPage = response.per_page;
+            this.paginatorInfo.totalRecords = response.total_items;
+            this.paginatorInfo.totalPages = response.total_pages;
+          } else if (response?.detail) {
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+          }
+          this.utilsService.loadSpinner(false);
+        }, error: (error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+          this.utilsService.loadSpinner(false);
+        }
+      })
+    }
   }
 
   agentTabDropDownHandler() {

@@ -60,6 +60,19 @@ export class AgentHubService extends BaseApiService {
     return this.getHttp.get<any>(this.apiUrl + urlParam.url, requestOptions);
   }
 
+  getResouceData(urlParam: any): Observable<any> {
+    let url = environment.apiUrl
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.get<any>(url + environment.endpoints.conversation + urlParam.url, requestOptions);
+  }
+
+
   // getAgentCount({ endpoint, query }: { endpoint: string, query?: Record<string, string> }) {
   //   let queryParams = new URLSearchParams(query).toString();
   //   let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
