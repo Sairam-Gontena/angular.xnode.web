@@ -25,6 +25,12 @@
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Resource'">
                                 <img src="../../assets/images/Resource.svg" class="mr-2" alt="image" />
                             </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Product_Spec'">
+                                <img src="../../assets/images/SpecUpdate.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Product_Version'">
+                                <img src="../../assets/images/SpecVersion.svg" class="mr-2" alt="image" />
+                            </div>
                             <div class="flex flex-column ml-2">
                                 <div class="font-normal text-base align-items-start">{{ rowData['title'] }}</div>
                                 <div class="font-normal activity-id align-items-start mt-2">{{ rowData['shortId'] }}
