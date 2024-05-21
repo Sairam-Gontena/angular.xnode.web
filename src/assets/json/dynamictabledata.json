@@ -586,15 +586,15 @@
         "columns": [
           {
             "idx": 1,
-            "field": "idx",
+            "field": "type",
             "filter": false,
-            "header": "ID",
+            "header": "Type",
             "sortable": true,
             "width": "100px"
           },
           {
             "idx": 2,
-            "field": "name",
+            "field": "title",
             "filter": false,
             "header": "Name",
             "sortable": true,
@@ -602,7 +602,7 @@
           },
           {
             "idx": 3,
-            "field": "source",
+            "field": "filePath",
             "filter": false,
             "header": "Source",
             "sortable": true,
@@ -618,7 +618,7 @@
           },
           {
             "idx": 5,
-            "field": "shared_on",
+            "field": "createdOn",
             "filter": false,
             "header": "Shared On",
             "sortable": true,
