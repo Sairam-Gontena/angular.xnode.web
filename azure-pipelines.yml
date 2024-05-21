@@ -23,16 +23,11 @@ stages:
               versionSpec: '18.x'
             displayName: "Install Node.js"
 
-          - task: npmAuthenticate@0
-            inputs:
-              workingFile: .npmrc
-            displayName: "Authenticate with Azure Artifacts"
-          
           - task: Bash@3
             displayName: "Install Node Packages"
             inputs:
               targetType: 'inline'
-              script: 'npm install navi-web -f'
+              script: 'npm i navi-web --force'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: Bash@3
@@ -43,7 +38,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -51,17 +46,17 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
-              WebAppName: 'navi-web-apim'
+              WebAppName: 'dev-xnode'
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
 
           - task: Bash@3
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -69,7 +64,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-qa'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
@@ -79,7 +74,7 @@ stages:
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
             
           - task: Bash@3
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -87,7 +82,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-demo'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
@@ -97,7 +92,7 @@ stages:
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
             
           - task: Bash@3
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
@@ -105,7 +100,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
             displayName: "Deploy to Azure WebApp"
             inputs:
               ConnectionType: 'AzureRM'
