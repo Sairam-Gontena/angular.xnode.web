@@ -6,13 +6,15 @@ import { AgentPromptComponent } from './agent-prompt.component';
 import { AgentPromptRoutingModule } from './agent-prompt-routing.module';
 import { PromptOverviewComponent } from './component/prompt-overview/prompt-overview.component';
 import { TextareaAutoresizeDirective } from 'src/app/directive/textarea-autoresize.directive';
+import { ComparePromptComponent } from './component/compare-prompt/compare-prompt.component';
 
 
 @NgModule({
     declarations: [
         AgentPromptComponent,
         PromptOverviewComponent,
-        TextareaAutoresizeDirective
+        TextareaAutoresizeDirective,
+        ComparePromptComponent
     ],
     imports: [
         CommonModule,

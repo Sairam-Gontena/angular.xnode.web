@@ -67,7 +67,7 @@ export class AddTaskComponent {
   product: any;
   isCommnetsPanelOpened: boolean = false;
   references: any;
-  assignees:any;
+  assignees: any;
   userList: any;
 
   constructor(
@@ -83,7 +83,7 @@ export class AddTaskComponent {
     this.minDate = new Date();
     this.addTaskForm = this.fb.group({
       title: ['', [Validators.required]],
-      description: ['',[]],
+      description: ['', []],
       priority: ['MEDIUM', [Validators.required]],
       duedate: [new Date(this.getTodayDate()), [Validators.required]],
       reviewersLOne: [[], [Validators.required]],
@@ -307,10 +307,8 @@ export class AddTaskComponent {
     const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
       (reviewer: any) => reviewer.name.toLowerCase()
     );
-    filtered = this.userList.filter(
-      (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
-        !selectedReviewers.includes(reviewer.name.toLowerCase())
+    filtered = this.userList.filter((reviewer: any) => reviewer.name.toLowerCase().includes(query.toLowerCase()) &&
+      !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
@@ -343,11 +341,10 @@ export class AddTaskComponent {
     body.assignee.forEach((item: any) => { body.users.push({ "userId": item?.userId, "role": "Contributor", "active": true }); });
     body.users = _.uniqBy(body.users, 'userId');
     body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
-    console.log(body)
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created') {
+        if (commentsReponse.statusText === 'Created' || commentsReponse.status == 200) {
           this.comment = '';
           this.closeOverlay.emit();
           this.specService.getMeSpecLevelTaskList({ parentId: body.parentId });

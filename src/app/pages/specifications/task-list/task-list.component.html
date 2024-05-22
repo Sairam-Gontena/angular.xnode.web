@@ -185,13 +185,11 @@
       </ng-template>
     </div>
 
-    <!-- <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
-                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
-            </p> -->
-    <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
+    <div class="col-12 text-base flex flex-column" *ngIf="action !=='EDIT' ">
       <span [innerHTML]="cmt.title"></span>
-      <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
+      <span *ngIf="selectedIndex !== i && cmt.description" class="text-xs inactive-color showmoreEllipsis mt-2">
+        Description : <span class="text-xs inactive-color" [innerHTML]="highlightMatch(cmt.description)"></span>
+      </span>
     </div>
     <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
       <div *ngFor="let file of cmt.attachments; let i=index;"
@@ -199,19 +197,20 @@
         <div class="flex align-items-center justify-content-center">
           <p class="m-0">{{ file.fileName }}</p>
         </div>
-        <div class="flex align-items-center justify-content-center">
+        <div class="flex align-items-center justify-content-center gap-2">
+          <i class="pi pi-download pointer" (click)="downloadFile(file?.filePath,file.fileName);"></i>
           <i class="pi pi-times pointer" (click)="deleteAttachment(cmt,i)"></i>
         </div>
       </div>
     </div>
     <!-- <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened"> -->
-    <div class="col-12 pb-0" *ngIf="!cmt.repliesOpened">
+    <!-- <div class="col-12 pb-0" *ngIf="!cmt.repliesOpened">
       <div class="view-replies">
         <span class="pointer text-xs" (click)="viewReplies(cmt)">
           See More
         </span>
       </div>
-    </div>
+    </div> -->
     <div class="col-12"
       *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
       <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
@@ -231,7 +230,7 @@
           [users]="usersList" [parentEntity]="
                      'TASK'" [AssignedFrom]="From == 'Child' ? 'AssignedFromTaskAsChild' : 'AssignedFromTask'"
           [activeIndex]="1" [parentId]="parentId" [topParentId]="topParentId"
-          [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
+          [comment]="action === 'EDIT' ?  cmt.title  : ''" [commentType]="'reply'" [width]="'w-full'"
           (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
       </div>
     </div>

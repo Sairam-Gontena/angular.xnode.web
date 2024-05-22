@@ -4,6 +4,7 @@ import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { agentName } from 'src/app/pages/agent-hub/agent-hub.constant';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { UtilsService } from '../services/utils.service';
 
 enum ParentType {
   Capability = 'capability',
@@ -27,9 +28,9 @@ export class DynamicFormModalComponent implements OnInit {
 
   userInfo: any;
 
-  constructor(private formBuilder: FormBuilder, private storageService: LocalStorageService,  private agentHubService: AgentHubService) {
+  constructor(private formBuilder: FormBuilder, private utilsService: UtilsService, private storageService: LocalStorageService, private agentHubService: AgentHubService) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
-    
+
 
     this.createPromptForm = this.formBuilder.group({
       category: [""],
@@ -66,24 +67,55 @@ export class DynamicFormModalComponent implements OnInit {
   ]
   activeIndex = 0;
 
-  
+
 
   async getAllAgentList() {
-   this.parentLinkOptionList = []
-   const endpoint = this.parentLinkTabsItem[this.activeIndex].value
-    try {
-      const response = await this.agentHubService.getAllAgent({
-        accountId: this.userInfo.account_id,
-        endpoint: endpoint,
-        page: 1,
-        page_size: 10,
-      });
+    this.parentLinkOptionList = []
+    const endpoint = this.parentLinkTabsItem[this.activeIndex].value
+    // try {
+    //   const response = await this.agentHubService.getAllAgent({
+    //     accountId: this.userInfo.account_id,
+    //     endpoint: endpoint,
+    //     page: 1,
+    //     page_size: 10,
+    //   });
 
-      this.parentLinkOptionList = response.data.data
-     
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    //   this.parentLinkOptionList = response.data.data
+
+    // } catch (error) {
+    //   console.error('Error fetching agent list:', error);
+    // }
+
+
+
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          page: 1,
+          page_size: 10,
+        }
+      }
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.getAllAgent(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.parentLinkOptionList = response.data.data;
+          // this.paginatorInfo.page = response.data.page;
+          // this.paginatorInfo.perPage = response.data.per_page;
+          // this.paginatorInfo.totalRecords = response.data.total_items;
+          // this.paginatorInfo.totalPages = response.data.total_pages;
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -128,7 +160,7 @@ export class DynamicFormModalComponent implements OnInit {
   addKeyValue() {
     const key = this.createPromptForm.get('key')?.value?.trim();
     const value = this.createPromptForm.get('value')?.value?.trim();
-    if(key && value) {
+    if (key && value) {
       const keyValueArray = this.createPromptForm.get('key_value')?.value;
       keyValueArray.push({
         [key]: value
@@ -158,10 +190,10 @@ export class DynamicFormModalComponent implements OnInit {
 
     formData.starter = starterArrayString
 
-    if(formData.key && formData.value) {
+    if (formData.key && formData.value) {
       formData.key_value.push({
         [formData.key]: formData.value
-      })  
+      })
     }
 
     formData.key_value = JSON.stringify(formData.key_value)
@@ -172,18 +204,18 @@ export class DynamicFormModalComponent implements OnInit {
     delete formData.linkParent
 
     // Below field should be handled by Backend.
-    formData["status"]="training"
+    formData["status"] = "training"
 
     formData["account_id"] = this.userInfo.account_id
 
     console.log(linkParent, formData, "linkParent")
 
     let urlParam = {
-      url : 'agent/create_prompt',
+      url: 'agent/create_prompt',
       data: formData
     }
 
-    let promptResponse:any;
+    let promptResponse: any;
 
     /**
      * Create Prompt Request.
@@ -207,14 +239,14 @@ export class DynamicFormModalComponent implements OnInit {
       prompt_id: promptResponse?.data?.prompt_id // Need to check proper response object.
     }
 
-    if(this.selectedLinkParentType == ParentType.Capability) {
+    if (this.selectedLinkParentType == ParentType.Capability) {
       urlParam.url = 'agent/create_capability_prompt'
 
-      urlParam.data.capability_id =  linkParent.id
-    }else {
+      urlParam.data.capability_id = linkParent.id
+    } else {
       urlParam.url = 'agent/create_prompt_topic'
 
-      urlParam.data.topic_id =  linkParent.id
+      urlParam.data.topic_id = linkParent.id
     }
 
 
@@ -229,11 +261,11 @@ export class DynamicFormModalComponent implements OnInit {
 
   }
 
-  onLinkParentChangeHandler(event: any){
+  onLinkParentChangeHandler(event: any) {
     console.log("he;;", event)
-    if(this.activeIndex == 0) {
+    if (this.activeIndex == 0) {
       this.selectedLinkParentType = ParentType.Capability
-    }else {
+    } else {
       this.selectedLinkParentType = ParentType.Topic
     }
 

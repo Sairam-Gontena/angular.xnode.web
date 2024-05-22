@@ -1,8 +1,10 @@
 import { Component, Input, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
 import { Constant } from 'src/app/pages/agent-hub/agent-hub.constant';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
@@ -37,7 +39,7 @@ export class AgentOverviewComponent implements OnInit {
   overviewForm!: FormGroup;
   instructionForm!: FormGroup;
   userInfo: any;
-  statsItem = Constant.stats;
+  statsItem = Constant.agentDetail.stats;
   instructionOption = [{ name: "General Instructions", value: "general_instruction" },
   { name: "Capability Specific Instructions", value: "capability_specific_instruction" }];
 
@@ -61,24 +63,7 @@ export class AgentOverviewComponent implements OnInit {
 
   overviewInstructionDetailObj: any;
 
-  constructor(private storageService: LocalStorageService, private formBuilder: FormBuilder, private agentHubService: AgentHubService) {
-    // this.overviewForm = this.formBuilder.group({
-    //   name: [{ value: '', disabled: true }],
-    //   description: [{ value: '', disabled: true }],
-    //   parentTopic: [{ value: '', disabled: true }]
-    // });
-    // this.instructionForm = this.formBuilder.group({
-    //   instruction: [''],
-    //   guideline: [''],
-    //   responsibility: [''],
-    //   context: [''],
-    //   example: [''],
-    //   keyValue: this.formBuilder.array([])
-    // })
-
-
-    // this.instructionForm.disable()
-
+  constructor(private storageService: LocalStorageService, private formBuilder: FormBuilder, private agentHubService: AgentHubService, private activatedRoute: ActivatedRoute, private utilsService: UtilsService) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
 
 
@@ -106,50 +91,6 @@ export class AgentOverviewComponent implements OnInit {
   ngOnInit() {
     this.getAgentCount();
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes?.agentInfo?.currentValue) {
-      // this.agentInfoDtlObj = changes.agentInfo.currentValue;
-      // this.overviewForm.patchValue({
-      //   name: this.agentInfoDtlObj.name,
-      //   description: this.agentInfoDtlObj.description
-      // });
-      // this.instructionForm.patchValue({
-      //   instruction: this.overviewInstructionDetailObj.overviewInstructionData.instruction,
-      //   guideline: this.overviewInstructionDetailObj.overviewInstructionData.guideline,
-      //   responsibility: this.overviewInstructionDetailObj.overviewInstructionData.responsibility,
-      //   context: this.overviewInstructionDetailObj.overviewInstructionData.context,
-      //   example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
-      // });
-    }
-  }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes?.overviewInstructionDetail?.currentValue) {
-  //     this.overviewInstructionDetailObj = changes.overviewInstructionDetail.currentValue;
-  //     this.overviewForm.patchValue({
-  //       name: this.overviewInstructionDetailObj.overviewInstructionData.name,
-  //       description: this.overviewInstructionDetailObj.overviewInstructionData.description,
-  //       parentTopic: this.overviewInstructionDetailObj.overviewInstructionData.parent
-  //     });
-  //     this.instructionForm.patchValue({
-  //       instruction: this.overviewInstructionDetailObj.overviewInstructionData.instruction,
-  //       guideline: this.overviewInstructionDetailObj.overviewInstructionData.guideline,
-  //       responsibility: this.overviewInstructionDetailObj.overviewInstructionData.responsibility,
-  //       context: this.overviewInstructionDetailObj.overviewInstructionData.context,
-  //       example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
-  //     });
-  //   }
-  //   if(changes.formEditable) {
-  //     if(this.formEditable) {
-  //       this.instructionForm.enable();
-  //     }else {
-  //       this.instructionForm.disable();
-  //     }
-  //   }
-  // }
-
-
-
 
   //overview form submit
   onOverviewSubmit() {
@@ -179,20 +120,26 @@ export class AgentOverviewComponent implements OnInit {
   // Async Call
 
   async getAgentCount() {
-    try {
-      let query = {
-        account_id: this.userInfo.account_id,
-      };
-      const response = await this.agentHubService.getAgentCount({
-        endpoint: '/agent',
-        query,
-      });
+    let url: string = "/agent/count_by_id",
+      urlParam: any = {
+        url: url,
+        params: {
+          account_id: this.userInfo.account_id,
+          input_id: this.activatedRoute.snapshot.paramMap.get('id'),
+          input_id_type: 'agent'
+        }
+      }
 
-      this.statsItem.forEach((element: any) => {
-        element.count = response.data[element.key];
-      });
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    this.agentHubService.getAgentCount(urlParam).subscribe({
+      next: (response: any) => {
+        this.statsItem.forEach((element: any) => {
+          element.count = response[element.key] ?? 'N/A';
+        });
+
+        console.log(response, "response")
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error?.detail });
+      }
+    });
   }
 }

@@ -24,6 +24,7 @@ import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { NaviData } from './models/interfaces/navi-data';
 import { NaviEventParams } from './models/interfaces/navi-event-params';
+import { NaviService } from './api/navi/navi.service';
 
 @Component({
   selector: 'xnode-root',
@@ -80,7 +81,8 @@ export class AppComponent implements OnInit {
     private conversationHubService: ConversationHubService,
     private auditService: AuditutilsService,
     private idle: Idle,
-    private keepalive: Keepalive) {
+    private keepalive: Keepalive,
+    private naviService: NaviService) {
     let winUrl = this.authApiService.getDeeplinkURL() ? this.authApiService.getDeeplinkURL() : window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -111,6 +113,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.createdBy?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
+        this.naviService.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
@@ -121,7 +124,7 @@ export class AppComponent implements OnInit {
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.showDockedNavi = data;
       if (!data) {
-        this.isNaviExpanded = false;
+        this.naviService.setNaviExpand(false);
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -141,6 +144,9 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.Product, msg.msgData.product);
         this.storageService.saveItem(StorageKeys.CONVERSATION_DETAILS, msg.msgData.conversationDetails);
       }
+      if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
+        this.naviService.makeTrustedUrl();
+      }
       if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.access_token = msg.msgData.access_token;
         this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, msg.msgData.access_token);
@@ -157,17 +163,17 @@ export class AppComponent implements OnInit {
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
       }
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        this.componentToShow = msg.msgData?.componentToShow;
+        this.naviService.setComponentToShow(msg.msgData.componentToShow);
         const isNaviExpanded = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
         if (msg.msgData?.componentToShow === 'Resources') {
           this.storageService.removeItem(StorageKeys.Product);
           this.storageService.removeItem(StorageKeys.CONVERSATION);
-          this.resource_id = msg.msgData.resource_id;
+          this.naviService.setResourceID(msg.msgData.resource_id);
         }
         if (msg.msgData?.componentToShow === 'Chat' && msg.msgData.component !== 'my-products') {
           this.storageService.removeItem(StorageKeys.Product);
           this.storageService.removeItem(StorageKeys.CONVERSATION);
-          this.conversationId = msg.msgData?.conversation_id;
+          this.naviService.setConversationID(msg.msgData?.conversation_id);
         }
         this.isNaviExpanded = isNaviExpanded ? isNaviExpanded : msg.msgData?.isNaviExpanded;
         console.log('5');
@@ -183,10 +189,10 @@ export class AppComponent implements OnInit {
         this.naviData.conversationDetails = undefined;
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
-        this.showDockedNavi = true
-        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
-        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
-        this.newWithNavi = !msg.msgData?.product;
+        this.showDockedNavi = true;
+        this.naviService.setNaviExpand(msg.msgData?.naviContainerState === 'EXPAND');
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND');
+        this.naviService.setNewWithNavi(!msg.msgData?.product);
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
         this.resource_id = msg.msgData.resource_id
@@ -204,10 +210,19 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = true
         this.naviData = { ...this.naviData, is_navi_expanded: true, conversationDetails: undefined, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: true, resource_id: msg.msgData.resource_id }
       }
+      if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE) {
+        this.showDockedNavi = true;
+        this.naviService.setNaviExpand(msg.msgData?.naviContainerState === 'EXPAND');
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND');
+        this.naviService.setComponentToShow(msg.msgData.componentToShow);
+        this.naviService.setImportPopupToShow(msg.msgData.importFilePopupToShow);
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+        this.naviService.makeTrustedUrl();
+      }
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         this.showDockedNavi = false;
-        this.isNaviExpanded = false;
+        this.naviService.setNaviExpand(false);
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
     })
@@ -250,7 +265,6 @@ export class AppComponent implements OnInit {
 
     // sets the ping interval to 50 seconds
     keepalive.interval(50);
-
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
     this.authApiService.getIsLoggedIn().subscribe((userLoggedIn: any) => {
@@ -321,8 +335,6 @@ export class AppComponent implements OnInit {
     this.timedOut = false;
   }
 
-
-
   navigateToHome(): void {
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,
@@ -343,7 +355,7 @@ export class AppComponent implements OnInit {
   }
 
   enableDockedNavi(): void {
-    this.isNaviExpanded = false;
+    this.naviService.setNaviExpand(false);
     this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.naviData = { ...this.naviData, is_navi_expanded: false, toggleConversationPanel: false }
   }
@@ -590,7 +602,7 @@ export class AppComponent implements OnInit {
   }
 
   prepareDataOnOpeningNavi(): void {
-    this.componentToShow = 'Tasks';
+    this.naviService.setComponentToShow('Tasks');
     const product: any = this.storageService.getItem(StorageKeys.Product)
     if (product)
       this.componentToShow = 'Chat';
@@ -601,9 +613,7 @@ export class AppComponent implements OnInit {
   getAllUsers() {
     let accountId = this.currentUser.account_id
     if (accountId) {
-      let params = {
-        account_id: accountId
-      }
+      let params = { account_id: accountId };
       this.authApiService.getUsersByAccountId(params).then((response: any) => {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         console.log('response', response);
@@ -621,29 +631,18 @@ export class AppComponent implements OnInit {
       bcc: ['dev.xnode@salientminds.com'],
       emailTemplateCode: 'CREATE_APP_LIMIT_EXCEEDED',
       params: {
-        username:
-          this.currentUser?.first_name + ' ' + this.currentUser?.last_name,
-      },
+        username: this.currentUser?.first_name + ' ' + this.currentUser?.last_name,
+      }
     };
-    this.notifyApi
-      .emailNotify(body)
-      .then((res: any) => {
-        if (res?.data?.detail) {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: res?.data?.detail,
-          });
-        }
-      })
-      .catch((err: any) => {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err?.response?.data?.detail,
-        });
-      });
+    this.notifyApi.emailNotify(body).then((res: any) => {
+      if (res?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err?.response?.data?.detail });
+    });
   }
+
   getConversation(): void {
     this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res?.data && res.status === 200) {
@@ -651,21 +650,14 @@ export class AppComponent implements OnInit {
         this.convSummary?.incremental_summary.reverse();
         this.showSummaryPopup = true;
       } else {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: res.data.message,
-        });
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: res.data.message });
       }
       this.utilsService.loadSpinner(false);
     }).catch(((err: any) => {
       this.utilsService.loadSpinner(false);
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: 'Error',
-        detail: err,
-      });
+      this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: err });
     }))
     this.utilsService.loadSpinner(false);
   }
+
 }

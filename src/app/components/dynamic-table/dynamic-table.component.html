@@ -17,10 +17,10 @@
 </p-overlayPanel>
 <div class="card flex flex-column">
   <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
-    [scrollHeight]="verticalScrollHeight">
+    [scrollHeight]="verticalScrollHeight" styleClass="border-round-lg p-1">
     <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
-      <div class="flex justify-content-between align-items-center">
-        <div class="flex gap-4 p-3">
+      <div class="flex flex-wrap gap-4 xl:gap-0 xl:justify-content-between p-3 table-header">
+        <div class="flex flex-wrap gap-4">
           <xnode-multi-select-checkbox *ngIf="searchFilterOptions?.showFilterOption"
             [filter]="searchFilterOptions.filter ?? false" [showToggleAll]="searchFilterOptions.showToggleAll ?? false"
             [showHeader]="searchFilterOptions.showHeader ?? false" [options]="searchFilterOptions.options ?? []"
@@ -32,6 +32,24 @@
             <i class="pi pi-search"></i>
             <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
           </span>
+        </div>
+
+        <div *ngIf="tableInfo?.showAgentDataType" class="flex" [ngClass]="searchFilterOptions.styleClass">
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium"
+            [ngClass]="{'active-agent-data-type' : agentDataType === recordType?.live}"
+            (click)="setAgentDataType('live')">
+            Live
+          </div>
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium agent-data-type-border"
+            [ngClass]="{'active-agent-data-type': agentDataType === recordType?.training}"
+            (click)="setAgentDataType('training')">
+            Training
+          </div>
+          <div class="py-2 px-3 cursor-pointer text-lg font-medium"
+            [ngClass]="{'active-agent-data-type': agentDataType === recordType?.archived}"
+            (click)="setAgentDataType('archived')">
+            Archived
+          </div>
         </div>
         <div class="flex-wrap">
           <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">

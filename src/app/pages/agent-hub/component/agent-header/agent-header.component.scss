@@ -1,0 +1,16 @@
+.header-top {
+    background-color: var(--black-pearl);
+}
+.header-stats {
+    background-color: var(--bleached-cedar)
+}
+
+::ng-deep .create-agent-btn {
+    background-color: var(--cerulean) !important;
+    color: var(--black-pearl);
+}
+
+::ng-deep .pi.pi-plus-circle {
+    color: var(--black-pearl);
+    // background-color: var(--black-pearl);
+}

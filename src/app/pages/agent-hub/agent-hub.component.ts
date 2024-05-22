@@ -11,6 +11,7 @@ import { ModelOverviewComponent } from './module/agent-model/component/overview/
 import { CapabilityOverviewComponent } from './module/agent-capability/component/overview/overview.component';
 import { PromptOverviewComponent } from './module/agent-prompt/component/prompt-overview/prompt-overview.component';
 import { ToolOverviewComponent } from './module/agent-tools/component/tool-overview/tool-overview.component';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -25,7 +26,7 @@ export class AgentHubComponent implements OnInit {
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private dialogService: DialogService,
-    private router: Router) {
+    private router: Router, private utilsService: UtilsService) {
     let agentHubDetailData: any = this.agentHubService.getAgentHeader() ? this.agentHubService.getAgentHeader() : this.storageService.getItem(StorageKeys.AGENT_HUB_DETAIL);
     if (agentHubDetailData && agentHubDetailData?.agentInfo && Object.keys(agentHubDetailData?.agentInfo)?.length) {
       this.agentHubService.saveAgentHeaderObj(agentHubDetailData);
@@ -51,15 +52,25 @@ export class AgentHubComponent implements OnInit {
 
   async getAgentCount() {
     let userInfo: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    try {
-      let query = { account_id: userInfo.account_id };
-      const response = await this.agentHubService.getAgentCount({ endpoint: '/agent', query });
-      this.agentHubDetailObj?.statsItem?.forEach((element: any) => {
-        element.count = response.data[element.key];
-      });
-    } catch (error) {
-      console.error('Error fetching agent list:', error);
-    }
+    let url: string = "/agent/count",
+      urlParam: any = {
+        url: url,
+        params: {
+          account_id: userInfo.account_id
+        }
+      }
+
+    this.agentHubService.getAgentDetail(urlParam).subscribe({
+      next: (response: any) => {
+        this.agentHubDetailObj?.statsItem.forEach((element: any) => {
+          element.count = response[element.key];
+        });
+
+        console.log(response, "response")
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+      }
+    });
   }
 
   // goBackBreadCrumbsHandler(event: any) {
