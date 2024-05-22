@@ -6,7 +6,7 @@ import { SearchspecService } from '../api/searchspec.service';
 export class HighlightPipe implements PipeTransform {
 
     constructor( private searchSpec:SearchspecService) { }
-    transform(list: any, searchText: string): any {
+    transform(list: any, searchText: string, titleString?:string): any {
         if (!list) { return []; }
         if (!searchText) {
           if(this.searchSpec.keyword!=''){searchText=this.searchSpec.keyword}else{return list}
@@ -15,7 +15,10 @@ export class HighlightPipe implements PipeTransform {
           const value = list?.replace(searchText, `<span class='yellow' style='background-color:yellow'>${searchText}</span>`);
           return value;
         }else{
-          return list
+          if(titleString){
+            let returnString = list.split('-');
+            return returnString[1]
+          } else return list;
         }
     }
 }
