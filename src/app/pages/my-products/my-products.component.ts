@@ -306,7 +306,12 @@ export class MyProductsComponent implements OnInit {
       });
     }
   }
-
+  onChangeSelectedActivity(event: any) {
+    console.log(event.value.name, "Selected Activity");
+  }
+  onChangeSelectedAll(event: any) {
+    console.log(event.value.name, "Selected All");
+  }
   getColumnDef() {
     this.columnDef = [
 
