@@ -225,6 +225,19 @@ export class MyProductsComponent implements OnInit {
     this.getConversationByProduct(data);
   }
 
+  recentActivityEvent(record: any): void {
+    switch (record.objectType) {
+      case 'Conversation':
+        this.getConversationById(record.id);
+        break;
+      case "Product_Spec":
+        this.onClickProductCard(record);
+        break;
+      default:
+        break;
+    }
+  }
+
   getConversationByProduct(product: any): void {
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
       if (data.data) {
@@ -240,6 +253,7 @@ export class MyProductsComponent implements OnInit {
       this.utils.loadSpinner(false);
     })
   }
+
 
   onClickNew() {
     this.utils.expandNavi$();
@@ -264,25 +278,13 @@ export class MyProductsComponent implements OnInit {
   }
 
   getRecentActivities() {
-    // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
     if (userId) {
       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
         let activities: any = [];
-        // let shortIdMap:any = {
-        //   'COMMENT':"cmId",
-        //   'CHANGE_REQUEST':"crId",
-        //   'PRODUCT_SPEC': "psId",
-        //   'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-        //   'TASK':'tId',
-        //   'THREAD':'thId',
-        //   'CONVERSATION':'cId',
-        //   'RESOURCE':'rsId',
-        //   'PRODUCT_VERSION':'pvId'
-        // };
         for (let activity of res.data.data) {
-          // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
+            id: activity.id,
             objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
@@ -301,8 +303,6 @@ export class MyProductsComponent implements OnInit {
           activities.push(row)
         }
         this.activities = activities; // Handle the response here
-        console.log(this.activities, "this.activities")
-
       });
     }
   }

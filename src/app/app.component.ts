@@ -210,6 +210,11 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = true
         this.naviData = { ...this.naviData, is_navi_expanded: true, conversationDetails: undefined, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: true, resource_id: msg.msgData.resource_id }
       }
+      if (msg.msgData && msg.msgType === MessageTypes.ACTIVITY_CLICK) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, conversationDetails: undefined, componentToShow: msg.msgData.componentToShow, toggleConversationPanel: true, new_with_navi: false }
+      }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE) {
         this.showDockedNavi = true;
         this.naviService.setNaviExpand(msg.msgData?.naviContainerState === 'EXPAND');

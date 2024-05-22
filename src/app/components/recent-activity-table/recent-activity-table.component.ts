@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+
 
 @Component({
   selector: 'xnode-recent-activity-table',
@@ -6,16 +7,16 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewC
   styleUrls: ['./recent-activity-table.component.scss']
 })
 export class RecentActivityTableComponent {
+  @Output() recentActivityEvent: EventEmitter<object> = new EventEmitter<object>();
   @Input() dataContent?: any;
   @Input() headers?: any[];
-  constructor() {
+  constructor(
+  ) {
 
   }
   ngOnChanges(changes: SimpleChanges) {
-
     if (changes['dataContent']?.currentValue) {
       this.dataContent = changes['dataContent']?.currentValue;
-      console.log(this.dataContent, 'DATA CONTENT');
     }
   }
   modifiedTimeDifference(modifiedOn: Date): string {
@@ -39,5 +40,8 @@ export class RecentActivityTableComponent {
     }
   }
 
+  onClickShortId(record: any): void {
+    this.recentActivityEvent.emit(record)
+  }
 
 }
