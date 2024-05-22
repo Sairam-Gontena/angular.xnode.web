@@ -250,8 +250,7 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
   }
 
-  importNavi(): void {
-    console.log('import');
+  importResource(): void {
     this.messagingService.sendMessage({
       msgType: MessageTypes.IMPORT_RESOURCE,
       msgData: {

@@ -203,7 +203,7 @@ export class AppComponent implements OnInit {
       if (msg.msgData && msg.msgType === MessageTypes.IMPORT_RESOURCE) {
         this.showDockedNavi = true
         this.isNaviExpanded = true
-        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Chat", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: true }
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: false }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_RESOURCE) {
         this.showDockedNavi = true
