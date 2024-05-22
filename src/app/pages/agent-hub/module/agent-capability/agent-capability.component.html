@@ -1,4 +1,4 @@
-<div class="w-full agent-hub-container border-round-2xl p-4 mt-4">
+<div class="w-full agent-hub-container border-round-2xl mt-3 p-3">
     <p-tabView (onChange)="onTabSwitchHandler($event)" [(activeIndex)]="activeIndex">
         <p-tabPanel *ngFor="let topicItem of capabilityTabs" [header]="topicItem.title">
             <ng-container [ngSwitch]="topicItem.component">
@@ -23,15 +23,14 @@
         </p-tabPanel>
     </p-tabView>
 
-
     <ng-template #dynamicTable>
         <div class="w-full table-height">
             <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"
                 [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
-                [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-                [showViewRowData]="true" (changeEvent)="viewHandler($event)"
+                [searchFilterOptions]="searchFilterOptions" columnWidth="13.8rem"
+                [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow" [showViewRowData]="true"
+                (changeEvent)="viewHandler($event)"
                 (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
         </div>
-
     </ng-template>
 </div>

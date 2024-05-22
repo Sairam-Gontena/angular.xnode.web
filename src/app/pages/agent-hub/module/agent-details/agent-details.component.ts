@@ -14,6 +14,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class AgentDetailsComponent {
 
   agentDetailsModel: AgentDetailsModel;
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,

@@ -1,4 +1,4 @@
-<div class="w-full agent-hub-container border-round-2xl p-4 mt-4">
+<div class="w-full agent-hub-container border-round-2xl mt-3 p-3">
   <ng-container>
     <p-tabView (onChange)="agentDetailsModel.onTabSwitchHandler($event)"
       [(activeIndex)]="agentDetailsModel.activeIndex">
@@ -38,13 +38,14 @@
     </p-tabView>
 
     <ng-template #dynamicTable>
-      <div class="w-full table-height" *ngIf="agentDetailsModel.activeIndex > 1">
+      <div class="w-full" *ngIf="agentDetailsModel.activeIndex > 1">
         <xnode-dynamic-table [inputData]="agentDetailsModel.tableData" [cols]="agentDetailsModel.columns"
           [tableInfo]="agentDetailsModel.tableInfo" [showColumnFilterOption]="agentDetailsModel.showColumnFilterOption"
           [tableRowActionOptions]="agentDetailsModel.tableRowActionOptions"
           [paginatorInfo]="agentDetailsModel.paginatorInfo"
-          [searchFilterOptions]="agentDetailsModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-          [showViewRowData]="true" (changeEvent)="agentDetailsModel.viewHandler($event)"
+          [searchFilterOptions]="agentDetailsModel.searchFilterOptions" columnWidth="13.8rem"
+          [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow" [showViewRowData]="true"
+          (changeEvent)="agentDetailsModel.viewHandler($event)"
           (paginatorChangeEvent)="agentDetailsModel.paginatorViewHandler($event)"></xnode-dynamic-table>
       </div>
     </ng-template>
@@ -52,7 +53,7 @@
 
   <!-- overview html -->
   <ng-template #overview>
-    <div class="table-height">
+    <div class="">
       <xnode-agent-overview formType="overview"
         [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>
@@ -60,7 +61,7 @@
 
   <!-- instruction html -->
   <ng-template #instruction>
-    <div class="table-height">
+    <div class="">
       <xnode-agent-overview formType="instruction"
         [agentInfo]="agentDetailsModel.agentHubDetail.agentInfo"></xnode-agent-overview>
     </div>

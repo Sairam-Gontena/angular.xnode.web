@@ -11,10 +11,12 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AgentSharedModule } from '../../agent-shared.module';
+import { AgentOverviewComponent } from './component/agent-overview/agent-overview.component';
 
 @NgModule({
   declarations: [
-    AgentDetailsComponent
+    AgentDetailsComponent,
+    AgentOverviewComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { AgentSharedModule } from '../../agent-shared.module';
     ButtonModule,
     SharedModule,
     AgentSharedModule
-  ]
+  ],
+  exports: [AgentOverviewComponent]
 })
 export class AgentDetailsModule { }

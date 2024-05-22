@@ -5,7 +5,8 @@ export const agentName = {
     prompt: "prompt",
     knowledge: "knowledge",
     model: "model",
-    tool: "tool"
+    tool: "tool",
+    changeReq: "change_request"
 }
 
 /**
@@ -47,7 +48,16 @@ export const Constant = {
             count: 0,
             value: 'prompt_linked_topic',
             identifier: agentName.prompt
-        }]
+        },
+        {
+            label: "Change Request",
+            imgPath: "../../../assets/agent-hub/change_request.svg",
+            key: "change_request_count",
+            count: 0,
+            value: 'change_request',
+            identifier: agentName.prompt
+        }
+        ]
     },
     agentDetail: {
         stats: [

@@ -34,6 +34,8 @@ export class AgentCapabilityComponent {
   tableInfo: any = { ...tableInfo }// Dynamic Table config
   headerActionBtnOption = agentHeaderActionOptions;
   agentHubDetail: any;
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(
     private storageService: LocalStorageService,
