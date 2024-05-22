@@ -88,7 +88,7 @@
             [newContent]="diffObj?.content" [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
         </div>
       </div>
-      <div *ngSwitchCase="'DATA_DICTIONARY'" [id]="contentObj.id">
+      <div *ngSwitchCase="'data_dictionary'" [id]="contentObj.id">
         <span *ngIf="isArray(contentObj?.content)">
           <div *ngFor="let item of contentObj?.content">
             <span *ngIf="item.tables else directTable">
@@ -143,7 +143,8 @@
           </div>
         </div>
         <ng-template #bpmnElse>
-          <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [onDiff]="false" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
+          <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [onDiff]="false" [item]="contentObj"
+            *ngIf="!onDiff"></xnode-bpmn-common>
         </ng-template>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
@@ -188,7 +189,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 py-4" *ngSwitchCase="'TABLE'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'data_quality_checks'" [id]="contentObj.id">
         <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
       </div>
       <div class="col-12 py-4" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
@@ -213,7 +214,7 @@
         </div>
         <div id="openapi-ui-spec" *ngIf="!onDiff" class="openapi-spec my-3"></div>
       </div>
-      <div class="col-12 py-4" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'quality_assurance'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
           <h3>
             {{item.title}}
