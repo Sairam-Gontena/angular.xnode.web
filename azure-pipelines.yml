@@ -27,6 +27,13 @@ stages:
             displayName: "Install Node Packages"
             inputs:
               targetType: 'inline'
+              script: 'npm i navi-web --force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
               script: 'npm i --force'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           

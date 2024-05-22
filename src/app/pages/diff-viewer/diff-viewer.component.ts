@@ -145,7 +145,7 @@ export class DiffViewerComponent implements OnInit {
     });
   }
 
-  onScroll(){
+  onScroll() {
     this.specificationUtils.triggerSpecOverlays(true);
   }
 

@@ -159,7 +159,7 @@ export class NaviService {
 
   //get the iframe url
   iframeUrlLoad(rawUrl: any) {
-    const showDockedNavi: any = this.localStorageService.getItem(StorageKeys.IS_NAVI_OPENED);
+    const showDockedNavi: any = this.localStorageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     let iframeDetail = {
       iframeUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl),
       showDockedNavi: showDockedNavi ? JSON.parse(showDockedNavi) : false,

@@ -63,7 +63,7 @@ export class AgentHubComponent implements OnInit {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         this.agentHubDetailObj?.statsItem.forEach((element: any) => {
-          element.count = response[element.key];
+          element.count = response[element.key] ?? 0;
         });
 
         console.log(response, "response")
@@ -72,14 +72,6 @@ export class AgentHubComponent implements OnInit {
       }
     });
   }
-
-  // goBackBreadCrumbsHandler(event: any) {
-  //   const newItem = this.agentHubDetailObj.breadCrumbsAction.breadcrumb;
-  //   const indexToDelete = event.item.index + 1;
-  //   newItem.splice(indexToDelete);
-  //   this.agentHubDetailObj.breadCrumbsAction.isBreadCrumbActive = false;
-  //   this.agentHubDetailObj.breadCrumbsAction.breadcrumb = [...newItem];
-  // }
 
   createAgentHandler() {
     this.router.navigate(['/create-agent']);

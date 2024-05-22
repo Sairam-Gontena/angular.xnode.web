@@ -1,6 +1,6 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0 z-3" [class.hidden]="showDockedNavi">
+        <div class="absolute bottom-0 right-0" *ngIf="!showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
         </div>
         <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
@@ -14,12 +14,9 @@
                 </div>
                 <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
                     [class.navi-frame]="!isNaviExpanded && showDockedNavi">
-                    <div class="flex justify-content-center align-items-center h-full" *ngIf="showNaviSpinner">
-                        <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
-                    </div>
-                    <iframe id="naviFrame" *ngIf="iframeUrl && !showNaviSpinner" [src]="iframeUrl" allow="microphone"
-                        Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
-                    </iframe>
+                    <ng-container *ngIf="naviData&&naviData.access_token">
+                        <navi-root  [naviData]="naviData" (customEvent)="childCall($event)"></navi-root>
+                      </ng-container>
                 </div>
             </div>
         </div>
@@ -31,13 +28,13 @@
 
 <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
-<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" [contentdata]="content"
+<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" 
     (openDockedNavi)="openNavi()" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 <xnode-import-file-popup [visible]="showImportFilePopup" (closeEventEmitter)="this.showImportFilePopup = false;"
     [conversation_id]="conversation_id"></xnode-import-file-popup>
-<xnode-view-summary-popup *ngIf="showSummaryPopup" [visible]="showSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary"
+<xnode-view-summary-popup [visible]="showSummaryPopup" [convSummary]="convSummary"
     [conversationID]="conversation_id" (closePopUp)="this.showSummaryPopup = false"></xnode-view-summary-popup>
 <xnode-inactive-timeout-popup *ngIf="showInactiveTimeoutPopup" [visible]="showInactiveTimeoutPopup" [countdown]="inactiveTimeoutCounter"
 (closePopup)="this.showInactiveTimeoutPopup = false;" (logout)="logout()"></xnode-inactive-timeout-popup>

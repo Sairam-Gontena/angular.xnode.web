@@ -11,10 +11,10 @@
                                 <img src="../../assets/images/Conversation.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Thread'">
-                                <img src="../../assets/images/Thread.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/thread.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Task'">
-                                <img src="../../assets/images/Task.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/task.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Comment'">
                                 <img src="../../assets/images/Comment.svg" class="mr-2" alt="image" />
@@ -23,11 +23,11 @@
                                 <img src="../../assets/images/ChangeRequest.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Resource'">
-                                <img src="../../assets/images/Resource.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/resource.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex flex-column ml-2">
                                 <div class="font-normal text-base align-items-start">{{ rowData['title'] }}</div>
-                                <div class="font-normal activity-id align-items-start mt-2">{{ rowData['shortId'] }}
+                                <div class="font-normal activity-id align-items-start mt-2 cursor-pointer" (click)="onClickShortId(rowData)">{{ rowData['shortId'] }}
                                 </div>
                             </div>
                         </div>

@@ -10,12 +10,9 @@ import { cloneDeep, find, orderBy, sortBy } from 'lodash';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
-import { ConversationApiService } from 'src/app/api/conversation-api.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-my-products',
@@ -110,6 +107,9 @@ export class MyProductsComponent implements OnInit {
       msgData: false,
     });
     this.route.queryParams.subscribe((params: any) => {
+      if (params?.entity) {
+        this.getConversationById(params?.conversation_id)
+      }
       if (params.product === 'created') {
         this.utils.loadToaster({
           severity: 'success',
@@ -126,6 +126,17 @@ export class MyProductsComponent implements OnInit {
     this.utils.prepareIframeUrl(true);
     this.getRecentActivities();
     this.getColumnDef();
+  }
+
+  getConversationById(id: string): void {
+    this.conversationService.getConversations('?id=' + id).then((data: any) => {
+      if (data.data)
+        this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: true, toggleConversationPanel: true, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      console.log(err, 'err')
+      this.utils.loadSpinner(false);
+    })
   }
 
   removeProductDetailsFromStorage(): void {
@@ -191,55 +202,58 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  onClickProductChat(data: any): void {
-    this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
-    if (this.currentUser?.email == data.email) {
-      this.utils.hasProductPermission(true);
-    } else {
-      this.utils.hasProductPermission(false);
-    }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat' } });
-    const product: any = this.storageService.getItem(StorageKeys.Product);
+  onClickProductChat(product: any): void {
+    this.utils.loadSpinner(true);
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
       if (data.data)
-        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+        this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
       console.log(err, 'err')
+      this.utils.loadSpinner(false);
     })
   }
 
   onClickProductCard(data: any): void {
+    this.utils.loadSpinner(true);
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
     } else {
       this.utils.hasProductPermission(false);
     }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat' } });
-    this.router.navigate(['/specification']);
+    this.getConversationByProduct(data);
+  }
 
-    const product: any = this.storageService.getItem(StorageKeys.Product);
+  recentActivityEvent(record: any): void {
+    switch (record.objectType) {
+      case 'Conversation':
+        this.getConversationById(record.id);
+        break;
+      case "Product_Spec":
+        this.onClickProductCard(record);
+        break;
+      default:
+        break;
+    }
+  }
+
+  getConversationByProduct(product: any): void {
     this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
-      if (data.data)
-        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+      if (data.data) {
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_SELECTED, msgData: { product: product, conversationDetails: data.data.data[0] } });
+        localStorage.setItem('record_id', data.id);
+        localStorage.setItem('app_name', data.title);
+        localStorage.setItem('has_insights', data.has_insights);
+        this.router.navigate(['/specification']);
+      }
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
       console.log(err, 'err')
+      this.utils.loadSpinner(false);
     })
-
   }
+
 
   onClickNew() {
     this.utils.expandNavi$();
@@ -249,40 +263,28 @@ export class MyProductsComponent implements OnInit {
     productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
-  importNavi(): void {
+
+  importResource(): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.NAVI_CONTAINER_WITH_HISTORY_TAB_IN_RESOURCE,
+      msgType: MessageTypes.IMPORT_RESOURCE,
       msgData: {
-        naviContainerState: 'EXPAND',
-        componentToShow: "Resources",
-        importFilePopupToShow: true
+        import_event: true
       },
     });
   }
+
   closeEventEmitter() {
     this.showImportFilePopup = false;
   }
 
   getRecentActivities() {
-    // this.utils.loadSpinner(true)
     const userId = this.currentUser.user_id;
     if (userId) {
       this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
         let activities: any = [];
-        // let shortIdMap:any = {
-        //   'COMMENT':"cmId",
-        //   'CHANGE_REQUEST':"crId",
-        //   'PRODUCT_SPEC': "psId",
-        //   'CHANGE_REQUEST_PRODUCT_VERSION': 'crpv',
-        //   'TASK':'tId',
-        //   'THREAD':'thId',
-        //   'CONVERSATION':'cId',
-        //   'RESOURCE':'rsId',
-        //   'PRODUCT_VERSION':'pvId'
-        // };
         for (let activity of res.data.data) {
-          // let shortId =activity.actionDetail[shortIdMap[activity["objectType"]]] || "";
           let row: any = {
+            id: activity.id,
             objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
@@ -301,8 +303,6 @@ export class MyProductsComponent implements OnInit {
           activities.push(row)
         }
         this.activities = activities; // Handle the response here
-        console.log(this.activities, "this.activities")
-
       });
     }
   }
@@ -453,12 +453,6 @@ export class MyProductsComponent implements OnInit {
         if (this.authApiService.getDeeplinkURL()) {
           this.utils.setDeepLinkInfo(this.authApiService.getDeeplinkURL());
         }
-
-        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.MAKE_TRUST_URL,
-          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: response?.data?.length ? 'Tasks' : 'Chat' },
-        });
         this.utils.loadSpinner(false);
       }
       else {
@@ -552,8 +546,8 @@ export class MyProductsComponent implements OnInit {
 
   onClickNewWithNavi(): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.NAVI_CONTAINER_STATE,
-      msgData: { naviContainerState: 'EXPAND' },
+      msgType: MessageTypes.NEW_WITH_NAVI,
+      msgData: 'new-with-navi',
     });
   }
 

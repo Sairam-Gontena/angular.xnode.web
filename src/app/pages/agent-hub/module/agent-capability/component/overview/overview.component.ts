@@ -20,6 +20,7 @@ export class CapabilityOverviewComponent {
   userInfo: any;
   public overviewForm!: FormGroup;
   public overViewObj: any = {
+    capabilityData: "",
     formEditable: false,
     componentDetail: {
       componentType: "",
@@ -86,6 +87,7 @@ export class CapabilityOverviewComponent {
     this.agentHubService.getAgentDetail(urlParam).subscribe({
       next: (response: any) => {
         if (response) {
+          this.overViewObj.capabilityData = response
           this.overviewForm.patchValue({
             name: response?.name,
             description: response?.description,

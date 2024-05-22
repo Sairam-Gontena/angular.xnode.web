@@ -158,22 +158,22 @@ export class NotificationPanelComponent {
 
   goToResources(notif: any): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.MAKE_TRUST_URL,
-      msgData: { isNaviExpanded: true, showDockedNavi: true, resource_id: notif.resource_id, componentToShow: 'Resources' },
+      msgType: MessageTypes.VIEW_RESOURCE,
+      msgData: { resource_id: notif.resource_id },
     });
     this.closeNotificationPanel.emit(true)
   }
 
   viewInChat(notif?: any): void {
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.MAKE_TRUST_URL,
-      msgData: {
-        isNaviExpanded: true,
-        showDockedNavi: true,
-        conversation_id: notif.conversation_id,
-        componentToShow: 'Chat'
-      },
-    });
+    this.utils.loadSpinner(true);
+    this.conversationService.getConversations('?id=' + notif.conversation_id).then((data: any) => {
+      if (data.data)
+        this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: true, toggleConversationPanel: true, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      console.log(err, 'err')
+      this.utils.loadSpinner(false);
+    })
     this.closeNotificationPanel.emit(true)
   }
 
