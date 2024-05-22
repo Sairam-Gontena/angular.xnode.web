@@ -35,8 +35,8 @@ jobs:
         SonarQube: 'sonarqube-svc'
         scannerMode: 'CLI'
         configMode: 'manual'
-        cliProjectKey: 'xnode'
-        cliProjectName: 'angular.xnode.web'
+        cliProjectKey: 'xnode_$(repositoryName)'
+        cliProjectName: '$(repositoryName)'
         cliSources: '.'
         extraProperties: |
           sonar.exclusions=**/*.bin
