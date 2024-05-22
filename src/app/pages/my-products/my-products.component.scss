@@ -14,6 +14,23 @@
     padding: 4rem;
 }
 
+:host ::ng-deep .recentDropdown .p-dropdown .p-dropdown-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+:host ::ng-deep .allDropdown .p-dropdown {
+    font-size: 14px;
+    font-weight: 400;
+
+}
+
+.dropdown-all {
+    background-color: #161D27;
+    border-radius: 8px;
+    height: 42px;
+}
+
 @media (max-width: 767px) {
     :host ::ng-deep .recentActivity {
         margin-top: -5rem !important;
