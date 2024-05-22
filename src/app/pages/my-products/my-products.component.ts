@@ -405,6 +405,7 @@ export class MyProductsComponent implements OnInit {
       .then((resp: any) => {
         if (resp?.status === 200) {
           this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
+          this.messagingService.sendMessage({ msgType: MessageTypes.USER_LIST, msgData: resp.data })
         } else {
           this.utils.loadToaster({
             severity: 'error',
