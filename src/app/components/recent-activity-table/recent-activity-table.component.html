@@ -8,26 +8,33 @@
                     <ng-container *ngIf="col.field === 'title'">
                         <div class="flex">
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Conversation'">
-                                <img src="../../assets/images/Conversation.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/conversations.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Thread'">
-                                <img src="../../assets/images/thread.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/threads.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Task'">
                                 <img src="../../assets/images/task.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Comment'">
-                                <img src="../../assets/images/Comment.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/comment.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Change-Request'">
-                                <img src="../../assets/images/ChangeRequest.svg" class="mr-2" alt="image" />
+                                <img src="../../assets/images/changeRequest.svg" class="mr-2" alt="image" />
                             </div>
                             <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Resource'">
                                 <img src="../../assets/images/resource.svg" class="mr-2" alt="image" />
                             </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Product_Spec'">
+                                <img src="../../assets/images/specUpdate.svg" class="mr-2" alt="image" />
+                            </div>
+                            <div class="flex align-items-center" *ngIf="rowData['objectType'] === 'Product_Version'">
+                                <img src="../../assets/images/specVersion.svg" class="mr-2" alt="image" />
+                            </div>
                             <div class="flex flex-column ml-2">
                                 <div class="font-normal text-base align-items-start">{{ rowData['title'] }}</div>
-                                <div class="font-normal activity-id align-items-start mt-2 cursor-pointer" (click)="onClickShortId(rowData)">{{ rowData['shortId'] }}
+                                <div class="font-normal activity-id align-items-start mt-2 cursor-pointer"
+                                    (click)="onClickShortId(rowData)">{{ rowData['shortId'] }}
                                 </div>
                             </div>
                         </div>
@@ -49,9 +56,6 @@
                             alt="modifiedOn" />
                         <span class="align-items-center text-center font-normal text-sm ml-1 modified-on">
                             {{ modifiedTimeDifference(rowData['modifiedOn']) }}
-
-                            <!-- {{
-                            rowData['modifiedOn'] }} -->
                         </span>
                     </ng-container>
                 </td>
