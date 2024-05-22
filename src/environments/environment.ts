@@ -4,7 +4,7 @@ export const environment = {
     apiUrl: 'https://xnode-us-apim-dev.xnode.ai/',
     apimSubscriptionKey: 'dfa5a9e0fbfa43809ea3e6212647dd53',
     endpoints: {
-        navi: 'navi-api',
+        navi: 'http://localhost:8000',
         auth: 'auth-api',
         conversation: 'conversations-api',
         spec: 'spec-api',
@@ -17,7 +17,7 @@ export const environment = {
         xflows: 'xflows-api'
     },
     xnodeAppUrl: 'http://localhost:4200/',
-    naviAppUrl: 'https://app-navi-us-dev.xnode.ai/',
+    naviAppUrl: 'http://localhost:4202/',
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
     webSocketUrl: 'https://notify-now.azurewebsites.net/',
     webSocketNotifier: 'dev-xnode-notifier',

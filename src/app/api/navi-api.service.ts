@@ -7,7 +7,7 @@ import { BaseApiService } from './base-api.service';
 })
 export class NaviApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.apiUrl + environment.endpoints.navi;
+    return  environment.endpoints.navi;
   }
   constructor() {
     super();
