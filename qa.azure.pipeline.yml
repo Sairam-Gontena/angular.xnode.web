@@ -47,16 +47,23 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
-            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/ci-cd'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
               script: 'npm run build:dev'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
+        
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
+              includeRootFolder: true
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              replaceExistingArchive: true
               
           - task: PublishPipelineArtifact@1
             displayName: "Publish Build Artifacts"
             inputs:
-              path: '$(System.DefaultWorkingDirectory)/dist'
+              path: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
               artifact: 'drop'
 
