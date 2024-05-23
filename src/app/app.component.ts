@@ -147,6 +147,9 @@ export class AppComponent implements OnInit {
       if (msg.msgData && msg.msgType === MessageTypes.REFRESH_TOKEN) {
         this.naviService.makeTrustedUrl();
       }
+      if (msg.msgData && msg.msgType === MessageTypes.USER_LIST) {
+        this.naviData.users=msg.msgData;
+      }
       if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.access_token = msg.msgData.access_token;
         this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, msg.msgData.access_token);
@@ -619,6 +622,7 @@ export class AppComponent implements OnInit {
 
   prepareDataOnOpeningNavi(): void {
     this.naviService.setComponentToShow('Tasks');
+    this.showDockedNavi = true;
     const product: any = this.storageService.getItem(StorageKeys.Product)
     if (product)
       this.componentToShow = 'Chat';

@@ -121,8 +121,8 @@ jobs:
                   if [[ "${state^^}" != "READY FOR DEPLOYMENT" ]]; then
                       pr_comment="Work Item ID: $work_item_id - The work item linked must be in Ready for Deployment state"
                       abandon_pr="true"
-                  elif [[ "${workItemType^^}" != "USER STORY" && ${workItemType^^} != "BUG" ]]; then
-                      pr_comment="Work Item ID: $work_item_id - The work-item linked must be either a User story or a Bug"
+                  elif [[ "${workItemType^^}" != "USER STORY" && ${workItemType^^} != "BUG" && ${workItemType^^} != "ISSUE" ]]; then
+                      pr_comment="Work Item ID: $work_item_id - The work-item linked must be either a User story or a Bug or an Issue"
                       abandon_pr="true"
                   elif [[ "${iterationPath^^}" != "${current_iteration_path^^}" ]]; then
                       pr_comment="Work Item ID: $work_item_id - The current iteration of the project and iteration attached to work item do not match"
