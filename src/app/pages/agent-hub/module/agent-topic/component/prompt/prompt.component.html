@@ -1,6 +1,6 @@
-<xnode-dynamic-table [inputData]="promptObj.tableData" [cols]="promptObj.columns"
-    [tableInfo]="promptObj.tableInfo" [showColumnFilterOption]="promptObj.showColumnFilterOption"
+<xnode-dynamic-table [inputData]="promptObj.tableData" [cols]="promptObj.columns" [tableInfo]="promptObj.tableInfo"
+    [showColumnFilterOption]="promptObj.showColumnFilterOption"
     [tableRowActionOptions]="promptObj.promptTableRowActionOptions" [paginatorInfo]="promptObj.paginatorInfo"
-    [searchFilterOptions]="promptObj.promptSearchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
-    [showViewRowData]="true" (changeEvent)="viewHandler($event)"
-    (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
+    [searchFilterOptions]="promptObj.promptSearchFilterOptions" columnWidth="13.8rem"
+    [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow" [showViewRowData]="true"
+    (changeEvent)="viewHandler($event)" (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>

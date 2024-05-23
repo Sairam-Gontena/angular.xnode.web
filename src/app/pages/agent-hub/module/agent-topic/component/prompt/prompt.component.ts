@@ -40,6 +40,8 @@ export class PromptComponent {
       changeHandler: this.onShowDynamicColumnFilter.bind(this),
     }
   }
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private activatedRoute: ActivatedRoute,
     private agentHubService: AgentHubService,
@@ -84,7 +86,7 @@ export class PromptComponent {
         }
         this.utilsService.loadSpinner(false);
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(false);
       }
     });

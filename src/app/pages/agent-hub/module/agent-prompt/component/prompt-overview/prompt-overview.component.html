@@ -11,205 +11,307 @@
 </ng-container>
 
 
-<form [formGroup]="overviewForm"
-    (ngSubmit)="overViewObj.componentDetail.enableDialog ? submitPromptHandler() : promptOverviewSubmit()">
-    <div class="flex flex-column gap-4 col-12 p-3"
-        [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 px-8' : 'sm:col-10 md:col-8 sm:mx-auto'">
-        <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">
-            <div class="flex justify-content-between">
-                <ng-container *ngIf="showBackButton">
-                    <p-button type="button" label="Back" icon="pi pi-arrow-left" iconPos="left" [outlined]="true"
-                        size="small" (onClick)="onGoBackHandler()" styleClass="border-round-2xl"></p-button>
-                </ng-container>
-                <div class="flex align-items-center justify-content-end w-full mb-3">
-                    <ng-container *ngIf="overViewObj.formEditable">
-                        <p-button type="submit" label="Save" icon="pi pi-save" iconPos="right" [outlined]="true"
-                            size="small" styleClass="border-round-2xl"></p-button>
-                        <p-button type="button" label="Cancel" icon="pi pi-times" iconPos="right" [outlined]="true"
-                            (onClick)="onEditSaveEvent()" size="small" styleClass="ml-2 border-round-2xl"></p-button>
-                    </ng-container>
-                    <ng-container *ngIf="!overViewObj.formEditable">
-                        <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="right" [outlined]="true"
-                            (onClick)="onEditSaveEvent()" size="small" styleClass="border-round-2xl"></p-button>
 
-                        <p-button type="button" label="Compare" icon="pi pi-check" iconPos="right" [outlined]="true"
-                            (onClick)="onEditSaveEvent()" size="small" styleClass="border-round-2xl ml-2"></p-button>
-                    </ng-container>
+<ng-container *ngIf="overViewObj.formEditable || overViewObj.componentDetail.enableDialog">
+    <form [formGroup]="overviewForm"
+        (ngSubmit)="overViewObj.componentDetail.enableDialog ? submitPromptHandler() : promptOverviewSubmit()">
+        <div class="col-12 p-3"
+            [ngClass]="overViewObj.componentDetail.enableDialog ? 'border-y-1 custom-modal-body' : 'sm:col-10 md:col-8 lg:col-6 sm:mx-auto'">
+            <ng-container *ngIf="!overViewObj.componentDetail.enableDialog">
+                <div class="flex align-items-center justify-content-end  w-full mb-3">
+                    <p-button type="submit" label="Save" icon="pi pi-save" iconPos="left" [outlined]="true" size="small"
+                        styleClass="ml-2 border-round-2xl"></p-button>
+
+                    <p-button type="button" label="Cancel" icon="pi pi-times" iconPos="right" [outlined]="true"
+                        (onClick)="onEditSaveEvent()" size="small" styleClass="ml-2 border-round-2xl"></p-button>
+                </div>
+            </ng-container>
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="name">Name</label>
+                <div class="w-full">
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="name" formControlName="name" placeholder="Name" />
                 </div>
             </div>
-        </ng-container>
-
-        <div class="flex flex-column gap-2">
-            <label class="w-3" for="name">Name</label>
-            <div class="w-full">
-                <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name" formControlName="name"
-                    placeholder="Please Enter the name of capability" />
-            </div>
-        </div>
-        <div class="flex flex-column gap-2">
-            <label class="w-3" for="description">Description</label>
-            <div class="w-full">
-                <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                    formControlName="description" placeholder="Enter description" xnodeTextareaAutoresize></textarea>
-            </div>
-        </div>
-
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="category">Category</label>
-            <div class="w-full">
-                <input pInputText type="text" class="w-full form-control" id="category" formControlName="category"
-                    placeholder="Create new or add from existing prompt" />
-            </div>
-        </div>
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="source">Source</label>
-            <div class="w-full">
-                <input pInputText type="text" class="w-full form-control" id="source" formControlName="source"
-                    placeholder="Create new or add from existing prompt" />
-            </div>
-        </div>
-
-        <!-- <div class="flex flex-column gap-2">
-            <label class="w-3" for="parentTopic">Parent Topic</label>
-            <div class="w-full">
-                <input pInputText type="text" class="w-full p-2 border-1 border-round" id="parentTopic"
-                    formControlName="parentTopic" placeholder="Please Enter the parent topic" />
-            </div>
-        </div> -->
-
-
-        <div class="flex flex-column gap-2">
-            <div class="w-full flex justify-content-between">
-                <label class="w-3" for="instruction">Instruction</label>
-                <a href="javascript:void(0)" class="no-underline" (click)="showHideAdvancedOption()">
-                    {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
-            </div>
-            <div class="w-full">
-                <textarea pInputTextarea rows="6" id="instruction" class="w-full p-2 border-1 border-round"
-                    formControlName="instruction"
-                    placeholder="Please provide guidelines for initiating meaningful conversations, fostering connections, and cultivating engagement across diverse communities. Highlight the importance of these efforts in building understanding, empathy, and collaboration in today's interconnected world."
-                    xnodeTextareaAutoresize></textarea>
-            </div>
-        </div>
-
-        <ng-container *ngIf="enableAdvancedOtion">
-            <div class="flex flex-column gap-2">
-                <label class="w-3" for="guideline">Guideline</label>
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="description">Description</label>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="guideline" class="w-full p-2 border-1 border-round"
-                        formControlName="guideline" placeholder="Enter Guideline" xnodeTextareaAutoresize></textarea>
+                    <textarea pInputTextarea rows="6" id="description"
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="description"
+                        placeholder="Description"></textarea>
+                </div>
+            </div>
+
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="category">Category</label>
+                <div class="w-full">
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="category" formControlName="category" placeholder="Create new or add from existing prompt" />
+                </div>
+            </div>
+
+            <div class="flex flex-column align-items-center mb-3">
+                <label class="w-full mb-1" for="source">Source</label>
+                <div class="w-full">
+                    <input pInputText type="text" class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="source" formControlName="source" placeholder="Create new or add from existing prompt" />
                 </div>
             </div>
 
             <div class="flex flex-column gap-2">
-                <label class="w-3" for="responsibility">Responsibilities</label>
+                <div class="w-full flex justify-content-between">
+                    <label class="w-3" for="instruction">Instruction</label>
+                    <a href="javascript:void(0)" class="no-underline" (click)="showHideAdvancedOption()">
+                        {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
+                </div>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="responsibility" class="w-full p-2 border-1 border-round"
-                        formControlName="responsibility" placeholder="Enter Responsibilities"
+                    <textarea pInputTextarea rows="6" id="instruction"
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="instruction"
+                        placeholder="Please provide guidelines for initiating meaningful conversations, fostering connections, and cultivating engagement across diverse communities. Highlight the importance of these efforts in building understanding, empathy, and collaboration in today's interconnected world."
+                        xnodeTextareaAutoresize></textarea>
+                </div>
+            </div>
+
+            <ng-container *ngIf="enableAdvancedOtion">
+                <div class="flex flex-column gap-2">
+                    <label class="w-3" for="guideline">Guideline</label>
+                    <div class="w-full">
+                        <textarea pInputTextarea rows="6" id="guideline"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="guideline"
+                            placeholder="Enter Guideline" xnodeTextareaAutoresize></textarea>
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3" for="responsibility">Responsibilities</label>
+                    <div class="w-full">
+                        <textarea pInputTextarea rows="6" id="responsibility"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                            formControlName="responsibility" placeholder="Enter Responsibilities"
+                            xnodeTextareaAutoresize></textarea>
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3" for="context">Context</label>
+                    <div class="w-full">
+                        <textarea pInputTextarea rows="6" id="context"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="context"
+                            placeholder="Enter Context" xnodeTextareaAutoresize></textarea>
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3" for="example">Example</label>
+                    <div class="w-full">
+                        <textarea pInputTextarea rows="6" id="example"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" formControlName="example"
+                            placeholder="Enter Example" xnodeTextareaAutoresize></textarea>
+                    </div>
+                </div>
+
+            </ng-container>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full" for="starter">Conversation Starters</label>
+                <div class="w-full">
+                    <input pInputText type="text" formControlName="initialConversationStarter"
+                        class="w-full p-2 border-1 border-round black-pearl-bg-input" id="starterInput"
+                        placeholder="Enter Starter Value" />
+                    <p-button styleClass="background-none" type="button" (onClick)="addStarterValue()" label="add more"
+                        icon="pi pi-plus" iconPos="left"></p-button>
+                    <div *ngIf="overviewForm.get('starter')?.value?.length > 0">
+                        <div>
+                            <div *ngFor="let item of overviewForm.get('starter')?.value">{{ item }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full" for="starter">Key Value</label>
+                <div class="w-full">
+                    <div class="flex gap-4">
+                        <input pInputText type="text" formControlName="key"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" id="keyInput"
+                            placeholder="Enter Key" />
+                        <input pInputText type="text" formControlName="value"
+                            class="w-full p-2 border-1 border-round black-pearl-bg-input" id="valueInput"
+                            placeholder="Enter Value" />
+                    </div>
+                    <p-button styleClass="background-none" type="button" (onClick)="addKeyValue()" label="add more"
+                        icon="pi pi-plus" iconPos="left"></p-button>
+                    <div *ngIf="overviewForm.get('key_value')?.value?.length > 0">
+                        <div>
+                            <div *ngFor="let item of overviewForm.get('key_value')?.value">
+                                <div *ngFor="let key of getObjectKeys(item)">
+                                    {{ key }}: {{ item[key] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full" for="opening_message">opening_message</label>
+                <div class="w-full">
+                    <textarea rows="3" pInputTextarea class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="opening_message" formControlName="opening_message" placeholder="Enter opening message"
                         xnodeTextareaAutoresize></textarea>
                 </div>
             </div>
 
             <div class="flex flex-column gap-2">
-                <label class="w-3" for="context">Context</label>
+                <label class="w-full" for="concluding_message">Concluding_message</label>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="context" class="w-full p-2 border-1 border-round"
-                        formControlName="context" placeholder="Enter Context" xnodeTextareaAutoresize></textarea>
+                    <textarea rows="3" pInputTextarea class="w-full p-2 border-1 border-round black-pearl-bg-input"
+                        id="concluding_message" formControlName="concluding_message" placeholder="Enter Closing message"
+                        xnodeTextareaAutoresize></textarea>
                 </div>
             </div>
 
             <div class="flex flex-column gap-2">
-                <label class="w-3" for="example">Example</label>
+                <label class="w-full" for="linkParent">link Parent</label>
                 <div class="w-full">
-                    <textarea pInputTextarea rows="6" id="example" class="w-full p-2 border-1 border-round"
-                        formControlName="example" placeholder="Enter Example" xnodeTextareaAutoresize></textarea>
+                    <p-dropdown appendTo="body" styleClass="w-full  black-pearl-bg-dropdown"
+                        formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"
+                        [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"
+                        [showClear]="true" placeholder="Please Select">
+                        <ng-template pTemplate="header">
+                            <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
+                                <p-tabPanel *ngFor="let tab of parentLinkTabsItem; let i = index" [header]="tab.title">
+                                </p-tabPanel>
+                            </p-tabView>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
+            <div class="flex align-item-center justify-content-end p-2">
+                <p-button styleClass="cutomGreyBtn border-transparent" [rounded]="true" type="button" label="Cancel"
+                    [outlined]="true" (onClick)="onCancelEvent()" size="small"></p-button>
+                <p-button styleClass="cutomCeruleanBtn border-transparent" [rounded]="true" type="submit" label="Add"
+                    [outlined]="true" size="small" class="ml-2"></p-button>
+            </div>
+        </ng-container>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!overViewObj.formEditable && !overViewObj.componentDetail.enableDialog">
+    <div class="flex justify-content-end mb-3">
+        <div class="flex justify-content-between">
+            <ng-container *ngIf="showBackButton">
+                <p-button type="button" label="Back" icon="pi pi-arrow-left" iconPos="left" [outlined]="true"
+                    size="small" (onClick)="onGoBackHandler()" styleClass="border-round-2xl"></p-button>
+            </ng-container>
+            <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="left" [outlined]="true"
+                (onClick)="onEditSaveEvent()" size="small" [rounded]="true" styleClass="border-gray-600"></p-button>
+        </div>
+    </div>
+    <div class="w-full border-1 border-gray-600 border-round">
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Name</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.name}}</div>
+            </div>
+        </div>
+        <div class="w-full py-3 border-y-1 border-gray-600">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Description</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.description}}</div>
+            </div>
+        </div>
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Category</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.model}}</div>
+            </div>
+        </div>
+
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Source</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.source}}</div>
+            </div>
+        </div>
+
+        <div class="w-full">
+
+            <div class="flex justify-content-end w-12 sm:w-10 sm:mx-auto md:w-8">
+                <a href="javascript:void(0)" class="no-underline" (click)="showHideAdvancedOption()">
+                    {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
+            </div>
+        </div>
+
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Instruction</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.instruction}}</div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="enableAdvancedOtion">
+            <div class="w-full py-3">
+                <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                    <label class="col-12 sm:col-4 md:col-3">Guideline</label>
+                    <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.guideline}}</div>
+                </div>
+            </div>
+
+            <div class="w-full py-3">
+                <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                    <label class="col-12 sm:col-4 md:col-3">Responsibilities</label>
+                    <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.responsibility}}</div>
+                </div>
+            </div>
+
+            <div class="w-full py-3">
+                <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                    <label class="col-12 sm:col-4 md:col-3">Context</label>
+                    <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.context}}</div>
+                </div>
+            </div>
+
+            <div class="w-full py-3">
+                <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                    <label class="col-12 sm:col-4 md:col-3">Example</label>
+                    <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.example}}</div>
                 </div>
             </div>
 
         </ng-container>
 
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="starter">Conversation Starters</label>
-            <div class="w-full">
-                <input pInputText type="text" formControlName="initialConversationStarter" class="w-full form-control"
-                    id="starterInput" placeholder="Enter Starter Value" />
-                <p-button styleClass="background-none" type="button" (onClick)="addStarterValue()" label="add more"
-                    icon="pi pi-plus" iconPos="left"></p-button>
-                <div *ngIf="overviewForm.get('starter')?.value?.length > 0">
-                    <div>
-                        <div *ngFor="let item of overviewForm.get('starter')?.value">{{ item }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="starter">Key Value</label>
-            <div class="w-full">
-                <div class="flex gap-4">
-                    <input pInputText type="text" formControlName="key" class="w-full form-control" id="keyInput"
-                        placeholder="Enter Key" />
-                    <input pInputText type="text" formControlName="value" class="w-full form-control" id="valueInput"
-                        placeholder="Enter Value" />
-                </div>
-                <p-button styleClass="background-none" type="button" (onClick)="addKeyValue()" label="add more"
-                    icon="pi pi-plus" iconPos="left"></p-button>
-                <div *ngIf="overviewForm.get('key_value')?.value?.length > 0">
-                    <div>
-                        <div *ngFor="let item of overviewForm.get('key_value')?.value">
-                            <div *ngFor="let key of getObjectKeys(item)">
-                                {{ key }}: {{ item[key] }}
-                            </div>
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Conversation Starters</label>
+                <div class="col-12 sm:col-8 md:col-9">
+                    <div *ngIf="overviewForm.get('starter')?.value?.length > 0">
+                        <div>
+                            <div *ngFor="let item of overviewForm.get('starter')?.value">{{ item }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="opening_message">opening_message</label>
-            <div class="w-full">
-                <textarea rows="3" pInputTextarea class="w-full form-control" id="opening_message"
-                    formControlName="opening_message" placeholder="Enter opening message"
-                    xnodeTextareaAutoresize></textarea>
+
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">opening_message</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.opening_message}}</div>
             </div>
         </div>
 
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="concluding_message">Concluding_message</label>
-            <div class="w-full">
-                <textarea rows="3" pInputTextarea class="w-full form-control" id="concluding_message"
-                    formControlName="concluding_message" placeholder="Enter Closing message"
-                    xnodeTextareaAutoresize></textarea>
+        <div class="w-full py-3">
+            <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                <label class="col-12 sm:col-4 md:col-3">Concluding_message</label>
+                <div class="col-12 sm:col-8 md:col-9">{{overViewObj.promptData?.concluding_message}}</div>
             </div>
         </div>
-
-        <div class="flex flex-column gap-2">
-            <label class="w-full" for="linkParent">link Parent</label>
-            <div class="w-full">
-                <p-dropdown styleClass="w-full" formControlName="linkParent" appendTo="body"
-                    (onChange)="onLinkParentChangeHandler($event)" [options]="parentLinkOptionList" optionLabel="name"
-                    [filter]="true" filterBy="name" [showClear]="true" placeholder="Please Select">
-                    <ng-template pTemplate="header">
-
-                        <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
-                            <p-tabPanel *ngFor="let tab of parentLinkTabsItem; let i = index" [header]="tab.title">
-                            </p-tabPanel>
-                        </p-tabView>
-
-                    </ng-template>
-
-                </p-dropdown>
-            </div>
-        </div>
-
     </div>
-    <ng-container *ngIf="overViewObj.componentDetail.enableDialog">
-        <div class="flex align-item-center justify-content-end p-2">
-            <p-button type="button" label="Cancel" [outlined]="true" (onClick)="onCancelEvent()" size="small"
-                styleClass="border-round-2xl"></p-button>
-            <p-button type="submit" label="Add" [outlined]="true" size="small"
-                styleClass="ml-2 border-round-2xl"></p-button>
-        </div>
-    </ng-container>
-</form>
+</ng-container>
+
+
+<xnode-compare-prompt [(visible)]="display" [promptId]="promptId" />

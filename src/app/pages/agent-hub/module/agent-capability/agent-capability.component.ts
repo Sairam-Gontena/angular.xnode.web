@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { InitialPaginatorInfo, searchFilterOptions, tableRowActionOptions, tableInfo } from '../../constant/agent-hub';
+import { InitialPaginatorInfo, searchFilterOptions, tableRowActionOptions, tableInfo, agentHeaderActionOptions } from '../../constant/agent-hub';
 import { agentName } from '../../agent-hub.constant';
 import dynamicTableColumnData from '../../../../../assets/json/dynamictabledata.json';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 })
 export class AgentCapabilityComponent {
   capabilityTabs: { idx: number; title: string; value: string, component: string }[] = [
-    { idx: 0, title: 'Overview', value: 'overview', component: 'capabilityOverview' },
+    { idx: 0, title: 'Overview', value: 'overview', component: agentName.capability },
     { idx: 1, title: 'Topics', value: 'topic', component: agentName.topic },
     { idx: 2, title: 'Prompts', value: 'prompt_linked_topic', component: agentName.prompt },
     { idx: 3, title: 'Models', value: 'model', component: agentName.model },
@@ -32,6 +32,10 @@ export class AgentCapabilityComponent {
   paginatorInfo = { ...InitialPaginatorInfo }; //Dynamic Table config
   searchFilterOptions: any = { ...searchFilterOptions } // Dynamic Table config
   tableInfo: any = { ...tableInfo }// Dynamic Table config
+  headerActionBtnOption = agentHeaderActionOptions;
+  agentHubDetail: any;
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(
     private storageService: LocalStorageService,
@@ -40,6 +44,9 @@ export class AgentCapabilityComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+
+    this.agentHubDetail = this.agentHubService.getAgentHeader();
+    this.updateHeaderOption()
   }
 
 
@@ -72,42 +79,6 @@ export class AgentCapabilityComponent {
       }
       this.router.navigate([this.capabilityTabs[this.activeIndex].component, item?.id], { relativeTo: this.activatedRoute });
     }
-    // if (this.activeIndex == 2) {
-    //   // Handle  Topic Case
-    // } else if (this.activeIndex == 3) {
-    //   // Handle Prompt Case
-
-    //   const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-    //   if (overViewTabIdentifier === "overview") {
-    //     this.overviewInstructionForm.enableOverview = true;
-    //     this.overviewInstructionForm.enableInstruction = false;
-    //   } else if (overViewTabIdentifier === "instruction") {
-    //     this.overviewInstructionForm.enableInstruction = true;
-    //     this.overviewInstructionForm.enableOverview = false;
-    //   }
-    //   this.overviewInstructionForm.overviewInstructionData = item;
-    //   // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
-    //   this.currentActiveRowData = item;
-    //   this.overviewTabItem.showTab = true;
-    // } else if (this.activeIndex == 4) {
-    //   // Handle Knowledge case
-    // }
-
-
-    // // Update breadcrumbs
-
-    // let breadcrumbItem = this.tabItems[this.activeIndex];
-    // const newPayload = [{
-    //   label: breadcrumbItem.title,
-    //   index: this.breadCrumbsAction.breadcrumb.length,
-    // }, {
-    //   label: item?.name,
-    //   index: this.breadCrumbsAction.breadcrumb.length + 1
-    // }];
-    // this.breadCrumbsAction.breadcrumb = [
-    //   ...this.breadCrumbsAction.breadcrumb,
-    //   ...newPayload,
-    // ];
   }
 
   // tab event
@@ -128,12 +99,25 @@ export class AgentCapabilityComponent {
 
 
       this.getAgentDetailByCategory(urlParam);
-      // this.updateHeaderOption();
 
     } else {
       /**
        * Show agent overview/instruction
        */
+    }
+
+    this.updateHeaderOption();
+  }
+
+
+  updateHeaderOption() {
+    let item = this.capabilityTabs[this.activeIndex];
+    if (item.component in this.headerActionBtnOption) {
+      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.component as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
+    } else {
+      console.error('Invalid identifier:', item.component);
+      // Handle the error appropriately
     }
   }
 

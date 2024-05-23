@@ -1,12 +1,12 @@
-<div class="flex flex-wrap justify-content-between">
+<div class="flex flex-wrap justify-content-between sticky top-0 header-top z-1 py-2">
     <xnode-breadcrumbs (changeEvent)="breadCrumbsHandler($event)"></xnode-breadcrumbs>
 
     <div class="flex align-items-center justify-content-between">
         <!-- Left-aligned content -->
         <div class="flex align-items-center">
             <ng-container *ngIf="!headerData?.showActionButton; else elseBlock">
-                <p-button label="Create Agent" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
-                    styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
+                <p-button label="Create Agent" icon="pi pi-plus" iconPos="left"
+                    styleClass="text-sm line-height-1 font-medium border-round-2xl px-2 py-2 create-agent-btn"
                     (onClick)="createAgentHandler()"></p-button>
             </ng-container>
 
@@ -15,7 +15,7 @@
                     [model]="headerData?.actionButtonOption"></p-splitButton>
             </ng-template>
         </div>
-        <div class="separator"></div>
+        <div class="border-1 border-gray-600 ml-4 mr-3 h-2rem"></div>
         <div class="flex align-items-center">
             <p-button>
                 <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
@@ -27,25 +27,22 @@
     </div>
 </div>
 
-<ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
-    <div class="w-full">
-        <div class="flex justify-content-between m-auto sm:w-10 w-12 my-2">
+<div class="w-full border-round-2xl header-stats py-3">
+    <ng-container *ngIf="!headerData?.agentConnectedFlow && headerData?.statsItem?.length">
+        <div class="grid gap-6 px-8 my-2">
             <!-- Agents Card -->
-            <div class="flex" *ngFor="let item of headerData.statsItem">
-                <p-button>
+            <div class="flex col-10 sm:col-6 md:col-4 lg:col-3 xl:col-2" *ngFor="let item of headerData.statsItem">
+                <p-button styleClass="p-0">
                     <img class="agent-icons" [src]="item.imgPath" alt="" />
                 </p-button>
-                <div class="flex flex-column">
-                    <div class="font-semibold text-base star-dust">{{ item.label }}</div>
+                <div class="flex flex-column ml-2">
+                    <div class="font-semibold text-base stats-label">{{ item.label }}</div>
                     <div class="text-4xl font-bold">{{ item.count }}</div>
                 </div>
             </div>
         </div>
-    </div>
-</ng-container>
-
-<ng-container *ngIf="headerData?.agentConnectedFlow">
-    <div class="w-full">
+    </ng-container>
+    <ng-container *ngIf="headerData?.agentConnectedFlow">
         <xnode-agent-information [agentInfo]="headerData?.agentInfo"></xnode-agent-information>
-    </div>
-</ng-container>
+    </ng-container>
+</div>

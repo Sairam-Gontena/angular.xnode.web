@@ -7,7 +7,8 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { agentHeaderActionOptions, agentHubDetail } from '../../constant/agent-hub';
+import { agentHeaderActionOptions, agentHubDetail, agentRecordDataType } from '../../constant/agent-hub';
+import { TabViewChangeEvent } from 'primeng/tabview';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -28,6 +29,7 @@ export class AgentHubDetailComponent {
     export_action: false,
     name: 'Notification List',
     search_input: true,
+    showAgentDataType: true
   };
   searchFilterOptions = {
     showFilterOption: true,
@@ -114,7 +116,7 @@ export class AgentHubDetailComponent {
     {
       idx: 1,
       title: 'Capabilities',
-      value: 'capabilities_linked_agents',
+      value: 'capabilitys', // Will update endpoint once backend is deployed
       identifier: agentName.capability,
     },
     { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },
@@ -127,7 +129,7 @@ export class AgentHubDetailComponent {
     {
       idx: 4,
       title: 'Knowledge',
-      value: 'knowledge',
+      value: 'resources-by-user',
       identifier: agentName.knowledge,
     },
     { idx: 5, title: 'Models', value: 'model', identifier: agentName.model },
@@ -151,10 +153,15 @@ export class AgentHubDetailComponent {
   tableData!: ITableDataEntry[];
   headerActionBtnOption = agentHeaderActionOptions;
   activeHeaderActionBtnOption!: any[];
+  agentDataType: string = agentRecordDataType.live;
+  recordType = agentRecordDataType //live/training/archieve
+
   viewAll = {
     showButton: true,
     clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
   };
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -214,23 +221,80 @@ export class AgentHubDetailComponent {
     endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
     this.tableData = [];
     this.paginatorInfo = { ...InitialPaginatorInfo };
-    try {
+    // try {
+    //   this.utilsService.loadSpinner(true);
+    //   const response = await this.agentHubService.getAllAgent({
+    //     accountId: this.userInfo.account_id,
+    //     endpoint: endpoint,
+    //     status: this.agentDataType,
+    //     page: this.paginatorInfo.page,
+    //     page_size: this.paginatorInfo.perPage,
+    //   });
+    //   this.tableData = response.data.data as ITableDataEntry[];
+    //   this.paginatorInfo.page = response.data.page;
+    //   this.paginatorInfo.perPage = response.data.per_page;
+    //   this.paginatorInfo.totalRecords = response.data.total_items;
+    //   this.paginatorInfo.totalPages = response.data.total_pages;
+    //   this.utilsService.loadSpinner(false);
+    // } catch (error) {
+    //   this.utilsService.loadSpinner(false);
+    //   console.error('Error fetching agent list:', error);
+    // }
+
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          status: this.agentDataType,
+          page: this.paginatorInfo.page,
+          page_size: this.paginatorInfo.perPage
+        }
+      }
+
+    if (this.activeIndex == 4) {
+      urlParam.url = `/resource/${endpoint}`
+      urlParam.params.accountId = this.userInfo.account_id
+      urlParam.params.userId = this.userInfo.user_id
+
       this.utilsService.loadSpinner(true);
-      const response = await this.agentHubService.getAllAgent({
-        accountId: this.userInfo.account_id,
-        endpoint: endpoint,
-        page: this.paginatorInfo.page,
-        page_size: this.paginatorInfo.perPage,
-      });
-      this.tableData = response.data.data as ITableDataEntry[];
-      this.paginatorInfo.page = response.data.page;
-      this.paginatorInfo.perPage = response.data.per_page;
-      this.paginatorInfo.totalRecords = response.data.total_items;
-      this.paginatorInfo.totalPages = response.data.total_pages;
-      this.utilsService.loadSpinner(false);
-    } catch (error) {
-      this.utilsService.loadSpinner(false);
-      console.error('Error fetching agent list:', error);
+      this.agentHubService.getResouceData(urlParam).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.tableData = response.data as ITableDataEntry[];
+            this.paginatorInfo.page = response.page;
+            this.paginatorInfo.perPage = response.per_page;
+            this.paginatorInfo.totalRecords = response.total_items;
+            this.paginatorInfo.totalPages = response.total_pages;
+          } else if (response?.detail) {
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+          }
+          this.utilsService.loadSpinner(false);
+        }, error: (error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+          this.utilsService.loadSpinner(false);
+        }
+      })
+    } else {
+      this.utilsService.loadSpinner(true);
+      this.agentHubService.getAllAgent(urlParam).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.tableData = response.data as ITableDataEntry[];
+            this.paginatorInfo.page = response.page;
+            this.paginatorInfo.perPage = response.per_page;
+            this.paginatorInfo.totalRecords = response.total_items;
+            this.paginatorInfo.totalPages = response.total_pages;
+          } else if (response?.detail) {
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+          }
+          this.utilsService.loadSpinner(false);
+        }, error: (error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+          this.utilsService.loadSpinner(false);
+        }
+      })
     }
   }
 
@@ -273,4 +337,33 @@ export class AgentHubDetailComponent {
     this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
   }
 
+  onTabSwitchHandler(event: TabViewChangeEvent) {
+    this.agentDataType = this.recordType.live;
+    this.getAllAgentList()
+    this.updateHeaderOption();
+  }
+
+  updateHeaderOption() {
+    let item = this.tabItems[this.activeIndex];
+    if (item.identifier in this.headerActionBtnOption) {
+      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
+    } else {
+      console.error('Invalid identifier:', item.identifier);
+      // Handle the error appropriately
+    }
+  }
+
+  setAgentDataType(event: any) {
+    this.agentDataType = event
+    this.getAllAgentList()
+  }
+
+
+  //pagination event for table
+  paginatorViewHandler(item: any) {
+    // let urlParam = this.makeTableParamObj(item);
+    // this.changeURL(this.activeIndex, urlParam);
+    // this.getAgentDetailByCategory(urlParam);
+  }
 }

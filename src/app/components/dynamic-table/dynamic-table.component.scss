@@ -170,3 +170,66 @@
 :host ::ng-deep .p-button {
   background: none;
 }
+
+.record-type {
+  border: 2px solid #595959;
+}
+.agent-data-type-border {
+  border-left: 2px solid #595959;
+  border-right: 2px solid #595959;
+}
+
+.active-agent-data-type {
+  background-color: var(--dark-grayish-blue);
+  border-radius: 4px;
+}
+
+.table-header {
+  background-color: var(--bleached-cedar) !important;
+}
+
+.table-search:focus, .table-search:hover  {
+  border: 2px solid var(--cerulean) !important;
+  background-color: var(--dark-grayish-blue) !important;
+}
+
+.table-column-formatting {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: inherit;
+}
+
+.search-container {
+  position: relative;
+  background-color: var(--bleached-cedar);
+  border: 2px solid var(--bright-grey);
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  border: none !important;
+
+  padding: 0;
+  width: 0;
+
+  transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+}
+.search:focus {
+  // width: 80%;
+  padding-left: 0.5rem;
+
+  transition-duration: 0.4s;
+	-moz-transition-duration: 0.4s;
+	-webkit-transition-duration: 0.4s;
+	-o-transition-duration: 0.4s;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}

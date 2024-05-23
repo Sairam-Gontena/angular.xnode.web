@@ -1,4 +1,4 @@
-<div class="">
+<div class="w-full agent-hub-container border-round-2xl p-3 mt-3">
     <p-tabView [(activeIndex)]="activeIndex">
         <ng-container *ngFor="let tabItem of tabItems">
             <p-tabPanel>
@@ -6,7 +6,7 @@
                     <span>{{tabItem.title}}</span>
                 </ng-template>
                 <ng-template pTemplate="content" [ngSwitch]="tabItem.title">
-                    <ng-container *ngSwitchCase="'Overview'">
+                    <ng-container *ngSwitchCase="'tool'">
                         <xnode-tool-overview />
                     </ng-container>
                     <!-- <ng-container *ngSwitchCase="'Actions'">

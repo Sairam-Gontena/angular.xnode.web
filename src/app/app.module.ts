@@ -15,6 +15,7 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NaviAppModule } from 'navi-web';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthApiService } from './api/auth.service';
@@ -42,6 +43,7 @@ import { LocalStorageService } from './components/services/local-storage.service
     FormBuilderModule,
     NgxSpinnerModule,
     NgxCaptureModule,
+    NaviAppModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

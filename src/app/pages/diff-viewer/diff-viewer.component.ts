@@ -145,6 +145,10 @@ export class DiffViewerComponent implements OnInit {
     });
   }
 
+  onScroll() {
+    this.specificationUtils.triggerSpecOverlays(true);
+  }
+
   ngOnInit(): void {
     let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
     if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {
@@ -251,6 +255,7 @@ export class DiffViewerComponent implements OnInit {
         this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
           if (data.data) {
             this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0]);
+            this.messagingService.sendMessage({ msgType: MessageTypes.VIEW_IN_CHAT, msgData: { isNaviExpanded: false, showDockedNavi: true, component: 'my-products', componentToShow: 'Chat', conversationDetails: data.data?.data[0] } });
             this.utils.saveProductDetails(product);
           } else {
             this.utils.saveProductDetails(product);

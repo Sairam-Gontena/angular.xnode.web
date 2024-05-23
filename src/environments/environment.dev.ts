@@ -16,10 +16,10 @@ export const environment = {
     uiGen: 'ui-gen',
     xflows: 'xflows-api'
   },
-  xnodeAppUrl: 'https://dev-xnode.azurewebsites.net/',
-  naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
+  xnodeAppUrl: 'https://app-us-dev.xnode.ai/',
+  naviAppUrl: 'https://app-navi-us-dev.xnode.ai/',
   designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
-  webSocketUrl: 'https://notify-now.azurewebsites.net',
+  webSocketUrl: 'https://app-notify-us-dev.xnode.ai/',
   webSocketNotifier: 'dev-xnode-notifier',
   branchName: 'dev',
   projectName: 'xnode-dev',

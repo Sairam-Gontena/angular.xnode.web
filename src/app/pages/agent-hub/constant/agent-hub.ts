@@ -42,7 +42,7 @@ export const searchFilterOptions = {
 
 //agent hub detail object
 export const agentHubDetail = {
-    statsItem: Constant.stats,
+    statsItem: Constant.dashboard.stats,
     agentInfo: "",
     agentConnectedFlow: false,
     showActionButton: false,
@@ -126,4 +126,10 @@ export const agentHeaderActionOptions = {
         { label: 'Import Tool', eventType: 'IMPORT', eventName: 'Tool', icon: '', command: () => { } }
         ]
     },
+}
+
+export const agentRecordDataType = {
+    training: 'training',
+    live: 'live',
+    archived: 'archived'
 }

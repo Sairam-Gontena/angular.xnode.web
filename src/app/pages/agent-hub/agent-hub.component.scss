@@ -1,3 +1,7 @@
+.agent-hub-container {
+  background-color: var(--black-pearl);
+}
+
 :host ::ng-deep .p-dropdown .p-dropdown-trigger {
   width: auto !important;
 }
@@ -22,7 +26,8 @@
 
   .p-tabview-panels {
     padding: 10px 0px;
-    height: calc(100vh - 265px);
+    // height: calc(100vh - 265px);
+    height: calc(100vh - 24rem);
     overflow: auto;
     background: transparent;
   }
@@ -33,6 +38,7 @@
     li {
       a.p-tabview-nav-link {
         background: transparent;
+        white-space: nowrap;
       }
 
       &:not(.p-highlight):not(.p-disabled):hover {
@@ -88,16 +94,20 @@
 }
 
 :host ::ng-deep .custom-multiselect {
-  background-color: #343541;
-  border: 2px solid #595959;
+  height: 100%;
+  // background-color: var(--dark-grayish-blue);
+  background-color: var(--bleached-cedar);
+  border: 2px solid var(--bright-grey);
   border-radius: 6px;
 }
 
-:host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus {
+:host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus,
+:host ::ng-deep .custom-multiselect:not(.p-disabled):hover {
   outline: inherit;
   outline-offset: 0;
   box-shadow: none;
-  border: 2px solid #595959;
+  border: 2px solid var(--cerulean);
+  background-color: var(--dark-grayish-blue);
 }
 
 :host ::ng-deep .p-placeholder {
@@ -107,8 +117,8 @@
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-inputtext:enabled:hover {
   border-radius: 0%;
-  background-color: #343541;
-  border: 2px solid #595959;
+  background-color: var(--bleached-cedar);
+  border: 2px solid var(--bright-grey);
   border-radius: 6px;
 }
 

@@ -27,11 +27,11 @@ export class ConversationActionsComponent {
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private specUtils: SpecUtilsService,
-    private localService:LocalStorageService,
+    private localService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService
   ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.currentUser = this.localService.getItem(StorageKeys.CurrentUser)
   }
 
@@ -161,29 +161,29 @@ export class ConversationActionsComponent {
   saveComment(): void {
     let cmt = this.selectedComment;
     const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
-    cmt.attachments = concatenatedFiles.map((file:any) => file.fileId);
+    cmt.attachments = concatenatedFiles.map((file: any) => file.fileId);
     let id = cmt.id;
-    delete cmt.id; delete cmt.createdOn; delete cmt.createdBy; delete cmt.cmId;delete cmt.repliesOpened;
+    delete cmt.id; delete cmt.createdOn; delete cmt.createdBy; delete cmt.cmId; delete cmt.repliesOpened;
     delete cmt.parentEntity; delete cmt.parentId; delete cmt.referenceContent; delete cmt.replyCount;
     delete cmt.taskCount; delete cmt.status; delete cmt.parentShortId; delete cmt.topParentId;
-    delete cmt.feedback;delete cmt.followers;
-    this.commentsService.patchComment( id, cmt).then((commentsReponse: any) => {
-        if (commentsReponse.statusText === "OK"||commentsReponse.status==200) {
-          this.utils.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: 'File Updated successfully',
-          });
-          this.getLatestComments();
-          this.uploadedFiles = [];
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: commentsReponse?.data?.common?.status,
-          });
-        }
-      })
+    delete cmt.feedback; delete cmt.followers;
+    this.commentsService.patchComment(id, cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === "OK" || commentsReponse.status == 200) {
+        this.utils.loadToaster({
+          severity: 'success',
+          summary: 'SUCCESS',
+          detail: 'File Updated successfully',
+        });
+        this.getLatestComments();
+        this.uploadedFiles = [];
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: commentsReponse?.data?.common?.status,
+        });
+      }
+    })
       .catch((err) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -194,25 +194,25 @@ export class ConversationActionsComponent {
       });
   }
 
-  getLatestComments(){
-      this.utils.loadSpinner(true);
-      const specVersion: any = this.localService.getItem(
-        StorageKeys.SpecVersion
-      );
-      const product: any = this.localService.getItem(StorageKeys.Product);
-      this.commentsService.getCommentsByProductId({
-          productId: product.id,
-          versionId: specVersion?.id,
-        }).then((response: any) => {
-          if (response.status === 200 && response.data) {
-            this.specificationUtils.saveCommentList(response.data);
-          }
-          this.utils.loadSpinner(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          this.utils.loadSpinner(false);
-        });
+  getLatestComments() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.localService.getItem(
+      StorageKeys.SpecVersion
+    );
+    const product: any = this.localService.getItem(StorageKeys.Product);
+    this.commentsService.getCommentsByProductId({
+      productId: product.id,
+      versionId: specVersion?.id,
+    }).then((response: any) => {
+      if (response.status === 200 && response.data) {
+        this.specificationUtils.saveCommentList(response.data);
+      }
+      this.utils.loadSpinner(false);
+    })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   saveAsTask(): void {
@@ -223,30 +223,30 @@ export class ConversationActionsComponent {
     const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || []),];
     task.attachments = concatenatedFiles.map((file) => file.fileId);
     this.commentsService.patchTask('/task?id=' + this.selectedComment.id, task).then((commentsReponse: any) => {
-          if (commentsReponse.statusText === "OK"||commentsReponse.status==200) {
-            this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS',detail: 'File updated successfully'});
-            this.uploadedFiles = [];
-            this.getTasksList()
-            this.utils.loadSpinner(false);
-          } else {
-            this.utils.loadToaster({
-              severity: 'error',
-              summary: 'ERROR',
-              detail: commentsReponse?.data?.common?.status,
-            });
-          }
-        })
-        .catch((err) => {
-          this.utils.loadSpinner(false);
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: err,
-          });
+      if (commentsReponse.statusText === "OK" || commentsReponse.status == 200) {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File updated successfully' });
+        this.uploadedFiles = [];
+        this.getTasksList()
+        this.utils.loadSpinner(false);
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: commentsReponse?.data?.common?.status,
         });
+      }
+    })
+      .catch((err) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 
-  getTasksList(){
+  getTasksList() {
     this.utils.loadSpinner(true);
     const product: any = this.localService.getItem(StorageKeys.Product);
     let specVersion: any = this.localService.getItem(StorageKeys.SpecVersion);

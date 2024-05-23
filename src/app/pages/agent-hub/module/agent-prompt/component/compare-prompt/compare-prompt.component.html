@@ -1,0 +1,219 @@
+<div class="card flex justify-content-center">
+    <p-dialog styleClass="pb-0" [modal]="true" [(visible)]="visible" [style]="{ width: '75rem' }" (onHide)="onClose()">
+        <p-tabView>
+            <p-tabPanel *ngFor="let topicItem of promptTabs" [header]="topicItem.title">
+                <ng-container [ngSwitch]="topicItem.component">
+                    <div class="overflow-auto customTopicTabPanel">
+                        <ng-container *ngSwitchCase="'Compare_Result'">
+                            <div class="flex gap-1">
+                                <div class="compare-config">
+                                    <div class="flex flex-column gap-3 pr-3">
+                                        <div class="pl-2 py-2 agent-status">
+                                            <ul class="flex px-4 m-0 gap-1 text-sm">
+                                                <li class="m-0">live v1.8</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="flex flex-column gap-3 compare-result-container border-round p-4">
+                                            <p class="m-0 font-semibold text-2xl">Purpose</p>
+
+                                            <p class="text-sm m-0 compare-result-live text-base font-normal">The
+                                                purpose of
+                                                this document is to provide a
+                                                comprehensive specification for the FinBuddy application, detailing its
+                                                intended functionality, key features, and underlying technical
+                                                considerations. This document serves as a guide for the development,
+                                                testing, and deployment of the application, ensuring alignment between
+                                                stakeholders and clarity on product expectations.</p>
+                                        </div>
+
+                                        <div class="flex flex-column gap-3 compare-result-container border-round p-4">
+                                            <p class="m-0 font-semibold text-2xl">Scope</p>
+
+                                            <p class="text-sm m-0 compare-result-live text-base font-normal">The
+                                                This specification covers the Finbuddy app, an AI-powered personal
+                                                finance assistant. The document will delve into the app's primary
+                                                features, including Expense Tracking, Income Management, Budgeting,
+                                                Savings Goals, Bill Reminders, Debt Management, Financial Insights &
+                                                Reports, AI-Powered Advice, Security & Privacy, and Multi-device Sync.
+                                                The specification will not cover marketing strategies, monetization
+                                                models, or user acquisition channels for the app.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="compare-config">
+                                    <div class="flex flex-column gap-3 pr-3">
+                                        <div class="pl-2 py-2 agent-status">
+                                            <ul class="flex px-4 m-0 gap-1 text-sm">
+                                                <li class="m-0">training v1.8</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="flex flex-column gap-3 compare-result-container border-round p-4">
+                                            <p class="m-0 font-semibold text-2xl">Purpose</p>
+
+                                            <p class="text-sm m-0 compare-result-live text-base font-normal">The
+                                                purpose of
+                                                this document is to provide a
+                                                comprehensive specification for the FinBuddy application, detailing its
+                                                intended functionality, key features, and underlying technical
+                                                considerations. This document serves as a guide for the development,
+                                                testing, and deployment of the application, ensuring alignment between
+                                                stakeholders and clarity on product expectations.</p>
+                                        </div>
+
+                                        <div class="flex flex-column gap-3 compare-result-container border-round p-4">
+                                            <p class="m-0 font-semibold text-2xl">Scope</p>
+
+                                            <p class="text-sm m-0 compare-result-live text-base font-normal">The
+                                                This specification covers the Finbuddy app, an AI-powered personal
+                                                finance assistant. The document will delve into the app's primary
+                                                features, including Expense Tracking, Income Management, Budgeting,
+                                                Savings Goals, Bill Reminders, Debt Management, Financial Insights &
+                                                Reports, AI-Powered Advice, Security & Privacy, and Multi-device Sync.
+                                                The specification will not cover marketing strategies, monetization
+                                                models, or user acquisition channels for the app.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="flex gap-1" *ngSwitchCase="'Compare_Configuration'">
+                            <div class="compare-config">
+                                <ng-container
+                                    *ngTemplateOutlet="promptPreview; context: { promptData: livePromptRecord }"></ng-container>
+                            </div>
+                            <div>
+                                <ng-container
+                                    *ngTemplateOutlet="promptPreview; context: { promptData: trainingPromptRecord }"></ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </p-tabPanel>
+        </p-tabView>
+    </p-dialog>
+
+    <ng-template #promptPreview let-tPromptData="promptData">
+        <div class="flex flex-column gap-4 col-12 p-3">
+            <div class="pl-2 py-2 agent-status">
+                <ul class="flex px-4 m-0 gap-1 text-sm">
+                    <li class="m-0">{{tPromptData?.status}} {{tPromptData?.version}}</li>
+                </ul>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="w-3 text-white text-lg" for="name">Name</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.name ? tPromptData?.name : "N/A"}}
+                </div>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="w-3 text-white text-lg" for="description">Description</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.description ? tPromptData?.description : "N/A"}}
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="category">Category</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.category ? tPromptData?.category : "N/A"}}
+                </div>
+            </div>
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="source">Source</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.source ? tPromptData?.source : "N/A"}}
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <div class="w-full flex justify-content-between">
+                    <label class="w-3 text-white text-lg" for="instruction">Instruction</label>
+                    <a href="javascript:void(0)" class="no-underline text-base" (click)="showHideAdvancedOption()">
+                        {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
+                </div>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.instruction ? tPromptData?.instruction : "N/A"}}
+                </div>
+            </div>
+
+            <ng-container *ngIf="enableAdvancedOtion">
+                <div class="flex flex-column gap-2">
+                    <label class="w-3 text-white text-lg" for="guideline">Guideline</label>
+                    <div class="w-full text-sm prompt-data-value">
+                        {{tPromptData?.guideline ? tPromptData?.guideline : "N/A"}}
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3 text-white text-lg" for="responsibility">Responsibilities</label>
+                    <div class="w-full text-sm prompt-data-value">
+                        {{tPromptData?.responsibility ? tPromptData?.responsibility : "N/A"}}
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3 text-white text-lg" for="context">Context</label>
+                    <div class="w-full text-sm prompt-data-value">
+                        {{tPromptData?.context ? tPromptData?.context : "N/A"}}
+                    </div>
+                </div>
+
+                <div class="flex flex-column gap-2">
+                    <label class="w-3 text-white text-lg" for="example">Example</label>
+                    <div class="w-full text-sm prompt-data-value">
+                        {{tPromptData?.example ? tPromptData?.example : "N/A"}}
+                    </div>
+                </div>
+
+            </ng-container>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="starter">Conversation Starters</label>
+                <div class="w-full text-sm prompt-data-value">
+                    <div *ngIf=" tPromptData?.starter?.length > 0; elseBlock">
+                        <div>
+                            <div *ngFor="let item of tPromptData?.starter">{{ item }}</div>
+                        </div>
+                    </div>
+
+                    <div #elseBlock>
+                        N/A
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="starter">Key Value</label>
+                <div class="w-full text-sm prompt-data-value">
+                    <div *ngIf="tPromptData?.key_value; elseBlock">
+                        <div *ngFor="let item of tPromptData?.key_value">
+                            <div *ngFor="let key of getObjectKeys(item)">
+                                {{ key }}: {{ item[key] }}
+                            </div>
+                        </div>
+                    </div>
+                    <div #elseBlock>
+                        N/A
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="opening_message">opening_message</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.opening_message ? tPromptData?.opening_message : "N/A"}}
+                </div>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <label class="w-full text-white text-lg" for="concluding_message">Concluding_message</label>
+                <div class="w-full text-sm prompt-data-value">
+                    {{tPromptData?.concluding_message ? tPromptData?.concluding_message : "N/A"}}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

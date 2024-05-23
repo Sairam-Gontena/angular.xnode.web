@@ -1,0 +1,31 @@
+.header-top {
+    background-color: var(--black-pearl);
+}
+
+.header-stats {
+    background-color: var(--bleached-cedar)
+}
+
+::ng-deep .create-agent-btn {
+    background-color: var(--cerulean) !important;
+    color: var(--black-pearl);
+
+    .p-button-icon.pi-plus {
+        background: #000;
+        color: #fff;
+        border-radius: 50%;
+        padding: 3px;
+        font-size: 9px;
+        font-weight: bold;
+    }
+}
+
+::ng-deep .pi.pi-plus-circle {
+    color: var(--black-pearl);
+}
+
+::ng-deep .agent-playground-headerActionBtn {
+    .p-button {
+        color: #000;
+    }
+}

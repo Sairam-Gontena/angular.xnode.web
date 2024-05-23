@@ -1,0 +1,1 @@
+declare module '@ngneat/until-destroy';

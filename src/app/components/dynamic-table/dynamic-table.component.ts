@@ -35,13 +35,18 @@ export class DynamicTableComponent implements OnInit {
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
   @Input() columnWidth: string = '18rem';
-  @Input() tableHeaderColor: string = '';
-  @Input() altBgColorRow: string = '';
+  @Input() tableHeaderbgColor: string = '';
+  @Input() bgColorRow: any = { evenRowColor: "", oddRowColor: "" };
   @Input() verticalScrollHeight = '25rem';
   @Input() paginatorInfo: any = {};
   @Input() showViewRowData = false;
+  @Input() agentDataType = 'live'
+  @Input() recordType!: any;
+  @Input() expandSearch = false;
+  @Input() actionsOption!: any;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
+  @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
 
   @Input() tableRowActionOptions: any[] = [];
 
@@ -96,6 +101,9 @@ export class DynamicTableComponent implements OnInit {
     if (changes['tableInfo']?.currentValue) {
       this.exportFileName =
         changes['tableInfo']?.currentValue.name + new Date().getTime();
+    }
+    if (changes['bgColorRow']?.currentValue) {
+      this.bgColorRow = changes['bgColorRow']?.currentValue;
     }
   }
 
@@ -181,5 +189,18 @@ export class DynamicTableComponent implements OnInit {
     if (this.showViewRowData) {
       this.changeEvent.emit(rowData)
     }
+  }
+
+  setAgentDataType(type: any) {
+    this.agentDataType = type
+    this.agentDataTypeChange.emit(type)
+  }
+
+  focusSearchHandler() {
+    this.expandSearch = !this.expandSearch
+  }
+
+  focusBlurHandler() {
+    this.expandSearch = false
   }
 }
