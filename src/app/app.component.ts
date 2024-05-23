@@ -611,6 +611,7 @@ export class AppComponent implements OnInit {
 
   prepareDataOnOpeningNavi(): void {
     this.naviService.setComponentToShow('Tasks');
+    this.showDockedNavi = true;
     const product: any = this.storageService.getItem(StorageKeys.Product)
     if (product)
       this.componentToShow = 'Chat';

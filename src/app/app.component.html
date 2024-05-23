@@ -1,6 +1,6 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0" *ngIf="!showDockedNavi">
+        <div class="absolute bottom-0 right-0 z-5" *ngIf="!showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
         </div>
         <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
@@ -28,7 +28,7 @@
 
 <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
-<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" 
+<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()"
     (openDockedNavi)="openNavi()" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
