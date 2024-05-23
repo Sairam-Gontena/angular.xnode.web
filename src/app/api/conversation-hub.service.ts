@@ -84,7 +84,14 @@ export class ConversationHubService extends BaseApiService {
     let url = '/resource/resources-by-user?' + httpParams;
     return this.get(url);
   }
-
+  getThreadsByUserId(params: any) {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    let url = '/thread?' + httpParams;
+    return this.get(url);
+  }
   getResources(params: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
@@ -107,4 +114,5 @@ export class ConversationHubService extends BaseApiService {
   getRecentActivities(userId: any) {
     return from(this.get(`/user-activity?`, { userId }));
   }
+
 }

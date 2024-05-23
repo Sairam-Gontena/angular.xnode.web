@@ -170,6 +170,10 @@ export class AppComponent implements OnInit {
           this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.naviService.setResourceID(msg.msgData.resource_id);
         }
+        if (msg.msgData?.componentToShow === 'Threads') {
+          this.storageService.removeItem(StorageKeys.Product);
+          // this.naviService.setResourceID(msg.msgData.thread_id);
+        }
         if (msg.msgData?.componentToShow === 'Chat' && msg.msgData.component !== 'my-products') {
           this.storageService.removeItem(StorageKeys.Product);
           this.storageService.removeItem(StorageKeys.CONVERSATION);
@@ -195,7 +199,8 @@ export class AppComponent implements OnInit {
         this.naviService.setNewWithNavi(!msg.msgData?.product);
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
-        this.resource_id = msg.msgData.resource_id
+        this.resource_id = msg.msgData.resource_id;
+        // this.thread_id = msg.msgData.thread_id;
         this.conversationId = msg.msgData.conversation_id;
         this.componentToShow = 'Chat';
         console.log('6');
@@ -204,6 +209,12 @@ export class AppComponent implements OnInit {
         this.showDockedNavi = true
         this.isNaviExpanded = true
         this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: false }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.THREAD_DETAIL_VIEW) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Threads", toggleConversationPanel: true, new_with_navi: false, thread_id: msg.msgData.thread_id, thread_event: msg?.msgData.thread_event }
+        console.log(this.naviData, 'NAVI DATA THREAD')
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_RESOURCE) {
         this.showDockedNavi = true

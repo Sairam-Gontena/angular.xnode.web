@@ -3,6 +3,7 @@ export interface NaviData {
     is_navi_expanded: boolean;
     chat_type?: string;
     import_event?: true;
+    thread_event?: false;
     restriction_max_value?: number;
     banner?: {
         show_banner: boolean;
@@ -25,6 +26,7 @@ export interface NaviData {
         title: string;
     };
     resource_id?: string;
+    thread_id?: string;
     conversationDetails?: {
         id: string;
         isNew?: boolean;

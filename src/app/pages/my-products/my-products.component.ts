@@ -128,6 +128,15 @@ export class MyProductsComponent implements OnInit {
     this.getColumnDef();
   }
 
+  onClickThreadById(id: string): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.THREAD_DETAIL_VIEW,
+      msgData: {
+        thread_event: true,
+        thread_id: id
+      },
+    });
+  }
   getConversationById(id: string): void {
     this.conversationService.getConversations('?id=' + id).then((data: any) => {
       if (data.data)
@@ -233,6 +242,9 @@ export class MyProductsComponent implements OnInit {
       case "Product_Spec":
         this.onClickProductCard(record);
         break;
+      case "Thread":
+        this.onClickThreadById(record.id);
+        break;
       default:
         break;
     }
@@ -284,7 +296,7 @@ export class MyProductsComponent implements OnInit {
         let activities: any = [];
         for (let activity of res.data.data) {
           let row: any = {
-            id: activity.id,
+            id: activity.actionDetail.id,
             objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
