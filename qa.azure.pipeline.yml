@@ -3,7 +3,14 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
-  - release-qa
+  branches:
+    include:
+    - refs/heads/ci-cd
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/ci-cd
 
 stages:
   - stage: build
@@ -20,6 +27,18 @@ stages:
               versionSpec: '18.x'
             displayName: "Install Node.js"
 
+          - task: npmAuthenticate@0
+            inputs:
+              workingFile: .npmrc
+            displayName: "Authenticate with Azure Artifacts"
+
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'npm i navi-web --force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
           - task: Bash@3
             displayName: "Install Node Packages"
             inputs:
@@ -28,17 +47,16 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/ci-cd'))
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
-              script: 'npm run build:qa'
+              script: 'npm run build:dev'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: "Deploy to Azure WebApp"
+              
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Build Artifacts"
             inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: 'xnode-spn'
-              appType: 'webAppLinux'
-              WebAppName: 'qa-xnode'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+              path: '$(System.DefaultWorkingDirectory)/dist'
+              artifact: 'drop'
+
