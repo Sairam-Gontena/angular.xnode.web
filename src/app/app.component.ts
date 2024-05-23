@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
         this.naviService.makeTrustedUrl();
       }
       if (msg.msgData && msg.msgType === MessageTypes.USER_LIST) {
-        this.naviData.users=msg.msgData;
+        this.naviData.users = msg.msgData;
       }
       if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.access_token = msg.msgData.access_token;
@@ -262,7 +262,6 @@ export class AppComponent implements OnInit {
       if (this.storageService.getItem(StorageKeys.CurrentUser)) {
         this.showInactiveTimeoutPopup = true;
       }
-      // this.childModal.show();
     });
 
     idle.onTimeoutWarning.subscribe((countdown: any) => {
@@ -311,8 +310,6 @@ export class AppComponent implements OnInit {
       case 'close-navi':
         this.showDockedNavi = false;
         this.isNaviExpanded = false;
-        this.naviData = { ... this.naviData, showDockedNavi: false };
-        this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
         break;
       case 'expand-navi':
         this.isNaviExpanded = event.is_navi_expanded;
@@ -446,15 +443,6 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/']);
       }
     })
-  }
-
-  closeNavi(): void {
-    this.product = undefined;
-    this.showDockedNavi = false;
-    localStorage.removeItem('has_insights')
-    localStorage.removeItem('app_name')
-    this.isNaviExpanded = false;
-    this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
   }
 
   async handleTheme(): Promise<void> {
