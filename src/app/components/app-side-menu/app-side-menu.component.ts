@@ -30,8 +30,11 @@ export class AppSideMenuComponent implements OnInit {
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
-        this.isInProductContext = msg.msgData;
+      if (msg.msgType === MessageTypes.PRODUCT_CONTEXT || msg.msgType === MessageTypes.PRODUCT_SELECTED) {
+        this.isInProductContext = true;
+        if(msg.msgType === MessageTypes.PRODUCT_CONTEXT && !msg.msgData){
+          this.isInProductContext = false;
+        }
         this.prepareMenuBasedOnRoute();
       }
     })
