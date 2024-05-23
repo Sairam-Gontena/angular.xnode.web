@@ -23,6 +23,7 @@ import { appInitializer } from './utils/app.initializer';
 import { JwtInterceptor } from './utils/jwt.interceptor';
 import { ErrorInterceptor } from './utils/error.interceptor';
 import { LocalStorageService } from './components/services/local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,11 +54,13 @@ import { LocalStorageService } from './components/services/local-storage.service
         disallowedRoutes: ['your-api-domain.com/login'],
       },
     }),
+    // LibraryModule.forRoot(environment)
   ],
   providers: [RefreshListService, DatePipe,
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [LocalStorageService, AuthApiService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
