@@ -369,3 +369,18 @@
   height: calc(100vh - 42px);
   z-index: 3;
 }
+
+xnode-app-header{
+  display: block;
+  position: relative;
+  height: 42px;
+}
+
+.navi-frame {
+  height: calc(-42px + 100vh);
+}
+
+.x-node-whole-container {
+  position: fixed;
+  top: 42px;
+}
