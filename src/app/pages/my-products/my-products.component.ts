@@ -226,16 +226,41 @@ export class MyProductsComponent implements OnInit {
   }
 
   recentActivityEvent(record: any): void {
+    record.id = record.record;
     switch (record.objectType) {
       case 'Conversation':
-        this.getConversationById(record.id);
+        this.getConversationById(record.objectId);
         break;
       case "Product_Spec":
         this.onClickProductCard(record);
         break;
+      case "Thread":
+        this.getThreadDetails(record);
+        break;
+      case "Resource":
+        this.getResourceDetails(record);
+        break;
       default:
         break;
     }
+  }
+
+  getThreadDetails(record: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.THREAD_DETAILS,
+      msgData: {
+        threadDetails: record.actionDetail
+      },
+    });
+  }
+
+  getResourceDetails(record: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.RESOURCE_DETAILS,
+      msgData: {
+        threadDetails: record.actionDetail
+      },
+    });
   }
 
   getConversationByProduct(product: any): void {
@@ -285,6 +310,7 @@ export class MyProductsComponent implements OnInit {
         for (let activity of res.data.data) {
           let row: any = {
             id: activity.id,
+            objectId: activity.objectId,
             objectType: activity.objectType,
             userAction: activity.userAction,
             modifiedBy: [activity.modifiedBy],
@@ -298,7 +324,8 @@ export class MyProductsComponent implements OnInit {
             title: activity.actionDetail.title || "",
             shortId: activity.objectShortId || "",
             summarize: activity.actionDetail.isSummarizationQueue,
-            status: activity.actionDetail.status
+            status: activity.actionDetail.status,
+            actionDetail: activity.actionDetail
           }
           activities.push(row)
         }
