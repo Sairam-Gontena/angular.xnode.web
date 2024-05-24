@@ -462,15 +462,14 @@ export class AppComponent implements OnInit {
       this.handleBotIcon();
       this.getAllUsers();
     } else {
-      if (!window.location.hash.includes('#/reset-password?email')) {
-        this.router.navigate(['/']);
+      if (!window.location.hash.includes('/reset-password?email')) {
         localStorage.clear();
       }
       this.utilsService.getMeToastObject.subscribe((event: any) => {
         this.messageService.add(event);
       });
     }
-    if (!window.location.hash.includes('#/reset-password?email'))
+    if (!window.location.hash.includes('/reset-password?email'))
       this.redirectToPreviousUrl();
     this.utilsService.getMeSummaryPopupStatus.subscribe((data: any) => {
       if (data) {
