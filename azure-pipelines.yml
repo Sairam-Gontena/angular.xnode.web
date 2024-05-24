@@ -42,13 +42,13 @@ stages:
           - task: npmAuthenticate@0
             condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
             inputs:
-              workingFile: dev.npmrc
+              workingFile: .npmrc
             displayName: "Authenticate with dev Artifacts"
 
           - task: npmAuthenticate@0
             condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
             inputs:
-              workingFile: beta.npmrc
+              workingFile: .npmrc
             displayName: "Authenticate with app-US Artifacts"
 
           - task: Bash@3
