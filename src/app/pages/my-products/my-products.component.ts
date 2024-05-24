@@ -240,9 +240,32 @@ export class MyProductsComponent implements OnInit {
       case "Resource":
         this.getResourceDetails(record);
         break;
+      case "Task":
+        this.getTaskDetails(record);
+        break;
+      case "Comment":
+        this.getCommentDetailsDetails(record);
+        break;
       default:
         break;
     }
+  }
+  getTaskDetails(record: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.TASK_DETAILS,
+      msgData: {
+        taskDetails: record.actionDetail
+      },
+    });
+  }
+
+  getCommentDetailsDetails(record: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.COMMENT_DETAILS,
+      msgData: {
+        commentDetails: record.actionDetail
+      },
+    });
   }
 
   getThreadDetails(record: any): void {

@@ -44,6 +44,8 @@ export interface NaviData {
     users?: any;
     threadDetails?: any;
     resourceDetails?: any;
+    taskDetails?: any;
+    commentDetails?: any;
 }
 
 interface User {

@@ -213,6 +213,16 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = true
         this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Threads", toggleConversationPanel: true, new_with_navi: false, threadDetails: msg.msgData.threadDetails }
       }
+      if (msg.msgData && msg.msgType === MessageTypes.COMMENT_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Comments", toggleConversationPanel: true, new_with_navi: false, commentDetails: msg.msgData.commentDetails }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.TASK_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Tasks", toggleConversationPanel: true, new_with_navi: false, taskDetails: msg.msgData.taskDetails }
+      }
       if (msg.msgData && msg.msgType === MessageTypes.RESOURCE_DETAILS) {
         this.showDockedNavi = true
         this.isNaviExpanded = true
