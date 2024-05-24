@@ -143,71 +143,71 @@ export class GeneralFeedbackComponent implements OnInit {
 
   getMeComponent() {
     let comp = '';
-    switch (window.location.hash) {
-      case '#/dashboard':
+    switch (window.location.pathname) {
+      case '/dashboard':
         comp = 'Dashboard';
         break;
-      case '#/overview':
+      case '/overview':
         comp = 'Overview';
         break;
-      case '#/usecases':
+      case '/usecases':
         comp = 'Usecase';
         break;
-      case '#/configuration/workflow/overview':
+      case '/configuration/workflow/overview':
         comp = 'Xflows';
         break;
-      case '#/configuration/data-model/overview':
+      case '/configuration/data-model/overview':
         comp = 'Data Models';
         break;
-      case '#/operate':
+      case '/operate':
         comp = 'Operate';
         break;
-      case '#/publish':
+      case '/publish':
         comp = 'Publish';
         break;
-      case '#/my-products':
+      case '/my-products':
         comp = 'My Product';
         break;
-      case '#/configuration/api-integration':
+      case '/configuration/api-integration':
         comp = 'API Integration';
         break;
-      case '#/acitvity':
+      case '/acitvity':
         comp = 'Activity';
         break;
-      case '#/operate':
+      case '/operate':
         comp = 'Operate';
         break;
-      case '#/workspace':
+      case '/workspace':
         comp = 'Workspace';
         break;
-      case '#/brand-guideline':
+      case '/brand-guideline':
         comp = 'Brand Guideline';
         break;
-      case '#/about-your-self':
+      case '/about-your-self':
         comp = 'About your self';
         break;
-      case '#/x-pilot':
+      case '/x-pilot':
         comp = 'Xpilot';
         break;
-      case '#/admin/user-invitation':
+      case '/admin/user-invitation':
         comp = 'User Invitation';
         break;
-      case '#/operate/change/history-log':
+      case '/operate/change/history-log':
         comp = 'History Log';
         break;
-      case '#/admin/user-approval':
+      case '/admin/user-approval':
         comp = 'User Approval';
         break;
-      case '#/dynamic-form':
+      case '/dynamic-form':
         comp = 'Dynamic Form';
         break;
-      case '#/help-center':
+      case '/help-center':
         comp = 'Help Center';
         break;
-      case '#/feedback-list':
+      case '/feedback-list':
         comp = 'Feedback List';
         break;
-      case '#/specification':
+      case '/specification':
         comp = 'Specification';
         break;
       default:
