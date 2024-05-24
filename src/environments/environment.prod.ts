@@ -25,5 +25,11 @@ export const environment = {
     projectName: 'xnode-in',
     homeUrl: 'https://xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS: 30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30,
+    speechServiceKey: 'a9f00de52c2249b6a8fd6ec124116673',
+    serviceRegion: 'centralindia',
+    translateServiceKey: 'bf601ff8c4a54d2ab278a29f13855d1a',
+    NAVI_IDLE_TIMEOUT_PERIOD_MILLISECONDS: '30 * 60 * 60 * 1000',
+    SPEECH_SDK_TOKEN_REFRESH_TIME_MILLISECONDS: '15 * 60 * 1000',
+    defaultPerPageLimit: 10
 }
