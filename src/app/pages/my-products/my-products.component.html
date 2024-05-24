@@ -60,11 +60,11 @@
                 <div class="flex justify-content-between align-items-center">
                     <p-dropdown [options]="activity" class="mt-2 recentDropdown" [(ngModel)]="selectedActivity"
                         (onChange)="onChangeSelectedActivity($event)" optionLabel="name" placeholder="Your Activity" />
-                    <div class="dropdown-all px-2">
+                    <!-- <div class="dropdown-all px-2">
                         <i class="pi pi-sliders-v" style="width:17px ; height:17px"></i>
                         <p-dropdown [options]="allActivity" class="mt-2 allDropdown" [(ngModel)]="selectedAllActivity"
                             (onChange)="onChangeSelectedAll($event)" optionLabel="name" placeholder="All" />
-                    </div>
+                    </div> -->
                 </div>
                 <div class="recentActivity mt-1">
                     <xnode-recent-activity-table [headers]="columnDef" [dataContent]="activities"

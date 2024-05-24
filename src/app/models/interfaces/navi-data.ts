@@ -42,6 +42,10 @@ export interface NaviData {
         productId?: any;
     };
     users?: any;
+    threadDetails?: any;
+    resourceDetails?: any;
+    taskDetails?: any;
+    commentDetails?: any;
 }
 
 interface User {

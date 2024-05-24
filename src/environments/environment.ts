@@ -14,7 +14,8 @@ export const environment = {
         publish: 'ui-gen/ui/angular',
         notification: 'notification-api/',
         uiGen: 'ui-gen/',
-        xflows: 'xflows-api/'
+        xflows: 'xflows-api/',
+        translate: 'translator-api/'
     },
     xnodeAppUrl: 'http://localhost:4200/',
     naviAppUrl: 'https://app-navi-us-dev.xnode.ai/',

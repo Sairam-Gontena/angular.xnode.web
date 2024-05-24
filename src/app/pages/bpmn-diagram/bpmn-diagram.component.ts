@@ -1080,12 +1080,17 @@ export class BpmnDiagramComponent
     nodeC
       .append('rect')
       .attr('width', (d: any) => {
-        return d.data.title.length * 10;
+        if(d.data.title.length * 10 > 200)
+          if(d.data?.role.length<8)
+            return 80;
+        return d.data.role.length * 10;
       })
       .attr('height', '40')
       .attr('fill', '#FFFFFA')
       .attr('y', '-1.5em')
       .attr('x', (d: any) => {
+        if(d.data.title.length > 10)
+          d.data.title = d.data.title.substring(0, 10)
         return -5.5 * d.data.title.length;
       })
       .attr('rx', 25)
@@ -1113,6 +1118,8 @@ export class BpmnDiagramComponent
       .clone(true)
       .lower()
       .attr('stroke', 'white');
+
+    nodeC.append('title').text((d: any) => d.data.role);
 
     const nodeL = svg
       .append('g')

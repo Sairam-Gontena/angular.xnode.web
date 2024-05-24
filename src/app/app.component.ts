@@ -163,6 +163,8 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
+        this.showDockedNavi = true;
+        this.isNaviExpanded = true;
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
       }
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
@@ -207,6 +209,26 @@ export class AppComponent implements OnInit {
         this.showDockedNavi = true
         this.isNaviExpanded = true
         this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Resources", import_event: msg?.msgData.import_event, toggleConversationPanel: true, new_with_navi: false }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.THREAD_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Threads", toggleConversationPanel: true, new_with_navi: false, threadDetails: msg.msgData.threadDetails }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.COMMENT_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Comments", toggleConversationPanel: true, new_with_navi: false, commentDetails: msg.msgData.commentDetails }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.TASK_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Tasks", toggleConversationPanel: true, new_with_navi: false, taskDetails: msg.msgData.taskDetails }
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.RESOURCE_DETAILS) {
+        this.showDockedNavi = true
+        this.isNaviExpanded = true
+        this.naviData = { ...this.naviData, is_navi_expanded: true, componentToShow: "Resources", toggleConversationPanel: true, new_with_navi: false, resourceDetails: msg.msgData.resourceDetails }
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_RESOURCE) {
         this.showDockedNavi = true
@@ -462,15 +484,14 @@ export class AppComponent implements OnInit {
       this.handleBotIcon();
       this.getAllUsers();
     } else {
-      if (!window.location.hash.includes('#/reset-password?email')) {
-        this.router.navigate(['/']);
+      if (!window.location.hash.includes('/reset-password?email')) {
         localStorage.clear();
       }
       this.utilsService.getMeToastObject.subscribe((event: any) => {
         this.messageService.add(event);
       });
     }
-    if (!window.location.hash.includes('#/reset-password?email'))
+    if (!window.location.hash.includes('/reset-password?email'))
       this.redirectToPreviousUrl();
     this.utilsService.getMeSummaryPopupStatus.subscribe((data: any) => {
       if (data) {
