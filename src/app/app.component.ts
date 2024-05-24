@@ -163,6 +163,8 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
       }
       if (msg.msgData && msg.msgType === MessageTypes.VIEW_SUMMARY) {
+        this.showDockedNavi = true;
+        this.isNaviExpanded = true;
         this.naviData = { ...this.naviData, conversationDetails: msg.msgData.conversationDetails, componentToShow: 'Chat', is_navi_expanded: true, toggleConversationPanel: true, new_with_navi: false, chat_type: 'old-chat' }
       }
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
