@@ -29,7 +29,7 @@ stages:
 
           - task: npmAuthenticate@0
             inputs:
-              workingFile: prod.npmrc
+              workingFile: .npmrc
             displayName: "Authenticate with Azure Artifacts"
 
           - task: Bash@3
