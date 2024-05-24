@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
         this.naviService.makeTrustedUrl();
       }
       if (msg.msgData && msg.msgType === MessageTypes.USER_LIST) {
-        this.naviData.users=msg.msgData;
+        this.naviData.users = msg.msgData;
       }
       if (msg.msgData && msg.msgType === MessageTypes.ACCESS_TOKEN) {
         this.access_token = msg.msgData.access_token;
@@ -203,7 +203,6 @@ export class AppComponent implements OnInit {
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
         this.resource_id = msg.msgData.resource_id;
-        // this.thread_id = msg.msgData.thread_id;
         this.conversationId = msg.msgData.conversation_id;
         this.componentToShow = 'Chat';
         console.log('6');
