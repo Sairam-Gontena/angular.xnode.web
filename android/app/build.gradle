@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "ai.xnode.sandbox"
+    namespace "ai.xnode.xnode"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ai.xnode.sandbox"
+        applicationId "ai.xnode.xnode"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

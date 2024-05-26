@@ -1,4 +1,4 @@
-package ai.xnode.sandbox;
+package ai.xnode.xnode;
 
 import com.getcapacitor.BridgeActivity;
 

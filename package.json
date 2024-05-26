@@ -15,8 +15,8 @@
     "ionic:build": "npm run build",
     "ionic:serve": "npm run start",
     "update-config": "ts-node capacitor.config.ts",
-    "cap:sync-qa": "npm run update-config & npx cap copy & npx cap open android",
-    "cap:sync-prod": "npm run update-config & npx cap copy"
+    "cap:sync-qa": "npx cap sync",
+    "cap:sync-prod": "set NODE_ENV=prod & npx cap sync"
   },
   "private": true,
   "dependencies": {
