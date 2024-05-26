@@ -14,8 +14,9 @@
     "test": "ng test",
     "ionic:build": "npm run build",
     "ionic:serve": "npm run start",
-    "cap:sync-qa": "SET NODE_ENV=qa & npx cap sync & npx cap open android",
-    "cap:sync-prod": "SET NODE_ENV=prod & npx cap sync"
+    "update-config": "ts-node capacitor.config.ts",
+    "cap:sync-qa": "npm run update-config & npx cap copy & npx cap open android",
+    "cap:sync-prod": "npm run update-config & npx cap copy"
   },
   "private": true,
   "dependencies": {
@@ -100,17 +101,21 @@
     "@capacitor/core": "6.0.0",
     "@capacitor/ios": "^6.0.0",
     "@schematics/angular": "^16.2.0",
+    "@trapezedev/project": "^7.0.10",
     "@types/diff-match-patch": "^1.0.36",
     "@types/file-saver": "^2.0.5",
     "@types/hogan.js": "^3.0.5",
     "@types/jasmine": "~4.3.1",
     "babel-loader": "^9.1.2",
+    "dotenv": "^16.4.5",
     "jasmine-core": "~5.0.0",
+    "js-yaml": "^4.1.0",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.0.4"
   }
 }
