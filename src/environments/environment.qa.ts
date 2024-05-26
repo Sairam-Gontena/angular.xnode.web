@@ -20,5 +20,9 @@ export const environment = {
     projectName: 'xnode',
     homeUrl: 'https://dev.xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS:30
+    XNODE_TIMEOUT_PERIOD_SECONDS:30,
+    mobileApp: {
+        name: 'XNODE-SANDBOX',
+        appId: 'ai.xnode.sandbox'
+    }
 }

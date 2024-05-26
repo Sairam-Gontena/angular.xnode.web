@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "ai.xnode.xnode"
+    namespace "ai.xnode.sandbox"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "ai.xnode"
+        applicationId "ai.xnode.sandbox"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -21,19 +21,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    flavorDimensions = ["environment"]
-    productFlavors {
-    dev {
-        dimension "environment"
-        applicationIdSuffix ".xnode"
-        manifestPlaceholders = [displayName:"XNODE"]
-    }
-    qa {
-        dimension "environment"
-        applicationIdSuffix ".sandbox"
-        manifestPlaceholders = [displayName:"XNODE-SANDBOX"]
-    }
     }
 }
 
