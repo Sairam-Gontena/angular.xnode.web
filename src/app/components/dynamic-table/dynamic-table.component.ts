@@ -45,6 +45,7 @@ export class DynamicTableComponent implements OnInit {
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
   @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
+  @Output() performTableAction = new EventEmitter<{ event: any }>();
   @Input() tableRowActionOptions: any[] = [];
 
   @Input() searchFilterOptions: FilterOptions = {
@@ -191,5 +192,17 @@ export class DynamicTableComponent implements OnInit {
   setAgentDataType(type: any) {
     this.agentDataType = type
     this.agentDataTypeChange.emit(type)
+  }
+
+  onDropdownItemClick(event: any, row: any) {
+    console.log('Dropdown item clicked!', event);
+    console.log('Row data:', row);
+
+
+    let eventData = {
+      ...event,
+      row: row
+    }
+    this.performTableAction.emit(eventData)
   }
 }

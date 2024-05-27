@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IDropdownItem, IPaginatorInfo, ITableInfo } from '../../IAgent-hub';
-import { Constant, agentName } from '../../agent-hub.constant';
+import { Constant, actionButton, agentName } from '../../agent-hub.constant';
 import dynamicTableColumnData from './../../../../../assets/json/dynamictabledata.json';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -9,6 +9,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { agentHeaderActionOptions, agentHubDetail, agentRecordDataType } from '../../constant/agent-hub';
 import { TabViewChangeEvent } from 'primeng/tabview';
+import { DropdownChangeEvent } from 'primeng/dropdown';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -53,32 +54,16 @@ export class AgentHubDetailComponent {
   tableRowActionOptions = [
     {
       label: 'View',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
+      identifier: actionButton.view
     },
     {
       label: 'Duplicate',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
+      identifier: actionButton.duplicate
     },
     {
       label: 'Archieve',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
-    {
-      label: 'Delete',
-      icon: '',
-      command: (event: any) => {
-        console.log(event, 'event');
-      },
-    },
+      identifier: actionButton.archieve
+    }
   ];
   agentTabItemDropdown: IDropdownItem[] = [
     {
@@ -345,15 +330,17 @@ export class AgentHubDetailComponent {
   }
 
   viewHandler(item: any) {
-    let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
-    if (agentHubDetailObj) {
-      agentHubDetailObj.showActionButton = true;
-      agentHubDetailObj.agentConnectedFlow = true;
-      agentHubDetailObj.agentInfo = item;
-      this.agentHubService.setAgentHeader(agentHubDetailObj);
-      this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+    if (this.activeIndex != 4) {
+      let agentHubDetailObj: any = this.agentHubService.getAgentHeader();
+      if (agentHubDetailObj) {
+        agentHubDetailObj.showActionButton = true;
+        agentHubDetailObj.agentConnectedFlow = true;
+        agentHubDetailObj.agentInfo = item;
+        this.agentHubService.setAgentHeader(agentHubDetailObj);
+        this.agentHubService.saveAgentHeaderObj(agentHubDetailObj);
+      }
+      this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
     }
-    this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
   }
 
   onTabSwitchHandler(event: TabViewChangeEvent) {
@@ -384,5 +371,63 @@ export class AgentHubDetailComponent {
     // let urlParam = this.makeTableParamObj(item);
     // this.changeURL(this.activeIndex, urlParam);
     // this.getAgentDetailByCategory(urlParam);
+  }
+
+
+  tableRowActionHandler(event: any) {
+    switch (event?.value?.identifier) {
+      case actionButton.view:
+        console.log(actionButton.view)
+        this.viewHandler(event?.row)
+        break;
+      case actionButton.duplicate:
+        console.log(actionButton.duplicate);
+        this.createClone(event?.row)
+        break;
+      case actionButton.archieve:
+        console.log(actionButton.archieve);
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  createClone(item: any) {
+    let urlParam = {
+      url: '',
+      params: {
+        id: item?.id
+      }
+    }
+
+    if (this.activeIndex == 0) {
+      // agemt clone
+      urlParam.url = 'agent/clone_agent'
+    } else if (this.activeIndex == 1) {
+      // capability clone
+      urlParam.url = 'agent/clone_capability'
+    } else if (this.activeIndex == 2) {
+      // topic clone
+      urlParam.url = 'agent/clone_topic'
+    } else if (this.activeIndex == 3) {
+      //clone topic
+      urlParam.url = "agent/clone_prompt"
+    }
+
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.createDuplicate(urlParam).subscribe({
+      next: (response: any) => {
+        if (response) {
+          console.log(response, "Clone Successfully")
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error?.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
   }
 }

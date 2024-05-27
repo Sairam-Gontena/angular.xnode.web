@@ -9,6 +9,12 @@ export const agentName = {
     changeReq: "change_request"
 }
 
+export const actionButton = {
+    view: 'view',
+    duplicate: 'duplicate',
+    archieve: 'archieve'
+}
+
 /**
  * Stats key Description:
  * 

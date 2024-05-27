@@ -22,11 +22,11 @@
                         [showColumnFilterOption]="showColumnFilterOption"
                         [tableRowActionOptions]="tableRowActionOptions" [paginatorInfo]="paginatorInfo"
                         [searchFilterOptions]="searchFilterOptions" [showViewRowData]="true"
-                        (changeEvent)="activeIndex != 4 && viewHandler($event)" columnWidth="13.8rem"
+                        (changeEvent)="viewHandler($event)" columnWidth="13.8rem"
                         [tableHeaderbgColor]="tableHeaderbgColor" [bgColorRow]="bgColorRow"
                         [agentDataType]="agentDataType" (agentDataTypeChange)="setAgentDataType($event)"
-                        [recordType]="recordType"
-                        (paginatorChangeEvent)="paginatorViewHandler($event)"></xnode-dynamic-table>
+                        [recordType]="recordType" (paginatorChangeEvent)="paginatorViewHandler($event)"
+                        (performTableAction)="tableRowActionHandler($event)"></xnode-dynamic-table>
                     <!-- [viewAll]="viewAll" -->
                 </div>
                 <!-- For now Comment below code, uncomment once the functionality is decided -->

@@ -174,12 +174,22 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="col.icon">
-            <p-splitButton (onDropdownClick)="$event.stopPropagation()" label="" class="p-0" styleClass="p-0 z-5"
-              menuStyleClass="menuStyleTable" appendTo="body" [model]="tableRowActionOptions">
+            <!-- <p-splitButton (onDropdownClick)="$event.stopPropagation();" label="" class="p-0" styleClass="p-0 z-5"
+              menuStyleClass="menuStyleTable" appendTo="body" [model]="getRowActions(rowData)">
               <ng-template pTemplate="dropdownicon">
                 <p-button [icon]="col.icon"></p-button>
               </ng-template>
-            </p-splitButton>
+            </p-splitButton> -->
+
+            <p-dropdown [options]="tableRowActionOptions" (onClick)="$event.stopPropagation()" dropdownIcon="null"
+              styleClass="border-none" appendTo="body" (onChange)="onDropdownItemClick($event, rowData)">
+              <ng-template let-option pTemplate="selectedItem" class="border-none">
+                <i class="pi pi-ellipsis-v"></i>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <div>{{option.label}}</div>
+              </ng-template>
+            </p-dropdown>
           </ng-container>
         </td>
       </tr>
