@@ -262,7 +262,6 @@ export class AgentHubDetailComponent {
       this.agentHubService.getResouceData(urlParam).subscribe({
         next: (response: any) => {
           if (response) {
-            debugger
             //data formatting
             response.data.map((item: any) => {
               item.tags = [...item.content.tags, ...item.content.tags, ...item.content.tags, ...item.content.tags],
