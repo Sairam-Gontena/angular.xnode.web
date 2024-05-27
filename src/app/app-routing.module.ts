@@ -41,9 +41,6 @@ const routes: Routes = [{
   path: 'dashboard', canActivate: [authGuard],
   loadChildren: () => import('./pages/template-builder/template-builder.module').then((m) => m.TemplateBuilderModule)
 }, {
-  path: 'sample',
-  loadChildren: () => import('./pages/sample/sample.module').then((m) => m.SampleModule)
-}, {
   path: 'operate', canActivate: [authGuard],
   loadChildren: () => import('./pages/operate/operate.module').then((m) => m.OperateModule)
 }, {
@@ -94,9 +91,6 @@ const routes: Routes = [{
 }, {
   path: 'feedback-list',
   loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
-}, {
-  path: 'specification1',
-  loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
 }, {
   path: 'agent-playground', data: { breadcrumb: 'Agent Hub' },
   loadChildren: () => import('./pages/agent-hub/agent-hub.module').then((m) => m.AgentHubModule)

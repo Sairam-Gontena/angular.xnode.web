@@ -81,8 +81,8 @@ export class AuthApiService extends BaseApiService {
     return this.http
       .post<any>(
         `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token`,
-        {email:this.userValue?.email,token:this.userValue?.refreshToken},
-        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey} }
+        { email: this.userValue?.email, token: this.userValue?.refreshToken },
+        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey } }
       )
       .pipe(
         map((resp) => {
@@ -123,7 +123,7 @@ export class AuthApiService extends BaseApiService {
     }
   }
 
-  private stopRefreshTokenTimer() {
+  stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
 
