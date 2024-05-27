@@ -45,6 +45,7 @@
     "@ng-idle/core": "^14.0.0",
     "@ng-idle/keepalive": "^14.0.0",
     "@ng-select/ng-select": "^10.0.4",
+    "@ngneat/until-destroy": "^10.0.0",
     "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.198",
     "angular-gridster2": "^16.0.0",
@@ -87,6 +88,7 @@
     "swagger-ui-dist": "^5.9.0",
     "tslib": "^2.5.0",
     "webpack": "^5.89.0",
+    "webrtc-adapter": "^9.0.1",
     "xlsx": "^0.18.5",
     "zone.js": "^0.13.0"
   },

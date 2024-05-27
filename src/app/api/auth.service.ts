@@ -60,25 +60,29 @@ export class AuthApiService extends BaseApiService {
   login(body: any) {
     return this.post('/auth/prospect/login', body);
   }
-
   logout() {
-    this.http
-      .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
-        headers: {
-          'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
-        }
-      })
-      .subscribe();
-    this.stopRefreshTokenTimer();
-    this.userSubject.next(null);
-    this.router.navigate(['/login']);
+    return this.get(`/mfa/logout?email=${this.userValue?.email}`);
   }
+
+  // logout() {
+  //   this.http
+  //     .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
+  //       headers: {
+  //         'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
+  //       }
+  //     })
+  //     .subscribe();
+  //   this.stopRefreshTokenTimer();
+  //   this.userSubject.next(null);
+  //   this.router.navigate(['/login']);
+  // }
 
   refreshToken() {
     return this.http
-      .get<any>(
-        `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token?email=${this.userValue?.email}&token=${this.userValue?.refreshToken}`,
-        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey } }
+      .post<any>(
+        `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token`,
+        {email:this.userValue?.email,token:this.userValue?.refreshToken},
+        { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey} }
       )
       .pipe(
         map((resp) => {
@@ -90,15 +94,9 @@ export class AuthApiService extends BaseApiService {
           this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, resp.accessToken);
           this.storageService.saveItem(StorageKeys.REFRESH_TOKEN, resp.refreshToken);
           this.messagingService.sendMessage({
-            msgType: MessageTypes.REFRESH_TOKEN,
-            msgData: resp.refreshToken,
+            msgType: MessageTypes.ACCESS_TOKEN,
+            msgData: { access_token: resp.accessToken, from: 'refresh-token' },
           });
-          const naviFrame = document.getElementById('naviFrame')
-          if (naviFrame) {
-            const iWindow = (<HTMLIFrameElement>naviFrame).contentWindow;
-            iWindow?.postMessage({ accessToken: resp.accessToken, refreshToken: resp.refreshToken }, environment.naviAppUrl);
-          }
-
           this.userSubject.next(decodedUser);
           this.startRefreshTokenTimer();
           return decodedUser;

@@ -24,14 +24,18 @@ export class ProductDropdownComponent implements OnInit {
 
   ngOnInit() {
     this.products = this.storageService.getItem(StorageKeys.MetaData);
-    const product = this.storageService.getItem(StorageKeys.Product);
+    const product:any = this.storageService.getItem(StorageKeys.Product);
     if (product) {
+      delete product.timeAgo;
+      delete product.created_by;
       this.selectedProduct = product;
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedProduct']?.currentValue) {
+      delete changes['selectedProduct']?.currentValue.timeAgo;
+      delete changes['selectedProduct']?.currentValue.created_by;
       this.products = this.storageService.getItem(StorageKeys.MetaData);
       this.selectedProduct = changes['selectedProduct']?.currentValue;
     }

@@ -4,17 +4,18 @@ export const environment = {
     apiUrl: 'https://xnode-us-apim.xnode.ai/',
     apimSubscriptionKey: '64182f1412f74e0fb4402f476e10d567',
     endpoints: {
-        navi: 'navi-api',
-        auth: 'auth-api',
-        conversation: 'conversations-api',
-        spec: 'spec-api',
+        navi: 'navi-api/',
+        auth: 'auth-api/',
+        conversation: 'conversations-api/',
+        spec: 'spec-api/',
         userUtil: 'userutil-api/',
-        common: 'common-api',
-        naviData: 'navi-data',
+        common: 'common-api/',
+        naviData: 'navi-data/',
         publish: 'ui-gen/ui/angular',
-        notification: 'notification-api',
-        uiGen: 'ui-gen',
-        xflows: 'xflows-api'
+        notification: 'notification-api/',
+        uiGen: 'ui-gen/',
+        xflows: 'xflows-api/',
+        translate: 'translator-api/'
     },
     xnodeAppUrl: 'https://app-us.xnode.ai/',
     naviAppUrl: 'https://app-navi-us.xnode.ai/',
@@ -25,5 +26,11 @@ export const environment = {
     projectName: 'xnode-beta',
     homeUrl: 'https://xnode.ai/',
     XNODE_IDLE_TIMEOUT_PERIOD_SECONDS: '30 * 60',
-    XNODE_TIMEOUT_PERIOD_SECONDS: 30
+    XNODE_TIMEOUT_PERIOD_SECONDS: 30,
+    speechServiceKey: '9d063585e8f64e0cabf0988bc65bd15d',
+    serviceRegion: 'eastus',
+    translateServiceKey: '729254b906cd45399cfc84a6404cfac2',
+    NAVI_IDLE_TIMEOUT_PERIOD_MILLISECONDS: '30 * 60 * 60 * 1000',
+    SPEECH_SDK_TOKEN_REFRESH_TIME_MILLISECONDS: '15 * 60 * 1000',
+    defaultPerPageLimit: 10
 }

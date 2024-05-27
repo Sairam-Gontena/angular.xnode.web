@@ -14,6 +14,8 @@ export interface OverallSummary {
             actions: string[];
             participants: any[];
             tags: string[];
+            unknownConcepts?: string[];
+            sources?: string[];
         };
         timestamp: string;
     };

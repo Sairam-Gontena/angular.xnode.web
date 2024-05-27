@@ -41,6 +41,21 @@ export class ConversationHubService extends BaseApiService {
     return this.get(url);
   }
 
+  getThreads(params: any) {
+    let queryParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      if (Array.isArray(params[key])) {
+        queryParams = queryParams.append(key, params[key].join(','));
+      } else {
+        queryParams = queryParams.append(key, params[key]);
+      }
+    });
+    let url = '/thread';
+    url += '?' + queryParams.toString();
+
+    return this.get(url);
+  }
+
   getMetaData(params: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {

@@ -40,7 +40,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() from: any;
   @Input() AssignedFrom: any;
   @Input() component: any;
-  deadlineDate:any;
+  deadlineDate: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -48,7 +48,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   listToMention: any;
   mentionConfig: MentionConfig = {};
   references: any;
-  assignees:any;
+  assignees: any;
   isCommnetsPanelOpened: boolean = false;
   isUploading: boolean = false;
   files: any[] = [];
@@ -121,7 +121,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
       this.assignees.forEach((obj: any) => {
         obj.userId = obj.entity_id;
-        obj.role =  "Contributor";
+        obj.role = "Contributor";
         obj.active = true;
         obj.createdOn = new Date();
         obj.modifiedBy = this.currentUser.user_id;
@@ -242,7 +242,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService
       .addComments(body)
       .then((commentsReponse: any) => {
-        if (commentsReponse.statusText === 'Created'||commentsReponse.status==200) {
+        if (commentsReponse.statusText === 'Created' || commentsReponse.status == 200) {
           this.utils.loadSpinner(false);
           this.prepareDataToDisplayOnCommentsPanel();
         } else {
@@ -274,7 +274,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specService.getMeSpecLevelTaskList({
-        parentId: this.selectedContent?.parentId?this.selectedContent?.parentId : this.parentId,
+        parentId: this.selectedContent?.parentId ? this.selectedContent?.parentId : this.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
@@ -283,7 +283,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       });
     } else {
       this.specService.getMeSpecLevelCommentsList({
-        parentId: this.selectedContent.parentId?this.selectedContent?.parentId : this.parentId,
+        parentId: this.selectedContent.parentId ? this.selectedContent?.parentId : this.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
@@ -328,7 +328,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
             : this.selectedComment?.referenceContent
               ? this.selectedComment.referenceContent
               : {},
-        attachments:this.uploadedFiles,
+        attachments: this.uploadedFiles,
         references: [],
         followers: [],
         feedback: {},
@@ -362,34 +362,34 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     body.users = _.uniqBy(body.users, 'userId');
     body.users.unshift({ "userId": this.currentUser?.user_id, "role": "Owner", "active": true });
     this.commentsService.addTask(body).then((commentsReponse: any) => {
-        this.utils.loadSpinner(false);
-        if (commentsReponse.statusText === 'Created'||commentsReponse.status==200) {
-          this.comment = '';
-          this.closeOverlay.emit();
-          this.utils.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: 'Task added successfully',
-          });
-          this.uploadedFiles = [];
-          this.specService.getMeSpecLevelTaskList({
-            parentId: this.selectedContent?.parentId,
-          });
-          this.specificationUtils.openConversationPanel({
-            openConversationPanel: true,
-            parentTabIndex: 0,
-            childTabIndex: 1,
-          });
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: commentsReponse?.data?.common?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-        this.assignAsaTask = false;
-      })
+      this.utils.loadSpinner(false);
+      if (commentsReponse.statusText === 'Created' || commentsReponse.status == 200) {
+        this.comment = '';
+        this.closeOverlay.emit();
+        this.utils.loadToaster({
+          severity: 'success',
+          summary: 'SUCCESS',
+          detail: 'Task added successfully',
+        });
+        this.uploadedFiles = [];
+        this.specService.getMeSpecLevelTaskList({
+          parentId: this.selectedContent?.parentId,
+        });
+        this.specificationUtils.openConversationPanel({
+          openConversationPanel: true,
+          parentTabIndex: 0,
+          childTabIndex: 1,
+        });
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: commentsReponse?.data?.common?.status,
+        });
+      }
+      this.utils.loadSpinner(false);
+      this.assignAsaTask = false;
+    })
       .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({

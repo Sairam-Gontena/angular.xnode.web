@@ -7,10 +7,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
-import { SpecApiService } from 'src/app/api/spec-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 interface AutoCompleteCompleteEvent {
@@ -56,7 +53,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   suggestions: any;
   selectedItem: any;
   addShareForm: FormGroup;
-  // reviewersList: string | null;
   checkDeepLinkCopied: boolean = false;
   enableCommonModal: boolean = false;
   commonModalDetail: any = {
@@ -466,7 +462,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     let query = eventData.query;
     const selectedReviewers = eventData?.data.map((reviewer: any) => reviewer.name.toLowerCase());
     filtered = this.sharedLinkDetail.getUserList.filter((reviewer: any) =>
-        reviewer.name.toLowerCase().includes(query.toLowerCase()) && !selectedReviewers.includes(reviewer.name.toLowerCase()));
+      reviewer.name.toLowerCase().includes(query.toLowerCase()) && !selectedReviewers.includes(reviewer.name.toLowerCase()));
     this.sharedLinkDetail.suggestionList = filtered && filtered.length ? filtered : '';
   }
 

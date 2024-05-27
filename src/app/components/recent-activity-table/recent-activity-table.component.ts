@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+
 
 @Component({
   selector: 'xnode-recent-activity-table',
@@ -6,16 +7,16 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewC
   styleUrls: ['./recent-activity-table.component.scss']
 })
 export class RecentActivityTableComponent {
+  @Output() recentActivityEvent: EventEmitter<object> = new EventEmitter<object>();
   @Input() dataContent?: any;
   @Input() headers?: any[];
-  constructor() {
+  constructor(
+  ) {
 
   }
   ngOnChanges(changes: SimpleChanges) {
-
     if (changes['dataContent']?.currentValue) {
       this.dataContent = changes['dataContent']?.currentValue;
-      console.log(this.dataContent, 'DATA CONTENT');
     }
   }
   modifiedTimeDifference(modifiedOn: Date): string {
@@ -33,11 +34,30 @@ export class RecentActivityTableComponent {
       const hoursDifference = Math.floor(minutesDifference / 60);
       if (hoursDifference === 1) {
         return '1h ago';
-      } else {
+      } else if (hoursDifference < 24) {
         return `${hoursDifference}h ago`;
+      }
+
+      const daysDifference = Math.floor(hoursDifference / 24);
+      if (daysDifference === 1) {
+        return '1 day ago';
+      } else if (daysDifference < 7) {
+        return `${daysDifference} days ago`;
+      }
+
+      const weeksDifference = Math.floor(daysDifference / 7);
+      if (weeksDifference === 1) {
+        return '1 week ago';
+      } else if (weeksDifference < 4) {
+        return `${weeksDifference} weeks ago`;
+      } else {
+        return modifiedTime.toLocaleDateString();
       }
     }
   }
 
+  onClickShortId(record: any): void {
+    this.recentActivityEvent.emit(record)
+  }
 
 }

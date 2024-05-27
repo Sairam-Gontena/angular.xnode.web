@@ -45,8 +45,8 @@ export class CommentsService extends BaseApiService {
     return this.get(url, params);
   }
 
-  getTasksByOnlyProductId(params:any){
-    let url = '/task/tasks-by-only-productId?productId=' +  params.productId + '&replyCountRequired=true';
+  getTasksByOnlyProductId(params: any) {
+    let url = '/task/tasks-by-only-productId?productId=' + params.productId + '&replyCountRequired=true';
     return this.get(url);
   }
 
@@ -55,8 +55,8 @@ export class CommentsService extends BaseApiService {
   }
 
   patchComment(id: string, body: any) {
-    const payloadbody = {  payload:body  }
-    return this.patch('/comment?id='+id, payloadbody)
+    const payloadbody = { payload: body }
+    return this.patch('/comment?id=' + id, payloadbody)
   }
 
   addComments(body: any) {
@@ -68,8 +68,8 @@ export class CommentsService extends BaseApiService {
   }
 
   patchTask(url: any, body: any) {
-    const payloadbody = {  payload:body  }
-    return this.patch( url, payloadbody)
+    const payloadbody = { payload: body }
+    return this.patch(url, payloadbody)
   }
 
   deletComment(id: any) {

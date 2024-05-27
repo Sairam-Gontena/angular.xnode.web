@@ -15,6 +15,7 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NaviAppModule } from 'navi-web';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthApiService } from './api/auth.service';
@@ -22,6 +23,7 @@ import { appInitializer } from './utils/app.initializer';
 import { JwtInterceptor } from './utils/jwt.interceptor';
 import { ErrorInterceptor } from './utils/error.interceptor';
 import { LocalStorageService } from './components/services/local-storage.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +44,7 @@ import { LocalStorageService } from './components/services/local-storage.service
     FormBuilderModule,
     NgxSpinnerModule,
     NgxCaptureModule,
+    NaviAppModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
@@ -51,11 +54,13 @@ import { LocalStorageService } from './components/services/local-storage.service
         disallowedRoutes: ['your-api-domain.com/login'],
       },
     }),
+    // LibraryModule.forRoot(environment)
   ],
   providers: [RefreshListService, DatePipe,
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [LocalStorageService, AuthApiService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: 'environment', useValue: environment }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -103,15 +103,19 @@ export class SpecificationsService {
                   element.title === 'User Interface'
                 ) {
                   element.content_data_type = 'JSON_TABLE';
-                } else if (element.title === 'Data Quality Checks') {
-                  element.content_data_type = 'TABLE';
-                } else if (element.title === 'Data Model') {
+                }
+                // else if (element.title === 'Data Quality Checks') {
+                //   element.content_data_type = 'TABLE';
+                // } 
+                else if (element.title === 'Data Model') {
                   element.content_data_type = 'DATA_MODEL';
-                } else if (element.title === 'Data Dictionary') {
-                  element.content_data_type = 'DATA_DICTIONARY';
-                } else if (element.title === 'Quality Assurance') {
-                  element.content_data_type = 'QUALITY_ASSURANCE';
-                } else if (element.title === 'Data Model Table Data') {
+                }
+                // else if (element.title === 'Data Dictionary') {
+                //   element.content_data_type = 'data_dictionary';
+                // } else if (element.title === 'Quality Assurance') {
+                //   element.content_data_type = 'QUALITY_ASSURANCE';
+                // }
+                else if (element.title === 'Data Model Table Data') {
                   specObj.content.splice(index, 1);
                 }
               });
@@ -136,18 +140,18 @@ export class SpecificationsService {
 
   getMeSpecLevelCommentsList(data: any) {
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ parentId: data.parentId,replyCountRequired:true }) .then((response: any) => {
-        if (response.status === 200 && response?.data?.data) {
-          this.specUtils.saveCommentList(response.data.data);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.common?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
+    this.commentsService.getComments({ parentId: data.parentId, replyCountRequired: true }).then((response: any) => {
+      if (response.status === 200 && response?.data?.data) {
+        this.specUtils.saveCommentList(response.data.data);
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: response?.data?.common?.status,
+        });
+      }
+      this.utils.loadSpinner(false);
+    })
       .catch((err) => {
         console.log(err);
         this.utils.loadToaster({
@@ -162,17 +166,17 @@ export class SpecificationsService {
   getMeSpecLevelTaskList(data: any) {
     this.utils.loadSpinner(true);
     this.commentsService.getTasks({ parentId: data.parentId }).then((response: any) => {
-        if (response.status === 200 && response?.data?.data) {
-          this.specUtils.saveTaskList(response?.data?.data);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.common?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
+      if (response.status === 200 && response?.data?.data) {
+        this.specUtils.saveTaskList(response?.data?.data);
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: response?.data?.common?.status,
+        });
+      }
+      this.utils.loadSpinner(false);
+    })
       .catch((err) => {
         this.utils.loadToaster({
           severity: 'error',

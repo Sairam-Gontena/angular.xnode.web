@@ -126,6 +126,13 @@
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
+        <div class="flex mt-2" *ngIf="notification?.entity === 'INVITE_TO_CHAT'">
+          <div (click)="viewInChat(notification)"
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            View Chat
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
+          </div>
+        </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'IMPORT_FILE' && notification?.status === 'Completed'">
           <div (click)="goToResources(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">

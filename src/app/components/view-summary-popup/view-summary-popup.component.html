@@ -75,6 +75,26 @@
                                     convSummary?.overall_summary?.content?.tags?.join(', ') }}
                                 </p>
                             </div>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.unknownConcepts?.length || convSummary?.overall_summary?.content?.unknownConcepts?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3 header-text">Unknown Concepts:</h4>
+                                <ol class="m-0 text-base font-normal line-height-2 content-text">
+                                    <li
+                                        *ngFor="let unknownConcept of convSummary?.overall_summary?.content?.unknownConcepts ? convSummary?.overall_summary?.content?.unknownConcepts : convSummary?.overall_summary?.content?.unknownConcepts">
+                                        {{unknownConcept}}
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.sources?.length || convSummary?.overall_summary?.content?.sources?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3 header-text">Unknown Concepts:</h4>
+                                <ol class="m-0 text-base font-normal line-height-2 content-text">
+                                    <li
+                                        *ngFor="let source of convSummary?.overall_summary?.content?.sources ? convSummary?.overall_summary?.content?.sources : convSummary?.overall_summary?.content?.sources">
+                                        {{source}}
+                                    </li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                     <div class="" *ngIf="activeIndex === 1">

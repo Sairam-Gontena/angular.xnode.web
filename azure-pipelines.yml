@@ -17,11 +17,46 @@ stages:
         pool:
           vmImage: "ubuntu-latest"
         steps:
+          - task: Bash@3
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'cp dev.npmrc .npmrc'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+          - task: Bash@3
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'cp beta.npmrc .npmrc'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
           - task: NodeTool@0
             inputs:
               versionSource: 'spec'
               versionSpec: '18.x'
             displayName: "Install Node.js"
+
+          - task: npmAuthenticate@0
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+            inputs:
+              workingFile: .npmrc
+            displayName: "Authenticate with dev Artifacts"
+
+          - task: npmAuthenticate@0
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/release-beta'))
+            inputs:
+              workingFile: .npmrc
+            displayName: "Authenticate with app-US Artifacts"
+
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'npm i navi-web --force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: Bash@3
             displayName: "Install Node Packages"

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { OverallSummary } from 'src/models/view-summary';
 import { ClipboardService } from 'ngx-clipboard';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -37,7 +38,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   ];
   currentUser: any = ''
 
-  constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
+  constructor(private datePipe: DatePipe, private conversationService: ConversationHubService, private utils: UtilsService, private router: Router,
     private clipboardService: ClipboardService, private messagingService: MessagingService) {
   }
 
@@ -77,12 +78,25 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   }
   viewChatSummary() {
     if (this.label == 'View in Chat') {
-      this.messagingService.sendMessage({
-        msgType: MessageTypes.MAKE_TRUST_URL,
-        msgData: { isNaviExpanded: true, showDockedNavi: true, conversation_id: this.notifObj.conversationId, componentToShow: 'Chat' },
-      });
+
+      this.getConversation();
     }
     this.closePopup();
+  }
+
+  getConversation(): void {
+    this.utils.loadSpinner(true);
+    this.conversationService.getConversations('?id=' + this.notifObj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
+      if (res && res.status === 200) {
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.VIEW_SUMMARY,
+          msgData: { conversationDetails: res.data?.data[0] },
+        });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(((err: any) => {
+      this.utils.loadSpinner(false);
+    }))
   }
 
   async copyToClipboard(content: any, event: any) {

@@ -80,7 +80,7 @@ export class TaskListComponent {
     });
   }
 
-  ngOnChanges(change:SimpleChanges): void{
+  ngOnChanges(change: SimpleChanges): void {
     if (change['list']?.currentValue)
       this.specListCopy = change['list'].currentValue;
   }
@@ -111,14 +111,14 @@ export class TaskListComponent {
   filterListBySearch(users?: any) {
     if (this.searchIconKeyword.length > 0) {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
-      this.list = this.list.filter((item: any) =>{
+      this.list = this.list.filter((item: any) => {
         const msg = item.title.toLowerCase();
         return msg.includes(this.searchIconKeyword)
       });
     } else {
       this.list = this.specListCopy;
     }
-    if (users?.length>0) {
+    if (users?.length > 0) {
       this.filterListByUsersFilter(users);
       return;
     }
@@ -128,7 +128,7 @@ export class TaskListComponent {
     if (users?.length > 0) {
       this.list = this.specListCopy;
       this.list = this.list.filter((item: any) =>
-        users.includes(item?.assignee?.userId) ||  item.references?.some((ref: any) => users.includes(ref.entity_id))
+        users.includes(item?.assignee?.userId) || item.references?.some((ref: any) => users.includes(ref.entity_id))
       );
     } else {
       this.list = this.specListCopy;
@@ -179,7 +179,7 @@ export class TaskListComponent {
     if (parentTitle == 'Technical Specifications') {
       return;
     }
-    if((title == 'References'||title == 'Use Cases') && this.product?.productTemplate?.id=='TID1'){
+    if ((title == 'References' || title == 'Use Cases') && this.product?.productTemplate?.id == 'TID1') {
       return true;
     }
     return (
@@ -373,7 +373,7 @@ export class TaskListComponent {
     }
   }
 
-  downloadFile(filepath:any, fileName:any){
+  downloadFile(filepath: any, fileName: any) {
     FileSaver.saveAs(filepath, fileName)
   }
 
@@ -386,29 +386,29 @@ export class TaskListComponent {
 
     this.utils.loadSpinner(true);
     this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
-        if (response && response.data.data) {
-          this.replies = response.data.data;
-          response.data.data.forEach((element: any) => {
-            element.parentUser = this.list.filter((ele: any) => {
-              return ele.id === this.selectedComment.id;
-            })[0].createdBy;
-          });
-          this.list.forEach((obj: any) => {
-            if (obj.id === cmt.id) {
-              obj.comments = response.data.data;
-              obj.repliesOpened = true;
-            }
-          });
-          this.replies = response.data.data;
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'Error',
-            detail: response.data?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
+      if (response && response.data.data) {
+        this.replies = response.data.data;
+        response.data.data.forEach((element: any) => {
+          element.parentUser = this.list.filter((ele: any) => {
+            return ele.id === this.selectedComment.id;
+          })[0].createdBy;
+        });
+        this.list.forEach((obj: any) => {
+          if (obj.id === cmt.id) {
+            obj.comments = response.data.data;
+            obj.repliesOpened = true;
+          }
+        });
+        this.replies = response.data.data;
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: response.data?.status,
+        });
+      }
+      this.utils.loadSpinner(false);
+    })
       .catch((err) => {
         console.log(err);
         this.utils.loadSpinner(false);
