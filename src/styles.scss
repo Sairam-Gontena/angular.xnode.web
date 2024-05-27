@@ -43,6 +43,7 @@ body {
   --black-pearl: #111827;
   --bleached-cedar: #1F2937;
   --bright-grey: #424B57;
+  --dark-grayish-blue: #161D27;
 }
 
 .menuStyleTable {
@@ -474,12 +475,17 @@ body {
 }
 
 .customHeaderDynamicDialog {
+  background: var(--black-pearl);
+  border-color: var(--black-pearl);
+
   .p-dialog-content {
     padding: 0px;
+    background: var(--black-pearl);
 
     .custom-modal-body {
       height: calc(100vh - 180px);
       overflow: auto;
+      border-color: #424B57;
     }
   }
 }
@@ -496,6 +502,36 @@ body {
   }
 }
 
+.black-pearl-bg-input {
+  background-color: var(--black-pearl);
+  border-color: #424B57;
+
+  &:enabled {
+    &:hover {
+      border-color: #424B57;
+    }
+  }
+}
+
+.black-pearl-bg-dropdown {
+  background: var(--black-pearl);
+  border: 1px solid #424B57;
+}
+
+.blackPearlDropdownPanel {
+  background: var(--black-pearl);
+  border-color: #424B57;
+
+  .p-dropdown-header {
+    background: var(--black-pearl);
+    border-color: #424B57;
+
+    .p-inputtext {
+      background: var(--black-pearl);
+      border-color: #424B57;
+    }
+  }
+}
 
 // Agentplayground
 
@@ -506,3 +542,15 @@ body {
 .agent-hub-container {
   background-color: var(--bleached-cedar);
 }
+
+.p-multiselect-panel, .p-multiselect-item, .p-multiselect-items {
+  background-color: var(--dark-grayish-blue) !important;
+}
+
+.p-tooltip .p-tooltip-text { 
+  background-color: var(--bleached-cedar) !important;  
+}
+
+.p-tooltip-text { 
+  font-size: 0.75rem; 
+} 

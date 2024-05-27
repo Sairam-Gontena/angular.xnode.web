@@ -11,6 +11,7 @@ import { AgentCapabilityModule } from '../agent-hub/module/agent-capability/agen
 import { AgentTopicModule } from '../agent-hub/module/agent-topic/agent-topic.module';
 import { AgentToolsModule } from '../agent-hub/module/agent-tools/agent-tools.module';
 import { AgentModelModule } from '../agent-hub/module/agent-model/agent-model.module';
+import { AgentDetailsModule } from '../agent-hub/module/agent-details/agent-details.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AgentModelModule } from '../agent-hub/module/agent-model/agent-model.mo
     AgentCapabilityModule,
     AgentTopicModule,
     AgentToolsModule,
-    AgentModelModule
+    AgentModelModule,
+    AgentDetailsModule
   ],
 })
 export class CreateAgentModule { }

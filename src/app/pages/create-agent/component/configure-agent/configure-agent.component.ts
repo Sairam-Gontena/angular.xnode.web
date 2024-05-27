@@ -87,8 +87,9 @@ export class ConfigureAgentComponent {
       Id: ''
     }
   }
-
-  showDynamicTable = true
+  showDynamicTable = true;
+  tableHeaderbgColor: string = "#2F353E";
+  bgColorRow: any = { oddRowColor: "#2F353E" };
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,

@@ -214,4 +214,16 @@ export class AgentHubService extends BaseApiService {
     return this.getHttp.get(this.apiUrl + urlParam.url, requestOptions);
   }
 
+
+  createDuplicate(urlParam: any) {
+    const headers = new HttpHeaders()
+      .set('ocp-apim-subscription-key', environment.apimSubscriptionKey);
+
+    const requestOptions = {
+      headers: headers,
+      params: urlParam.params
+    };
+    return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data, requestOptions);
+  }
+
 }

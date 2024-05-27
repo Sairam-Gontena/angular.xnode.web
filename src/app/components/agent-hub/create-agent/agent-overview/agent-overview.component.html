@@ -2,9 +2,6 @@
   <div *ngIf="formType == 'overview'; else elseBlock" class="w-12 overflow-auto overviewInstructionBlock">
     <div class="w-8 mx-auto">
       <form [formGroup]="overviewForm" (ngSubmit)="onOverviewSubmit()">
-        <!-- <div class="flex align-items-center justify-content-end mb-3">
-        <button type="button" class="btn btn-cancel">Save</button>
-      </div> -->
         <div class="flex align-items-center mb-3">
           <label class="w-5" for="description">Description</label>
           <div class="w-7">
@@ -23,25 +20,6 @@
       <div class="w-full my-4">
         <hr class="border-white-alpha-10" />
       </div>
-
-      <!--       
-      <div class="w-full">
-        <div class="flex flex-wrap">
-          <ng-container *ngFor="let categoryItem of categoryNameCountArr">
-            <div class="flex w-4 mb-6">
-              <div class="border-1 p-5 border-round mr-3">
-                <span class="pi pi-search text-4xl"></span>
-              </div>
-              <div class="flex flex-column justify-content-between">
-                <label class="text-400 font-semibold mb-2">{{categoryItem.categoryName}}</label>
-                <div class="text-7xl text-white">{{categoryItem.count}}</div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div> -->
-
-
 
       <div class="flex agent-summary flex-wrap gap-8">
         <!-- Agents Card -->
@@ -62,9 +40,6 @@
     <div class="w-12 overflow-auto overviewInstructionBlock">
       <div class="w-8 mx-auto">
         <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
-          <!-- <div class="flex align-items-center justify-content-end mb-3">
-    <button type="button" class="btn btn-cancel">Save</button>
-  </div> -->
           <div class="flex align-items-center mb-3">
             <label class="w-5" for="name">Name</label>
             <div class="w-7">
