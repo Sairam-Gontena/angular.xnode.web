@@ -330,14 +330,16 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
         break;
       case 'close-navi':
-        this.showDockedNavi = false;
-        this.isNaviExpanded = false;
-        break;
+          this.showDockedNavi = false;
+          this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+          break;
       case 'expand-navi':
-        this.isNaviExpanded = event.is_navi_expanded;
-        this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded, chat_type: event.chat_type };
-        this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
-        break;
+          this.isNaviExpanded = event.is_navi_expanded;
+          this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded, chat_type: event.chat_type };
+          this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+          break;
       case 'change-product':
         this.storageService.saveItem(StorageKeys.Product, event.product);
         this.utilsService.saveProductId(event.product.id);
