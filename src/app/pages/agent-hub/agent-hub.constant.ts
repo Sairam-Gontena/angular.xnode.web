@@ -50,6 +50,32 @@ export const Constant = {
             identifier: agentName.prompt
         },
         {
+            label: "Knowledge",
+            imgPath: "../../../assets/agent-hub/knowledge.svg",
+            key: "knowledge_count_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.knowledge
+        },
+
+        {
+            label: "Model",
+            imgPath: "../../../assets/agent-hub/tools.svg",
+            key: "model_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.model
+        },
+
+        {
+            label: "Tools",
+            imgPath: "../../../assets/agent-hub/tools.svg",
+            key: "tool_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.tool
+        },
+        {
             label: "Change Request",
             imgPath: "../../../assets/agent-hub/change_request.svg",
             key: "change_request_count",
