@@ -263,6 +263,17 @@ export class AppComponent implements OnInit {
           new_with_navi: false,
         };
       }
+      if (msg.msgType === MessageTypes.GO_TO_SELECTE_TAB) {
+          this.showDockedNavi = true;
+          this.isNaviExpanded = true;
+          this.naviData = {
+            ...this.naviData,
+            is_navi_expanded: true,
+            componentToShow: msg.msgData,
+            toggleConversationPanel: true,
+            new_with_navi: false,
+        }
+      }
       if (msg.msgData && msg.msgType === MessageTypes.THREAD_DETAILS) {
         this.showDockedNavi = true;
         this.isNaviExpanded = true;
