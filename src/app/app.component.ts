@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -67,6 +67,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private utilsService: UtilsService,
     private messageService: MessageService,
     private spinner: NgxSpinnerService,
@@ -612,7 +613,9 @@ export class AppComponent implements OnInit {
         localStorage.clear();
         this.defaultNaviData();
         this.authApiService.setUser(false);
-        this.router.navigate(['/']);
+        this.authApiService.stopRefreshTokenTimer();
+        this.authApiService.userSubject.next(null);
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -624,6 +627,13 @@ export class AppComponent implements OnInit {
   }
 
   handleUser(): void {
+    const searchParams = new URLSearchParams(window.location.search);
+    const entity = searchParams.get('entity');
+    if (entity) {
+      if (!this.currentUser)
+        this.storageService.saveItem(StorageKeys.REDIRECT_PATH, { pathname: window.location.pathname, params: window.location.search })
+      return
+    }
     if (this.currentUser) {
       if (this.currentUser.role_name === 'Xnode Admin') {
         this.router.navigate(['/admin/user-invitation']);

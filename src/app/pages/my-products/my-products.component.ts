@@ -108,7 +108,7 @@ export class MyProductsComponent implements OnInit {
     });
     this.route.queryParams.subscribe((params: any) => {
       if (params?.entity) {
-        this.getConversationById(params?.conversation_id)
+        this.getConversationById(params?.id)
       }
       if (params.product === 'created') {
         this.utils.loadToaster({

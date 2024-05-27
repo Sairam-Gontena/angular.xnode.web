@@ -339,7 +339,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     let url: string = window.location.href + "?";
     let params: any = {
       product_id: this.selectedVersion?.productId,
-      version_id: this.selectedVersion?.id
+      version_id: this.selectedVersion?.id,
+      entity: 'SPEC'
     };
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
