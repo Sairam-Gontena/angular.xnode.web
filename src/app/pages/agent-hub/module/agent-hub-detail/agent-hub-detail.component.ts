@@ -12,7 +12,7 @@ import { TabViewChangeEvent } from 'primeng/tabview';
 import { DropdownChangeEvent } from 'primeng/dropdown';
 
 const InitialPaginatorInfo = {
-  page: 1,
+  page: 0,
   perPage: 10,
   totalPages: 0,
   totalRecords: 0,
@@ -172,7 +172,8 @@ export class AgentHubDetailComponent {
   }
 
   ngOnInit() {
-    this.getAllAgentList();
+    // this.getAllAgentList();
+    this.getAgentDetailByCategory()
   }
 
   onShowDynamicColumnFilter(event: any) {
@@ -197,52 +198,30 @@ export class AgentHubDetailComponent {
         )
       );
     }
-    this.getAllAgentList();
+    // this.getAllAgentList();
+    this.getAgentDetailByCategory()
   }
 
-  async getAllAgentList({ endpoint = '' } = {}) {
-    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
-    this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
-    endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
-    this.tableData = [];
-    this.paginatorInfo = { ...InitialPaginatorInfo };
-    // try {
-    //   this.utilsService.loadSpinner(true);
-    //   const response = await this.agentHubService.getAllAgent({
-    //     accountId: this.userInfo.account_id,
-    //     endpoint: endpoint,
-    //     status: this.agentDataType,
-    //     page: this.paginatorInfo.page,
-    //     page_size: this.paginatorInfo.perPage,
-    //   });
-    //   this.tableData = response.data.data as ITableDataEntry[];
-    //   this.paginatorInfo.page = response.data.page;
-    //   this.paginatorInfo.perPage = response.data.per_page;
-    //   this.paginatorInfo.totalRecords = response.data.total_items;
-    //   this.paginatorInfo.totalPages = response.data.total_pages;
-    //   this.utilsService.loadSpinner(false);
-    // } catch (error) {
-    //   this.utilsService.loadSpinner(false);
-    //   console.error('Error fetching agent list:', error);
-    // }
+  async getAllAgentList(urlParam: any) {
+    // const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    // this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+    // endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
+    // this.tableData = [];
+    // this.paginatorInfo = { ...InitialPaginatorInfo };
 
-    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
-      urlParam: any = {
-        url: url,
-        params: {
-          // accountId: this.userInfo.account_id,
-          // endpoint: endpoint,
-          status: this.agentDataType,
-          page: this.paginatorInfo.page,
-          page_size: this.paginatorInfo.perPage
-        }
-      }
+    // let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+    //   urlParam: any = {
+    //     url: url,
+    //     params: {
+    //       // accountId: this.userInfo.account_id,
+    //       // endpoint: endpoint,
+    //       status: this.agentDataType,
+    //       page: this.paginatorInfo.page,
+    //       page_size: this.paginatorInfo.perPage
+    //     }
+    //   }
 
     if (this.activeIndex == 4) {
-      urlParam.url = `/resource/${endpoint}`
-      urlParam.params.accountId = this.userInfo.account_id
-      urlParam.params.userId = this.userInfo.user_id
-
       this.utilsService.loadSpinner(true);
       this.agentHubService.getResouceData(urlParam).subscribe({
         next: (response: any) => {
@@ -302,31 +281,31 @@ export class AgentHubDetailComponent {
     }
   }
 
-  agentTabDropDownHandler() {
-    if (this.activeIndex != 0) {
-      this.activeIndex = 0;
-      this.getAllAgentList();
-    }
-  }
+  // agentTabDropDownHandler() {
+  //   if (this.activeIndex != 0) {
+  //     this.activeIndex = 0;
+  //     this.getAllAgentList();
+  //   }
+  // }
 
   OnbreabCrumbsClickHandler(event: any) {
-    let item = this.tabItems[this.activeIndex];
-    // this.breadCrumbsAction.isBreadCrumbActive = true;
-    // const newPayload = {
-    //   label: item.title,
-    //   index: this.breadCrumbsAction.breadcrumb.length,
-    // };
-    // this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
-    if (item.identifier in this.headerActionBtnOption) {
-      this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
-      this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
-    } else {
-      console.error('Invalid identifier:', item.identifier);
-      // Handle the error appropriately
-    }
-    // Don't show viewAll button
-    // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
-    this.getAllAgentList({ endpoint: item.value });
+    // let item = this.tabItems[this.activeIndex];
+    // // this.breadCrumbsAction.isBreadCrumbActive = true;
+    // // const newPayload = {
+    // //   label: item.title,
+    // //   index: this.breadCrumbsAction.breadcrumb.length,
+    // // };
+    // // this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
+    // if (item.identifier in this.headerActionBtnOption) {
+    //   this.agentHubDetail.actionButtonOption = this.headerActionBtnOption[item.identifier as keyof typeof this.headerActionBtnOption].options;
+    //   this.agentHubService.saveAgentHeaderObj(this.agentHubDetail);
+    // } else {
+    //   console.error('Invalid identifier:', item.identifier);
+    //   // Handle the error appropriately
+    // }
+    // // Don't show viewAll button
+    // // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
+    // this.getAllAgentList({ endpoint: item.value });
   }
 
   viewHandler(item: any) {
@@ -345,7 +324,9 @@ export class AgentHubDetailComponent {
 
   onTabSwitchHandler(event: TabViewChangeEvent) {
     this.agentDataType = this.recordType.live;
-    this.getAllAgentList()
+    // this.getAllAgentList()
+
+    this.getAgentDetailByCategory()
     this.updateHeaderOption();
   }
 
@@ -362,15 +343,15 @@ export class AgentHubDetailComponent {
 
   setAgentDataType(event: any) {
     this.agentDataType = event
-    this.getAllAgentList()
+    // this.getAllAgentList()
+    this.getAgentDetailByCategory()
   }
 
 
   //pagination event for table
   paginatorViewHandler(item: any) {
     // let urlParam = this.makeTableParamObj(item);
-    // this.changeURL(this.activeIndex, urlParam);
-    // this.getAgentDetailByCategory(urlParam);
+    this.getAgentDetailByCategory(item);
   }
 
 
@@ -429,5 +410,42 @@ export class AgentHubDetailComponent {
         this.utilsService.loadSpinner(false);
       }
     })
+  }
+
+
+  //making the url param for category
+  makeTableParamObj(paginationObj: any) {
+    let endpoint = this.tabItems[this.activeIndex].value;
+    let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
+      urlParam: any = {
+        url: url,
+        params: {
+          // accountId: this.userInfo.account_id,
+          // endpoint: endpoint,
+          status: this.agentDataType,
+          page: paginationObj.page + 1,
+          page_size: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
+        }
+      }
+
+
+    if (this.activeIndex == 4) {
+      urlParam.url = `/resource/${endpoint}`
+      urlParam.params.accountId = this.userInfo.account_id
+      urlParam.params.userId = this.userInfo.user_id
+    }
+
+    return urlParam;
+  }
+
+  getAgentDetailByCategory(paginator = null) {
+    let paginatorInfo;
+    if (!paginator) {
+      paginatorInfo = { ...InitialPaginatorInfo };
+    } else {
+      paginatorInfo = paginator
+    }
+    let urlParam = this.makeTableParamObj(paginatorInfo)
+    this.getAllAgentList(urlParam)
   }
 }
