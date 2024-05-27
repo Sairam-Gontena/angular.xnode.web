@@ -47,7 +47,6 @@ export class DynamicTableComponent implements OnInit {
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
   @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
-
   @Input() tableRowActionOptions: any[] = [];
 
   @Input() searchFilterOptions: FilterOptions = {

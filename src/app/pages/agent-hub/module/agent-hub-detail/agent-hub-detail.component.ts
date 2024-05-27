@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IDropdownItem, IPaginatorInfo, ITableDataEntry, ITableInfo } from '../../IAgent-hub';
+import { IDropdownItem, IPaginatorInfo, ITableInfo } from '../../IAgent-hub';
 import { Constant, agentName } from '../../agent-hub.constant';
 import dynamicTableColumnData from './../../../../../assets/json/dynamictabledata.json';
 import { Router } from '@angular/router';
@@ -150,7 +150,7 @@ export class AgentHubDetailComponent {
   columns: any; // Define the type of columns based on the actual data structure
   activeIndex: number;
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
-  tableData!: ITableDataEntry[];
+  tableData!: any;
   headerActionBtnOption = agentHeaderActionOptions;
   activeHeaderActionBtnOption!: any[];
   agentDataType: string = agentRecordDataType.live;
@@ -262,11 +262,18 @@ export class AgentHubDetailComponent {
       this.agentHubService.getResouceData(urlParam).subscribe({
         next: (response: any) => {
           if (response) {
-            this.tableData = response.data as ITableDataEntry[];
-            this.paginatorInfo.page = response.page;
-            this.paginatorInfo.perPage = response.per_page;
-            this.paginatorInfo.totalRecords = response.total_items;
-            this.paginatorInfo.totalPages = response.total_pages;
+            debugger
+            //data formatting
+            response.data.map((item: any) => {
+              item.tags = [...item.content.tags, ...item.content.tags, ...item.content.tags, ...item.content.tags],
+                item.shared_by = item?.createdBy?.displayName
+              item.type = item?.fileName?.split('.')[1]?.toUpperCase()
+            })
+            this.tableData = response.data
+            this.paginatorInfo.page = response?.page;
+            this.paginatorInfo.perPage = response?.per_page;
+            this.paginatorInfo.totalRecords = response?.total_items;
+            this.paginatorInfo.totalPages = response?.total_pages;
           } else if (response?.detail) {
             this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
           }
@@ -281,11 +288,24 @@ export class AgentHubDetailComponent {
       this.agentHubService.getAllAgent(urlParam).subscribe({
         next: (response: any) => {
           if (response) {
-            this.tableData = response.data as ITableDataEntry[];
+            this.tableData = response.data;
             this.paginatorInfo.page = response.page;
             this.paginatorInfo.perPage = response.per_page;
             this.paginatorInfo.totalRecords = response.total_items;
             this.paginatorInfo.totalPages = response.total_pages;
+
+
+
+
+
+            // Delete it, For Testing purpose
+            // if (this.activeIndex == 1) {
+            //   response.data.map((item: any) => {
+            //     item.linked_agent = ["Navi conversation", "Testing Navi", "Brd Gen", "Specs Gen"]
+            //   })
+
+            //   this.tableData = response.data
+            // }
           } else if (response?.detail) {
             this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
           }

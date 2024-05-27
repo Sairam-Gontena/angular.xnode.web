@@ -112,7 +112,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
-      <tr class="text-white text-xs cursor-pointer"
+      <tr class="text-white text-sm cursor-pointer"
         [style]="{
           'background-color': (i % 2 !== 0 && bgColorRow && bgColorRow.oddRowColor) ? bgColorRow.oddRowColor : 'transparent' }"
         (click)="onTableRowHandler(rowData)">
@@ -148,6 +148,38 @@
                   </ng-container>
                 </div>
               </ng-container>
+
+              <ng-container *ngSwitchCase="'status'">
+                <li
+                  [ngClass]="rowData[col?.field] == recordType?.live ? 'live-status' : rowData[col?.field] == recordType?.training ? 'training-status':  rowData[col?.field] == recordType?.archived ? 'archieved-status' : 'list-none'">
+                  {{ rowData[col?.field] ? rowData[col?.field] : 'N/A' }}</li>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'parent'">
+                <div [ngClass]="rowData[col?.field] ? 'text-primary': ''">
+                  {{ rowData[col?.field] ? rowData[col?.field] : 'N/A' }}</div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'tags'">
+                <div class="flex gap-2 table-column-formatting text-primary" [pTooltip]="rowData[col?.field]"
+                  tooltipPosition="top">
+                  <p class="m-0" *ngFor="let tag of rowData[col?.field]">#{{tag}}</p>
+                </div>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'linked_agent'">
+                <div [pTooltip]="rowData[col?.field]" tooltipPosition="top">
+                  <ng-container *ngIf="rowData[col?.field]?.length;else elseBlock">
+                    <span class="text-white p-2 -m-2 border-circle"
+                      *ngFor="let agent_name of rowData[col?.field] | acronymPipe"
+                      [style.backgroundColor]="agent_name.color">{{agent_name.acronym}}</span>
+                  </ng-container>
+                  <ng-template #elseBlock>
+                    <span>N/A</span>
+                  </ng-template>
+                </div>
+              </ng-container>
+
               <ng-container *ngSwitchDefault>
                 <div class="table-column-formatting" [pTooltip]="rowData[col.field]" tooltipPosition="top"
                   [ngClass]="col.field === 'email' ? 'email-text-color normal-text' : 'normal-text'">
@@ -157,13 +189,12 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="col.icon">
-            <p-splitButton label="" class="p-0" styleClass="p-0" menuStyleClass="menuStyleTable" appendTo="body"
+            <p-splitButton label="" class="p-0" styleClass="p-0 z-5" menuStyleClass="menuStyleTable" appendTo="body"
               [model]="tableRowActionOptions">
               <ng-template pTemplate="dropdownicon">
                 <p-button [icon]="col.icon"></p-button>
               </ng-template>
             </p-splitButton>
-            <!-- <i [class]="col.icon"></i> -->
           </ng-container>
         </td>
       </tr>
