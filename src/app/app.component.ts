@@ -234,20 +234,22 @@ export class AppComponent implements OnInit {
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true;
-        this.naviService.setNaviExpand(
-          msg.msgData?.naviContainerState === 'EXPAND'
-        );
-        this.storageService.saveItem(
-          StorageKeys.IS_NAVI_EXPANDED,
-          msg.msgData?.naviContainerState === 'EXPAND'
-        );
-        this.naviService.setNewWithNavi(!msg.msgData?.product);
-        this.product = msg.msgData?.product;
+        this.isNaviExpanded = true;
         this.isFileImported = msg.msgData.importFilePopup;
         this.resource_id = msg.msgData.resource_id;
         this.conversationId = msg.msgData.conversation_id;
         this.componentToShow = 'Chat';
-        console.log('6');
+      }
+      if (msg.msgData && msg.msgType === MessageTypes.START_RESOURCE_NEW_CHAT) {
+        this.showDockedNavi = true;
+        this.isNaviExpanded = true;
+        this.naviData.is_navi_expanded = true;
+        this.naviData.toggleConversationPanel = true;
+        this.naviData.componentToShow = 'Chat';
+        this.naviData.new_with_navi = true;
+        this.naviData.chat_type = 'new-chat';
+        this.naviData.resource_id = msg.msgData.resource_id;
+        this.naviData.conversationDetails = undefined;
       }
       if (msg.msgData && msg.msgType === MessageTypes.IMPORT_RESOURCE) {
         this.showDockedNavi = true;
@@ -317,9 +319,8 @@ export class AppComponent implements OnInit {
           is_navi_expanded: true,
           conversationDetails: undefined,
           componentToShow: 'Resources',
-          import_event: msg?.msgData.import_event,
           toggleConversationPanel: true,
-          new_with_navi: true,
+          new_with_navi: false,
           resource_id: msg.msgData.resource_id,
         };
       }
@@ -457,16 +458,16 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
         break;
       case 'close-navi':
-          this.showDockedNavi = false;
-          this.isNaviExpanded = false;
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-          break;
+        this.showDockedNavi = false;
+        this.isNaviExpanded = false;
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+        break;
       case 'expand-navi':
-          this.isNaviExpanded = event.is_navi_expanded;
-          this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded, chat_type: event.chat_type };
-          this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-          break;
+        this.isNaviExpanded = event.is_navi_expanded;
+        this.naviData = { ... this.naviData, is_navi_expanded: event.is_navi_expanded, toggleConversationPanel: event.is_navi_expanded, chat_type: event.chat_type };
+        this.storageService.saveItem(StorageKeys.NAVI_DATA, this.naviData);
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+        break;
       case 'change-product':
         this.storageService.saveItem(StorageKeys.Product, event.product);
         this.utilsService.saveProductId(event.product.id);
@@ -844,8 +845,8 @@ export class AppComponent implements OnInit {
     this.conversationHubService
       .getConversations(
         '?id=' +
-          this.conversation_id +
-          '&fieldsRequired=id,title,conversationType,content'
+        this.conversation_id +
+        '&fieldsRequired=id,title,conversationType,content'
       )
       .then((res: any) => {
         if (res?.data && res.status === 200) {
