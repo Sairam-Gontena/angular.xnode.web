@@ -136,3 +136,49 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'beta-xnode'
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+
+          - task: Bash@3
+            displayName: "Export PR ID and Update Work Item State"
+            condition: succeeded()
+            inputs:
+              targetType: 'inline'
+              script: |
+                PR_ID=$(echo $(System.PullRequest.PullRequestId))
+                echo "Exported PR ID: $PR_ID"
+                if [ -n "$PR_ID" ]; then
+                  echo "PR Merged"
+                  echo "Fetching Work Items Associated with PR"
+
+                  echo "Installing Azure DevOps CLI extension..."
+                  az extension add --name azure-devops
+
+                  echo "Configuring Azure DevOps CLI..."
+                  az devops configure --defaults organization=https://dev.azure.com/Salientminds/ project=xnode
+
+                  echo "Fetching Work Items..."
+                  WORK_ITEMS=$(az repos pr work-item list --id $PR_ID --query "[].id" -o tsv)
+
+                  for WORK_ITEM_ID in $WORK_ITEMS; do
+                    echo "Processing Work Item ID: $WORK_ITEM_ID"
+                    WORK_ITEM_TYPE=$(az boards work-item show --id $WORK_ITEM_ID --query "fields['System.WorkItemType']" -o tsv)
+                    CURRENT_STATE=$(az boards work-item show --id $WORK_ITEM_ID --query "fields['System.State']" -o tsv)
+                    echo "Work Item Type: $WORK_ITEM_TYPE, Current State: $CURRENT_STATE"
+                    if [ "$CURRENT_STATE" == "Ready for Deployment" ]; then
+                      if [ "$WORK_ITEM_TYPE" == "User Story" ]; then
+                        az boards work-item update --id $WORK_ITEM_ID --state 'In Test'
+                        echo "Updated User Story to 'In Test'"
+                      elif [ "$WORK_ITEM_TYPE" == "Bug" ] || [ "$WORK_ITEM_TYPE" == "Issue" ]; then
+                        az boards work-item update --id $WORK_ITEM_ID --state 'Resolved'
+                        echo "Updated Bug/Issue to 'Resolved'"
+                      else
+                        echo "Unknown work item type: $WORK_ITEM_TYPE"
+                      fi
+                    else
+                      echo "Work Item is not in 'Ready for Deployment' state."
+                    fi
+                  done
+                else
+                  echo "Not a PR merge, skipping work item update."
+                fi
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
