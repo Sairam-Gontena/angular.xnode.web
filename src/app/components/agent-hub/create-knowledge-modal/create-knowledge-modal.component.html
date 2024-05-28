@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="display" [style]="{width: '40vw', height: 'auto'}" [responsive]="true" [baseZIndex]="10000"
+<!-- <p-dialog [(visible)]="display" [style]="{width: '40vw', height: 'auto'}" [responsive]="true" [baseZIndex]="10000"
     (onHide)="onClose()" [dismissableMask]="false" [closeOnEscape]="false">
     <ng-template pTemplate="header" class="modal-header">
         <div class="ml-4 flex flex-column gap-2">
@@ -54,18 +54,18 @@
                                 formControlName="link" placeholder="Enter URL to import a file" />
                         </div>
                     </div>
-                </ng-template>
+                </ng-template> -->
 
 
-                <!-- Show All the selected attachment here -->
+<!-- Show All the selected attachment here -->
 
-                <!-- <div *ngFor="let file of selectedFiles; let i = index">
+<!-- <div *ngFor="let file of selectedFiles; let i = index">
                     <div>{{ file.name }}</div>
                     <button type="button" (click)="removeFile(i)">Remove</button>
                 </div> -->
-                <!-- <button type="submit" [disabled]="!createAgentKnowledge.valid">Submit</button> -->
+<!-- <button type="submit" [disabled]="!createAgentKnowledge.valid">Submit</button> -->
 
-                <div class="flex justify-content-end gap-2 mt-4">
+<!-- <div class="flex justify-content-end gap-2 mt-4">
                     <button type="button" class="btn-cancel cursor-pointer px-3 py-1"
                         (click)="onClose()">Cancel</button>
                     <button type="submit" class="btn-primary cursor-pointer px-3">Add</button>
@@ -73,4 +73,10 @@
             </form>
         </div>
     </div>
-</p-dialog>
+</p-dialog> -->
+
+<!--  Previous Code, Will remove if no longer requires -->
+
+<div>
+    <xnode-import-file-popup [visible]="display" (closeEventEmitter)="onClose()"></xnode-import-file-popup>
+</div>

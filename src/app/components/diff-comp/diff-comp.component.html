@@ -216,9 +216,6 @@
       </div>
       <div class="col-12 py-4" *ngSwitchCase="'quality_assurance'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
-          <h3>
-            {{item.title}}
-          </h3>
           <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table>
         </div>
       </div>

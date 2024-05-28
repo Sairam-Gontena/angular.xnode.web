@@ -9,6 +9,16 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 
 export class AgentHubService extends BaseApiService {
+  private showImportFilePopup = new Subject<boolean>();
+  showImportFilePopup$ = this.showImportFilePopup.asObservable();
+
+  openImportFiltePopup() {
+    this.showImportFilePopup.next(true);
+  }
+
+  closeImportFiltePopup() {
+    this.showImportFilePopup.next(false);
+  }
   private agentHeaderObj: Subject<any> = new Subject();
   private agentHeaderDetail: any;
 

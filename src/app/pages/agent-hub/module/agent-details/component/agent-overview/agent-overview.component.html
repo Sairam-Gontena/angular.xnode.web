@@ -49,74 +49,168 @@
     </div>
 
     <ng-template #elseBlock>
-        <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
-            <div class="border-1 border-gray-600 border-round my-6">
-                <div class="col-12 p-3 sm:col-10 md:col-9 sm:mx-auto pt-5">
-                    <div class="flex flex-column align-items-center mb-3">
-                        <label class="w-full mb-1" for="name">Name</label>
-                        <div class="w-full">
-                            <input pInputText type="text" class="w-full p-2 border-1 border-round" id="name"
-                                formControlName="name" placeholder="Name" />
+        <ng-container *ngIf="overViewObj.formEditable">
+            <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
+
+                <div class="flex align-items-center justify-content-end w-full my-3 px-2">
+                    <p-button type="submit" label="Save" icon="pi pi-save" iconPos="left" [outlined]="true" size="small"
+                        [rounded]="true" styleClass="border-gray-600"></p-button>
+                </div>
+                <div class="border-1 border-gray-600 border-round">
+                    <div class="col-12 p-3 sm:col-10 md:col-9 sm:mx-auto pt-5">
+                        <div class="flex flex-column align-items-center mb-3">
+                            <label class="w-full mb-1" for="name">Name</label>
+                            <div class="w-full">
+                                <input pInputText type="text" class="w-full p-2 border-2 border-round" id="name"
+                                    formControlName="name" placeholder="Name" />
+                            </div>
+                        </div>
+
+                        <div class="flex flex-column align-items-center mb-3">
+                            <label class="w-full mb-1" for="description">Description</label>
+                            <div class="w-full">
+                                <textarea pInputTextarea rows="6" id="description"
+                                    class="w-full p-2 border-2 border-round" formControlName="description"
+                                    placeholder="Description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="w-full my-4">
+                            <hr class="border-white-alpha-10" />
+                        </div>
+
+                        <div class="flex align-items-center mb-3">
+                            <div class="w-5 border-2 border-gray-600 border-round pr-2">
+                                <p-dropdown [options]="instructionOption" styleClass="w-full"
+                                    formControlName="instruction" optionLabel="name"
+                                    (onChange)="onChangeInstruction($event)"></p-dropdown>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="enableGeneralInstruction">
+                            <div class="flex flex-column align-items-center mb-3">
+                                <label class="w-full mb-1" for="description">General Task</label>
+                                <div class="w-full">
+                                    <textarea pInputTextarea rows="6" id="general_task"
+                                        class="w-full p-2 border-2 border-round" formControlName="general_task"
+                                        placeholder="If No Specific Task is Requested : Mention Task"></textarea>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!enableGeneralInstruction">
+                            <div class="flex flex-column align-items-center mb-3">
+                                <label class="w-full mb-1" for="description">Specific Instruction</label>
+                                <div class="w-full">
+                                    <input pInputText type="text" class="text-base p-2 border-2 border-round w-full"
+                                        id="specific_instruction" formControlName="specific_instruction"
+                                        placeholder="In particular, your task is to <Specific Task Description>" />
+                                </div>
+                            </div>
+                            <div class="flex flex-column align-items-center mb-3">
+                                <label class="w-full mb-1" for="description">Missing Information</label>
+                                <div class="w-full">
+                                    <textarea pInputTextarea rows="6" id="missing_information"
+                                        class="text-base p-2 border-2 border-round w-full"
+                                        formControlName="missing_information"
+                                        placeholder="If you think you are missing information :"></textarea>
+                                </div>
+                            </div>
+                            <div class="flex flex-column align-items-center mb-3">
+                                <label class="w-full mb-1" for="description">Answer Format</label>
+                                <div class="w-full">
+                                    <textarea pInputTextarea rows="6" id="answer_format"
+                                        class="text-base p-2 border-2 border-round w-full"
+                                        formControlName="answer_format"
+                                        placeholder="You must Format your answer as follows :"></textarea>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+
+
+
+
+        <ng-container *ngIf="!overViewObj.formEditable">
+            <div class="flex justify-content-end my-3">
+                <div class="flex justify-content-end px-2">
+                    <p-button type="button" label="Edit" icon="pi pi-pencil" iconPos="left" [outlined]="true"
+                        (onClick)="onEditSaveEvent()" size="small" [rounded]="true"
+                        styleClass="border-gray-600"></p-button>
+                </div>
+            </div>
+            <div class="flex flex-column gap-2 w-full border-1 border-gray-600 border-round">
+                <div class="w-full py-3">
+                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                        <label class="col-12 sm:col-5">Name</label>
+                        <div class="col-12 sm:col-7">{{overViewObj.agentData?.name ?? 'N/A'}}</div>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <hr class="border-white-alpha-10" />
+                </div>
+
+                <div class="w-full py-3 border-gray-600">
+                    <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                        <label class="col-12 sm:col-5">Description</label>
+                        <div class="col-12 sm:col-7">{{overViewObj.agentData?.description ?? 'N/A'}}</div>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <hr class="border-white-alpha-10" />
+                </div>
+
+                <div class="flex align-items-center py-3 w-12 sm:w-10 sm:mx-auto md:w-8">
+                    <div class="flex pr-2 border-2 border-gray-600 border-round">
+                        <p-dropdown [options]="instructionOption" styleClass="w-full p-0" optionLabel="name"
+                            (onChange)="onChangeInstruction($event)"></p-dropdown>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="enableGeneralInstruction">
+                    <div class="flex align-items-center mb-3">
+                        <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                            <label class="col-12 sm:col-5">General Task</label>
+                            <div class="col-12 sm:col-7">{{overViewObj.agentData?.general_task ?? 'N/A'}}</div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="!enableGeneralInstruction">
+                    <div class="flex align-items-center mb-3">
+                        <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                            <label class="col-12 sm:col-5">Specific Instruction</label>
+                            <div class="col-12 sm:col-7">{{overViewObj.agentData?.specific_instruction ?? 'N/A'}}</div>
                         </div>
                     </div>
 
-                    <div class="flex flex-column align-items-center mb-3">
-                        <label class="w-full mb-1" for="description">Description</label>
-                        <div class="w-full">
-                            <textarea pInputTextarea rows="6" id="description" class="w-full p-2 border-1 border-round"
-                                formControlName="description" placeholder="Description"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="w-full my-4">
+                    <div class="w-full">
                         <hr class="border-white-alpha-10" />
                     </div>
 
                     <div class="flex align-items-center mb-3">
-                        <div class="w-5 border-2 border-gray-600 border-round pr-2">
-                            <p-dropdown [options]="instructionOption" styleClass="w-full" formControlName="instruction"
-                                optionLabel="name" (onChange)="onChangeInstruction($event)"></p-dropdown>
+                        <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                            <label class="col-12 sm:col-5">Missing Information</label>
+                            <div class="col-12 sm:col-7">{{overViewObj.agentData?.missing_information ?? 'N/A'}}</div>
                         </div>
                     </div>
-                    <ng-container *ngIf="enableGeneralInstruction">
-                        <div class="flex flex-column align-items-center mb-3">
-                            <label class="w-full mb-1" for="description">General Task</label>
-                            <div class="w-full">
-                                <textarea pInputTextarea rows="6" id="general_task"
-                                    class="w-full p-2 border-1 border-round" formControlName="general_task"
-                                    placeholder="If No Specific Task is Requested : Mention Task"></textarea>
-                            </div>
+
+                    <div class="w-full">
+                        <hr class="border-white-alpha-10" />
+                    </div>
+
+                    <div class="flex align-items-center mb-3">
+                        <div class="flex w-12 sm:w-10 sm:mx-auto md:w-8">
+                            <label class="col-12 sm:col-5">Answer Format</label>
+                            <div class="col-12 sm:col-7">{{overViewObj.agentData?.answer_format ?? 'N/A'}}</div>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="!enableGeneralInstruction">
-                        <div class="flex flex-column align-items-center mb-3">
-                            <label class="w-full mb-1" for="description">Specific Instruction</label>
-                            <div class="w-full">
-                                <input pInputText type="text" class="text-base p-2 border-1 border-round w-full"
-                                    id="specific_instruction" formControlName="specific_instruction"
-                                    placeholder="In particular, your task is to <Specific Task Description>" />
-                            </div>
-                        </div>
-                        <div class="flex flex-column align-items-center mb-3">
-                            <label class="w-full mb-1" for="description">Missing Information</label>
-                            <div class="w-full">
-                                <textarea pInputTextarea rows="6" id="missing_information"
-                                    class="text-base p-2 border-1 border-round w-full"
-                                    formControlName="missing_information"
-                                    placeholder="If you think you are missing information :"></textarea>
-                            </div>
-                        </div>
-                        <div class="flex flex-column align-items-center mb-3">
-                            <label class="w-full mb-1" for="description">Answer Format</label>
-                            <div class="w-full">
-                                <textarea pInputTextarea rows="6" id="answer_format"
-                                    class="text-base p-2 border-1 border-round w-full" formControlName="answer_format"
-                                    placeholder="You must Format your answer as follows :"></textarea>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
+                    </div>
+                </ng-container>
+
             </div>
-        </form>
+        </ng-container>
     </ng-template>
 </div>

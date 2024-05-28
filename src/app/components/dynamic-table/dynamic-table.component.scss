@@ -250,3 +250,8 @@
 .training-status {
   color: #02ADEE;
 }
+
+:host ::ng-deep .p-dropdown-label {
+  background-color: transparent !important;
+  border: none !important;
+}

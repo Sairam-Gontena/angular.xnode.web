@@ -25,7 +25,7 @@
   }
 
   .p-tabview-panels {
-    padding: 10px 0px;
+    // padding: 10px 0px;
     // height: calc(100vh - 265px);
     height: calc(100vh - 24rem);
     overflow: auto;
@@ -213,9 +213,5 @@
 :host ::ng-deep .p-splitbutton-defaultbutton,
 :host ::ng-deep .p-splitbutton-menubutton {
   padding: 0;
-}
-
-:host ::ng-deep .p-splitbutton-menubutton {
   width: fit-content;
-  margin-left: 0.5rem;
 }
