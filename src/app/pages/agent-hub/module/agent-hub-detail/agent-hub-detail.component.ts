@@ -173,7 +173,8 @@ export class AgentHubDetailComponent {
 
   ngOnInit() {
     // this.getAllAgentList();
-    this.getAgentDetailByCategory()
+    this.getAgentDetailByCategory();
+    this.updateHeaderOption();
   }
 
   onShowDynamicColumnFilter(event: any) {
