@@ -23,11 +23,11 @@ export class AgentOverviewComponent implements OnInit {
   }
 
   agentInfoDtlObj: any;
-  overviewForm!: FormGroup;
+  // overviewForm!: FormGroup;
   instructionForm!: FormGroup;
   userInfo: any;
   statsItem = Constant.agentDetail.stats;
-  instructionOption = [{ name: "General Instructions", value: "general_instruction" },
+  instructionOption = [{ name: "General", value: "general_instruction" },
   { name: "Capability Specific Instructions", value: "capability_specific_instruction" }];
 
   enableGeneralInstruction: boolean = true;
@@ -82,6 +82,34 @@ export class AgentOverviewComponent implements OnInit {
   //instruction form submit
   onInstructionSubmit() {
     console.log(this.instructionForm.value);
+
+    let urlPayload: any = {
+      url: ("/agent/update_agent/" + this.activatedRoute.snapshot.paramMap.get('id')),
+      data: this.instructionForm.value
+    }
+    this.utilsService.loadSpinner(true);
+    this.agentHubService.updateData(urlPayload).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.instructionForm.patchValue({
+            name: response?.name,
+            description: response?.description,
+            role: response?.role,
+            instruction: response?.instruction ?? this.instructionOption[0],
+            general_task: response?.general_task,
+            specific_instruction: response?.specific_instruction,
+            missing_information: response?.missing_information,
+            answer_format: response?.answer_format
+          });
+        } else if (response?.detail) {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response?.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    });
   }
 
   //on change instruction dropdown event
@@ -154,4 +182,10 @@ export class AgentOverviewComponent implements OnInit {
   //     }
   //   });
   // }
+
+
+  onEditSaveEvent() {
+    this.overViewObj.formEditable = !this.overViewObj.formEditable;
+    this.overViewObj.formEditable ? this.instructionForm.enable() : this.instructionForm.disable();
+  }
 }

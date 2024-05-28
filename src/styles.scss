@@ -44,6 +44,7 @@ body {
   --bleached-cedar: #1F2937;
   --bright-grey: #424B57;
   --dark-grayish-blue: #161D27;
+  --timber-green: #1C2532
 }
 
 .menuStyleTable {
@@ -61,6 +62,10 @@ body {
   padding: 0.5rem 1rem;
   border-radius: 30px;
   width: fit-content;
+}
+
+.p-tieredmenu-root-list, .p-tieredmenu-root-list li, .p-menuitem  {
+    background-color: var( --bleached-cedar);
 }
 
 .pointer {

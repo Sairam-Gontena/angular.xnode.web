@@ -22,6 +22,7 @@ export class AgentHubComponent implements OnInit {
   agentHubDetailObj: any;
   dynamicDialogRef: DynamicDialogRef | undefined;
   dialogConfigDetail: any = dialogConfigDetail;
+  showImportFilePopup: boolean = false;
 
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
@@ -47,6 +48,11 @@ export class AgentHubComponent implements OnInit {
         this.agentHubDetailObj = Object.assign({}, this.agentHubDetailObj);
       }
     });
+
+    this.agentHubService.showImportFilePopup$.subscribe((state: boolean) => {
+      this.showImportFilePopup = state;
+    });
+
     this.getAgentCount();
   }
 
@@ -151,6 +157,9 @@ export class AgentHubComponent implements OnInit {
           this.commonDialog(dialogDetail);
         }
         break;
+      case 'Knowledge':
+        this.openResourceModal();
+        break;
       case 'Tool':
         if (eventData.eventType === "CREATE") {
           dialogDetail.component = ToolOverviewComponent;
@@ -193,6 +202,10 @@ export class AgentHubComponent implements OnInit {
     if (Object.keys(this.agentHubDetailObj.agentInfo).length) {
       this.storageService.saveItem(StorageKeys.AGENT_HUB_DETAIL, this.agentHubDetailObj);
     }
+  }
+
+  openResourceModal() {
+    this.agentHubService.openImportFiltePopup()
   }
 
 }
