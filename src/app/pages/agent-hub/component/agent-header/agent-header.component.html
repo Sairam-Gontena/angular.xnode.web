@@ -10,7 +10,7 @@
                     (onClick)="createAgentHandler()"></p-button>
             </ng-container> -->
 
-            <ng-template *ngIf="headerData?.showActionButton">
+            <ng-template [ngIf]="headerData?.showActionButton">
                 <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
                     [model]="headerData?.actionButtonOption"></p-splitButton>
             </ng-template>
