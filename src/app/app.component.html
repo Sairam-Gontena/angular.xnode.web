@@ -1,9 +1,9 @@
 <ng-container *ngIf="authApiService.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0 z-5" *ngIf="!showDockedNavi">
+        <!-- <div class="absolute bottom-0 right-0 z-5" *ngIf="!showDockedNavi">
             <xnode-bot (valueChange)="openNavi()"></xnode-bot>
-        </div>
-        <xnode-app-header (navigateToHome)="navigateToHome()" (logout)="logout()"></xnode-app-header>
+        </div> -->
+        <xnode-app-header (navigateToHome)="navigateToHome()" (openNavi)="openNavi()" (logout)="logout()"></xnode-app-header>
         <div class="w-full" [ngClass]="{'x-node-whole-container' : showDockedNavi}">
             <div class="flex">
                 <div class="app-side-menu-wrapper hidden lg:block">
