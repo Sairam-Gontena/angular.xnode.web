@@ -2,6 +2,8 @@
   <xnode-agent-header [headerData]="agentHubDetailObj"
     (headerClickHandler)="agentheaderEvent($event)"></xnode-agent-header>
 
+  <xnode-create-knowledge-modal [display]="showImportFilePopup"></xnode-create-knowledge-modal>
+
   <router-outlet></router-outlet>
 
 </div>

@@ -8,12 +8,12 @@ import { AgentSharedModule } from '../../agent-shared.module';
 
 @NgModule({
   declarations: [
-    AgentHubDetailComponent
+    AgentHubDetailComponent,
   ],
   imports: [
     CommonModule,
     AgentHubDetailRoutingModule,
-    AgentSharedModule
+    AgentSharedModule,
   ]
 })
 export class AgentHubDetailModule { }
