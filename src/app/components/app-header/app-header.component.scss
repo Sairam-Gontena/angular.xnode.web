@@ -1,7 +1,7 @@
 .app-header-wrapper {
     position: relative;
-    height: 42px;
-    background: #24232C !important;
+    height: 55px;
+    background: #111827 !important;
     color: #FFFFFF !important;
     font-size: 12px;
     padding-left: 16px;
@@ -141,4 +141,30 @@ textarea {
 
 :host::ng-deep .p-dialog .p-dialog-header {
     border-bottom: 1px solid #ccc;
+}
+:host::ng-deep .search-container {
+    height: 33px;
+    padding: 11px 0px;
+    width: 380px;
+    margin-top: 11px;
+    border-radius: 16px;
+    input {
+        height: inherit;
+        margin-top: -14px;
+        margin-left: 24px;
+    }
+}
+:host::ng-deep .right-header-section{
+    gap: 11px;
+    .right-header-items{
+        background-color: #1F2937;
+        border-radius: 50%;
+        gap: 8px;
+        .p-button.p-button-icon-only{
+            width: 0.5rem;
+        }
+    }
+    .right-header-items:last-child {
+        border-radius: 31%;
+    }
 }
