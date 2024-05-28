@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+
 import { WebSocketService } from 'src/app/web-socket.service';
 import { PublishAppApiService } from '../../api/publish-app-api.service';
 import { environment } from 'src/environments/environment';
@@ -30,7 +31,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class AppHeaderComponent implements OnInit {
   @Output() navigateToHome = new EventEmitter<object>();
   @Output() logout = new EventEmitter<any>();
-
+  @Output() openNavi = new EventEmitter<any>();
+  
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -70,6 +72,7 @@ export class AppHeaderComponent implements OnInit {
   limitReachedContent: boolean = false;
   colorPallet: any;
   isDarkTheme: boolean = false;
+  searchText: any;
 
   constructor(
     private RefreshListService: RefreshListService,
@@ -385,4 +388,18 @@ export class AppHeaderComponent implements OnInit {
 
   }
 
+  search(event: any) {
+    // this.filteredProducts = this.searchText === '' ? this.templateCard :
+    //   this.templateCard.filter((element) => {
+    //     return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
+    //   });
+    // if (event) {
+    //   this.tableFilterEvent = event;
+    // }
+  }
+
+  clearSearch(event: any) {
+    // this.searchText = "";
+    // this.search(event);
+  } 
 }

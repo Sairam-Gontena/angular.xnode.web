@@ -1,29 +1,45 @@
 <div class="app-header-wrapper flex align-content-center flex-wrap">
-    <div class="w-6 flex gap-5">
-        <div class="flex flex-row">
+    <div class="w-5 flex">
+        <div class="p-3">
             <img src="./assets/logo-xnode.svg" alt="x-node" (click)="onClickLogo()" class="pointer">
         </div>
     </div>
-    <div class="w-6 flex justify-content-end align-items-center">
-        <i class="pi pi-question-circle pointer mr-3" (click)="onClickHelpCenter()"></i>
-        <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="pointer mr-3" />
-        <i *ngIf="notificationCount > 0" class="pi pi-bell pointer mr-3 " pBadge value={{notificationCount}}
-            severity="danger" (click)="overlayToggle($event, op)"></i>
-        <i *ngIf="notificationCount == 0" class="pi pi-bell text-base pointer mr-3"
-            (click)="overlayToggle($event, op)"></i>
-        <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
-            <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
-                (viewSummaryPopup)="viewSummaryPopup($event)"
-                (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
-                (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
-        </p-overlayPanel>
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
-            shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
-        <p-avatar [label]="userImage" *ngIf="username"
+    <div class="w-3 flex p-input-icon-left search-container p-inputtext">
+        <i *ngIf="!searchText" class="pi pi-search"></i>
+        <i *ngIf="searchText" class="pi pi-times cursor-pointer" (click)="clearSearch($event)"></i>
+        <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search($event)"
+            class="border-round-3xl search-input w-full" />
+    </div>
+    <div class="w-4 flex justify-content-end align-items-center right-header-section">
+        <div class="pointer p-2 right-header-items">
+            <img src="./assets/images/new-navi-icon.svg" (click)="openNavi.emit()"/>
+        </div>
+        <div class="pointer p-2 right-header-items">
+            <img src="./assets/images/help.svg" (click)="onClickHelpCenter()"/>
+        </div>
+        <div class="pointer p-2 right-header-items">
+            <img src="./assets/images/warn-msg.svg" (click)="toggleFeedbackPopup()"/>
+        </div>
+        <div class="pointer p-2 right-header-items">
+            <img *ngIf="notificationCount == 0" src="./assets/images/notifications.svg" (click)="overlayToggle($event, op)"/>
+            <img *ngIf="notificationCount > 0" src="./assets/images/notifications-badge.svg" (click)="overlayToggle($event, op)"/>
+            <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
+                <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
+                    (viewSummaryPopup)="viewSummaryPopup($event)"
+                    (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
+                    (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
+            </p-overlayPanel>
+        </div>
+        <div class="pointer p-2 right-header-items flex">
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
+                shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
+            <p-avatar [label]="userImage" *ngIf="username"
             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
-            shape="circle"></p-avatar>
-        <p-splitButton [label]="username" [model]="logoutDropdown" styleClass="p-button-raised logout-split-btn"
-            class="hidden md:block"></p-splitButton>
+                shape="circle"></p-avatar>
+            <p-splitButton [model]="logoutDropdown" styleClass="p-button-raised logout-split-btn"
+                class="hidden md:block"></p-splitButton>
+        </div>
+        
     </div>
     <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
         [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
