@@ -63,6 +63,10 @@ body {
   width: fit-content;
 }
 
+.p-tieredmenu-root-list, .p-tieredmenu-root-list li, .p-menuitem  {
+    background-color: var( --bleached-cedar);
+}
+
 .pointer {
   cursor: pointer;
 }
