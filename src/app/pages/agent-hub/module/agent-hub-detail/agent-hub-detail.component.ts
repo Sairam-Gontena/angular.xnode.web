@@ -228,12 +228,12 @@ export class AgentHubDetailComponent {
         next: (response: any) => {
           if (response) {
             //data formatting
-            response.data.map((item: any) => {
+            response?.data?.map((item: any) => {
               item.tags = [...item.content.tags, ...item.content.tags, ...item.content.tags, ...item.content.tags],
                 item.shared_by = item?.createdBy?.displayName
               item.type = item?.fileName?.split('.')[1]?.toUpperCase()
             })
-            this.tableData = response.data
+            this.tableData = response?.data
             this.paginatorInfo.page = response?.page;
             this.paginatorInfo.perPage = response?.per_page;
             this.paginatorInfo.totalRecords = response?.total_items;
