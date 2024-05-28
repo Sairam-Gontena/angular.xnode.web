@@ -136,12 +136,12 @@
         <div class="flex mt-2" *ngIf="notification?.entity === 'IMPORT_FILE' && notification?.status === 'Completed'">
           <div (click)="goToResources(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
-            View in Resources
+            View In Resources
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
           <div (click)="viewInChat(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-            *ngIf="notification?.conversation_id && notification?.conversation_id">
+            *ngIf="notification?.conversation_id && notification?.resource_id">
             View In Chat
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>

@@ -1,8 +1,23 @@
-<div class="card flex justify-content-center">
+<!-- <div class="card flex justify-content-center h-full">
     <p-multiSelect [filter]="filter" [showToggleAll]="showToggleAll" [showHeader]="showHeader" [options]="options"
         [placeholder]="placeholder" scrollHeight="250px" [optionLabel]="optionLabel"
-        [displaySelectedLabel]="displaySelectedLabel" [styleClass]="styleClass" (onChange)="onChangeHandler($event)"
-        appendTo="body" [ngStyle]="customStyle">
+        [displaySelectedLabel]="displaySelectedLabel" [styleClass]="styleClass" panelStyleClass="dropdown-panel"
+        (onChange)="onChangeHandler($event)" appendTo="body" [ngStyle]="customStyle">
+        <ng-template let-group pTemplate="group">
+            <div class="inline-flex align-items-center gap-2 px-1">
+                <span>{{ group.name }}</span>
+            </div>
+        </ng-template>
+    </p-multiSelect>
+</div> -->
+
+
+<div class="card flex justify-content-center h-full">
+    <p-multiSelect [filter]="filter" [showToggleAll]="showToggleAll" [showHeader]="showHeader" [options]="options"
+        [placeholder]="placeholder" scrollHeight="250px" [optionLabel]="optionLabel"
+        [displaySelectedLabel]="displaySelectedLabel" [styleClass]="styleClass"
+        panelStyleClass="dropdown-panel custom-background" (onChange)="onChangeHandler($event)" appendTo="body"
+        [ngStyle]="customStyle">
         <ng-template let-group pTemplate="group">
             <div class="inline-flex align-items-center gap-2 px-1">
                 <span>{{ group.name }}</span>

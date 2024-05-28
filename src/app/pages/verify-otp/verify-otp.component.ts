@@ -141,7 +141,6 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.userSubject.next(decodedUser);
     this.authApiService.setIsLoggedIn(true);
     this.authApiService.startRefreshTokenTimer();
-
     this.authApiService.isOtpVerifiedInprogress(false);
     if (decodedUser?.role_name === 'Xnode Admin') {
       this.authApiService.setUser(true);
@@ -154,9 +153,30 @@ export class VerifyOtpComponent implements OnInit {
       );
     } else {
       await this.getAllProducts();
+
       this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
     }
     this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'OTP verified successfully' });
+  }
+
+  navigateWithQueryParams(response: any, redirectPath: { pathname: string, params: string }) {
+    let product: any;
+    const queryString = redirectPath.params.startsWith('?') ? redirectPath.params.slice(1) : redirectPath.params;
+    const params = new URLSearchParams(queryString);
+    const queryParams: any = {};
+    params.forEach((value, key) => {
+      queryParams[key] = value;
+    });
+    if (queryParams.product_id) {
+      product = response.data.filter((obj: any) => { return obj.id === queryParams.product_id })[0];
+      this.storageService.saveItem(StorageKeys.Product, product);
+      this.messagingService.sendMessage({
+        msgType: MessageTypes.PRODUCT_CONTEXT,
+        msgData: true,
+      });
+    }
+    this.router.navigate([redirectPath.pathname], { queryParams: queryParams });
+    this.storageService.removeItem(StorageKeys.REDIRECT_PATH)
   }
 
   //get calls
@@ -164,7 +184,14 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
     this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id, userRole: 'all' }).then((response: any) => {
       if (response?.status === 200) {
+        const redirectPath: any = this.storageService.getItem(StorageKeys.REDIRECT_PATH);
         this.authApiService.setUser(true);
+        if (redirectPath) {
+          this.storageService.saveItem(StorageKeys.MetaData, response.data);
+          this.navigateWithQueryParams(response, redirectPath)
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'OTP verified successfully' });
+          return
+        }
         this.router.navigate(['/my-products']);
         this.utilsService.loadSpinner(false);
       }

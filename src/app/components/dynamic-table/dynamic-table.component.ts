@@ -42,12 +42,10 @@ export class DynamicTableComponent implements OnInit {
   @Input() showViewRowData = false;
   @Input() agentDataType = 'live'
   @Input() recordType!: any;
-  @Input() expandSearch = false;
-  @Input() actionsOption!: any;
   @Output() changeEvent = new EventEmitter<{ event: any }>();
   @Output() paginatorChangeEvent = new EventEmitter<{ event: any }>();
   @Output() agentDataTypeChange = new EventEmitter<{ event: any }>();
-
+  @Output() performTableAction = new EventEmitter<{ event: any }>();
   @Input() tableRowActionOptions: any[] = [];
 
   @Input() searchFilterOptions: FilterOptions = {
@@ -196,11 +194,15 @@ export class DynamicTableComponent implements OnInit {
     this.agentDataTypeChange.emit(type)
   }
 
-  focusSearchHandler() {
-    this.expandSearch = !this.expandSearch
-  }
+  onDropdownItemClick(event: any, row: any) {
+    console.log('Dropdown item clicked!', event);
+    console.log('Row data:', row);
 
-  focusBlurHandler() {
-    this.expandSearch = false
+
+    let eventData = {
+      ...event,
+      row: row
+    }
+    this.performTableAction.emit(eventData)
   }
 }
