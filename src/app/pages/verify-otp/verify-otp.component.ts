@@ -181,8 +181,7 @@ export class VerifyOtpComponent implements OnInit {
 
   //get calls
   getAllProducts(): void {
-    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: currentUser?.account_id, userId: currentUser?.user_id, userRole: 'all' }).then((response: any) => {
+    this.conversationService.getProductsByUser({ userRole: 'all' }).then((response: any) => {
       if (response?.status === 200) {
         const redirectPath: any = this.storageService.getItem(StorageKeys.REDIRECT_PATH);
         this.authApiService.setUser(true);
@@ -208,10 +207,7 @@ export class VerifyOtpComponent implements OnInit {
   }
 
   getMeCreateAppLimit(): void {
-    const currentUser: any = this.storageService.getItem(
-      StorageKeys.CurrentUser
-    );
-    this.authApiService.get('user/get_create_app_limit/' + currentUser?.email)
+    this.authApiService.get('user/get_create_app_limit')
       .then((response: any) => {
         if (response?.status === 200) {
           this.restriction_max_value = response.data[0].restriction_max_value;

@@ -14,12 +14,14 @@ export class ConversationApiService extends BaseApiService {
     constructor() {
         super();
     }
+
     getAllConversations() {
         let url = '/conversation';
         return this.get(url);
     }
-    getConversationsByContributor(user_id: any) {
-        let url = '/conversation/conversations-by-contributor?contributors=' + user_id;
+
+    getConversationsByContributor() {
+        let url = '/conversation/conversations-by-contributor';
         return this.get(url);
     }
 

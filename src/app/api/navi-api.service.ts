@@ -12,41 +12,28 @@ export class NaviApiService extends BaseApiService {
   constructor() {
     super();
   }
-
-  getMetaData(email?: string, productId?: string) {
-    let url = '/navi/get_metadata/' + email;
-    if (productId) url = url + '/' + productId;
-    return this.get(url);
-  }
-  getTotalOnboardedApps(email?: string) {
-    let url = '/navi/total_apps_onboarded/' + email;
+  getTotalOnboardedApps() {
+    let url = 'navi/total_apps_onboarded';
     return this.get(url);
   }
 
-  getTotalPublishedApps(accountId?: string) {
-    let url = '/navi/total_apps_published/' + accountId;
+  getTotalPublishedApps() {
+    let url = 'navi/total_apps_published';
     return this.get(url);
   }
 
-  getXflows(email?: string, productId?: string) {
-    let url = '/navi/get_xflows/' + email + '/' + productId;
-    return this.get(url);
-  }
-  getOverview(email?: string, productId?: string) {
-    let url = '/navi/get_overview/' + email + '/' + productId;
-    return this.get(url);
-  }
-  getDataModels(productId?: string) {
-    let url = '/navi/get_datamodels/' + productId;
-    return this.get(url);
-  }
-  getEntireData(email?: string, productId?: string) {
-    let url = '/navi/get_entire_data/' + email + '/' + productId;
+  getXflows(productId?: string) {
+    let url = 'navi/get_xflows/' + productId;
     return this.get(url);
   }
 
-  getConversation(email?: string, productId?: string) {
-    let url = '/navi/get_entire_data/' + email + '/' + productId;
+  getEntireData(productId?: string) {
+    let url = 'navi/get_entire_data/' + productId;
+    return this.get(url);
+  }
+
+  getConversation(productId?: string) {
+    let url = '/navi/get_entire_data/' + productId;
     return this.get(url);
   }
 

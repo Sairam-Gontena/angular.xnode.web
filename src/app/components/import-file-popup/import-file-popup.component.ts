@@ -181,8 +181,6 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
       body['owners'] = [currentUser.user_id];
       body['contributors'] = [currentUser.user_id];
       body['fileStoreId'] = body.storageId;
-      body['accountId'] = currentUser.account_id;
-      body['email'] = currentUser.email;
       body['users'] = [{ "userId": currentUser.user_id, "role": "Owner" }];
     }
     try {

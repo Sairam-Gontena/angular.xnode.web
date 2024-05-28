@@ -72,22 +72,6 @@ export class DynamicFormModalComponent implements OnInit {
   async getAllAgentList() {
     this.parentLinkOptionList = []
     const endpoint = this.parentLinkTabsItem[this.activeIndex].value
-    // try {
-    //   const response = await this.agentHubService.getAllAgent({
-    //     accountId: this.userInfo.account_id,
-    //     endpoint: endpoint,
-    //     page: 1,
-    //     page_size: 10,
-    //   });
-
-    //   this.parentLinkOptionList = response.data.data
-
-    // } catch (error) {
-    //   console.error('Error fetching agent list:', error);
-    // }
-
-
-
     let url: string = `/agent/${endpoint}/${this.userInfo.account_id}`,
       urlParam: any = {
         url: url,

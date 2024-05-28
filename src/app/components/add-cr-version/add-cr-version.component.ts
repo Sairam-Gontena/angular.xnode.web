@@ -93,7 +93,6 @@ export class AddCrVersionComponent {
       build: this.versionForm.value.build,
       notes: {},
       attachments: [],
-      createdBy: this.currentUser.user_id,
     };
     this.commentsService
       .addVersion(body)

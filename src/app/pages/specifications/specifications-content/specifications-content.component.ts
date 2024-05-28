@@ -163,7 +163,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   getUsersData() {
     this.authApiService
-      .getAllUsers(this.currentUser?.account_id)
+      .getAllUsers()
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
@@ -314,7 +314,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(this.currentUser?.account_id)
+      .getAllUsers()
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

@@ -249,7 +249,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product?.id
           );
           let xflowJson = {
@@ -282,7 +281,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product?.id
           );
           this.loadXFlows(workflow);
@@ -306,7 +304,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product?.id
         );
         this.loadXFlows(workflow);
@@ -335,8 +332,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getOverview() {
-    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id,userRole:'all' }).then((response) => {
+    this.conversationService.getProductsByUser({ userRole: 'all' }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -348,7 +344,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           'SUCCESS',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product?.id
         );
         this.overview = response.data;
@@ -364,7 +359,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product?.id
         );
         this.utilsService.loadToaster({
@@ -385,7 +379,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product?.id
         );
         this.utilsService.loadToaster({
@@ -642,7 +635,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product?.id
           );
           const layoutedDiagramXML = await layoutProcess(this.xml);
@@ -659,7 +651,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product?.id
           );
           this.utilsService.loadToaster({
@@ -684,7 +675,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product?.id
         );
         this.utilsService.loadToaster({
@@ -749,9 +739,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       });
     let mod_data = this.useCases;
     this.showUsecaseGraph = true;
-    let grpdata:any=_.groupBy(mod_data, 'role');
+    let grpdata: any = _.groupBy(mod_data, 'role');
     grpdata = Object.values(grpdata)
-    grpdata.forEach((element:any)=>{
+    grpdata.forEach((element: any) => {
       let firstRole = element?.length ? element[0]?.role : '';
       var treeData = {
         description: '',
@@ -771,7 +761,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         ele = document.getElementById(graphRefId) as HTMLElement;
       }
       const childs = ele.querySelectorAll('svg');
-      if(childs.length <grpdata.length || this.onDiff){
+      if (childs.length < grpdata.length || this.onDiff) {
         ele?.appendChild(svgNode);
       }
       ele.classList.add('overflow-y-auto');
@@ -966,8 +956,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     nodeC
       .append('rect')
       .attr('width', (d: any) => {
-        if(d.data.title.length * 10 > 200)
-          if(d.data?.role.length<8)
+        if (d.data.title.length * 10 > 200)
+          if (d.data?.role.length < 8)
             return 80;
         return d.data.role.length * 10;
       })
@@ -975,7 +965,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       .attr('fill', '#FFFFFA')
       .attr('y', '-1.5em')
       .attr('x', (d: any) => {
-        if(d.data.title.length > 10)
+        if (d.data.title.length > 10)
           d.data.title = d.data.title.substring(0, 10)
         return -5.5 * d.data.title.length;
       })

@@ -720,7 +720,7 @@ export class AppComponent implements OnInit {
 
   getMeTotalOnboardedApps(): void {
     this.naviApiService
-      .getTotalOnboardedApps(this.currentUser?.email)
+      .getTotalOnboardedApps()
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(
@@ -805,19 +805,13 @@ export class AppComponent implements OnInit {
   }
 
   getAllUsers() {
-    let accountId = this.currentUser.account_id;
-    if (accountId) {
-      let params = { account_id: accountId };
-      this.authApiService.getUsersByAccountId(params).then((response: any) => {
-        response.data.forEach((element: any) => {
-          element.name = element.first_name + ' ' + element.last_name;
-        });
-        console.log('response', response);
-
-        this.usersList = response.data;
-        this.naviData.users = response.data;
+    this.authApiService.getAllUsers().then((response: any) => {
+      response.data.forEach((element: any) => {
+        element.name = element.first_name + ' ' + element.last_name;
       });
-    }
+      this.usersList = response.data;
+      this.naviData.users = response.data;
+    });
   }
 
   sendEmailNotificationToTheUser(): void {

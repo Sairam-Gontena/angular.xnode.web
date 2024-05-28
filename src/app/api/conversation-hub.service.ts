@@ -26,37 +26,7 @@ export class ConversationHubService extends BaseApiService {
     return this.get(url);
   }
 
-  getConersationDetailById(params: any) {
-    let queryParams = new HttpParams();
-    Object.keys(params).forEach(key => {
-      if (Array.isArray(params[key])) {
-        queryParams = queryParams.append(key, params[key].join(','));
-      } else {
-        queryParams = queryParams.append(key, params[key]);
-      }
-    });
-    let url = '/conversation';
-    url += '?' + queryParams.toString();
-
-    return this.get(url);
-  }
-
-  getThreads(params: any) {
-    let queryParams = new HttpParams();
-    Object.keys(params).forEach(key => {
-      if (Array.isArray(params[key])) {
-        queryParams = queryParams.append(key, params[key].join(','));
-      } else {
-        queryParams = queryParams.append(key, params[key]);
-      }
-    });
-    let url = '/thread';
-    url += '?' + queryParams.toString();
-
-    return this.get(url);
-  }
-
-  getMetaData(params: any) {
+  getMetaData(params?: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
       httpParams = httpParams.append(key, params[key]);
@@ -80,10 +50,7 @@ export class ConversationHubService extends BaseApiService {
   }
 
   getAllUsers() {
-    let currentUSer: any = localStorage.getItem('currentUser');
-    currentUSer = JSON.parse(currentUSer);
-    let account_id = currentUSer.account_id;
-    this.authApiService.getAllUsers(account_id).then((response: any) => {
+    this.authApiService.getAllUsers().then((response: any) => {
       if (response && response.data) {
         response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
         this.storageService.saveItem(StorageKeys.USERLIST, response.data);
@@ -91,7 +58,7 @@ export class ConversationHubService extends BaseApiService {
     })
   }
 
-  getResourcesByUserId(params: any) {
+  getResourcesByUserId(params?: any) {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(key => {
       httpParams = httpParams.append(key, params[key]);
@@ -119,7 +86,7 @@ export class ConversationHubService extends BaseApiService {
     return this.httpClient.patch(url, params, { headers });
   }
 
-  getRecentActivities(userId: any) {
-    return from(this.get(`/user-activity?`, { userId }));
+  getRecentActivities() {
+    return from(this.get(`user-activity`));
   }
 }

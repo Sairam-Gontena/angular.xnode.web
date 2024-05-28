@@ -138,7 +138,7 @@ export class ProductAlertPopupComponent implements OnInit {
 
   getProduct(): void {
     this.naviApiService
-      .getEntireData(this.currentUser?.email, this.product_id)
+      .getEntireData(this.product_id)
       .then((res: any) => {
         if (res) {
           this.proTitle = res?.data?.conversation_details?.title;
@@ -207,7 +207,6 @@ export class ProductAlertPopupComponent implements OnInit {
     const body = {
       repoName: this.proTitle,
       projectName: environment.projectName,
-      email: this.currentUser?.email,
       envName: environment.branchName,
       productId: this.product_id,
     };
@@ -289,11 +288,9 @@ export class ProductAlertPopupComponent implements OnInit {
 
   generateSpec() {
     const body = {
-      email: this.currentUser?.email,
       conversation_history: this.consversationList,
       conversation_id: this.conversation_id,
       product_id: this.product_id,
-      user_id: this.currentUser?.user_id,
     };
     let detail = 'Generating spec for this app process is started.';
     this.closePopup.emit(true);
@@ -374,7 +371,7 @@ export class ProductAlertPopupComponent implements OnInit {
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
     this.naviApiService
-      .getConversation(this.currentUser?.email, this.product_id)
+      .getConversation(this.product_id)
       .then((res: any) => {
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
@@ -419,7 +416,6 @@ export class ProductAlertPopupComponent implements OnInit {
 
   persistConversaiton() {
     const persistconversation = {
-      email: this.currentUser?.email,
       conversation_history: this.consversationList,
       product_id: this.product_id,
     };
@@ -460,7 +456,7 @@ export class ProductAlertPopupComponent implements OnInit {
 
   getMeTotalAppsPublishedCount(): void {
     this.naviApiService
-      .getTotalPublishedApps(this.currentUser?.account_id)
+      .getTotalPublishedApps()
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(

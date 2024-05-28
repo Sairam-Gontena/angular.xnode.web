@@ -43,10 +43,4 @@ export class SpecApiService extends BaseApiService {
     return this.get(url);
   }
 
-  //share link to users in spec  
-  createUpdateUserListProdSpec(paramPayload?: any) {
-    let url = '/product-spec';
-    return this.patch(url, paramPayload);
-  }
-
 }

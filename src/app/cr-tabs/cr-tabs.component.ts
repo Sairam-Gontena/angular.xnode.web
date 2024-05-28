@@ -659,7 +659,6 @@ export class CrTabsComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.utilsService.loadToaster({
@@ -681,7 +680,6 @@ export class CrTabsComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product.id
         );
         this.utilsService.loadToaster({
@@ -694,7 +692,7 @@ export class CrTabsComponent {
 
   getMeTotalAppsPublishedCount(): void {
     this.naviApiService
-      .getTotalPublishedApps(this.currentUser?.account_id)
+      .getTotalPublishedApps()
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(
@@ -718,7 +716,6 @@ export class CrTabsComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
         } else {
@@ -732,7 +729,6 @@ export class CrTabsComponent {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.utilsService.loadToaster({
@@ -754,7 +750,6 @@ export class CrTabsComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product.id
         );
         this.utilsService.loadToaster({
@@ -772,7 +767,6 @@ export class CrTabsComponent {
       repoName: this.product.title,
       productUuid: product_uuid,
       projectName: environment.projectName,
-      email: this.currentUser.email,
       crId: this.selectedCr.id,
     };
     this.commentsService
@@ -790,7 +784,6 @@ export class CrTabsComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.utilsService.loadToaster({
@@ -812,7 +805,6 @@ export class CrTabsComponent {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.utilsService.loadToaster({
@@ -836,7 +828,6 @@ export class CrTabsComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product.id
         );
         this.utilsService.loadToaster({
@@ -861,7 +852,6 @@ export class CrTabsComponent {
         this.selectedStatus === 'NEEDS WORK'
           ? 'NEEDS_WORK'
           : this.selectedStatus,
-      userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
     this.utilsService.loadSpinner(true);

@@ -94,7 +94,6 @@ export class LogsComponent implements OnInit {
     localStorage.setItem('record_id', productId);
     this.naviApiService
       .retriveNotifications({
-        email: this.currentUser.email,
         productId: productId,
       })
       .then((response: any) => {

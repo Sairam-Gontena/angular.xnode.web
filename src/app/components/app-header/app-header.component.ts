@@ -264,7 +264,6 @@ export class AppHeaderComponent implements OnInit {
     const body = {
       repoName: obj.product_name,
       projectName: environment.projectName,
-      email: this.email,
       envName: environment.branchName,
       productId: obj.product_id,
       productUuid: product?.product_uuid,

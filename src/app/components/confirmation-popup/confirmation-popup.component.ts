@@ -100,7 +100,6 @@ export class ConfirmationPopupComponent implements OnInit {
 
   updateUserId(id: string, action: string): void {
     this.utilsService.loadSpinner(true);
-    let url = 'auth/prospect/prospect_status_update';
     let body = {
       id: id,
       action: action,

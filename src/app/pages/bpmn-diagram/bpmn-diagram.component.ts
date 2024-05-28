@@ -277,7 +277,6 @@ export class BpmnDiagramComponent
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product?.id
           );
           let xflowJson = {
@@ -362,7 +361,7 @@ export class BpmnDiagramComponent
   getOnboardingFlow() {
     this.currentUser = UserUtil.getCurrentUser();
     this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
+      .getXflows(this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -453,8 +452,7 @@ export class BpmnDiagramComponent
   ngAfterContentInit(): void { }
 
   getOverview() {
-    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: currentUser?.user_id ,userRole:'all' }).then((response) => {
+    this.conversationService.getProductsByUser({ userRole: 'all' }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -512,66 +510,6 @@ export class BpmnDiagramComponent
           detail: error,
         });
       });
-    // this.naviApiService
-    //   .getOverview(this.product?.email, this.product?.id)
-    //   .then((response) => {
-    //     if (response?.status === 200) {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_RETRIEVE_OVERVIEW_BPMN',
-    //         1,
-    //         'SUCCESS',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser?.email,
-    //         this.product?.id
-    //       );
-    //       this.overview = response.data;
-    //       this.sideBar = true;
-    //     } else {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_RETRIEVE_OVERVIEW_BPMN',
-    //         1,
-    //         'FAILED',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser?.email,
-    //         this.product?.id
-    //       );
-    //       this.utilsService.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: response.data?.detail,
-    //       });
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     let user_audit_body = {
-    //       method: 'GET',
-    //       url: error?.request?.responseURL,
-    //     };
-    //     this.auditUtil.postAudit(
-    //       'GET_RETRIEVE_OVERVIEW_BPMN',
-    //       1,
-    //       'FAILED',
-    //       'user-audit',
-    //       user_audit_body,
-    //       this.currentUser?.email,
-    //       this.product?.id
-    //     );
-    //     this.utilsService.loadToaster({
-    //       severity: 'error',
-    //       summary: 'ERROR',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   getElement() {
@@ -896,9 +834,9 @@ export class BpmnDiagramComponent
   graph() {
     let mod_data = this.modifyGraphData(this.useCases);
     this.showUsecaseGraph = true;
-    let grpdata:any=_.groupBy(mod_data, 'role');
+    let grpdata: any = _.groupBy(mod_data, 'role');
     grpdata = Object.values(grpdata);
-    grpdata.forEach((element:any)=>{
+    grpdata.forEach((element: any) => {
       let firstRole = element?.length ? element[0]?.role : '';
       var treeData = {
         description: '',
@@ -907,13 +845,13 @@ export class BpmnDiagramComponent
         title: this.product?.title,
         children: element,
       };
-    var ele = document.getElementById('graph') as HTMLElement;
-    var svgNode = this._chart(d3, treeData);
-    ele?.appendChild(svgNode);
-    ele.classList.add('overflow-y-auto');
-    let nodes: NodeListOf<SVGGElement> | undefined;
-    nodes = svgNode?.querySelectorAll('g');
-    var svg_ele = document.getElementById('graph');
+      var ele = document.getElementById('graph') as HTMLElement;
+      var svgNode = this._chart(d3, treeData);
+      ele?.appendChild(svgNode);
+      ele.classList.add('overflow-y-auto');
+      let nodes: NodeListOf<SVGGElement> | undefined;
+      nodes = svgNode?.querySelectorAll('g');
+      var svg_ele = document.getElementById('graph');
       if (svg_ele) {
         svg_ele.addEventListener('click', (event: any) => {
           let e = event.target.__data__;
@@ -1080,8 +1018,8 @@ export class BpmnDiagramComponent
     nodeC
       .append('rect')
       .attr('width', (d: any) => {
-        if(d.data.title.length * 10 > 200)
-          if(d.data?.role.length<8)
+        if (d.data.title.length * 10 > 200)
+          if (d.data?.role.length < 8)
             return 80;
         return d.data.role.length * 10;
       })
@@ -1089,7 +1027,7 @@ export class BpmnDiagramComponent
       .attr('fill', '#FFFFFA')
       .attr('y', '-1.5em')
       .attr('x', (d: any) => {
-        if(d.data.title.length > 10)
+        if (d.data.title.length > 10)
           d.data.title = d.data.title.substring(0, 10)
         return -5.5 * d.data.title.length;
       })

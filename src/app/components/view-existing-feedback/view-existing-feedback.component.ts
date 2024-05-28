@@ -65,7 +65,6 @@ export class ViewExistingFeedbackComponent implements OnInit {
 
   onClickSend() {
     let payload = {
-      userId: this.user?.user_id,
       conversationSourceType: this.selectedArea,
       conversationSourceId: this.conversationSourceId,
       message: this.message,

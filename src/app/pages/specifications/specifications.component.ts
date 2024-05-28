@@ -52,7 +52,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   notifInfo: any;
   reveiwerList: any;
 
-  constructor(    private utils: UtilsService,
+  constructor(private utils: UtilsService,
     private specService: SpecApiService,
     private specUtils: SpecUtilsService,
     private router: Router,
@@ -94,7 +94,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMetaData(val: any) {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    this.conversationService.getMetaData().then((response) => {
       if (response?.status === 200 && response.data?.length) {
         let product = response.data[0];
         localStorage.setItem('record_id', product.id);
@@ -105,20 +105,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.specUtils._tabToActive(val.template_type);
       }
     }).catch((error) => { });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email, val.product_id)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       let product = response.data.data[0];
-    //       localStorage.setItem('record_id', product.id);
-    //       localStorage.setItem('product', JSON.stringify(product));
-    //       localStorage.setItem('app_name', product.title);
-    //       localStorage.setItem('has_insights', product.has_insights);
-    //       this.specUtils._openCommentsPanel(true);
-    //       this.specUtils._tabToActive(val.template_type);
-    //     }
-    //   })
-    //   .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -249,13 +235,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getMeSpecList(body?: any): void {
     this.utils.loadSpinner(true);
-    let product = this.metaData.find((x: any) => x.id === body.productId);
     this.getMeSpecInfo(body);
-    // if (product.specStatus=="Completed") { // product.has_insights
-    //   this.getMeSpecInfo(body);
-    // } else {
-    //   this.showGenerateSpecPopup(product);
-    // }
   }
 
   getMeSpecInfo(body?: any) {
@@ -274,7 +254,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getUsersByAccountId() {
     this.authService
-      .getUsersByAccountId({ account_id: this.currentUser?.account_id })
+      .getAllUsers()
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
@@ -506,7 +486,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
     this.naviApiService
-      .getConversation(this.product.email, this.product.id)
+      .getConversation(this.product.id)
       .then((res: any) => {
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
@@ -533,10 +513,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   generate() {
     const body = {
-      email: this?.product.email,
       conversation_history: this.consversationList,
       product_id: this.product.id,
-      user_id: this.currentUser.user_id,
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
@@ -555,7 +533,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.utils.loadSpinner(false);
@@ -577,7 +554,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.product.id
           );
           this.auditUtil.postAudit('GENERATE_SPEC', 1, 'FAILURE', 'user-audit');
@@ -601,7 +577,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.product.id
         );
         this.utils.loadSpinner(false);

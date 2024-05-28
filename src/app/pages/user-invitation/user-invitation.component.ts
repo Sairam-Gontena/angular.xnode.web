@@ -52,57 +52,12 @@ export class UserInvitationComponent {
   }
 
   getAllUsers(): void {
-    this.currentUser = localStorage.getItem('currentUser');
-    if (this.currentUser) {
-      this.currentUser = JSON.parse(this.currentUser);
-      this.authApiService
-        .getUserDetails(this.currentUser.email)
-        .then((response: any) => {
-          this.utilsService.loadSpinner(false);
-          if (response?.status === 200) {
-            if (response?.data) {
-              let user_audit_body = {
-                method: 'GET',
-                url: response?.request?.responseURL,
-              };
-              this.auditUtil.postAudit(
-                'USER_AUTH',
-                1,
-                'SUCCESS',
-                'user-audit',
-                user_audit_body
-              );
-              let data = response.data.map((item: any) => {
-                let obj = {
-                  id: item.id,
-                  action: item.prospect_status,
-                  prospect_status_id: item.prospect_status_id,
-                  created_on: item.created_on,
-                  modified_on: item.modified_on,
-                };
-                let prospect_info = item.prospect_info;
-                return { ...obj, ...prospect_info };
-              });
-              this.usersList = data;
-            } else {
-              this.utilsService.loadToaster({
-                severity: 'error',
-                summary: 'ERROR',
-                detail: response.data.detail,
-              });
-            }
-            this.auditUtil.postAudit(
-              'USERLIST_FOR_USERMANAGEMENT',
-              1,
-              'SUCCESS',
-              'user-audit'
-            );
-          } else {
-            this.utilsService.loadToaster({
-              severity: 'error',
-              summary: 'ERROR',
-              detail: response.data.detail,
-            });
+    this.authApiService
+      .getUserDetails()
+      .then((response: any) => {
+        this.utilsService.loadSpinner(false);
+        if (response?.status === 200) {
+          if (response?.data) {
             let user_audit_body = {
               method: 'GET',
               url: response?.request?.responseURL,
@@ -110,37 +65,78 @@ export class UserInvitationComponent {
             this.auditUtil.postAudit(
               'USER_AUTH',
               1,
-              'FAILED',
+              'SUCCESS',
               'user-audit',
               user_audit_body
             );
+            let data = response.data.map((item: any) => {
+              let obj = {
+                id: item.id,
+                action: item.prospect_status,
+                prospect_status_id: item.prospect_status_id,
+                created_on: item.created_on,
+                modified_on: item.modified_on,
+              };
+              let prospect_info = item.prospect_info;
+              return { ...obj, ...prospect_info };
+            });
+            this.usersList = data;
+          } else {
             this.utilsService.loadToaster({
               severity: 'error',
               summary: 'ERROR',
               detail: response.data.detail,
             });
-            this.auditUtil.postAudit(
-              'USERLIST_FOR_USERMANAGEMENT_' + response.data.detail,
-              1,
-              'FAILURE',
-              'user-audit'
-            );
           }
-        })
-        .catch((error: any) => {
+          this.auditUtil.postAudit(
+            'USERLIST_FOR_USERMANAGEMENT',
+            1,
+            'SUCCESS',
+            'user-audit'
+          );
+        } else {
           this.utilsService.loadToaster({
             severity: 'error',
             summary: 'ERROR',
-            detail: error,
+            detail: response.data.detail,
           });
-          this.utilsService.loadSpinner(false);
+          let user_audit_body = {
+            method: 'GET',
+            url: response?.request?.responseURL,
+          };
           this.auditUtil.postAudit(
-            'USERLIST_FOR_USERMANAGEMENT_' + error,
+            'USER_AUTH',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
+          this.auditUtil.postAudit(
+            'USERLIST_FOR_USERMANAGEMENT_' + response.data.detail,
             1,
             'FAILURE',
             'user-audit'
           );
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
         });
-    }
+        this.utilsService.loadSpinner(false);
+        this.auditUtil.postAudit(
+          'USERLIST_FOR_USERMANAGEMENT_' + error,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
+      });
   }
 }

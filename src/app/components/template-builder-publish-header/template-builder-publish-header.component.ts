@@ -172,7 +172,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   getMeTotalAppsPublishedCount(): void {
     this.naviApiService
-      .getTotalPublishedApps(this.currentUser?.account_id)
+      .getTotalPublishedApps()
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(
@@ -196,7 +196,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.productId
           );
         } else {
@@ -216,7 +215,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.productId
           );
         }
@@ -232,7 +230,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.productId
         );
         this.utilsService.loadToaster({
@@ -275,7 +272,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.productId
           );
         }
@@ -292,7 +288,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.productId
         );
         this.utilsService.loadToaster({
@@ -316,7 +311,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         const body = {
           repoName: localStorage.getItem('app_name'),
           projectName: environment.projectName,
-          email: this.currentUser?.email,
           envName: environment.branchName,
           productId: this.productId
             ? this.productId
@@ -348,7 +342,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.productId
           );
           this.loadSpinnerInParent.emit(false);
@@ -371,7 +364,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             this.productId
           );
           this.auditUtil.postAudit('PUBLISH_APP', 1, 'FAILURE', 'user-audit');
@@ -396,7 +388,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.productId
         );
         this.loadSpinnerInParent.emit(false);
@@ -411,7 +402,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
   //get calls
   getAllProducts(): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+    this.conversationService.getMetaData().then((response) => {
       if (response?.status === 200 && response.data?.length) {
         this.templates = response.data;
         let user_audit_body = {
@@ -424,7 +415,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'SUCCESS',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.productId
         );
       }
@@ -440,7 +430,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           this.productId
         );
         this.utilsService.loadToaster({
@@ -449,46 +438,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           detail: error,
         });
       });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       this.templates = response.data.data;
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER',
-    //         1,
-    //         'SUCCESS',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser.email,
-    //         this.productId
-    //       );
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     let user_audit_body = {
-    //       method: 'GET',
-    //       url: error?.request?.responseURL,
-    //     };
-    //     this.auditUtil.postAudit(
-    //       'GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER',
-    //       1,
-    //       'FAILED',
-    //       'user-audit',
-    //       user_audit_body,
-    //       this.currentUser.email,
-    //       this.productId
-    //     );
-    //     this.utilsService.loadToaster({
-    //       severity: 'error',
-    //       summary: '',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   checkProductOptions() {

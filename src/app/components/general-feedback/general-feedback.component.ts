@@ -335,7 +335,6 @@ export class GeneralFeedbackComponent implements OnInit {
 
   sendGeneralFeedbackReport(): void {
     const body = {
-      userId: this.currentUser?.user_id,
       productId: this.generalFeedbackForm.value.product,
       componentId: this.generalFeedbackForm.value.section,
       feedbackText: this.generalFeedbackForm.value.tellUsMore,

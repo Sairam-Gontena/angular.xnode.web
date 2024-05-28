@@ -251,7 +251,6 @@ export class CreateNewCrVersionComponent implements OnInit {
   saveValue() {
     let body: any;
     body = {
-      author: this.currentUser.user_id,
       title: this.crForm.value.title,
       description: this.crForm.value.description,
       status: 'DRAFT',
@@ -262,12 +261,10 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: this.crForm.value.priority,
       duedate: this.crForm.value.duedate,
       baseVersionId: null,
-      accountId: this.currentUser.account_id,
     };
     if (this.selectedCR && this.header == 'Edit CR') {
       body = {
         id: this.selectedCR.id,
-        author: this.currentUser.user_id,
         baseVersionId: this.selectedCR.baseVersionId,
         title: this.crForm.value.title,
         description: this.crForm.value.description,
@@ -276,7 +273,6 @@ export class CreateNewCrVersionComponent implements OnInit {
         reviewers: this.getMeReviewerIds(),
         versionId: this.crForm.value.version,
         productId: this.product.id,
-        accountId: this.currentUser.account_id,
         priority: this.crForm.value.priority,
         duedate: this.crForm.value.duedate,
       };
@@ -347,7 +343,7 @@ export class CreateNewCrVersionComponent implements OnInit {
 
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(this.currentUser?.account_id)
+      .getAllUsers()
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

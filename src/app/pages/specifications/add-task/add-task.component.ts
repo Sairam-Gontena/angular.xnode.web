@@ -162,7 +162,6 @@ export class AddTaskComponent {
     }
     const deadline = this.convertToUTC(this.addTaskForm.value.duedate);
     let body = {
-      createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
       parentId: this.specItem.parentId,
       priority: this.addTaskForm.value.priority,

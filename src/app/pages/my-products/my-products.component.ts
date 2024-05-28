@@ -326,35 +326,32 @@ export class MyProductsComponent implements OnInit {
   }
 
   getRecentActivities() {
-    const userId = this.currentUser.user_id;
-    if (userId) {
-      this.conversationService.getRecentActivities(userId).subscribe((res: any) => {
-        let activities: any = [];
-        for (let activity of res.data.data) {
-          let row: any = {
-            id: activity.id,
-            objectId: activity.objectId,
-            objectType: activity.objectType,
-            userAction: activity.userAction,
-            modifiedBy: [activity.modifiedBy],
-            modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
-              year: 'numeric', month: 'short', day: 'numeric',
-              hour: 'numeric', minute: 'numeric', second: 'numeric',
-              hour12: true,
-            })),
-            users: [activity.modifiedBy],
-            description: activity.description,
-            title: activity.actionDetail.title || "",
-            shortId: activity.objectShortId || "",
-            summarize: activity.actionDetail.isSummarizationQueue,
-            status: activity.actionDetail.status,
-            actionDetail: activity.actionDetail
-          }
-          activities.push(row)
+    this.conversationService.getRecentActivities().subscribe((res: any) => {
+      let activities: any = [];
+      for (let activity of res.data.data) {
+        let row: any = {
+          id: activity.id,
+          objectId: activity.objectId,
+          objectType: activity.objectType,
+          userAction: activity.userAction,
+          modifiedBy: [activity.modifiedBy],
+          modifiedOn: (new Date(activity.modifiedOn).toLocaleString(undefined, {
+            year: 'numeric', month: 'short', day: 'numeric',
+            hour: 'numeric', minute: 'numeric', second: 'numeric',
+            hour12: true,
+          })),
+          users: [activity.modifiedBy],
+          description: activity.description,
+          title: activity.actionDetail.title || "",
+          shortId: activity.objectShortId || "",
+          summarize: activity.actionDetail.isSummarizationQueue,
+          status: activity.actionDetail.status,
+          actionDetail: activity.actionDetail
         }
-        this.activities = activities; // Handle the response here
-      });
-    }
+        activities.push(row)
+      }
+      this.activities = activities; // Handle the response here
+    });
   }
   onChangeSelectedActivity(event: any) {
     console.log(event.value.name, "Selected Activity");
@@ -451,7 +448,7 @@ export class MyProductsComponent implements OnInit {
   getUsersData() {
     this.utils.loadSpinner(true);
     this.authApiService
-      .getAllUsers(this.currentUser?.account_id)
+      .getAllUsers()
       .then((resp: any) => {
         if (resp?.status === 200) {
           this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
@@ -476,7 +473,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.conversationService.getProductsByUser({ accountId: this.currentUser.account_id, userId: this.currentUser?.user_id, userRole: 'all' }).then((response: any) => {
+    this.conversationService.getProductsByUser({ userRole: 'all' }).then((response: any) => {
       this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data) {
         let user_audit_body = {
@@ -489,7 +486,6 @@ export class MyProductsComponent implements OnInit {
           'SUCCESS',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           ''
         );
         this.storageService.saveItem(StorageKeys.MetaData, response.data);
@@ -522,7 +518,6 @@ export class MyProductsComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           ''
         );
         this.utils.loadToaster({
@@ -608,7 +603,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeCreateAppLimit(): void {
-    this.authApiService.get('/user/get_create_app_limit/' + this.currentUser.email).then(
+    this.authApiService.get('user/get_create_app_limit').then(
       (response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
@@ -622,7 +617,6 @@ export class MyProductsComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             ''
           );
         } else {
@@ -636,7 +630,6 @@ export class MyProductsComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.currentUser.email,
             '');
           this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
@@ -652,7 +645,6 @@ export class MyProductsComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.currentUser.email,
           ''
         );
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });

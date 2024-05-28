@@ -108,7 +108,6 @@ export class FeedbackListComponent {
   onClickSend() {
     this.utils.loadSpinner(true);
     let payload = {
-      userId: this.user?.user_id,
       conversationSourceType: this.selectedArea,
       conversationSourceId: this.conversationSourceId,
       message: this.message,

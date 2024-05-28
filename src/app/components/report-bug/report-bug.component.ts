@@ -344,7 +344,6 @@ export class ReportBugComponent implements OnInit {
 
   sendBugReport(): void {
     const body = {
-      userId: this.currentUser?.user_id,
       productId: this.bugReportForm.value.product,
       componentId: this.bugReportForm.value.section,
       feedbackText: this.bugReportForm.value.feedbackText,

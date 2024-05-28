@@ -132,9 +132,7 @@ export class ResourcesComponent implements OnInit, OnChanges {
     if (this.product?.id) {
       this.getResourcesByProductId(convoRef, { productId: this.product?.id });
     } else {
-      const accountId = this.currentUser?.account_id ? this.currentUser?.account_id : this.parentParams.account_id;
-      const userId = this.currentUser?.user_id ? this.currentUser?.user_id : this.parentParams.user_id;
-      this.getResourcesByUserId({ accountId: accountId, userId: userId })
+      this.getResourcesByUserId()
     }
   }
 
@@ -174,8 +172,8 @@ export class ResourcesComponent implements OnInit, OnChanges {
     }
   }
 
-  getResourcesByUserId(params: any): void {
-    this.conversationHUb.getResourcesByUserId(params).then((res: any) => {
+  getResourcesByUserId(): void {
+    this.conversationHUb.getResourcesByUserId().then((res: any) => {
       if (res?.data) {
         this.handleResourcesResponce(res?.data)
       }

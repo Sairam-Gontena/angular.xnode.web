@@ -61,27 +61,14 @@ export class AuthApiService extends BaseApiService {
     return this.post('/auth/prospect/login', body);
   }
   logout() {
-    return this.get(`/mfa/logout?email=${this.userValue?.email}`);
+    return this.get(`/mfa/logout`);
   }
-
-  // logout() {
-  //   this.http
-  //     .get<any>(`${environment.apiUrl + environment.endpoints.auth}/mfa/logout?email=${this.userValue?.email}`, {
-  //       headers: {
-  //         'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey
-  //       }
-  //     })
-  //     .subscribe();
-  //   this.stopRefreshTokenTimer();
-  //   this.userSubject.next(null);
-  //   this.router.navigate(['/login']);
-  // }
 
   refreshToken() {
     return this.http
       .post<any>(
         `${environment.apiUrl + environment.endpoints.auth}/mfa/refresh-token`,
-        { email: this.userValue?.email, token: this.userValue?.refreshToken },
+        {},
         { headers: { 'Content-Type': 'application/json', 'ocp-apim-subscription-key': environment.apimSubscriptionKey } }
       )
       .pipe(
@@ -161,17 +148,12 @@ export class AuthApiService extends BaseApiService {
     this.restInprogress = event;
   }
 
-  getUsersByAccountId(params?: any) {
-    let url = '/user/get_all_users?account_id=' + params.account_id;
-    return this.get(url);
+  getAllUsers() {
+    return this.get('user/get_all_users');
   }
 
-  getAllUsers(account_id?: string) {
-    return this.get('/user/get_all_users?account_id=' + account_id);
-  }
-
-  getUserDetails(email?: string) {
-    return this.get('/user/' + email);
+  getUserDetails() {
+    return this.get('user');
   }
 
   setDeeplinkURL(url: string) {

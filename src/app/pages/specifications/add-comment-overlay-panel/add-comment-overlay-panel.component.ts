@@ -124,7 +124,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         obj.role = "Contributor";
         obj.active = true;
         obj.createdOn = new Date();
-        obj.modifiedBy = this.currentUser.user_id;
         obj.template_type = 'TASK';
         obj.product_id = productId;
       });
@@ -193,7 +192,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           ? this.selectedComment.id
           : this.selectedContent?.parentId;
       body = {
-        createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
         parentEntity: this.parentEntity,
         parentId: parentId, // It should be spec id at New comment level and parent commment id at reply level
