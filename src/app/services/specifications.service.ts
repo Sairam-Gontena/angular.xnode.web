@@ -104,17 +104,17 @@ export class SpecificationsService {
                 ) {
                   element.content_data_type = 'JSON_TABLE';
                 }
-                // else if (element.title === 'Data Quality Checks') {
-                //   element.content_data_type = 'TABLE';
-                // } 
+                else if (element.title === 'Data Quality Checks') {
+                  element.content_data_type = 'data_quality_checks';
+                }
                 else if (element.title === 'Data Model') {
                   element.content_data_type = 'DATA_MODEL';
                 }
-                // else if (element.title === 'Data Dictionary') {
-                //   element.content_data_type = 'data_dictionary';
-                // } else if (element.title === 'Quality Assurance') {
-                //   element.content_data_type = 'QUALITY_ASSURANCE';
-                // }
+                else if (element.title === 'Data Dictionary') {
+                  element.content_data_type = 'data_dictionary';
+                } else if (element.title === 'Quality Assurance') {
+                  element.content_data_type = 'quality_assurance';
+                }
                 else if (element.title === 'Data Model Table Data') {
                   specObj.content.splice(index, 1);
                 }
