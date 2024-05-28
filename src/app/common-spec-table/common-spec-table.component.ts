@@ -41,6 +41,7 @@ export class CommonSpecTableComponent {
   },]
 
   ngOnChanges() {
+    
     if (this.content && this.content?.[0]) {
       this.columns = this.setColumnsToTheTable(this.content[0]);
     }
@@ -62,5 +63,13 @@ export class CommonSpecTableComponent {
 
   isArray(value: any): boolean {
     return Array.isArray(value);
+  }
+
+  isObject(value: any): boolean {
+    return value && typeof value === 'object' && !Array.isArray(value);
+  }
+
+  objectKeys(obj: any): string[] {
+    return Object.keys(obj);
   }
 }
