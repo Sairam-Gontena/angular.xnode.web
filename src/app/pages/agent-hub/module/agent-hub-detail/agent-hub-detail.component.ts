@@ -324,6 +324,9 @@ export class AgentHubDetailComponent {
   }
 
   onTabSwitchHandler(event: TabViewChangeEvent) {
+    const identifier = this.tabItems[this.activeIndex].identifier as keyof typeof dynamicTableColumnData.dynamicTable.AgentHub;
+    this.columns = dynamicTableColumnData.dynamicTable.AgentHub[identifier].columns;
+
     this.agentDataType = this.recordType.live;
     // this.getAllAgentList()
 
