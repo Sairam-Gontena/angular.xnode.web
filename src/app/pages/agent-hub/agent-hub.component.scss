@@ -72,7 +72,7 @@
 }
 
 /* Change background color of the dropdown panel */
-:host ::ng-deep .custom-multiselect .p-multiselect-label-container {
+:host ::ng-deep .custom-multiselect .p-multiselect-label-container, .p-multiselect {
   background-color: transparent;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -114,13 +114,13 @@
   color: white;
 }
 
-:host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputtext:enabled:hover {
-  border-radius: 0%;
-  background-color: var(--bleached-cedar);
-  border: 2px solid var(--bright-grey);
-  border-radius: 6px;
-}
+// :host ::ng-deep .p-inputtext,
+// :host ::ng-deep .p-inputtext:enabled:hover {
+//   border-radius: 0%;
+//   background-color: var(--bleached-cedar);
+//   border: 2px solid var(--bright-grey);
+//   border-radius: 6px;
+// }
 
 :host ::ng-deep .showColumnFilterOption,
 .p-multiselect-label-container,

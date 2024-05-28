@@ -9,6 +9,12 @@ export const agentName = {
     changeReq: "change_request"
 }
 
+export const actionButton = {
+    view: 'view',
+    duplicate: 'duplicate',
+    archieve: 'archieve'
+}
+
 /**
  * Stats key Description:
  * 
@@ -48,6 +54,32 @@ export const Constant = {
             count: 0,
             value: 'prompt_linked_topic',
             identifier: agentName.prompt
+        },
+        {
+            label: "Knowledge",
+            imgPath: "../../../assets/agent-hub/knowledge.svg",
+            key: "knowledge_count_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.knowledge
+        },
+
+        {
+            label: "Model",
+            imgPath: "../../../assets/agent-hub/tools.svg",
+            key: "model_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.model
+        },
+
+        {
+            label: "Tools",
+            imgPath: "../../../assets/agent-hub/tools.svg",
+            key: "tool_count",
+            count: 0,
+            value: 'prompt_linked_topic',
+            identifier: agentName.tool
         },
         {
             label: "Change Request",

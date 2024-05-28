@@ -179,8 +179,8 @@ export class NotificationPanelComponent {
 
   startNewChat(notif?: any): void {
     this.messagingService.sendMessage({
-      msgType: MessageTypes.NAVI_CONTAINER_STATE,
-      msgData: { naviContainerState: 'EXPAND', resource_id: notif.resource_id },
+      msgType: MessageTypes.START_RESOURCE_NEW_CHAT,
+      msgData: { resource_id: notif.resource_id },
     });
     this.closeNotificationPanel.emit(true)
   }
