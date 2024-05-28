@@ -213,4 +213,5 @@
 :host ::ng-deep .p-splitbutton-defaultbutton,
 :host ::ng-deep .p-splitbutton-menubutton {
   padding: 0;
+  width: fit-content;
 }
